@@ -16,8 +16,10 @@
     "url": "https://github.com/wnccys/greed-client/issues"
   },
   "homepage": "https://github.com/wnccys/greed-client#readme",
+  "devDependencies": {
+    "@types/node": "^20.14.1"
+  },
   "dependencies": {
-    "@types/node": "^20.14.1",
-    "tsc": "^2.0.4"
+    "typescript": "^5.4.5"
   }
 }
