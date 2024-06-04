@@ -1,0 +1,22 @@
+{
+  "name": "greed-client",
+  "version": "0.0.1",
+  "description": "next-gen torrent client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wnccys/greed-client.git"
+  },
+  "author": "Vinicius Souza, Daniel Patricio, Gustavo Peixoto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wnccys/greed-client/issues"
+  },
+  "homepage": "https://github.com/wnccys/greed-client#readme",
+  "dependencies": {
+    "tsc": "^2.0.4"
+  }
+}
