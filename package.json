@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/wnccys/greed-client#readme",
   "dependencies": {
+    "@types/node": "^20.14.1",
     "tsc": "^2.0.4"
   }
 }
