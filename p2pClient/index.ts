@@ -2,12 +2,16 @@ import { randomUUID } from 'crypto';
 import * as net from 'net';
 import { EventEmitter } from 'events';
 
+// module.exports = (options: any) => {
+//     // starts node
+//     return () => {
+//         // stops node
+//     }
+// }
+
 module.exports = (options: any) => {
-    // starts node
-    return () => {
-        // stops node
-    }
-}
+
+type IpAdress = string;
 
 const connections = new Map;
 const emitter = new EventEmitter();
@@ -22,13 +26,12 @@ const send = (connectionId: String, message: String) => {
     socket.write(JSON.stringify(message));
 }
 
-// REVIEW: set correct types to params;
-const connect = (ip, port, cb) => {
+const connect = (ip: IpAdress, port: number, callback: Function) => {
     const socket = new net.Socket();
 
     socket.connect(port, ip, () => {
         handleNewSocket(socket);
-        cb();
+        callback();
     });
 }
 
@@ -53,3 +56,11 @@ const handleNewSocket = (socket: net.Socket) => {
 const server = net.createServer((socket: net.Socket) => {
     handleNewSocket(socket);
 });
+
+server.listen(options.port, 'localhost');
+
+return (cb: ((err?: Error | undefined) => void) | undefined) => {
+    server.close(cb);
+}
+
+};
