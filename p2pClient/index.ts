@@ -2,20 +2,13 @@ import { randomUUID } from 'crypto';
 import * as net from 'net';
 import { EventEmitter } from 'events';
 
-// module.exports = (options: any) => {
-//     // starts node
-//     return () => {
-//         // stops node
-//     }
-// }
-
 module.exports = (options: any) => {
-
-type IpAdress = string;
 
 const connections = new Map;
 const emitter = new EventEmitter();
 
+// sets object events on new created socket 
+// functions: server and connect.
 const handleNewSocket = (socket: net.Socket) => {
     const connectionId = randomUUID();
     connections.set(connectionId, socket);
@@ -29,11 +22,13 @@ const handleNewSocket = (socket: net.Socket) => {
         try {
             emitter.emit('message', { connectionId, message: JSON.parse(data.toString()) });
         } catch(err) {
-            console.error(err);
+            throw new Error(`Error: ${err}`);
         }
     });
 }
 
+// selects target socket by connectionId and 
+// sends chosen message to it.
 const send = (connectionId: String, message: Object) => {
     const socket = connections.get(connectionId);
 
@@ -41,10 +36,11 @@ const send = (connectionId: String, message: Object) => {
         throw new Error(`Attempt to send data to connection that does not exist ${connectionId}`);
     }
 
-    socket.write(JSON.stringify(message));
+    socket.write(JSON.stringify(message)); 
 }
 
-const connect = (ip: IpAdress, port: number, cb: Function) => {
+// connects socket with given ip and port server.
+const connect = (ip: string, port: number, cb: Function) => {
     const socket = new net.Socket();
 
     socket.connect(port, ip, () => {
@@ -57,11 +53,14 @@ const server = net.createServer((socket: net.Socket) => {
     handleNewSocket(socket);
 });
 
-server.listen(options.port, 'localhost');
+server.listen(options.port, '0.0.0.0');
 
+// unique id for each new node created.
 const NODE_ID = randomUUID();
 const neighbors = new Map();
 
+// adds connect function with connectionId (set by user on event call: ex. client.emit('connection', "213123")) to any emitter object
+// to interact with server instance.
 emitter.on('connect', (connectionId) => {
     send(connectionId, { type: 'handshake', data: { nodeId: NODE_ID} } );
 });
@@ -80,7 +79,7 @@ emitter.on('message', ({ connectionId, message }) => {
         const nodeId = findNodeId(connectionId);
 
         if (!nodeId) {
-            throw new Error("Couldn't determine connectionId");
+            throw new Error("Couldn't find receiver id.");
         }
 
         emitter.emit('node-message', { nodeId, data });
@@ -105,19 +104,6 @@ const findNodeId = (connectionId: String) => {
     }    
 }
 
-emitter.on('delete', (connectionId) => {
-    const nodeId = findNodeId(connectionId);
-
-    if (!nodeId) {
-        return console.error("error shut");
-    }
-
-    neighbors.delete(nodeId);
-    emitter.emit('node-disconnect', { nodeId });
-});
-
-const alreadySeenMessages = new Set();
-
 // REVIEW set correct message type/struct
 const p2psend = (data: any) => {
     if (data.ttl < 1) {
@@ -138,6 +124,18 @@ const dm = (destination: string, message: Object, origin = NODE_ID, ttl = 10, id
     p2psend({ id, ttl, type: 'dm', message, destination, origin });
 };
 
+emitter.on('delete', (connectionId) => {
+    const nodeId = findNodeId(connectionId);
+
+    if (!nodeId) {
+        return console.error("error shut");
+    }
+
+    neighbors.delete(nodeId);
+    emitter.emit('node-disconnect', { nodeId });
+});
+
+const alreadySeenMessages = new Set();
 emitter.on('node-message', ({ nodeId, data }) => {
     if (!alreadySeenMessages.has(data.id)) {
         if (data.type === 'broadcast'){
@@ -155,11 +153,11 @@ emitter.on('node-message', ({ nodeId, data }) => {
     }
 });
 
+// returns
 return {
     broadcast, dm, on: emitter.on, connect,
     close: () => {
         server.close();
     },
 };
-
 };
