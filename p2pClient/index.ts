@@ -59,8 +59,9 @@ server.listen(options.port, '0.0.0.0');
 const NODE_ID = randomUUID();
 const neighbors = new Map();
 
-// adds connect function with connectionId (set by user on event call: ex. client.emit('connection', "213123")) to any emitter object
-// to interact with server instance.
+// adds connect function with connectionId (set by user on event call: 
+// ex. client.emit('connection', "213123")) to any emitter object
+// to interact with socket instance.
 emitter.on('connect', (connectionId) => {
     send(connectionId, { type: 'handshake', data: { nodeId: NODE_ID} } );
 });
