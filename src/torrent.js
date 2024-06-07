@@ -1,13 +1,28 @@
-"use strict";
-const createTorrent = require('create-torrent');
-const fs = require('fs');
-const directoryPath = 'Users\Aluno_Tarde\Downloads\Daniel l\myTorrent';
-createTorrent(directoryPath, (err, torrent) => {
-    if (!err) {
-        fs.writeFileSync('my.torrent', torrent);
-        console.log('Torrent criado com sucesso!');
+/* import fs from 'fs';
+
+async function run() {
+
+
+  try {
+    const torrent = (fs.readFileSync('660725.torrent'));
+    console.log(torrent.toString('utf8'));
+  } catch (err) {
+    console.error('Erro ao ler o arquivo:', err);
+  }
+}
+
+run(); código buffer sem serializaçao de bencode */
+import fs from 'fs';
+async function run() {
+    const { default: bencode } = await import('bencode');
+    try {
+        const torrent = bencode.decode(fs.readFileSync('660725.torrent'));
+        const asciiArray = torrent.announce;
+        const url = String.fromCharCode(...asciiArray);
+        console.log(url);
     }
-    else {
-        console.error('Erro ao criar torrent:', err);
+    catch (err) {
+        console.error('Erro ao ler o arquivo:', err);
     }
-});
+}
+run(); //buffer com serialização de bencode
