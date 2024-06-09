@@ -1,58 +1,74 @@
-class Torrent {
+import { Encoding } from "crypto";
+
+
+export class Torrent {
     private _name: string;
     private _isPrivate: boolean;
     private _fileObj: File[];
     private _fileDirectory: string;
     private _downloadDirectory: string;
+    private _trackers: Tracker[];
+    private _comment: string;
+    private _createdBy: string;
+    private _creationDate: Date;
+    private _encoding: Encoding; //hash
+    private _blockSize: number;
+    private _pieceSize: number;
+    private _pieceHash: number[][];
 
-
-
-
-
-
-
-
-
-    
+    constructor() {
+        this._pieceHash = [];
+    }
 
     get name(): string {
         return this._name;
-    }
-
-    set name(value: string) {
-        this._name = value;
     }
 
     get isPrivate(): boolean {
         return this._isPrivate;
     }
 
-    set isPrivate(value: boolean) {
-        this._isPrivate = value;
-    }
-
     get FileObj(): File[] {
         return this._fileObj;
-    }
-
-    set FileObj(value: File[]) {
-        this._fileObj = value;
     }
 
     get FileDirectory(): string {
         return this._fileDirectory;
     }
 
-    set FileDirectory(value: string) {
-        this._fileDirectory = value;
-    }
-
     get DownloadDirectory(): string {
         return this._downloadDirectory;
     }
 
-    set DownloadDirectory(value: string) {
-        this._downloadDirectory = value;
+    get trackers(): Tracker[] {
+        return this._trackers;
+    }
+
+    get comment(): string {
+        return this._comment;
+    }
+
+    get createdBy(): string {
+        return this._createdBy;
+    }
+
+    get creationDate(): Date {
+        return this._creationDate;
+    }
+
+    get encoding(): Encoding {
+        return this._encoding;
+    }
+
+    get blockSize(): number {
+        return this._blockSize;
+    }
+
+    get pieceSize(): number {
+        return this._pieceSize;
+    }
+
+    get pieceHash(): number[][] {
+        return this._pieceHash;
     }
 }
-
