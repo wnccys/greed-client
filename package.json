@@ -17,12 +17,10 @@
   },
   "homepage": "https://github.com/wnccys/greed-client#readme",
   "devDependencies": {
-    "@types/bencode": "^2.0.4",
     "@types/node": "^20.14.1",
-    "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "bencode": "^4.0.0"
+    "bencode-ts": "^1.0.1"
   }
 }
