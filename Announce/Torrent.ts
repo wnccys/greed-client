@@ -2,19 +2,18 @@ import { Encoding } from "crypto";
 
 
 export class Torrent {
-    private _name: string;
-    private _isPrivate: boolean;
-    private _fileObj: fileobj[];
-    private _fileDirectory: string;
-    private _downloadDirectory: string;
-    private _trackers: Tracker[];
-    private _comment: string;
-    private _createdBy: string;
-    private _creationDate: Date;
-    private _encoding: Encoding; //hash
-    private _blockSize: number;
-    private _pieceSize: number;
-    private _pieceHash: number[][];
+_name: string;
+_isPrivate: boolean;
+_fileObj: File[];
+_fileDirectory: string;
+_downloadDirectory: string;
+_trackers: Tracker[];
+_comment: string;
+_createdBy: string;
+_creationDate: Date;
+_encoding: Encoding; //hash
+_pieceSize: number;
+_pieceHash: number[][];
 
     constructor() {
         this._pieceHash = [];
