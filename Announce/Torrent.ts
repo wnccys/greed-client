@@ -4,7 +4,7 @@ import { Encoding } from "crypto";
 export class Torrent {
     private _name: string;
     private _isPrivate: boolean;
-    private _fileObj: File[];
+    private _fileObj: fileobj[];
     private _fileDirectory: string;
     private _downloadDirectory: string;
     private _trackers: Tracker[];
