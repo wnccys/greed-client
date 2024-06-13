@@ -1,8 +1,8 @@
 import fs from 'fs';
-// import { Bencode } from 'bencode-ts';
-import parseTorrent from 'parse-torrent';
+import { Bencode } from 'bencode-ts';
 import * as dgram from 'dgram';
 import * as url from 'url';
 
-const parsedTorrent = parseTorrent(fs.readFileSync('./puppy.torrent'));
-console.log(parsedTorrent);
+const torrent = Bencode.encode(fs.readFileSync('./puppy.torrent'));
+const urlParsed = url.parse(torrent.toString('utf8'));
+console.log(urlParsed);
