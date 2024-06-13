@@ -2,7 +2,7 @@
 next-gen torrent client
 
 https://blog.jse.li/posts/torrent/<br>
-https://allenkim67.github.io/programming/2016/05/17/nodejs-buffer-tutorial.html<br>
+https://allenkim67.github.io/programming/2016/05/04/how-to-make-your-own-bittorrent-client.html<br>
 https://www.seanjoflynn.com/research/bittorrent.html#bittorrent<br>
 https://dev.to/lxchurbakov/create-a-torrent-application-with-node-from-scratch-1j3e<br>
 https://wiki.theory.org/BitTorrentSpecification<br>
