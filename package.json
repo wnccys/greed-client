@@ -19,5 +19,8 @@
   "devDependencies": {
     "@types/node": "^20.14.1",
     "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "bencode-ts": "^1.0.1"
   }
 }
