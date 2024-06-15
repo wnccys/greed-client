@@ -7,12 +7,12 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "sourceMap": false,
-    "outDir": "./bittorrentEx",
+    "outDir": "./bittorrent",
     "baseUrl": "./",
     "paths": {
-      "*": ["./bittorrentEx"]
+      "*": ["./bittorrent"]
     }
   },
-  "include": ["./bittorrentEx/"],
+  "include": ["./bittorrent/"],
   "exclude": ["node_modules"]
 }
