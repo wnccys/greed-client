@@ -2,7 +2,7 @@ import fs from 'fs';
 import { Bencode } from 'bencode-ts';
 import * as dgram from 'dgram';
 import * as url from 'url';
-import * as tracker from './tracker';
+// import * as tracker from './tracker';
 
 const torrent = Bencode.decode(fs.readFileSync('./tears-of-steel.torrent'), 'utf-8');
 const urlParsed = url.parse(torrent.announce.toString('utf8'));
@@ -17,6 +17,6 @@ socket.on('message', (msg) => {
     console.log('message is: ', msg);
 });
 
-tracker.getPeers(torrent, peers => {
-    console.log('list of peers: ', peers);
-});
+// tracker.getPeers(torrent, peers => {
+//     console.log('list of peers: ', peers);
+// });
