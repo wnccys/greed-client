@@ -7,7 +7,7 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "sourceMap": false,
-    "outDir": "./bittorrent",
+    "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
       "*": ["./bittorrent"]
