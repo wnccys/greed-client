@@ -10,7 +10,7 @@
     "outDir": "./dist",
     "baseUrl": "./src",
     "paths": {
-      "@types/*": ["./types/*"],
+      "@customTypes/*": ["./customTypes/*"],
       "@tracker/*": ["./tracker/*"],
     }
   },

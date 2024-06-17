@@ -2,7 +2,7 @@ import fs from 'fs';
 import { Bencode } from 'bencode-ts';
 import * as dgram from 'dgram';
 import * as url from 'url';
-import { Torrent } from '@types/types';
+import { Torrent } from '@customTypes/torrent';
 import { ConnectionOptions } from 'tls';
 
 export const getPeers = (torrent: Torrent, callback: Function) => {
