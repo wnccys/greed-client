@@ -10,9 +10,9 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "*": ["./bittorrent"]
+      "*": ["./src"]
     }
   },
-  "include": ["./bittorrent/"],
+  "include": ["./src/"],
   "exclude": ["node_modules"]
 }
