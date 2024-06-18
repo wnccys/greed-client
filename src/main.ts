@@ -5,6 +5,7 @@ import * as url from 'url';
 // uses tsconfig paths to proper module path
 import { getPeers } from '@tracker/tracker';
 import { Torrent, newTorrent } from '@customTypes/torrent';
+import 'tsconfig-paths/register';
 
 const torrentFile = './src/torrents/tears-of-steel.torrent';
 // mimetic torrent type for correct validation 
