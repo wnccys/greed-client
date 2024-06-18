@@ -8,6 +8,7 @@ export type Torrent = {
    pieces: string,
    urlList: Array<string>
 }
+
 export function newTorrent(bencode: any): Torrent {
    return {
       announce: bencode.announce,
@@ -20,3 +21,9 @@ export function newTorrent(bencode: any): Torrent {
       urlList: bencode['url-list'],
    }
 }
+
+export type TrackerResponse = {
+   action: number,
+   transactionId: number,
+   connectionId: Buffer,
+};
