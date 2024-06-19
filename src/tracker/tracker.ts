@@ -5,7 +5,7 @@ import * as url from 'url';
 import { Torrent, TrackerResponse } 
     from '@customTypes/torrent';
 import * as torrentParser from 'torrentParser';
-import * as utils from 'utils';
+import { genId } from 'utils';
 import * as crypto from 'crypto';
 
 export const getPeers = (torrent: Torrent, callback: Function) => {
