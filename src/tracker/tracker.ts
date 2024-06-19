@@ -1,31 +1,24 @@
 import * as dgram from 'dgram';
 import * as url from 'url';
-import { Torrent, TrackerConnResponse , TrackerAnnounceResponse} 
-    from '@customTypes/torrent';
+import { TrackerConnResponse, 
+    TrackerAnnounceResponse } from '@customTypes/tracker';
+import { Torrent } from '@classes/torrent';
 import * as TorrentParser from 'torrentParser';
 import * as utils from 'utils';
 import * as crypto from 'crypto';
 
 export const getPeers = (torrent: Torrent, callback: Function) => {
     const socket = dgram.createSocket('udp4');
-
-    // 1. sends handshake request
     udpSend(socket, buildConnReq(), torrent.announce);
 
     socket.on('message', response => {
         if (respType(response) === 'connect') {
-            // 2. receive and parse handshake response
             const connResp = parseConnResp(response);
-            // 3. seed announce request to tracker
             const announceReq = buildAnnounceReq(connResp.connectionId, torrent);
-
             // REVIEW possible torrent.announce url error.
             udpSend(socket, announceReq, torrent.announce);
         } else if (respType(response) === 'announce') {
-            // 4. parse announce response
             const announceResp = parseAnnounceResp(response);
-
-            // 5. pass peers to callback
             callback(announceResp.peers);
         }
     });
@@ -34,7 +27,7 @@ export const getPeers = (torrent: Torrent, callback: Function) => {
 function udpSend(socket: dgram.Socket, message: Buffer, rawUrl: string, callback=()=>{}) {
     const parsedUrl = url.parse(rawUrl);
     socket.send(message, 0, message.length,
-        Number(parsedUrl.port), parsedUrl.host || undefined, callback);
+        Number(parsedUrl.port), String(parsedUrl.host), callback);
 }
 
 function respType(resp: any): string {
@@ -81,7 +74,7 @@ function buildAnnounceReq(connId: Buffer, torrent: Torrent, port=6881): Buffer {
     // downloaded
     Buffer.alloc(8).copy(buf, 56);
     // left from dowloaded
-    // TODO impl size method to torrentParser
+    // TODO impl size method to TorrentParser
     TorrentParser.size(torrent).copy(buf, 64);
     // uplodaded 
     Buffer.alloc(8).copy(buf, 72);
@@ -100,10 +93,12 @@ function buildAnnounceReq(connId: Buffer, torrent: Torrent, port=6881): Buffer {
 }
 
 function parseAnnounceResp(resp: Buffer): TrackerAnnounceResponse {
+    //
     // iterates over sliced buffer, incrementing over each returned IP 
     // considering it's offset, so 20 + (6 * n) where 20 is the offset 
     // where the first IP sits and n the returned IP index incrementing
     // until all IPs are covered.
+    //
     function group(iterable: Buffer, groupSize: number) {
         let groups = [];
 
@@ -114,6 +109,7 @@ function parseAnnounceResp(resp: Buffer): TrackerAnnounceResponse {
         return groups;
     }
 
+    // returns response based at announce resp specification;
     return {
         action: resp.readUInt32BE(0),
         transactionId: resp.readUInt32BE(4),
