@@ -1,6 +1,6 @@
 import * as dgram from 'dgram';
 import * as url from 'url';
-import { Torrent, TrackerResponse } 
+import { Torrent, TrackerConnResponse , TrackerAnnounceResponse} 
     from '@customTypes/torrent';
 import * as TorrentParser from 'torrentParser';
 import * as utils from 'utils';
@@ -56,7 +56,7 @@ function buildConnReq(): Buffer {
 
 // extracts information from tracker 
 // handshake response incoming buffer
-function parseConnResp(resp: Buffer): TrackerResponse { 
+function parseConnResp(resp: Buffer): TrackerConnResponse { 
     return {
         action: resp.readUInt32BE(0),
         transactionId: resp.readUInt32BE(4),
@@ -99,10 +99,11 @@ function buildAnnounceReq(connId: Buffer, torrent: Torrent, port=6881): Buffer {
     return buf;
 }
 
-function parseAnnounceResp(resp: Buffer): any {
+function parseAnnounceResp(resp: Buffer): TrackerAnnounceResponse {
     // iterates over sliced buffer, incrementing over each returned IP 
     // considering it's offset, so 20 + (6 * n) where 20 is the offset 
-    // where the first IP sits, and incrementing until all IPs are covered
+    // where the first IP sits and n the returned IP index incrementing
+    // until all IPs are covered.
     function group(iterable: Buffer, groupSize: number) {
         let groups = [];
 
