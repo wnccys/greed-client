@@ -1,5 +1,5 @@
-// self??
+import { Torrent } from '@customTypes/torrent';
 
-export function infoHash() {
+export function infoHash(torrent: Torrent) {
 
 }

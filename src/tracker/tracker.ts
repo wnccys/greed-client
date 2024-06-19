@@ -74,12 +74,14 @@ function buildAnnounceReq(connId: Buffer, torrent: Torrent, port=6881): Buffer {
     // transaction id
     crypto.randomBytes(4).copy(buf, 12);
     // info hash
+    // TODO sets infoHash return to hash-itself
     TorrentParser.infoHash(torrent).copy(buf, 14);
     // peerId
     utils.genId().copy(buf, 36);
     // downloaded
     Buffer.alloc(8).copy(buf, 56);
     // left from dowloaded
+    // TODO impl size method to torrentParser
     TorrentParser.size(torrent).copy(buf, 64);
     // uplodaded 
     Buffer.alloc(8).copy(buf, 72);
@@ -97,6 +99,30 @@ function buildAnnounceReq(connId: Buffer, torrent: Torrent, port=6881): Buffer {
     return buf;
 }
 
-function parseAnnounceResp(resp: any): any {
-    //
+function parseAnnounceResp(resp: Buffer): any {
+    // iterates over sliced buffer, incrementing over each returned IP 
+    // considering it's offset, so 20 + (6 * n) where 20 is the offset 
+    // where the first IP sits, and incrementing until all IPs are covered
+    function group(iterable: Buffer, groupSize: number) {
+        let groups = [];
+
+        for(let i = 0; i < iterable.length; i += groupSize) {
+            groups.push(iterable.slice(i, i + groupSize))
+        }
+
+        return groups;
+    }
+
+    return {
+        action: resp.readUInt32BE(0),
+        transactionId: resp.readUInt32BE(4),
+        leechers: resp.readUInt32BE(8),
+        seeders: resp.readUInt32BE(12),
+        peers: group(resp.slice(20), 6).map(adress => {
+            return {
+                ip: adress.slice(0, 4).join('.'),
+                port: adress.readUInt16BE(4)
+            }
+        })
+    }
 }
