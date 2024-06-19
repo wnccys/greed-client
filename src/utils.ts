@@ -1,6 +1,6 @@
 import * as crypto from 'crypto';
 
-let id: Buffer;
+export let id: Buffer;
 export function genId() {
     if (id!) {
         id = crypto.randomBytes(20);

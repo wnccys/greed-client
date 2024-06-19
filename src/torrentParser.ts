@@ -1,4 +1,5 @@
 // self??
-export module torrentParser {
+
+export function infoHash() {
 
 }
