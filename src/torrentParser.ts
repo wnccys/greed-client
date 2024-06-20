@@ -4,7 +4,7 @@ import fs from 'fs';
 import crypto from 'crypto';
 
 export function open(filepath: string): any {
-    return Bencode.decode(fs.readFileSync(filepath));
+    return Bencode.decode(fs.readFileSync(filepath), 'ascii');
 }
 
 export function size(torrent: Torrent): Buffer {

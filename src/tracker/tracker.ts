@@ -15,7 +15,6 @@ export const getPeers = (torrent: Torrent, callback: Function) => {
         if (respType(response) === 'connect') {
             const connResp = parseConnResp(response);
             const announceReq = buildAnnounceReq(connResp.connectionId, torrent);
-            // REVIEW possible torrent.announce url error.
             udpSend(socket, announceReq, torrent.announce);
         } else if (respType(response) === 'announce') {
             const announceResp = parseAnnounceResp(response);
@@ -30,8 +29,10 @@ function udpSend(socket: dgram.Socket, message: Buffer, rawUrl: string, callback
         Number(parsedUrl.port), String(parsedUrl.host), callback);
 }
 
-function respType(resp: any): string {
-    return "none"
+function respType(resp: Buffer): string {
+    const action = resp.readUInt32BE(0);
+    if (action == 0) return 'connect';
+    return 'announce';
 }
 
 function buildConnReq(): Buffer {
