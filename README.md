@@ -13,3 +13,6 @@ https://www.npmjs.com/package/webtorrent/v/0.71.4<br>
 
 ## trackers info
 https://ngosang.github.io/trackerslist/
+
+### scalar doc generator
+https://blog.rocketseat.com.br/scalar-uma-ferramenta-poderosa-para-documentacao-de-apis/
