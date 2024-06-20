@@ -67,14 +67,12 @@ function buildAnnounceReq(connId: Buffer, torrent: Torrent, port=6881): Buffer {
     // transaction id
     crypto.randomBytes(4).copy(buf, 12);
     // info hash
-    // TODO sets infoHash return to hash-itself
     TorrentParser.infoHash(torrent).copy(buf, 14);
     // peerId
     utils.genId().copy(buf, 36);
     // downloaded
     Buffer.alloc(8).copy(buf, 56);
     // left from dowloaded
-    // TODO impl size method to TorrentParser
     TorrentParser.size(torrent).copy(buf, 64);
     // uplodaded 
     Buffer.alloc(8).copy(buf, 72);
