@@ -14,7 +14,7 @@ http://www.bittorrent.org/beps/bep_0015.html<br>
 https://www.morehawes.ca/uk/old-guides/the-bittorrent-protocol<br>
 https://www.npmjs.com/package/webtorrent/v/0.71.4<br>
 
-##3 Trackers Info
+### Trackers Info
 https://ngosang.github.io/trackerslist/
 
 ### Scalar Doc Generator
