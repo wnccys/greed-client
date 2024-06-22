@@ -6,13 +6,18 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
-    "sourceMap": false,
-    "outDir": "./bittorrent",
-    "baseUrl": "./",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./src",
     "paths": {
-      "*": ["./bittorrent"]
+      "@customTypes/*": ["./customTypes/*"],
+      "@classes/*": ["./classes/*"],
+      "@tracker/*": ["./tracker/*"],
     }
   },
-  "include": ["./bittorrent/"],
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
+  "include": ["./src"],
   "exclude": ["node_modules"]
 }
