@@ -13,22 +13,23 @@ async function run() {
 
 run(); código buffer sem serializaçao de bencode */
 
-import fs from 'fs';
+import * as fs from 'fs';
+import { Bencode} from 'bencode-ts';
+
 
 async function run() {
-  const { default: bencode } = await import('bencode');
-
   try {
-    const torrent = bencode.decode(fs.readFileSync('660725.torrent'));
-    const asciiArray = torrent.announce;
-    const url = String.fromCharCode(...asciiArray);
+    const torrent = Bencode.decode(fs.readFileSync('660725.torrent'));
+    const url = Buffer.from(torrent.announce).toString('ascii');
     console.log(url);
   } catch (err) {
     console.error('Erro ao ler o arquivo:', err);
   }
 }
 
-run();   //buffer com serialização de bencode e convertendo ascc para url legivel 
+run();
+
+  //buffer com serialização de bencode e convertendo ascc para url legivel 
 
 // aqui temos a saida e a url do rastreador udp://tracker.openbittorrent.com:80/announce
 
