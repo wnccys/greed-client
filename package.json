@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "bencode-ts": "^1.0.1",
-    "ts-node": "^10.9.2"
+    "torrent-parser": "^1.2.0",
+    "ts-node": "^10.9.2",
+    "utils": "^0.3.1"
   }
 }

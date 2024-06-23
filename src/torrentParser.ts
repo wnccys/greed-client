@@ -24,3 +24,4 @@ export function infoHash(torrent: Torrent): Buffer {
     const info = Bencode.encode(torrent.info);
     return crypto.createHash('sha1').update(info).digest();
 }
+
