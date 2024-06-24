@@ -6,21 +6,20 @@ import { Torrent } from '@classes/torrent';
 import * as TorrentParser from 'torrentParser';
 import * as utils from 'utils';
 import * as crypto from 'crypto';
-import { error } from 'console';
 
 export const getPeers = (torrent: Torrent, callback: Function) => {
     const socket = dgram.createSocket('udp4');
     udpSend(socket, buildConnReq(), torrent.announce);
 
     socket.on('error', err => {
-        console.error(err);
+        console.log(err);
         socket.close();
     });
 
-    socket.on('message', response => {
+    socket.on('message', (response) => {
+        console.log("conn resp: ", response)
         if (respType(response) === 'connect') {
             const connResp = parseConnResp(response);
-            console.log('connResp: ', response);
             const announceReq = buildAnnounceReq(connResp.connectionId, torrent);
             udpSend(socket, announceReq, torrent.announce);
         } else if (respType(response) === 'announce') {
@@ -30,12 +29,14 @@ export const getPeers = (torrent: Torrent, callback: Function) => {
     });
 };
 
-function udpSend(socket: dgram.Socket, message: Buffer, rawUrl: string, callback=(response: any)=>{ console.log(response) }) {
+function udpSend(socket: dgram.Socket, message: Buffer, rawUrl: string) {
     const parsedUrl = url.parse(rawUrl);
     socket.send(message, 0, message.length,
         Number(parsedUrl.port), String(parsedUrl.hostname), (err) => {
             if (err) {
                 console.log(err);
+            } else {
+                console.log('message successfully');
             }
         });
 }
@@ -53,6 +54,7 @@ function buildConnReq(): Buffer {
     // http://www.bittorrent.org/beps/bep_0015.html
     buf.writeUInt32BE(0x417, 0);
     buf.writeUInt32BE(0x27101980, 4);
+    // 41727101980
     buf.writeUInt32BE(0, 8);
     crypto.randomBytes(4).copy(buf, 12);
     console.log("conn buf:", buf);
