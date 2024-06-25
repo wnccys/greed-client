@@ -21,6 +21,9 @@ https://www.npmjs.com/package/webtorrent/v/0.71.4<br>
 ### Trackers Info
 https://ngosang.github.io/trackerslist/
 
+### TSX
+https://tsx.is/<br>
+
 ### Scalar Doc Generator
 https://blog.rocketseat.com.br/scalar-uma-ferramenta-poderosa-para-documentacao-de-apis/
 
