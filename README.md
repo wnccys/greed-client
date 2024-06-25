@@ -12,6 +12,7 @@ http://www.bittorrent.org/beps/bep_0015.html<br>
 https://typestrong.org/ts-node/docs/options/#esm<br>
 https://typestrong.org/ts-node/docs/imports/<br>
 https://docs.joshuatz.com/cheatsheets/node-and-npm/node-esm/<br>
+https://github.com/TypeStrong/ts-node/issues/1007<br>
 
 ### Visual Doc
 https://www.morehawes.ca/uk/old-guides/the-bittorrent-protocol<br>
