@@ -9,6 +9,9 @@ https://blog.jse.li/posts/torrent/<br>
 https://www.seanjoflynn.com/research/bittorrent.html#bittorrent<br>
 https://wiki.theory.org/BitTorrentSpecification<br>
 http://www.bittorrent.org/beps/bep_0015.html<br>
+https://typestrong.org/ts-node/docs/options/#esm<br>
+https://typestrong.org/ts-node/docs/imports/<br>
+https://docs.joshuatz.com/cheatsheets/node-and-npm/node-esm/<br>
 
 ### Visual Doc
 https://www.morehawes.ca/uk/old-guides/the-bittorrent-protocol<br>
