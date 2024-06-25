@@ -24,6 +24,9 @@ https://ngosang.github.io/trackerslist/
 ### TSX
 https://tsx.is/<br>
 
+### ScrapperLib 
+https://github.com/cheeriojs/cheerio<br>
+
 ### Scalar Doc Generator
 https://blog.rocketseat.com.br/scalar-uma-ferramenta-poderosa-para-documentacao-de-apis/
 
