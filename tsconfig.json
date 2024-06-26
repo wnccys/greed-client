@@ -10,9 +10,6 @@
     "outDir": "./dist",
     "baseUrl": "./src",
     "paths": {
-      "@customTypes/*": ["./customTypes/*"],
-      "@classes/*": ["./classes/*"],
-      "@tracker/*": ["./tracker/*"],
     }
   },
   "ts-node": {
