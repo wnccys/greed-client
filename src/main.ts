@@ -1,4 +1,4 @@
-import WebTorrent from 'webtorrent';
+import WebTorrent, { TorrentFile } from 'webtorrent';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -9,7 +9,7 @@ const __dirname = dirname(__filename);
 
 const torrentPath = path.join(
     __dirname, 
-    './src/torrent_files/tears-of-steel.torrent'
+    '/torrent_files/tears-of-steel.torrent'
 );
 
 const client = new WebTorrent();
@@ -22,9 +22,10 @@ fs.readFile(torrentPath, (err, data) => {
 
     client.add(data, { path: path.join(__dirname, 'downloads') }, (torrent) => {
         console.log('torrent info hash: ', torrent.infoHash)
+        console.log('magnet URI: ', torrent.magnetURI);
 
         torrent.on('download', (bytes) => {
-            console.log(`downloaded: ${bytes} bytes.`);
+            console.log(`downloaded: ${bytes/1000} megabytes.`);
             console.log(`progress: ${(torrent.progress * 100).toFixed(2)}%`);
         });
 
@@ -33,19 +34,10 @@ fs.readFile(torrentPath, (err, data) => {
             client.destroy();
         });
 
-        torrent.files.forEach((file) => {
-            const filePath = path.join(__dirname, 'downloads', file.path);
-            console.log(`downloading: ${file.name}`);
-
-            file.getBuffer((err, buffer) => {
-                if (err) throw err;
-                fs.writeFileSync(filePath, buffer);
-                console.log(`${file.name} has been downloaded to ${filePath}`);
-            });
-        });
+        console.log('download speed: ', client.downloadSpeed);
     });
 
-    client.on('error', (err: any) => {
-        console.error('WebTorrent error: ', err.message);
+    client.on('error', (err) => {
+        console.error('WebTorrent error: ', err);
     });
 });
