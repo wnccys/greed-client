@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "next-gen torrent client",
   "main": "main.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "dev": "ts-node src/main.ts"
   },
