@@ -21,6 +21,9 @@ https://ngosang.github.io/trackerslist/
 ### TSX
 https://tsx.is/<br>
 
+### BiomeJS
+https://biomejs.dev/pt-br/
+
 ### ScrapperLib 
 https://github.com/cheeriojs/cheerio<br>
 
