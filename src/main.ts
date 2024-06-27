@@ -9,7 +9,7 @@ const __dirname = dirname(__filename);
 
 const torrentPath = path.join(
     __dirname, 
-    '/torrent_files/tears-of-steel.torrent'
+    '/torrent_files/alice.torrent'
 );
 
 const client = new WebTorrent();
@@ -30,7 +30,7 @@ fs.readFile(torrentPath, (err, data) => {
         });
 
         torrent.on('done', () => {
-            console.log(`torrent download finished.`);
+            console.log(`torrent download finished: ${torrent.name}`);
             client.destroy();
         });
 
