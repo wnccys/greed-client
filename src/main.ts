@@ -9,7 +9,7 @@ const __dirname = dirname(__filename);
 
 const torrentPath = path.join(
     __dirname, 
-    '/torrent_files/alice.torrent'
+    '/torrent_files/heavy.torrent'
 );
 
 const client = new WebTorrent();
