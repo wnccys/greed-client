@@ -1,13 +1,9 @@
-import { DownloadButton } from './components/DownloadButton'
+import { InputFile } from "./components/ui/inputFile";
 
 export function App() {
-  async function initTorrentDownload() {
-    //TODO
-  }
-
   return (
     <div className='p-6 max-w-4xl mx-auto'>
-      <DownloadButton />
+      <InputFile />
     </div>
   )
 }
