@@ -1,5 +1,5 @@
 # greed-client
-Next-gen torrent client.
+greed-client is a game launcher with it's own bittorrent client featuring online sessions and dynamic magnet links scrapper.
 
 ### Others
 https://blog.jse.li/posts/torrent/<br>
