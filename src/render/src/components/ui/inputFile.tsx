@@ -1,8 +1,7 @@
 import { Input } from "@/components/ui/input"
-import { ChangeEvent } from "react"
 
 interface inputFileProps {
-  onChange?: () => void,
+  onChange?: (e: any) => void,
 }
 
 export function InputFile({ onChange }: inputFileProps) {
