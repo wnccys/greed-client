@@ -1,26 +1,19 @@
 import WebTorrent, { TorrentFile } from 'webtorrent';
-import fs from 'fs';
 import path from 'path';
+import express from 'express';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-const torrentPath = path.join(
-    __dirname, 
-    '/torrent_files/heavy.torrent'
-);
-
 const client = new WebTorrent();
 
-fs.readFile(torrentPath, (err, data) => {
-    if (err) {
-        console.error('error reading torrent file: ', err);
-        return;
-    }
+// NOTE probably we gonna use only magnets;
+// Possibly adds generic torrent handler (accepts files, magnets, infohashes etc.);
+function initTorrentDownload(torrentFile?: File) { 
+    if (!torrentFile) return
 
-    client.add(data, { path: path.join(__dirname, 'downloads') }, (torrent) => {
+    client.add(torrentFile , { path: path.join(__dirname, 'downloads') }, (torrent) => {
         console.log('torrent info hash: ', torrent.infoHash)
         console.log('magnet URI: ', torrent.magnetURI);
 
@@ -40,4 +33,20 @@ fs.readFile(torrentPath, (err, data) => {
     client.on('error', (err) => {
         console.error('WebTorrent error: ', err);
     });
+};
+
+const app = express();
+const port = 5172;
+app.get('/', (req, res) => {
+    res.send    
+});
+
+app.post('/', (req, res) => {
+    console.log(req.body);
+    res.send(req.body);
+    // initTorrentDownload();
+});
+
+app.listen(port, () => {
+    console.log(`server listening at port: ${port}`);
 });
