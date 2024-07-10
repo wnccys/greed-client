@@ -9,7 +9,7 @@ const client = new WebTorrent();
 
 // NOTE probably we gonna use only magnets;
 // Possibly adds generic torrent handler (accepts files, magnets, infohashes etc.);
-function initTorrentDownload(torrentFile?: File) { 
+export function initTorrentDownload(torrentFile?: File) { 
     if (!torrentFile) return
 
     client.add(torrentFile , { path: path.join(__dirname, 'downloads') }, (torrent) => {
