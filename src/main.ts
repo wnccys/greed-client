@@ -1,6 +1,7 @@
 import WebTorrent, { TorrentFile } from 'webtorrent';
 import path from 'path';
 import express from 'express';
+import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
@@ -37,12 +38,15 @@ function initTorrentDownload(torrentFile?: File) {
 
 const app = express();
 const port = 5172;
+
+app.use(cors());
+
 app.get('/', (req, res) => {
-    res.send    
+    res.send('hello!');
 });
 
-app.post('/', (req, res) => {
-    console.log(req.body);
+app.post('/download', async (req, res) => {
+    console.log("response sent: ", req.body);
     res.send(req.body);
     // initTorrentDownload();
 });
