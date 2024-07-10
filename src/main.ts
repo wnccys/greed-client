@@ -8,7 +8,7 @@ import fs from 'fs';
 
 
 // TODO make request with file path 
-//so server doesnt needs to process it's multer
+// so server doesnt needs to process it's multer
 //
 const __filename = fileURLToPath(import.meta.url);
 
@@ -33,7 +33,8 @@ const upload = multer({
 
 function checkFileType(file: Express.Multer.File, cb: any) {
     // console.log('received file: ', file);
-    const mimeType = file.mimetype === 'application/octet-stream';
+    console.log(file.mimetype);
+    const mimeType = file.mimetype === 'application/x-bittorrent';
 
     if (mimeType) {
        return cb(null, true);
