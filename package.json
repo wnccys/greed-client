@@ -18,11 +18,7 @@
   },
   "homepage": "https://github.com/wnccys/greed-client#readme",
   "devDependencies": {
-<<<<<<< HEAD
-    "@types/bencode": "^2.0.4",
-=======
     "@types/express": "^4.17.21",
->>>>>>> b8d408c8ec4b4001b15a3a556a982543334bfac7
     "@types/node": "^20.14.1",
     "@types/webtorrent": "^0.109.8",
     "tsconfig-paths": "^4.2.0",
