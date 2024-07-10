@@ -1,4 +1,4 @@
-import WebTorrent from 'webtorrent';
+import WebTorrent, { TorrentFile } from 'webtorrent';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import path from 'path';
@@ -9,7 +9,7 @@ const client = new WebTorrent();
 
 // NOTE probably we gonna use only magnets;
 // Possibly adds generic torrent handler (accepts files, magnets, infohashes etc.);
-export function initTorrentDownload(torrentFile?: File) { 
+export function initTorrentDownload(torrentFile: Buffer) { 
     if (!torrentFile) return
 
     client.add(torrentFile , { path: path.join(__dirname, 'downloads') }, (torrent) => {

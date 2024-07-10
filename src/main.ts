@@ -4,7 +4,12 @@ import cors from 'cors';
 import express from 'express';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
+
+// TODO make request with file path 
+//so server doesnt needs to process it's multer
+//
 const __filename = fileURLToPath(import.meta.url);
 
 const app = express();
@@ -12,7 +17,7 @@ const port = 5172;
 app.use(cors());
 
 const storage = multer.diskStorage({
-    destination: dirname(__filename) + '/downloads',
+    destination: dirname(__filename) + '/torrent_files',
     filename: (req, file, cb) => {
         cb(null, file.originalname.replace('.torrent', '') + 
             '-' + Date.now() + path.extname(file.originalname));
@@ -27,7 +32,7 @@ const upload = multer({
 }).single('torrentFile');
 
 function checkFileType(file: Express.Multer.File, cb: any) {
-    console.log('received file: ', file);
+    // console.log('received file: ', file);
     const mimeType = file.mimetype === 'application/octet-stream';
 
     if (mimeType) {
@@ -53,8 +58,12 @@ app.post('/download', async (req, res) => {
             } else {
                 res.send({
                     message: 'File Uploaded Successfully',
-                    filePath: `downloads/${req.file.filename}`,
+                    filePath: `./torrent_files/${req.file.filename}`,
                 });
+
+                const file = fs.readFileSync(dirname(__filename) + '/torrent_files/' + req.file.filename);
+                initTorrentDownload(file);
+                fs.unlinkSync(dirname(__filename) + '/torrent_files/' + req.file.filename);
             }
         }
     });
