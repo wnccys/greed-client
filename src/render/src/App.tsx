@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { ChangeEvent, useState } from 'react';
 import { InputFile } from "@/components/ui/inputFile";
 import { Button } from "@/components/ui/button";
@@ -8,21 +8,22 @@ const baseURL = 'http://localhost:5172/download';
 
 export function App() {
   const [torrentFile, setTorrentFile] = useState<File>();
-  // const [response, setResponse] = useState<AxiosResponse>();
 
-  async function downloadTorrent(e: any) {
-    e.preventDefault();
-    console.log("Torrent File: ", torrentFile);
+  async function downloadTorrent() {
+    const formData = new FormData;
+    if (torrentFile) {
+      formData.append('torrentFile', torrentFile, 'small.torrent');
+    }
 
     try {
-      axios.post(baseURL, {
-          body: torrentFile,
-        })
-      .then((axiosResponse) => {
-        console.log(axiosResponse);
+      axios.post(baseURL, formData, {
+        headers: { 'Content-Type': 'application/x-bittorrent' }
+      })
+      .then((response) => {
+        console.log('Response From Server: ', response);
       })
       .catch((e) => {
-        console.log(e);
+        console.log('Error receiving request: ', e);
       });
     } catch (e) {
       console.error("Failed to make request: ", e);
@@ -39,7 +40,7 @@ export function App() {
     <div className='mt-14 p-6 mx-auto border border-zinc-800'>
       <CardDemo className="mb-5" />
       <InputFile onChange={handleFileChange}/>
-      <Button className ="mt-5" type="submit" onClick={downloadTorrent}>Download Torrent</Button>
+      <Button className ="mt-5" onClick={downloadTorrent}>Download Torrent</Button>
   </div>
   )
 }
