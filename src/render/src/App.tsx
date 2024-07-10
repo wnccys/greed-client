@@ -1,46 +1,27 @@
-import axios from 'axios';
-import { ChangeEvent, useState } from 'react';
-import { InputFile } from "@/components/ui/inputFile";
-import { Button } from "@/components/ui/button";
-import { CardDemo } from "@/components/ui/cardContent";
 
-const baseURL = 'http://localhost:5172/download';
+
+import '@radix-ui/themes/styles.css';
+import { Table_One } from './components/ui/table';
+import { Box, Theme, ThemePanel } from '@radix-ui/themes';
 
 export function App() {
-  const [torrentFile, setTorrentFile] = useState<File>();
 
-  async function downloadTorrent() {
-    const formData = new FormData;
-    if (torrentFile) {
-      formData.append('torrentFile', torrentFile, 'small.torrent');
-    }
-
-    try {
-      axios.post(baseURL, formData, {
-        headers: { 'Content-Type': 'application/x-bittorrent' }
-      })
-      .then((response) => {
-        console.log('Response From Server: ', response);
-      })
-      .catch((e) => {
-        console.log('Error receiving request: ', e);
-      });
-    } catch (e) {
-      console.error("Failed to make request: ", e);
-    }
+  
+    return (
+     <div className="w-[1000px] h-[1000px] flex justify-center items-center"> {/* div pai */}
+        
+         <Box className="w-[800px] h-[500px] rounded-lg bg-black flex "> {/* box pai */}
+            
+         <Box className="w-[200px] h-[490px] rounded-lg bg-gradient-to-br from-gray-800 to-gray-600 flex justify-center items-center">
+              <Table_One className='text-blue' />
+              </Box> 
+              
+         </Box>
+     </div>
+   
+  
+    );
   }
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setTorrentFile(e.target.files[0]);
-    }
-  }
 
-  return (
-    <div className='mt-14 p-6 mx-auto border border-zinc-800'>
-      <CardDemo className="mb-5" />
-      <InputFile onChange={handleFileChange}/>
-      <Button className ="mt-5" onClick={downloadTorrent}>Download Torrent</Button>
-  </div>
-  )
-}
+ 
