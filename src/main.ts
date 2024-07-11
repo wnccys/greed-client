@@ -34,7 +34,7 @@ const upload = multer({
 function checkFileType(file: Express.Multer.File, cb: any) {
     // console.log('received file: ', file);
     console.log(file.mimetype);
-    const mimeType = file.mimetype === 'application/x-bittorrent';
+    const mimeType = file.mimetype === 'application/x-bittorrent' || 'application/octet-stream';
 
     if (mimeType) {
        return cb(null, true);
