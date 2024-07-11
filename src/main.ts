@@ -67,11 +67,14 @@ app.post('/download', async (req, res) => {
                     filePath: `./torrent_files/${req.file.filename}`,
                 });
 
-                const file = fs.readFileSync(dirname(__filename) + '/torrent_files/' + req.file.filename);
-                initTorrentDownload(file);
+                const filePath = path.join(
+                    dirname(__filename), '/torrent_files/', req.file.filename
+                );
+
+                const file = fs.readFileSync(filePath);
+                initTorrentDownload(file, filePath);
 
                 // FIXME set correct file removing function
-                fs.unlinkSync(dirname(__filename) + '/torrent_files/' + req.file.filename);
             }
         }
     });

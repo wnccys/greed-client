@@ -2,6 +2,7 @@ import WebTorrent, { TorrentFile } from 'webtorrent';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import path from 'path';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -9,9 +10,7 @@ const client = new WebTorrent();
 
 // NOTE probably we gonna use only magnets;
 // Possibly adds generic torrent handler (accepts files, magnets, infohashes etc.);
-export function initTorrentDownload(torrentFile: Buffer) { 
-    if (!torrentFile) return
-
+export function initTorrentDownload(torrentFile: Buffer, filePath: string) { 
     client.add(torrentFile , { path: path.join(__dirname, 'downloads') }, (torrent) => {
         console.log('torrent info hash: ', torrent.infoHash)
         console.log('magnet URI: ', torrent.magnetURI);
@@ -23,6 +22,13 @@ export function initTorrentDownload(torrentFile: Buffer) {
 
         torrent.on('done', () => {
             console.log(`torrent download finished: ${torrent.name}`);
+            console.log(filePath);
+            try {
+                fs.unlinkSync(filePath);
+            } catch(e) {
+                console.error("error deleting temp torrent file: ", e);
+            }
+
             client.destroy();
         });
 
