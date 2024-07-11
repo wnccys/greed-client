@@ -6,10 +6,8 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 
-
 // TODO make request with file path 
 // so server doesnt needs to process it's multer
-//
 const __filename = fileURLToPath(import.meta.url);
 
 const app = express();
@@ -63,7 +61,8 @@ app.post('/download', async (req, res) => {
                 });
 
                 const file = fs.readFileSync(dirname(__filename) + '/torrent_files/' + req.file.filename);
-                initTorrentDownload(file);
+                initTorrentDownload(file, server);
+
                 // FIXME set correct file removing function
                 fs.unlinkSync(dirname(__filename) + '/torrent_files/' + req.file.filename);
             }
@@ -71,6 +70,6 @@ app.post('/download', async (req, res) => {
     });
 });
 
-app.listen(port, () => {
+var server = app.listen(port, () => {
     console.log(`server working at: localhost:${port}`);
 });

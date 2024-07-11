@@ -2,6 +2,7 @@ import WebTorrent, { TorrentFile } from 'webtorrent';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import path from 'path';
+import { Server } from 'node:net';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -9,7 +10,7 @@ const client = new WebTorrent();
 
 // NOTE probably we gonna use only magnets;
 // Possibly adds generic torrent handler (accepts files, magnets, infohashes etc.);
-export function initTorrentDownload(torrentFile: Buffer) { 
+export function initTorrentDownload(torrentFile: Buffer, expressServer: Server) { 
     if (!torrentFile) return
 
     client.add(torrentFile , { path: path.join(__dirname, 'downloads') }, (torrent) => {
@@ -24,6 +25,7 @@ export function initTorrentDownload(torrentFile: Buffer) {
         torrent.on('done', () => {
             console.log(`torrent download finished: ${torrent.name}`);
             client.destroy();
+            expressServer.close();
         });
 
         console.log('download speed: ', client.downloadSpeed);
@@ -31,5 +33,6 @@ export function initTorrentDownload(torrentFile: Buffer) {
 
     client.on('error', (err) => {
         console.error('WebTorrent error: ', err);
+        expressServer.close();
     });
 };
