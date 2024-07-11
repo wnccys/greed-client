@@ -10,9 +10,12 @@ export function App() {
 
   async function downloadTorrent() {
     const formData = new FormData;
-    if (torrentFile) {
-      formData.append('torrentFile', torrentFile, 'small.torrent');
+
+    if (!torrentFile) {
+      return
     }
+
+    formData.append('torrentFile', torrentFile, torrentFile.name);
 
     try {
       axios.post(baseURL, formData, {
