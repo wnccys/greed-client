@@ -31,7 +31,6 @@ export function App() {
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      console.log('file name: ', e.target.files[0].webkitRelativePath);
       setTorrentFile(e.target.files[0]);
     }
   }

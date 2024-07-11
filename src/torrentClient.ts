@@ -14,25 +14,21 @@ export function initTorrentDownload(torrentFile: Buffer, filePath: string) {
     client.add(torrentFile , { path: path.join(__dirname, 'downloads') }, (torrent) => {
         console.log('torrent info hash: ', torrent.infoHash)
         console.log('magnet URI: ', torrent.magnetURI);
-
         torrent.on('download', (bytes) => {
             console.log(`downloaded: ${(bytes/1000).toFixed(1)} megabytes.`);
             console.log(`progress: ${(torrent.progress * 100).toFixed(2)}%`);
+            console.log(`time remaining: ${(torrent.timeRemaining/1000/60).toFixed(2)} minutes.`);
         });
 
         torrent.on('done', () => {
-            console.log(`torrent download finished: ${torrent.name}`);
-            console.log(filePath);
             try {
                 fs.unlinkSync(filePath);
+                torrent.destroy();
+                console.log("fodase");
             } catch(e) {
                 console.error("error deleting temp torrent file: ", e);
             }
-
-            client.destroy();
         });
-
-        console.log('download speed: ', client.downloadSpeed);
     });
 
     client.on('error', (err) => {

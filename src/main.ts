@@ -8,6 +8,7 @@ import fs from 'fs';
 
 // TODO make request with file path 
 // so server doesn't needs to process it's multer
+// WHEN SCRAPPER IS IMPLEMENTED ^
 const __filename = fileURLToPath(import.meta.url);
 
 // creates server and applies cors middleware 
@@ -73,8 +74,6 @@ app.post('/download', async (req, res) => {
 
                 const file = fs.readFileSync(filePath);
                 initTorrentDownload(file, filePath);
-
-                // FIXME set correct file removing function
             }
         }
     });
