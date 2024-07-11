@@ -4,9 +4,8 @@ import { InputFile } from "@/components/ui/inputFile";
 import { Button } from "@/components/ui/button";
 import { CardDemo } from "@/components/ui/cardContent";
 
-const baseURL = 'http://localhost:5172/download';
-
 export function App() {
+  const baseURL = 'http://localhost:5172/download';
   const [torrentFile, setTorrentFile] = useState<File>();
 
   async function downloadTorrent() {
