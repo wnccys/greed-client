@@ -1,5 +1,5 @@
 # greed-client
-greed-client is a game launcher with it's own bittorrent client that allows online sessions and a dynamic magnet links scrapper that keeps all the games updated.
+greed-client is a game launcher with it's own bittorrent client.
 
 ### Others
 https://blog.jse.li/posts/torrent/<br>
