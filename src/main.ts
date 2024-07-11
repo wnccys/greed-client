@@ -30,12 +30,12 @@ const upload = multer({
     storage: storage,
     fileFilter: (req, file, cb) => {
         checkFileType(file, cb);
-    }
+    },
+    preservePath: true
 }).single('torrentFile');
 
 // checks for file mime type
 function checkFileType(file: Express.Multer.File, cb: any) {
-    console.log(file.mimetype);
     const mimeType = file.mimetype === 
     'application/x-bittorrent' 
     || 
@@ -68,7 +68,7 @@ app.post('/download', async (req, res) => {
                 });
 
                 const file = fs.readFileSync(dirname(__filename) + '/torrent_files/' + req.file.filename);
-                initTorrentDownload(file, server);
+                initTorrentDownload(file);
 
                 // FIXME set correct file removing function
                 fs.unlinkSync(dirname(__filename) + '/torrent_files/' + req.file.filename);
@@ -77,6 +77,6 @@ app.post('/download', async (req, res) => {
     });
 });
 
-const server = app.listen(port, () => {
+app.listen(port, () => {
     console.log(`server working at: localhost:${port}`);
 });
