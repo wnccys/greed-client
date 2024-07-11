@@ -1,5 +1,5 @@
 # greed-client
-greed-client is a game launcher with it's own bittorrent client.
+greed-client is a game launcher with it's own embed bittorrent client.
 
 ### Others
 https://blog.jse.li/posts/torrent/<br>
