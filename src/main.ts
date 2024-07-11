@@ -10,10 +10,13 @@ import fs from 'fs';
 // so server doesn't needs to process it's multer
 const __filename = fileURLToPath(import.meta.url);
 
+// creates server and applies cors middleware 
+// for localhost connections handling
 const app = express();
 const port = 5172;
 app.use(cors());
 
+// sets user storage (disk in this case);
 const storage = multer.diskStorage({
     destination: dirname(__filename) + '/torrent_files',
     filename: (req, file, cb) => {
@@ -22,6 +25,7 @@ const storage = multer.diskStorage({
     }
 });
 
+// define function to handle uploaded file
 const upload = multer({
     storage: storage,
     fileFilter: (req, file, cb) => {
@@ -29,10 +33,13 @@ const upload = multer({
     }
 }).single('torrentFile');
 
+// checks for file mime type
 function checkFileType(file: Express.Multer.File, cb: any) {
-    // console.log('received file: ', file);
     console.log(file.mimetype);
-    const mimeType = file.mimetype === 'application/x-bittorrent' || 'application/octet-stream';
+    const mimeType = file.mimetype === 
+    'application/x-bittorrent' 
+    || 
+    'application/octet-stream';
 
     if (mimeType) {
        return cb(null, true);
@@ -70,6 +77,6 @@ app.post('/download', async (req, res) => {
     });
 });
 
-var server = app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`server working at: localhost:${port}`);
 });
