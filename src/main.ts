@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 
 // TODO make request with file path 
-// so server doesnt needs to process it's multer
+// so server doesn't needs to process it's multer
 const __filename = fileURLToPath(import.meta.url);
 
 const app = express();
