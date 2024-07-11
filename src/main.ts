@@ -65,7 +65,7 @@ app.post('/download', async (req, res) => {
             } else {
                 res.send({
                     message: 'File Uploaded Successfully',
-                    filePath: `./torrent_files/${req.file.filename}`,
+                    filePath: `./downloads/${req.file.filename}`,
                 });
 
                 const filePath = path.join(
@@ -80,5 +80,5 @@ app.post('/download', async (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`server working at: localhost:${port}`);
+    console.log(`server working at: localhost: ${port}`);
 });
