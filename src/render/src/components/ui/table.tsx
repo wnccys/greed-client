@@ -3,27 +3,19 @@ import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyV
 const rows = [
   {
     key: "1",
-    name: "Tony Reichert",
-    role: "CEO",
-    status: "Active",
+    status: "All (0)",
   },
   {
     key: "2",
-    name: "Zoey Lang",
-    role: "Technical Lead",
-    status: "Paused",
+    status: "Downloading (0)",
   },
   {
     key: "3",
-    name: "Jane Fisher",
-    role: "Senior Developer",
-    status: "Active",
+    status: "Seeding (0)",
   },
   {
     key: "4",
-    name: "William Howard",
-    role: "Community Manager",
-    status: "Vacation",
+    status: "Completed (0)",
   },
 ];
 
@@ -44,12 +36,12 @@ export function Table_One({ className
   return (
     <Table className={className} aria-label="Example table with dynamic content">
       <TableHeader columns={columns}>
-        {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
+        {(column:any) => <TableColumn key={column.key}>{column.label}</TableColumn>}
       </TableHeader>
       <TableBody items={rows}>
-        {(item) => (
+        {(item:any) => (
           <TableRow key={item.key}>
-            {(columnKey) => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}
+            {(columnKey:any) => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}
           </TableRow>
         )}
       </TableBody>
