@@ -4,31 +4,42 @@ import cors from 'cors';
 import express from 'express';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
+// TODO make request with file path 
+// so server doesn't needs to process it's multer
 const __filename = fileURLToPath(import.meta.url);
 
+// creates server and applies cors middleware 
+// for localhost connections handling
 const app = express();
 const port = 5172;
 app.use(cors());
 
+// sets user storage (disk in this case);
 const storage = multer.diskStorage({
-    destination: dirname(__filename) + '/downloads',
+    destination: dirname(__filename) + '/torrent_files',
     filename: (req, file, cb) => {
         cb(null, file.originalname.replace('.torrent', '') + 
             '-' + Date.now() + path.extname(file.originalname));
     }
 });
 
+// define function to handle uploaded file
 const upload = multer({
     storage: storage,
     fileFilter: (req, file, cb) => {
         checkFileType(file, cb);
-    }
+    },
+    preservePath: true
 }).single('torrentFile');
 
+// checks for file mime type
 function checkFileType(file: Express.Multer.File, cb: any) {
-    console.log('received file: ', file);
-    const mimeType = file.mimetype === 'application/octet-stream';
+    const mimeType = file.mimetype === 
+    'application/x-bittorrent' 
+    || 
+    'application/octet-stream';
 
     if (mimeType) {
        return cb(null, true);
@@ -53,8 +64,17 @@ app.post('/download', async (req, res) => {
             } else {
                 res.send({
                     message: 'File Uploaded Successfully',
-                    filePath: `downloads/${req.file.filename}`,
+                    filePath: `./torrent_files/${req.file.filename}`,
                 });
+
+                const filePath = path.join(
+                    dirname(__filename), '/torrent_files/', req.file.filename
+                );
+
+                const file = fs.readFileSync(filePath);
+                initTorrentDownload(file, filePath);
+
+                // FIXME set correct file removing function
             }
         }
     });

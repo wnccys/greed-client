@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 
 import '@radix-ui/themes/styles.css';
 import { Table_One } from './components/ui/table';
@@ -6,6 +7,11 @@ import { Box, Theme, ThemePanel } from '@radix-ui/themes';
 import {Xis} from './components/ui/xis';
 
 export function App() {
+=======
+export function App() {
+  const baseURL = 'http://localhost:5172/download';
+  const [torrentFile, setTorrentFile] = useState<File>();
+>>>>>>> 94ba35abe883beb794c5cdcb3065de3947cc8435
 
   
     return (
@@ -29,5 +35,14 @@ export function App() {
     );
   }
 
+<<<<<<< HEAD
+=======
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      console.log('file name: ', e.target.files[0].webkitRelativePath);
+      setTorrentFile(e.target.files[0]);
+    }
+  }
+>>>>>>> 94ba35abe883beb794c5cdcb3065de3947cc8435
 
  
