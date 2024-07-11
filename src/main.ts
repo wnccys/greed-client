@@ -21,8 +21,7 @@ app.use(cors());
 const storage = multer.diskStorage({
     destination: dirname(__filename) + '/torrent_files',
     filename: (req, file, cb) => {
-        cb(null, file.originalname.replace('.torrent', '') + 
-            '-' + Date.now() + path.extname(file.originalname));
+        cb(null, file.originalname)
     }
 });
 
@@ -65,15 +64,16 @@ app.post('/download', async (req, res) => {
             } else {
                 res.send({
                     message: 'File Uploaded Successfully',
-                    filePath: `./downloads/${req.file.filename}`,
+                    filePath: `${ dirname(__filename) }/downloads/${req.file.filename}`,
                 });
 
                 const filePath = path.join(
                     dirname(__filename), '/torrent_files/', req.file.filename
                 );
 
+                const downloadFolder = path.join(dirname(__filename), '/downloads/');
                 const file = fs.readFileSync(filePath);
-                initTorrentDownload(file, filePath);
+                initTorrentDownload(file, filePath, downloadFolder);
             }
         }
     });
