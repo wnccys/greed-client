@@ -17,24 +17,20 @@ const app = express();
 const port = 5172;
 app.use(cors());
 
-// sets user storage (disk in this case);
-const storage = multer.diskStorage({
-    destination: dirname(__filename) + '/torrent_files',
-    filename: (req, file, cb) => {
-        cb(null, file.originalname)
-    }
-});
-
-// define function to handle uploaded file
+// define middleware to handle uploaded file
 const upload = multer({
-    storage: storage,
+    storage: multer.diskStorage({
+        destination: dirname(__filename) + '/torrent_files',
+        filename: (req, file, cb) => {
+            cb(null, file.originalname)
+        },
+    }),
     fileFilter: (req, file, cb) => {
-        checkFileType(file, cb);
+        checkMimeType(file, cb);
     },
 }).single('torrentFile');
 
-// checks for file mime type
-function checkFileType(file: Express.Multer.File, cb: any) {
+function checkMimeType(file: Express.Multer.File, cb: Function) {
     const mimeType = file.mimetype === 
     'application/x-bittorrent' 
     || 
@@ -61,17 +57,12 @@ app.post('/download', async (req, res) => {
             if (req.file == undefined) {
                 res.status(400).send('No file selected!');
             } else {
-                res.send({
-                    message: 'File Uploaded Successfully',
-                    filePath: `${ dirname(__filename) }/downloads/${req.file.filename}`,
-                });
-
                 const filePath = path.join(
                     dirname(__filename), '/torrent_files/', req.file.filename
                 );
-
                 const downloadFolder = path.join(dirname(__filename), '/downloads/');
                 const file = fs.readFileSync(filePath);
+
                 initTorrentDownload(file, filePath, downloadFolder);
             }
         }
