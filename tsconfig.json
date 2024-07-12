@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "CommonJS",
+    "module": "ESNext",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -10,13 +10,10 @@
     "outDir": "./dist",
     "baseUrl": "./src",
     "paths": {
-      "@customTypes/*": ["./customTypes/*"],
-      "@classes/*": ["./classes/*"],
-      "@tracker/*": ["./tracker/*"],
     }
   },
   "ts-node": {
-    "require": ["tsconfig-paths/register"]
+    "require": ["tsconfig-paths/register"],
   },
   "include": ["./src"],
   "exclude": ["node_modules"]
