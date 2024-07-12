@@ -31,7 +31,6 @@ const upload = multer({
     fileFilter: (req, file, cb) => {
         checkFileType(file, cb);
     },
-    preservePath: true
 }).single('torrentFile');
 
 // checks for file mime type
@@ -57,7 +56,7 @@ app.post('/download', async (req, res) => {
     upload(req, res, (err) => {
         if (err) {
             res.status(400).send(err.message);
-            console.log('error: ', err);
+            console.log('Error at file upload: ', err);
         } else {
             if (req.file == undefined) {
                 res.status(400).send('No file selected!');
