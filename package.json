@@ -3,9 +3,12 @@
   "version": "0.0.1",
   "description": "next-gen torrent client",
   "main": "main.js",
-  "scripts": {
-    "dev": "TS_NODE_BASEURL=./dist node -r tsconfig-paths/register ./dist/main.js"
-  },
+
+"scripts": {
+  "dev": "ts-node-dev --respawn ./src/main.ts ./Announce/CallBack.ts"
+},
+
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wnccys/greed-client.git"
@@ -17,13 +20,12 @@
   },
   "homepage": "https://github.com/wnccys/greed-client#readme",
   "devDependencies": {
-    "@types/bencode": "^2.0.4",
     "@types/node": "^20.14.1",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.5"
   },
   "dependencies": {
     "bencode-ts": "^1.0.1",
-    "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0"
+    "ts-node": "^10.9.2"
   }
 }
