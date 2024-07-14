@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ChangeEvent, useState } from 'react';
 import { InputFile } from "@/components/ui/inputFile";
 import { Button } from "@/components/ui/button";
-import { CardDemo } from "@/components/ui/cardContent";
+import { CardDemo } from "@/components/ui/CardContent";
 
 export function App() {
   const baseURL = 'http://localhost:5172/download';
