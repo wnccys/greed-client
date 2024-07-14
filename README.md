@@ -1,5 +1,5 @@
 # greed-client
-greed-client is a game launcher that counts with it's own embedded BitTorrent client and a dynamic torrent source scrapper, It's written in Typescript built over Electron working with a local Express minified-server, allowing users to build and use the launcher locally without any central server needs.
+greed-client is a game launcher that counts with it's own embedded BitTorrent client and a dynamic torrent source scrapper, It's written in Typescript built over Electron working with a local Express minified-server, allowing users to build and use the launcher locally without any external central server.
 
 ### Others
 https://blog.jse.li/posts/torrent/<br>
