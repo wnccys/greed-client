@@ -40,7 +40,8 @@ configurado na porta 6800 e deixe escutando
 Inicie o servidor local normalmente com npm run all--
 
 há duas formas de testar o download de arquivos magnéticos primeiramente com uma resquest do tipo post 
-com postman ou outra api, ou com fetch com js passando o argumento no body  com o link magnético : 
+com postman ou outra api no end point: http://localhost:5172/magnetic 
+ou com fetch com js passando o argumento no body  com o link magnético : 
 {
     "magnetLink": "magnet:?xt=urn:btih:722fe65b2aa26d14f35b4ad627d20236e481d924&dn=alice.txt"
 }
