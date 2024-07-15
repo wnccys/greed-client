@@ -1,5 +1,5 @@
 import { initTorrentDownload } from 'torrentClient';
-import { MagneticLinkURI } from 'Ariac/ariac'; // Certifique-se de ajustar o caminho correto do arquivo Aria2
+import { MagneticLinkURI } from 'Ariac/ariac'; 
 import multer from 'multer';
 import cors from 'cors';
 import express from 'express';
