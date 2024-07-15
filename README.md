@@ -32,3 +32,4 @@ https://blog.rocketseat.com.br/scalar-uma-ferramenta-poderosa-para-documentacao-
 
 ### Aria2 Download Package
 https://github.com/sonnyp/aria2.js/
+https://github.com/aria2/aria2/releases/tag/release-1.37.0

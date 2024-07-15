@@ -1,4 +1,5 @@
 import { initTorrentDownload } from 'torrentClient';
+import { MagneticLinkURI } from 'Ariac/ariac'; // Certifique-se de ajustar o caminho correto do arquivo Aria2
 import multer from 'multer';
 import cors from 'cors';
 import express from 'express';
@@ -6,18 +7,13 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 
-// TODO make request with file path 
-// so server doesn't needs to process it's multer
-// WHEN SCRAPPER IS IMPLEMENTED ^
 const __filename = fileURLToPath(import.meta.url);
 
-// creates server and applies cors middleware 
-// for localhost connections handling
 const app = express();
 const port = 5172;
 app.use(cors());
+app.use(express.json());
 
-// define middleware to handle uploaded file
 const upload = multer({
     storage: multer.diskStorage({
         destination: dirname(__filename) + '/torrent_files',
@@ -31,21 +27,17 @@ const upload = multer({
 }).single('torrentFile');
 
 function checkMimeType(file: Express.Multer.File, cb: Function) {
-    const mimeType = file.mimetype === 
-    'application/x-bittorrent' 
-    || 
-    'application/octet-stream';
+    const mimeType = file.mimetype === 'application/x-bittorrent' || 'application/octet-stream';
 
     if (mimeType) {
        return cb(null, true);
     } else {
         cb(new Error('Error: Torrent Files Only!'));
     }
-};
+}
 
-// dummy route;
 app.get('/', (req, res) => {
-    res.send('hello!');
+    res.send('Hello!');
 });
 
 app.post('/download', async (req, res) => {
@@ -57,18 +49,32 @@ app.post('/download', async (req, res) => {
             if (req.file == undefined) {
                 res.status(400).send('No file selected!');
             } else {
-                const filePath = path.join(
-                    dirname(__filename), '/torrent_files/', req.file.filename
-                );
+                const filePath = path.join(dirname(__filename), '/torrent_files/', req.file.filename);
                 const downloadFolder = path.join(dirname(__filename), '/downloads/');
                 const file = fs.readFileSync(filePath);
 
                 initTorrentDownload(file, filePath, downloadFolder);
+                res.status(200).send('Download started!');
             }
         }
     });
 });
 
+app.post('/magnetic', async (req, res) => {
+    const magnetLink = req.body.magnetLink; // Link magnético no body da requisição
+
+    if (magnetLink) {
+        try {
+            await MagneticLinkURI(magnetLink); // Usa o link magnético fornecido na requisição
+            res.status(200).send('Download started!');
+        } catch (error: any) {
+            res.status(500).send('Error starting download: ' + error.message);
+        }
+    } else {
+        res.status(400).send('Magnetic link expected!');
+    }
+});
+
 app.listen(port, () => {
-    console.log(`server working at: localhost: ${port}`);
+    console.log(`Server running at: http://localhost:${port}`);
 });
