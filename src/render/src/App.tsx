@@ -1,8 +1,17 @@
+<<<<<<< HEAD
+=======
+import axios from 'axios';
+import { ChangeEvent, useState } from 'react';
+import { InputFile } from "@/components/ui/inputFile";
+import { Button } from "@/components/ui/button";
+import { CardDemo } from "@/components/ui/CardContent";
+>>>>>>> c4fca77ac31585748d95398197e4f7940fa17b1d
 
 export function App() {
   const baseURL = 'http://localhost:5172/download';
   const [torrentFile, setTorrentFile] = useState<File>();
 
+<<<<<<< HEAD
   
     return (
      <div className="w-[1200px] h-[1000px] flex "> {/* div father */}
@@ -23,11 +32,34 @@ export function App() {
    
   
     );
+=======
+  async function downloadTorrent() {
+    const formData = new FormData;
+
+    if (!torrentFile) {
+      return
+    }
+
+    formData.append('torrentFile', torrentFile, torrentFile.name);
+
+    try {
+      axios.post(baseURL, formData, {
+        headers: { 'Content-Type': 'application/x-bittorrent' }
+      })
+      .then((response) => {
+        console.log('Response From Server: ', response);
+      })
+      .catch((e) => {
+        console.log('Error receiving request: ', e);
+      });
+    } catch (e) {
+      console.error("Failed to make request: ", e);
+    }
+>>>>>>> c4fca77ac31585748d95398197e4f7940fa17b1d
   }
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      console.log('file name: ', e.target.files[0].webkitRelativePath);
       setTorrentFile(e.target.files[0]);
     }
   }
