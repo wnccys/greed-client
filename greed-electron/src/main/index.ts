@@ -12,7 +12,7 @@ const createWindow = () => {
     }
   });
 
-  mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
+  mainWindow.loadURL('http://localhost:5173');
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show();
