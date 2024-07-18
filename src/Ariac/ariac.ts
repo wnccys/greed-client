@@ -20,6 +20,32 @@ aria2.open()  // open connection
     })
     .catch((err:Error) => console.log('Error connecting to Aria2:', err));
 
+
+    async function notfy() {
+        const notifications = await aria2.listNotifications();
+      
+        notifications.forEach((notification:any) => {
+          aria2.on(notification, (params:any) => {
+            console.log("aria2", notification, params);
+          });
+        });
+      }
+      /*
+[
+  'onDownloadStart',
+  'onDownloadPause',
+  'onDownloadStop',
+  'onDownloadComplete',
+  'onDownloadError',
+  'onBtDownloadComplete'
+]
+*/
+      
+      notfy().catch((error) => {
+        console.error("Error", error);
+      });
+      
+
 export async function MagneticLinkURI(magnet: String) {
     //const magnet = "magnet:?xt=urn:btih:722fe65b2aa26d14f35b4ad627d20236e481d924&dn=alice.txt";
     try {
