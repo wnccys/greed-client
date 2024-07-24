@@ -1,5 +1,14 @@
-import { app, BrowserWindow } from 'electron';
-import { join } from 'path';
+import { app, BrowserWindow, ipcMain, dialog } from 'electron';
+import { optimizer } from '@electron-toolkit/utils'
+import path from 'path';
+
+async function handleFileOpen() {
+  const { canceled, filePaths } = await dialog.showOpenDialog({});
+  if (!canceled) {
+    console.log(filePaths);
+    return filePaths[0];
+  }
+}
 
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
@@ -7,9 +16,10 @@ const createWindow = () => {
     height: 670,
     autoHideMenuBar: true,
     webPreferences: {
-      preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
-    }
+      preload: path.join(__dirname, '../preload/index.js'),
+      sandbox: false,
+      webSecurity: false
+    },
   });
 
   mainWindow.loadURL('http://localhost:5173');
@@ -20,16 +30,23 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
-  createWindow();
+  ipcMain.handle('ping', () => console.log('pong'));
+  ipcMain.handle('dialog:openFile', handleFileOpen);
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+
+  createWindow();
 })
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
+
+app.on('browser-window-created', (_, window) => {
+    optimizer.watchWindowShortcuts(window)
+})
 
 // import { app, shell, BrowserWindow, ipcMain } from 'electron'
 // import { join } from 'path'
