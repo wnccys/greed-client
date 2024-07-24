@@ -1,12 +1,15 @@
-import { app, BrowserWindow, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog, type IpcMainInvokeEvent } from 'electron';
 import { optimizer } from '@electron-toolkit/utils'
-import path from 'path';
+import path from 'node:path';
+
+function handleTorrentReceiver(_event: IpcMainInvokeEvent, path: string) {
+  console.log("path to torrent is: ", path);
+}
 
 async function handleFileOpen() {
   const { canceled, filePaths } = await dialog.showOpenDialog({});
   if (!canceled) {
     console.log(filePaths);
-    return filePaths[0];
   }
 }
 
@@ -32,6 +35,7 @@ const createWindow = () => {
 app.whenReady().then(() => {
   ipcMain.handle('ping', () => console.log('pong'));
   ipcMain.handle('dialog:openFile', handleFileOpen);
+  ipcMain.handle('torrentReceiver', handleTorrentReceiver);
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

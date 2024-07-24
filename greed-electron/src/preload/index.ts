@@ -1,21 +1,8 @@
-import { contextBridge, ipcRenderer } from 'electron'
+import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
-// contextBridge.exposeInMainWorld('electronAPI', {
-//   openFile: () => ipcRenderer.invoke('dialog:openFile')
-// });
-
-// try {
-//   contextBridge.exposeInMainWorld('versionsinhas', {
-//     node: () => process.versions.node,
-//     chrome: () => process.versions.chrome,
-//   });
-// } catch (e) {
-//   console.error(e);
-// }
-
 // Custom APIs for renderer
-const api = { openFile: () => ipcRenderer.invoke('dialog:openFile') }
+const api = {}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
@@ -24,8 +11,8 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
-  } catch (error) {
-    console.error(error)
+  } catch (err) {
+    console.error(err)
   }
 } else {
   // @ts-ignore (define in dts)
