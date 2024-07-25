@@ -2,15 +2,15 @@ import { app, BrowserWindow, ipcMain, dialog, type IpcMainInvokeEvent } from 'el
 import { optimizer } from '@electron-toolkit/utils'
 import path from 'node:path';
 
-function handleTorrentReceiver(_event: IpcMainInvokeEvent, path: string) {
-  console.log("path to torrent is: ", path);
-}
-
 async function handleFileOpen() {
   const { canceled, filePaths } = await dialog.showOpenDialog({});
   if (!canceled) {
     console.log(filePaths);
   }
+}
+
+function handleTorrentPath(_event: IpcMainInvokeEvent, path: string) {
+  console.log("path to torrent is: ", path);
 }
 
 const createWindow = () => {
@@ -35,7 +35,7 @@ const createWindow = () => {
 app.whenReady().then(() => {
   ipcMain.handle('ping', () => console.log('pong'));
   ipcMain.handle('dialog:openFile', handleFileOpen);
-  ipcMain.handle('torrentReceiver', handleTorrentReceiver);
+  ipcMain.handle('sendTorrentPath', handleTorrentPath);
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

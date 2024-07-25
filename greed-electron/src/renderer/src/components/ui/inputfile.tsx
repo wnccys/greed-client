@@ -14,7 +14,7 @@ export function InputFile() {
 	}
 
 	function sendTorrentFilePath() {
-		window.electron.ipcRenderer.invoke("torrentReceiver", filePath);
+		window.api.sendTorrentPath(filePath);
 	}
 
 	return (
