@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain, dialog, type IpcMainInvokeEvent } from 'electron';
 import { optimizer } from '@electron-toolkit/utils'
-import path from 'node:path';
+import path, { dirname } from 'node:path';
 
 async function handleFileOpen() {
   const { canceled, filePaths } = await dialog.showOpenDialog({});
@@ -11,6 +11,8 @@ async function handleFileOpen() {
 
 function handleTorrentPath(_event: IpcMainInvokeEvent, path: string) {
   console.log("path to torrent is: ", path);
+
+  initTorrentDownload(path, "../downloads/");
 }
 
 const createWindow = () => {
@@ -19,7 +21,7 @@ const createWindow = () => {
     height: 670,
     autoHideMenuBar: true,
     webPreferences: {
-      preload: path.join(__dirname, '../preload/index.js'),
+      preload: path.join(__dirname, '../preload/index.mjs'),
       sandbox: false,
       webSecurity: false
     },
@@ -51,6 +53,44 @@ app.on('window-all-closed', () => {
 app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
 })
+
+
+import WebTorrent from 'webtorrent';
+import fs from 'node:fs';
+
+const client = new WebTorrent();
+
+// TODO set absolute download folder picked from dialog 
+// more like filePath itself
+export function initTorrentDownload(filePath: string, downloadFolder: string) { 
+    client.add(filePath, { path: path.join(__dirname, 'downloads') }, (torrent) => {
+        console.log('download path is: ', path.join(__dirname, 'downloads') );
+        console.log('\n torrent info hash: ', torrent.infoHash)
+        console.log('magnet URI: ', torrent.magnetURI, '\n');
+
+        console.log('checked if file exists: ', path.join(downloadFolder, torrent.name));
+        if (fs.existsSync(path.join(downloadFolder, torrent.name))) {
+            console.log("File already exists at: ", downloadFolder);
+            return
+        }
+
+        torrent.on('download', (bytes) => {
+            console.log(`downloaded: ${(bytes/1000).toFixed(1)} megabytes.`);
+            console.log(`progress: ${(torrent.progress * 100).toFixed(2)}%`);
+            console.log(`time remaining: ${(torrent.timeRemaining/1000/60).toFixed(0)} minutes.`);
+        });
+
+        torrent.on('done', () => {
+            console.log("Torrent Download Complete.");
+
+            torrent.destroy();
+        });
+    });
+
+    client.on('error', (err) => {
+        console.error('WebTorrent Error: ', err);
+    });
+  }
 
 // import { app, shell, BrowserWindow, ipcMain } from 'electron'
 // import { join } from 'path'
