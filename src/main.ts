@@ -2,9 +2,9 @@ import { initTorrentDownload } from 'torrentClient';
 import multer from 'multer';
 import cors from 'cors';
 import express from 'express';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import fs from 'fs';
+import path, { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import fs from 'node:fs';
 
 // TODO make request with file path 
 // so server doesn't needs to process it's multer
@@ -20,7 +20,7 @@ app.use(cors());
 // define middleware to handle uploaded file
 const upload = multer({
     storage: multer.diskStorage({
-        destination: dirname(__filename) + '/torrent_files',
+        destination: `${dirname(__filename)}/torrent_files`,
         filename: (req, file, cb) => {
             cb(null, file.originalname)
         },
@@ -30,7 +30,7 @@ const upload = multer({
     },
 }).single('torrentFile');
 
-function checkMimeType(file: Express.Multer.File, cb: Function) {
+function checkMimeType(file: Express.Multer.File, cb: multer.FileFilterCallback) {
     const mimeType = file.mimetype === 
     'application/x-bittorrent' 
     || 
@@ -38,9 +38,9 @@ function checkMimeType(file: Express.Multer.File, cb: Function) {
 
     if (mimeType) {
        return cb(null, true);
-    } else {
-        cb(new Error('Error: Torrent Files Only!'));
-    }
+    } 
+
+    cb(new Error('Error: Torrent Files Only!'));
 };
 
 // dummy route;
@@ -54,7 +54,7 @@ app.post('/download', async (req, res) => {
             res.status(400).send(err.message);
             console.log('Error at file upload: ', err);
         } else {
-            if (req.file == undefined) {
+            if (req.file === undefined) {
                 res.status(400).send('No file selected!');
             } else {
                 const filePath = path.join(
