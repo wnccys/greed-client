@@ -11,9 +11,9 @@ export async function initTorrentDownload(
 ) {
 	client.add(
 		filePath,
-		{ path: path.join(__dirname, "downloads") },
+		{ path: downloadFolder },
 		(torrent) => {
-			console.log("download path is: ", path.join(__dirname, "downloads"));
+			console.log("Download path is: ", downloadFolder);
 			console.log("\n torrent info hash: ", torrent.infoHash);
 			console.log("magnet URI: ", torrent.magnetURI, "\n");
 
