@@ -18,7 +18,7 @@ export async function initTorrentDownload(
 			console.log("magnet URI: ", torrent.magnetURI, "\n");
 
 			console.log(
-				"checked if file exists: ",
+				"Checked if file exists: ",
 				path.join(downloadFolder, torrent.name),
 			);
 
@@ -31,7 +31,7 @@ export async function initTorrentDownload(
 				console.log(`downloaded: ${(bytes / 1000).toFixed(1)} megabytes.`);
 				console.log(`progress: ${(torrent.progress * 100).toFixed(2)}%`);
 				console.log(
-					`time remaining: ${(torrent.timeRemaining / 1000 / 60).toFixed(0)} minutes.`,
+					`Time remaining: ${(torrent.timeRemaining / 1000 / 60).toFixed(0)} minutes.`,
 				);
 			});
 
