@@ -1,14 +1,15 @@
-import { ElectronAPI } from '@electron-toolkit/preload'
+import type ElectronAPI from '@electron-toolkit/preload'
 
 declare global {
   interface Window {
     electron: ElectronAPI
-    api: api 
+    api: Api 
   }
 
-  type ipcEvent = Promise<unknown>;
+  type ipcEvent = Promise<string | undefined>;
 
-  interface api {
+  interface Api {
     sendTorrentPath: (string) => ipcEvent, 
+    handleFileSelect: () => string,
   }
 }

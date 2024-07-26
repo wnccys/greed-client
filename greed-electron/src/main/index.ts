@@ -8,25 +8,29 @@ import {
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 
-async function handleFileOpen() {
+async function handleFileOpen(): Promise<string> {
 	const { canceled, filePaths } = await dialog.showOpenDialog({
-    title: 'Select Torrent File: '
-  });
+		title: "Select File",
+		properties: ["openFile"]
+	});
+
 	if (!canceled) {
 		console.log(filePaths);
+		return filePaths[0];
 	}
+
+	return "invalid file path";
 }
 
 async function handleTorrentPath(_event: IpcMainInvokeEvent, path: string) {
 	console.log("path to torrent is: ", path);
 	const { canceled, filePaths } = await dialog.showOpenDialog({
-    title: 'Select Folder To Save Game: ',
-		properties: ["openDirectory", "createDirectory", "dontAddToRecent"],
-  });
+		title: "Select Folder",
+		properties: ["openDirectory", "createDirectory"],
+	});
 
 	if (!canceled) {
-    console.log(filePaths);
-    initTorrentDownload(path, filePaths[0]);
+		initTorrentDownload(path, filePaths[0]);
 	}
 }
 
@@ -50,8 +54,7 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
-	ipcMain.handle("ping", () => console.log("pong"));
-	ipcMain.handle("dialog:openFile", handleFileOpen);
+	ipcMain.handle("handleFileSelect", handleFileOpen);
 	ipcMain.handle("sendTorrentPath", handleTorrentPath);
 
 	app.on("activate", () => {
@@ -74,9 +77,11 @@ import fs from "node:fs";
 
 const client = new WebTorrent();
 
-// TODO set absolute download folder picked from dialog
-// more like filePath itself
-export function initTorrentDownload(filePath: string, downloadFolder: string) {
+// TODO returns success/error string catching it at its properly handle function
+export async function initTorrentDownload(
+	filePath: string,
+	downloadFolder: string,
+) {
 	client.add(
 		filePath,
 		{ path: path.join(__dirname, "downloads") },
@@ -89,6 +94,7 @@ export function initTorrentDownload(filePath: string, downloadFolder: string) {
 				"checked if file exists: ",
 				path.join(downloadFolder, torrent.name),
 			);
+
 			if (fs.existsSync(path.join(downloadFolder, torrent.name))) {
 				console.log("File already exists at: ", downloadFolder);
 				return;

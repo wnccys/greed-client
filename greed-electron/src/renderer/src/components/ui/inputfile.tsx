@@ -1,26 +1,30 @@
-import { Input } from "@renderer/components/ui/input";
 import { Button } from "@renderer/components/ui/button";
 import { useState } from "react";
 
-export function InputFile() {
+interface InputFileProps {
+	updateDownloadResult: React.Dispatch<React.SetStateAction<string | undefined>>,
+}
+
+export function InputFile({ updateDownloadResult }: InputFileProps){
 	const [filePath, setFilePath] = useState<string | undefined>(undefined);
 
-	function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
-		const files = e.target.files;
+	async function handleFileSelect() {
+		const filePath = window.api.handleFileSelect();
 
-		if (files?.[0].path) {
-			setFilePath(files[0].path);
-		}
+		setFilePath(filePath);
 	}
 
-	function sendTorrentFilePath() {
-		window.api.sendTorrentPath(filePath);
+	async function sendTorrentFilePath() {
+		const result = await window.api.sendTorrentPath(filePath);
+
+		updateDownloadResult(result);
 	}
 
 	return (
 		<div className="grid w-full max-w-sm items-center gap-1.5">
-			<Input type="file" onChange={handleFileSelect} />
+			<Button onClick={handleFileSelect}>Select Torrent File</Button>
 			<Button onClick={sendTorrentFilePath}>Download Torrent</Button>
+			<p>{filePath}</p>
 		</div>
 	);
 }
