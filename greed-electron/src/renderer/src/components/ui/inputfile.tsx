@@ -9,7 +9,7 @@ export function InputFile({ updateDownloadResult }: InputFileProps){
 	const [filePath, setFilePath] = useState<string | undefined>(undefined);
 
 	async function handleFileSelect() {
-		const filePath = window.api.handleFileSelect();
+		const filePath = await window.api.handleFileSelect();
 
 		setFilePath(filePath);
 	}
