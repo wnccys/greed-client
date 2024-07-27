@@ -1,6 +1,33 @@
 # greed-client
 Next-gen torrent client.
 
+## Project Setup
+
+### Install
+
+```bash
+$ npm install
+```
+
+### Development
+
+```bash
+$ npm run dev
+```
+
+### Build
+
+```bash
+# For windows
+$ npm run build:win
+
+# For macOS
+$ npm run build:mac
+
+# For Linux
+$ npm run build:linux
+```
+
 ### Others
 https://blog.jse.li/posts/torrent/<br>
 https://www.seanjoflynn.com/research/bittorrent.html#bittorrent<br>
@@ -32,30 +59,3 @@ https://blog.rocketseat.com.br/scalar-uma-ferramenta-poderosa-para-documentacao-
 
 ### Aria2 Download Package
 https://github.com/sonnyp/aria2.js/
-
-## Project Setup
-
-### Install
-
-```bash
-$ npm install
-```
-
-### Development
-
-```bash
-$ npm run dev
-```
-
-### Build
-
-```bash
-# For windows
-$ npm run build:win
-
-# For macOS
-$ npm run build:mac
-
-# For Linux
-$ npm run build:linux
-```
