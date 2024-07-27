@@ -2,6 +2,8 @@
 
 * {
     color: #F5F5F5;
+    font-family: 'Jetbrains Mono';
+    src: url('../assets/jetbrains-ttf/JetBrainsMono-Regular.ttf');
 }
 
 #app {
