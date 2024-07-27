@@ -20,7 +20,7 @@ async function handleFileOpen(): Promise<string> {
 		return `Selected File: ${path.basename(filePaths[0])}`;
 	}
 
-	return "Invalid file path.";
+	return "";
 }
 
 async function handleTorrentPath(_event: IpcMainInvokeEvent, path: string) {
