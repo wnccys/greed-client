@@ -1,0 +1,15 @@
+@import './base.css';
+
+* {
+    color: #F5F5F5;
+    font-family: 'Jetbrains Mono';
+    src: url('../assets/jetbrains-ttf/JetBrainsMono-Regular.ttf');
+}
+
+#app {
+    background-color: #171717;
+}
+
+#menu {
+    background-color: #09090B;
+}
