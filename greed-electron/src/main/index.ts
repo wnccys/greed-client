@@ -9,7 +9,7 @@ import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 
-async function handleFileOpen(): Promise<string> {
+async function handleFileOpen(): Promise<Array<string>> {
 	const { canceled, filePaths } = await dialog.showOpenDialog({
 		title: "Select File",
 		properties: ["openFile"]
@@ -17,10 +17,10 @@ async function handleFileOpen(): Promise<string> {
 
 	if (!canceled) {
 		console.log(filePaths);
-		return `Selected File: ${path.basename(filePaths[0])}`;
+		return [`Selected File: ${path.basename(filePaths[0])}`, filePaths[0]];
 	}
 
-	return "";
+	return ["", "Please, Select a Valid Torrent File"];
 }
 
 async function handleTorrentPath(_event: IpcMainInvokeEvent, path: string) {

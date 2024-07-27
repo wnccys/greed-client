@@ -4,7 +4,7 @@ import fs from "node:fs";
 
 const client = new WebTorrent();
 
-// TODO returns success/error string catching it at its properly handle function
+// FIXME fix heavy.torrent duplicated download (it points it already exists but still downloads)
 export async function initTorrentDownload(
 	filePath: string,
 	downloadFolder: string,
