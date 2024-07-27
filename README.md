@@ -32,3 +32,30 @@ https://blog.rocketseat.com.br/scalar-uma-ferramenta-poderosa-para-documentacao-
 
 ### Aria2 Download Package
 https://github.com/sonnyp/aria2.js/
+
+## Project Setup
+
+### Install
+
+```bash
+$ npm install
+```
+
+### Development
+
+```bash
+$ npm run dev
+```
+
+### Build
+
+```bash
+# For windows
+$ npm run build:win
+
+# For macOS
+$ npm run build:mac
+
+# For Linux
+$ npm run build:linux
+```
