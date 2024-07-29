@@ -7,13 +7,13 @@ interface InputFileProps {
 
 export function InputFile({ updateDownloadResult }: InputFileProps){
 	const [filePath, setFilePath] = useState<string | undefined>(undefined);
-	const [fileFeedback, setFileFeedback] = useState<string | undefined>(undefined);
+	const [fileUploadFeedback, setFileUploadFeedback] = useState<string | undefined>(undefined);
 
 	async function handleFileSelect() {
-		const [fileFeedback, filePath] = await window.api.handleFileSelect();
+		const [UploadFeedback, filePath] = await window.api.handleFileSelect();
 
 		setFilePath(filePath);
-		setFileFeedback(fileFeedback);
+		setFileUploadFeedback(UploadFeedback);
 	}
 
 	async function sendTorrentFilePath() {
@@ -26,7 +26,7 @@ export function InputFile({ updateDownloadResult }: InputFileProps){
 		<div className="grid w-full max-w-sm items-center gap-1.5">
 			<Button onClick={handleFileSelect}>Select Torrent File</Button>
 			<Button onClick={sendTorrentFilePath}>Download Torrent</Button>
-			<p className="mt-2">{fileFeedback}</p>
+			<p className={fileUploadFeedback ? '' : 'hidden'}>{fileUploadFeedback}</p>
 		</div>
 	);
 }
