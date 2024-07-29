@@ -7,9 +7,9 @@ export function App(): JSX.Element {
 
   return (
     <div id="app" className="flex ps">
-      <div id="menu" className="container flex flex-col h-screen w-[25%] max-lg:min-w-48">
+      <div id="menu" className="container flex flex-col h-screen w-[25%] max-xl:min-w-56">
         <div className="mt-5 flex w-full max-h-[50px] max-w-full items-center">
-          <img src={GreedIcon} className="size-12 max-lg:size-10" alt="greed-icon" />
+          <img src={GreedIcon} className="size-12 max-xl:size-10" alt="greed-icon" />
           <div className="font-extrabold max-lg:text-sm">
             Greed Client
           </div>
