@@ -6,12 +6,19 @@ export function App(): JSX.Element {
   const [downloadResult, setDownloadResult] = useState<string | undefined>(undefined);
 
   return (
-    <div id="app" className="flex">
-      <div id="menu" className="container flex flex-row h-screen w-[25%] ps-3 max-lg:min-w-52">
+    <div id="app" className="flex ps">
+      <div id="menu" className="container flex flex-col h-screen w-[25%] max-lg:min-w-48">
         <div className="mt-5 flex w-full max-h-[50px] max-w-full items-center">
-          <img src={GreedIcon} className="size-12" alt="greed-icon" />
+          <img src={GreedIcon} className="size-12 max-lg:size-10" alt="greed-icon" />
           <div className="font-extrabold max-lg:text-sm">
             Greed Client
+          </div>
+        </div>
+
+        <div className= "mt-[15vh] text-sm text">Recents</div>
+        <div className="pt-3">
+          <div className="bg-[#171717] h-14 rounded-3xl">
+            <img src="https://placehold.co/50" alt="game-cover" className="rounded w-full" />
           </div>
         </div>
       </div>
