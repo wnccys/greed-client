@@ -18,21 +18,9 @@ export function App(): JSX.Element {
         <h2 className= "mt-[12vh] text-sm">Recents</h2>
         {/* NOTE test boilerplate to be deleted */}
         <div className="pt-3">
-          <div className="flex bg-[#171717] h-14 rounded-2xl pe-1 hover:bg-zinc-800 mb-3">
-            <img src="https://placehold.co/30" alt="game-cover" className="rounded-full" />
-            <p className="p-2 text-xs text-">
-              Baldur's Gate III
-            </p>
-          </div>
-          <div className="flex bg-[#171717] h-14 rounded-2xl pe-1 hover:bg-zinc-800 mb-3">
-            <img src="https://placehold.co/30" alt="game-cover" className="rounded-full" />
-            <p className="p-2 text-xs text-">
-              Baldur's Gate III
-            </p>
-          </div>
-          <div className="flex bg-[#171717] h-14 rounded-2xl pe-1 hover:bg-zinc-800 mb-3">
-            <img src="https://placehold.co/30" alt="game-cover" className="rounded-full" />
-            <p className="p-2 text-xs text-">
+          <div className="flex bg-[#171717] h-12 rounded-2xl pe-1 hover:bg-zinc-800 mb-3 cursor-pointer">
+            <img src="https://placehold.co/30" alt="game-cover" className="ms-2 p-1 rounded-full" />
+            <p className="p-2 text-xs">
               Baldur's Gate III
             </p>
           </div>
