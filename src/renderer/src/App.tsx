@@ -1,5 +1,5 @@
 import { InputFile } from "@renderer/components/ui/inputfile";
-import GreedIcon from "@renderer/assets/greed-icon.svg";
+import GreedIcon from "@renderer/assets/icon-greed.svg";
 import { useState } from "react";
 
 export function App(): JSX.Element {
@@ -15,10 +15,26 @@ export function App(): JSX.Element {
           </div>
         </div>
 
-        <div className= "mt-[15vh] text-sm text">Recents</div>
+        <h2 className= "mt-[12vh] text-sm">Recents</h2>
+        {/* NOTE test boilerplate to be deleted */}
         <div className="pt-3">
-          <div className="bg-[#171717] h-14 rounded-3xl">
-            <img src="https://placehold.co/50" alt="game-cover" className="rounded w-full" />
+          <div className="flex bg-[#171717] h-14 rounded-2xl pe-1 hover:bg-zinc-800 mb-3">
+            <img src="https://placehold.co/30" alt="game-cover" className="rounded-full" />
+            <p className="p-2 text-xs text-">
+              Baldur's Gate III
+            </p>
+          </div>
+          <div className="flex bg-[#171717] h-14 rounded-2xl pe-1 hover:bg-zinc-800 mb-3">
+            <img src="https://placehold.co/30" alt="game-cover" className="rounded-full" />
+            <p className="p-2 text-xs text-">
+              Baldur's Gate III
+            </p>
+          </div>
+          <div className="flex bg-[#171717] h-14 rounded-2xl pe-1 hover:bg-zinc-800 mb-3">
+            <img src="https://placehold.co/30" alt="game-cover" className="rounded-full" />
+            <p className="p-2 text-xs text-">
+              Baldur's Gate III
+            </p>
           </div>
         </div>
       </div>
