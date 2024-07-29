@@ -3,6 +3,7 @@ import {
 	BrowserWindow,
 	ipcMain,
 	dialog,
+	Menu,
 	type IpcMainInvokeEvent,
 } from "electron";
 import { optimizer } from "@electron-toolkit/utils";
@@ -45,7 +46,15 @@ const createWindow = () => {
 			sandbox: false,
 			webSecurity: false,
 		},
+		titleBarStyle: 'hidden',
+		titleBarOverlay: {
+			color: '#171717',
+			symbolColor: '#F5F5F5',
+			height: 25,
+		}
 	});
+
+	Menu.setApplicationMenu(null);
 
 	mainWindow.loadURL("http://localhost:5173");
 

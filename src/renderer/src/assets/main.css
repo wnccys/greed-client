@@ -6,6 +6,10 @@
     src: url('../assets/jetbrains-ttf/JetBrainsMono-Regular.ttf');
 }
 
+#menu-bar {
+    -webkit-app-region: drag;
+}
+
 #app {
     background-color: #171717;
 }
