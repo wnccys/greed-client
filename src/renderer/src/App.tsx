@@ -3,6 +3,7 @@ import { InputFile } from "@renderer/components/ui/inputfile";
 import CatalogIcon from "@renderer/assets/icon-catalog.svg";
 import LibraryIcon from "@renderer/assets/icon-library.svg";
 import DownloadIcon from "@renderer/assets/icon-downloads.svg";
+import SettingsIcon from "@renderer/assets/icon-settings.svg"
 import { RecentsLink }  from "@renderer/components/ui/RecentsLink";
 import { MenuLink } from "@renderer/components/ui/MenuLink";
 import { MenuHeader } from "@renderer/components/ui/MenuHeader"
@@ -25,10 +26,14 @@ export function App(): JSX.Element {
           <RecentsLink text="Baldur's Gate III" src= "https://placehold.co/30" />
         </div>
 
-        <div id="links-section" className="ps-6 mt-[4vh] flex flex-col gap-6 text-xs">
+        <div id="links-section" className="ps-6 mt-[3vh] flex flex-col gap-6 text-xs h-full">
           <MenuLink itemName="Catalog" icon={CatalogIcon} />
           <MenuLink itemName="Library" icon={LibraryIcon} />
           <MenuLink itemName="Downloads" icon={DownloadIcon} />
+        </div>
+        
+        <div className="text-xs ps-6 p-4">
+            <MenuLink itemName="Settings" icon={SettingsIcon} />
         </div>
       </div>
 
