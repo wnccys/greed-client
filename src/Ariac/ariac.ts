@@ -10,7 +10,7 @@ const aria2 = new Aria2({
     port: 6800,
     secure: false,
     secret: '', 
-    path: '/jsonrpc'
+    path: '/jsonrpc'//request path of interface json rpc
 });
 
 aria2.open()  // open connection
@@ -21,40 +21,35 @@ aria2.open()  // open connection
     .catch((err:Error) => console.log('Error connecting to Aria2:', err));
 
 
-    async function notfy() {
-        const notifications = await aria2.listNotifications();
-      
-        notifications.forEach((notification:any) => {
-          aria2.on(notification, (params:any) => {
-            console.log("aria2", notification, params);
-          });
-        });
-      }
-      /*
-[
-  'onDownloadStart',
-  'onDownloadPause',
-  'onDownloadStop',
-  'onDownloadComplete',
-  'onDownloadError',
-  'onBtDownloadComplete'
-]
-*/
-      
-      notfy().catch((error) => {
-        console.error("Error", error);
-      });
-      
-
 export async function MagneticLinkURI(magnet: String) {
-    //const magnet = "magnet:?xt=urn:btih:722fe65b2aa26d14f35b4ad627d20236e481d924&dn=alice.txt";
-    try {
-        const [guid] = await aria2.call("addUri", [magnet], { dir: "/tmp" });
-        console.log(`Download started with GID: ${guid}`);
-    } catch (error) {
-        console.log('Error adding URI:', error);
-    }
+  //const magnet = "magnet:?xt=urn:btih:722fe65b2aa26d14f35b4ad627d20236e481d924&dn=alice.txt";
+  try {
+      const [guid] = await 
+      aria2.call("addUri", [magnet], { dir: "/tmp" });
+
+
+      console.log(`Download started with GID: ${guid}`);
+  } catch (error) {
+      console.log('Error adding URI:', error);
+  }
 }
+
+
+/*
+Os métodos para interface Rpc costumam pedir tokens de autorizacao porém system.listMethods e system.listNotifications 
+podem ser executados sem token oq n altera em nada pois são seguros sem os tokens.
+[
+'onDownloadStart',
+'onDownloadPause',
+'onDownloadStop'  ,
+'onDownloadComplete',
+'onDownloadError',
+'onBtDownloadComplete'
+]
+
+*/ 
+
+
 
 /* Baixe o Aria2 no link: https://github.com/aria2/aria2/releases/tag/release-1.37.0 e configure na variável de ambiente do seu sistema
 

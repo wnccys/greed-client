@@ -66,7 +66,8 @@ app.post('/magnetic', async (req, res) => {
     if (magnetLink) {
         try {
             await MagneticLinkURI(magnetLink); // Usa o link magnético fornecido na requisição
-            res.status(200).send('Download started!');
+            res.status(200).send('Download started!'); 
+
         } catch (error: any) {
             res.status(500).send('Error starting download: ' + error.message);
         }

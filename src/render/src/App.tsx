@@ -38,4 +38,11 @@ export function App() {
     }
   }
 
+  return (
+    <div className='mt-14 p-6 mx-auto border border-zinc-800'>
+      <CardDemo className="mb-5" />
+      <InputFile onChange={handleFileChange}/>
+      <Button className ="mt-5" onClick={downloadTorrent}>Download Torrent</Button>
+  </div>
+  )
 }
