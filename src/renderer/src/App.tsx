@@ -6,8 +6,8 @@ export function App(): JSX.Element {
   const [downloadResult, setDownloadResult] = useState<string | undefined>(undefined);
 
   return (
-    <div id="app" className="flex ps">
-      <div id="menu" className="container flex flex-col h-screen w-[25%] max-xl:min-w-56">
+    <div id="app" className="flex">
+      <div id="menu" className="container flex flex-col h-screen w-[25%] max-xl:min-w-56 max-w-72">
         <div className="mt-5 flex w-full max-h-[50px] max-w-full items-center">
           <img src={GreedIcon} className="size-12 max-xl:size-10" alt="greed-icon" />
           <div className="font-extrabold text-sm">
@@ -15,13 +15,13 @@ export function App(): JSX.Element {
           </div>
         </div>
 
-        <h2 className= "mt-[12vh] text-sm">Recents</h2>
+        <h2 className= "mt-[12vh] text-sm font-bold">Recents</h2>
         {/* NOTE test boilerplate to be deleted */}
         <div className="pt-3">
           <div className="flex bg-[#171717] h-12 rounded-2xl pe-1 hover:bg-zinc-800 mb-3 cursor-pointer">
             <img src="https://placehold.co/30" alt="game-cover" className="ms-2 p-1 rounded-full" />
-            <p className="p-2 text-xs">
-              Baldur's Gate III
+            <p className="p-2 text-xs text-wrap truncate">
+              Baldur's Gate III asdfsafsahfksjfskjasdfsdfsassaasdfsda
             </p>
           </div>
         </div>
