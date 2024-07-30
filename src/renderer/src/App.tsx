@@ -1,5 +1,11 @@
 import { InputFile } from "@renderer/components/ui/inputfile";
-import GreedIcon from "@renderer/assets/icon-greed.svg";
+// TODO refactor icons imports
+import CatalogIcon from "@renderer/assets/icon-catalog.svg";
+import LibraryIcon from "@renderer/assets/icon-library.svg";
+import DownloadIcon from "@renderer/assets/icon-downloads.svg";
+import { RecentsLink }  from "@renderer/components/ui/RecentsLink";
+import { MenuLink } from "@renderer/components/ui/MenuLink";
+import { MenuHeader } from "@renderer/components/ui/MenuHeader"
 import { useState } from "react";
 
 export function App(): JSX.Element {
@@ -7,23 +13,22 @@ export function App(): JSX.Element {
 
   return (
     <div id="app" className="flex">
-      <div id="menu" className="container flex flex-col h-screen w-[25%] max-xl:min-w-56 max-w-72 ps-0">
-        <div className="mt-5 flex w-full max-h-[50px] max-w-full items-center ps-6">
-          <img src={GreedIcon} className="size-12 max-xl:size-10" alt="greed-icon" />
-          <div className="font-extrabold text-sm">
-            Greed Client
-          </div>
+      <div id="menu" 
+        className="container flex flex-col h-screen w-[25%] max-xl:min-w-56 max-w-64 ps-0"
+      >
+        <MenuHeader />
+
+        <h2 className= "mt-[10vh] text-sm font-bold ps-6">Recents</h2>
+        <div className="pt-3 ps-4">
+          <RecentsLink text="Baldur's Gate III" src= "https://placehold.co/30" />
+          <RecentsLink text="TESTLASJFSL;DFJS;ALKFSAD;LFKJsfasf" src= "https://placehold.co/30" />
+          <RecentsLink text="Baldur's Gate III" src= "https://placehold.co/30" />
         </div>
 
-        <h2 className= "mt-[12vh] text-sm font-bold ps-6">Recents</h2>
-        {/* NOTE test boilerplate to be deleted */}
-        <div className="pt-3 ps-4">
-          <div className="flex bg-[#171717] h-12 rounded-2xl pe-1 hover:bg-zinc-800 mb-3 cursor-pointer">
-            <img src="https://placehold.co/30" alt="game-cover" className="ms-2 p-1 rounded-full" />
-            <p className="p-2 text-xs text-wrap truncate">
-              Baldur's Gate III asdfsafsahfksjfskjasdfsdfsassaasdfsda
-            </p>
-          </div>
+        <div id="links-section" className="ps-6 mt-[4vh] flex flex-col gap-6 text-xs">
+          <MenuLink itemName="Catalog" icon={CatalogIcon} />
+          <MenuLink itemName="Library" icon={LibraryIcon} />
+          <MenuLink itemName="Downloads" icon={DownloadIcon} />
         </div>
       </div>
 
