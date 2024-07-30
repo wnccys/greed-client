@@ -31,11 +31,14 @@ export function App(): JSX.Element {
           <MenuLink itemName="Library" icon={LibraryIcon} />
           <MenuLink itemName="Downloads" icon={DownloadIcon} />
         </div>
-        
+
         <div className="text-xs ps-6 p-4">
             <MenuLink itemName="Settings" icon={SettingsIcon} />
         </div>
       </div>
+
+    // https://www.freecodecamp.org/news/react-router-cheatsheet/
+    // https://reactrouter.com/en/main/start/overview
 
       <div id="main-section" className="container flex flex-col overflow-hidden p-0">
         <div id="menu-bar" className="h-[1.6rem] bg-[#171717]">
