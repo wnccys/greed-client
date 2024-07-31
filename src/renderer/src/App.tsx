@@ -22,7 +22,7 @@ export function App(): JSX.Element {
         <h2 className= "mt-[10vh] text-sm font-bold ps-6">Recents</h2>
         <div className="pt-3 ps-4">
           <RecentsLink text="Baldur's Gate III" src= "https://placehold.co/30" />
-          <RecentsLink text="TESTLASJFSL;DFJS;ALKFSAD;LFKJsfasf" src= "https://placehold.co/30" />
+          <RecentsLink text="Baldur's Gate III THE RETURN OF GATE OF BALDUR" src= "https://placehold.co/30" />
           <RecentsLink text="Baldur's Gate III" src= "https://placehold.co/30" />
         </div>
 
@@ -36,9 +36,6 @@ export function App(): JSX.Element {
             <MenuLink itemName="Settings" icon={SettingsIcon} />
         </div>
       </div>
-
-    // https://www.freecodecamp.org/news/react-router-cheatsheet/
-    // https://reactrouter.com/en/main/start/overview
 
       <div id="main-section" className="container flex flex-col overflow-hidden p-0">
         <div id="menu-bar" className="h-[1.6rem] bg-[#171717]">
