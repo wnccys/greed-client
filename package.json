@@ -7,7 +7,8 @@
   "scripts": {
     "express": "tsx src/main.ts",
     "vite": "cd src/render/ && npm run dev",
-    "all": "npm-run-all --parallel express vite"
+    "aria2": "cd src/Ariac && start aria2.bat",
+    "all": "npm-run-all --parallel aria2 express vite"
   },
   "repository": {
     "type": "git",

@@ -1,5 +1,5 @@
 import { initTorrentDownload } from 'torrentClient';
-import { MagneticLinkURI } from 'Ariac/ariac'; 
+import { MagneticLinkURI, startAria2 } from 'Ariac/ariac'; 
 import multer from 'multer';
 import cors from 'cors';
 import express from 'express';
@@ -60,6 +60,23 @@ app.post('/download', async (req, res) => {
     });
 });
 
+startAria2();
+app.post('/magnetic', async (req, res) => {
+    const magnetLink = req.body.magnetLink;
+
+    if (magnetLink) {
+        try {
+            await MagneticLinkURI(magnetLink);
+            res.status(200).send('Download started!');
+        } catch (error: any) {
+            res.status(500).send('Error starting download: ' + error.message);
+        }
+    } else {
+        res.status(400).send('Magnetic link expected!');
+    }
+});
+
+/*
 app.post('/magnetic', async (req, res) => {
     const magnetLink = req.body.magnetLink; // Link magnético no body da requisição
 
@@ -75,6 +92,8 @@ app.post('/magnetic', async (req, res) => {
         res.status(400).send('Magnetic link expected!');
     }
 });
+*/
+
 
 app.listen(port, () => {
     console.log(`Server running at: http://localhost:${port}`);

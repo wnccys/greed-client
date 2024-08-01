@@ -2,36 +2,33 @@ import Aria2 from "aria2";
 import WebSocket from "ws";
 import fetch from "node-fetch";
 
-//const torrent = new WebTorrent();
 const aria2 = new Aria2({
     WebSocket: WebSocket,
     fetch: fetch,
     host: 'localhost',
     port: 6800,
     secure: false,
-    secret: '', 
-    path: '/jsonrpc'//request path of interface json rpc
+    secret: '',
+    path: '/jsonrpc' // Request path of interface JSON RPC
 });
 
-aria2.open()  // open connection
-    .then(() => {
+export async function startAria2() {
+    try {
+        await aria2.open(); // Open connection to aria2
         console.log('Connection to Aria2 opened');
-        // Call the function here to ensure the connection is open before making the call
-    })
-    .catch((err:Error) => console.log('Error connecting to Aria2:', err));
+    } catch (error) {
+        console.error('Error starting Aria2 connection:', error);
+    }
+}
 
-
-export async function MagneticLinkURI(magnet: String) {
-  //const magnet = "magnet:?xt=urn:btih:722fe65b2aa26d14f35b4ad627d20236e481d924&dn=alice.txt";
-  try {
-      const [guid] = await 
-      aria2.call("addUri", [magnet], { dir: "/tmp" });
-
-
-      console.log(`Download started with GID: ${guid}`);
-  } catch (error) {
-      console.log('Error adding URI:', error);
-  }
+export async function MagneticLinkURI(magnet: string) {
+    try {
+        // Add the magnet link to Aria2
+        const [guid] = await aria2.call("addUri", [magnet], { dir: "/downloads" });
+        console.log(`Download started with GID: ${guid}`);
+    } catch (error) {
+        console.error('Error adding URI:', error);
+    }
 }
 
 
