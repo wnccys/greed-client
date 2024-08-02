@@ -6,9 +6,10 @@ import { App } from './App'
 import { createBrowserRouter,
   RouterProvider,
  } from 'react-router-dom';
- import { SelectedGame } from './SelectedGame';
- import { Catalog } from './Catalog';
- import { ErrorElement } from './ErrorElement';
+import { SelectedGame } from './SelectedGame';
+import { Catalog } from './Catalog';
+import { ErrorElement } from './ErrorElement';
+import { Settings } from './Settings'
  
  const router = createBrowserRouter([
   {
@@ -21,11 +22,15 @@ import { createBrowserRouter,
         element: <Catalog />,
         children: [
           {
-            path: "selected-game",
-            element: <SelectedGame />
-        }
-      ],
+              path: "selected-game",
+              element: <SelectedGame />
+          },
+        ],
       },
+      {
+        path: "settings",
+        element: <Settings />
+      }
     ],
     errorElement: <ErrorElement />
   },
