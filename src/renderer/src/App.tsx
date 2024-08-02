@@ -1,5 +1,3 @@
-import { InputFile } from "@renderer/components/ui/inputfile";
-import { Link } from 'react-router-dom';
 // TODO refactor icons imports
 import CatalogIcon from "@renderer/assets/icon-catalog.svg";
 import LibraryIcon from "@renderer/assets/icon-library.svg";
@@ -9,6 +7,7 @@ import { RecentsLink }  from "@renderer/components/ui/RecentsLink";
 import { MenuLink } from "@renderer/components/ui/MenuLink";
 import { MenuHeader } from "@renderer/components/ui/MenuHeader"
 import { SelectedGame } from "./SelectedGame";
+import { Outlet } from 'react-router-dom';
 
 export function App(): JSX.Element {
   return (
@@ -26,18 +25,18 @@ export function App(): JSX.Element {
         </div>
 
         <div id="links-section" className="ps-6 mt-[3vh] flex flex-col gap-6 text-xs h-full max-w-sm">
-          <MenuLink itemName="Catalog" icon={CatalogIcon} />
-          <MenuLink itemName="Library" icon={LibraryIcon} />
-          <MenuLink itemName="Downloads" icon={DownloadIcon} />
+          <MenuLink itemName="Catalog" icon={CatalogIcon} route="selectedgame" />
+          <MenuLink itemName="Library" icon={LibraryIcon}  route="/"/>
+          <MenuLink itemName="Downloads" icon={DownloadIcon} route="/"/>
         </div>
 
         <div className="text-xs ps-6 p-4">
-            <MenuLink itemName="Settings" icon={SettingsIcon} />
+            <MenuLink itemName="Settings" icon={SettingsIcon} route="/" />
         </div>
       </div>
       <div id="main-section" className="container flex flex-col overflow-hidden p-0">
-        <div id="menu-bar" className="h-[1.6rem] bg-[red]" />
-        <SelectedGame />
+        <div id="menu-bar" className="h-[1.6rem] bg-[#171717]" />
+        <Outlet />
       </div>
     </div>
   );

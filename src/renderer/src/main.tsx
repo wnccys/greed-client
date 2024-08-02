@@ -3,22 +3,22 @@ import './assets/global.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { App } from './App'
-import { SelectedGame } from '@renderer/SelectedGame/index';
 import { createBrowserRouter,
   RouterProvider,
  } from 'react-router-dom';
+ import { SelectedGame } from './SelectedGame'
  
  const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     loader: () => null,
-    // children: [
-    //   {
-    //     path: "catalog",
-    //     element: <SelectedGame />
-    //   }
-    // ]
+    children: [
+      {
+        path: "selectedgame",
+        element: <SelectedGame />
+      },
+    ]
   },
  ])
 
