@@ -1,5 +1,6 @@
 import { Input } from "@renderer/components/ui/input";
 import SearchIcon from "@renderer/assets/icon-search.svg"
+import { Link, Outlet } from "react-router-dom";
 
 export function Catalog() {
     return (
@@ -20,7 +21,7 @@ export function Catalog() {
                     Catalog 
                 </h1>
 
-                
+                <Link to="../selected-game">Game</Link>
             </div>
         </>
     )

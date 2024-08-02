@@ -20,12 +20,10 @@ import { Settings } from './Settings'
       {
         path: "catalog",
         element: <Catalog />,
-        children: [
-          {
-              path: "selected-game",
-              element: <SelectedGame />
-          },
-        ],
+      },
+      {
+        path: "selected-game",
+        element: <SelectedGame />
       },
       {
         path: "settings",

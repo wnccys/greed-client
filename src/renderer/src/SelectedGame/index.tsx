@@ -1,4 +1,5 @@
 import { InputFile } from "@renderer/components/ui/inputfile";
+import GameDummyImage from "@renderer/assets/image.png";
 import { useState } from "react";
 
 export function SelectedGame() {
@@ -11,7 +12,7 @@ export function SelectedGame() {
 		<>
 			<div id="game-cover">
 				<img
-					src="./src/assets/image.png"
+					src={GameDummyImage}
 					alt="game-cover"
 					className="rounded-e-md"
 				/>
