@@ -22,7 +22,7 @@ export function App(): JSX.Element {
         <h2 className= "mt-[10vh] text-sm font-bold ps-6">Recents</h2>
         <div className="pt-3 ps-4">
           <RecentsLink text="Baldur's Gate III" src= "https://placehold.co/30" />
-          <RecentsLink text="Baldur's Gate III THE RETURN OF THE GATE OF THE BALDUR" src= "https://placehold.co/30" />
+          <RecentsLink text="Baldur's Gate III THE RETURN OF GATE OF BALDUR" src= "https://placehold.co/30" />
           <RecentsLink text="Baldur's Gate III" src= "https://placehold.co/30" />
         </div>
 
