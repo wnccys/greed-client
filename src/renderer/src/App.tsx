@@ -1,5 +1,5 @@
 import { InputFile } from "@renderer/components/ui/inputfile";
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // TODO refactor icons imports
 import CatalogIcon from "@renderer/assets/icon-catalog.svg";
 import LibraryIcon from "@renderer/assets/icon-library.svg";
@@ -8,12 +8,9 @@ import SettingsIcon from "@renderer/assets/icon-settings.svg"
 import { RecentsLink }  from "@renderer/components/ui/RecentsLink";
 import { MenuLink } from "@renderer/components/ui/MenuLink";
 import { MenuHeader } from "@renderer/components/ui/MenuHeader"
-import { useState } from "react";
 import { SelectedGame } from "./SelectedGame";
 
 export function App(): JSX.Element {
-  const [downloadResult, setDownloadResult] = useState<string | undefined>(undefined);
-
   return (
     <div id="app" className="flex">
       <div id="menu" 
@@ -38,22 +35,10 @@ export function App(): JSX.Element {
             <MenuLink itemName="Settings" icon={SettingsIcon} />
         </div>
       </div>
-      <div id="menu-bar" className="h-[1.6rem] container bg-[#171717]" />
-
-      {/* <div id="main-section" className="container flex flex-col overflow-hidden p-0">
-        <div id="game-cover">
-          <img src="./src/assets/image.png" alt="game-cover" className="rounded-e-md"/>
-        </div>
-
-        <div id="play-menu" className="flex justify-center pt-5">
-          <div 
-            className="absolute transform -translate-y-2/3 bg-[#242424] rounded-3xl text-white p-4"
-          >
-            <InputFile updateDownloadResult={setDownloadResult}/>
-            <p className={`pt-4 ${downloadResult ? '' : 'hidden p-0 m-0'}`}>{downloadResult}</p>
-          </div>
-        </div>
-      </div>  */}
+      <div id="main-section" className="container flex flex-col overflow-hidden p-0">
+        <div id="menu-bar" className="h-[1.6rem] bg-[red]" />
+        <SelectedGame />
+      </div>
     </div>
   );
 }
