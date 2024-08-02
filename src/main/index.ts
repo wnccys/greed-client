@@ -51,7 +51,7 @@ const createWindow = () => {
 			color: '#171717',
 			symbolColor: '#F5F5F5',
 			height: 25,
-		}
+		},
 	});
 
 	Menu.setApplicationMenu(null);

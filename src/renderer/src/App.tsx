@@ -41,8 +41,7 @@ export function App(): JSX.Element {
       </div>
 
       <div id="main-section" className="container flex flex-col overflow-hidden p-0">
-        <div id="menu-bar" className="h-[1.6rem] bg-[#171717]">
-        </div>
+        <div id="menu-bar" className="h-[1.6rem] bg-[#171717]" />
 
         <div id="game-cover">
           <img src="./src/assets/image.png" alt="game-cover" className="rounded-e-md"/>
