@@ -1,4 +1,5 @@
 import { InputFile } from "@renderer/components/ui/inputfile";
+import { Link } from 'react-router-dom';
 // TODO refactor icons imports
 import CatalogIcon from "@renderer/assets/icon-catalog.svg";
 import LibraryIcon from "@renderer/assets/icon-library.svg";
@@ -26,10 +27,12 @@ export function App(): JSX.Element {
           <RecentsLink text="Baldur's Gate III" src= "https://placehold.co/30" />
         </div>
 
-        <div id="links-section" className="ps-6 mt-[3vh] flex flex-col gap-6 text-xs h-full">
+        <div id="links-section" className="ps-6 mt-[3vh] flex flex-col gap-6 text-xs h-full max-w-sm">
           <MenuLink itemName="Catalog" icon={CatalogIcon} />
           <MenuLink itemName="Library" icon={LibraryIcon} />
           <MenuLink itemName="Downloads" icon={DownloadIcon} />
+
+          <Link to="catalog" />
         </div>
 
         <div className="text-xs ps-6 p-4">
@@ -50,10 +53,10 @@ export function App(): JSX.Element {
             className="absolute transform -translate-y-2/3 bg-[#242424] rounded-3xl text-white p-4"
           >
             <InputFile updateDownloadResult={setDownloadResult}/>
-            {/* <p className={`pt-4 ${downloadResult ? '' : 'hidden p-0 m-0'}`}>{downloadResult}</p> */}
+            <p className={`pt-4 ${downloadResult ? '' : 'hidden p-0 m-0'}`}>{downloadResult}</p>
           </div>
         </div>
-      </div>
+      </div> 
     </div>
   );
 }
