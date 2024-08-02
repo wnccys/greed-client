@@ -1,5 +1,5 @@
 import { InputFile } from "@renderer/components/ui/inputfile";
-import { Link } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 // TODO refactor icons imports
 import CatalogIcon from "@renderer/assets/icon-catalog.svg";
 import LibraryIcon from "@renderer/assets/icon-library.svg";
@@ -9,6 +9,7 @@ import { RecentsLink }  from "@renderer/components/ui/RecentsLink";
 import { MenuLink } from "@renderer/components/ui/MenuLink";
 import { MenuHeader } from "@renderer/components/ui/MenuHeader"
 import { useState } from "react";
+import { SelectedGame } from "./SelectedGame";
 
 export function App(): JSX.Element {
   const [downloadResult, setDownloadResult] = useState<string | undefined>(undefined);
@@ -31,18 +32,15 @@ export function App(): JSX.Element {
           <MenuLink itemName="Catalog" icon={CatalogIcon} />
           <MenuLink itemName="Library" icon={LibraryIcon} />
           <MenuLink itemName="Downloads" icon={DownloadIcon} />
-
-          <Link to="catalog" />
         </div>
 
         <div className="text-xs ps-6 p-4">
             <MenuLink itemName="Settings" icon={SettingsIcon} />
         </div>
       </div>
+      <div id="menu-bar" className="h-[1.6rem] container bg-[#171717]" />
 
-      <div id="main-section" className="container flex flex-col overflow-hidden p-0">
-        <div id="menu-bar" className="h-[1.6rem] bg-[#171717]" />
-
+      {/* <div id="main-section" className="container flex flex-col overflow-hidden p-0">
         <div id="game-cover">
           <img src="./src/assets/image.png" alt="game-cover" className="rounded-e-md"/>
         </div>
@@ -55,7 +53,7 @@ export function App(): JSX.Element {
             <p className={`pt-4 ${downloadResult ? '' : 'hidden p-0 m-0'}`}>{downloadResult}</p>
           </div>
         </div>
-      </div> 
+      </div>  */}
     </div>
   );
 }

@@ -14,12 +14,17 @@ import { createBrowserRouter,
     path: '/',
     element: <App />,
     loader: () => null,
-    children: [
-      {
-        path: "catalog",
-        element: <SelectedGame />
-      }
-    ]
+    // children: [
+    //   {
+    //     path: "catalog",
+    //     element: <SelectedGame />
+    //   }
+    // ]
+  },
+  {
+    path: 'catalog',
+    element: <SelectedGame />,
+    loader: () => null,
   }
  ])
 
