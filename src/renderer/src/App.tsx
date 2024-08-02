@@ -6,7 +6,6 @@ import SettingsIcon from "@renderer/assets/icon-settings.svg"
 import { RecentsLink }  from "@renderer/components/ui/RecentsLink";
 import { MenuLink } from "@renderer/components/ui/MenuLink";
 import { MenuHeader } from "@renderer/components/ui/MenuHeader"
-import { SelectedGame } from "./SelectedGame";
 import { Outlet } from 'react-router-dom';
 
 export function App(): JSX.Element {
