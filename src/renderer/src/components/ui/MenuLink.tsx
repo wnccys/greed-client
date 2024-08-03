@@ -11,7 +11,8 @@ export function MenuLink({ itemName, icon, route }: MenuLinkProps) {
 		<NavLink
 			to={route}
 			className={({ isActive }) => {
-				return `flex gap-3 ${isActive ? "text-red-400" : "text-[#a5a4a4]"}`;
+				return `flex gap-3 hover:text-red-500 hover:bg-zinc-900 hover:shadow-md rounded p-3
+				 ${isActive ? "text-red-500 bg-zinc-900" : "text-[#a5a4a4]"}`;
 			}}
 		>
 			<img src={icon} alt={`${itemName}-icon`} className="size-5" />
