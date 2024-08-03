@@ -28,15 +28,11 @@ export function Settings() {
 
 	function addSourceToDB() {
         if (sourceNameRef.current && sourceLinkRef.current){
-            if (sourceNameRef.current.value.length > 1 && sourceLinkRef.current.value.length > 1) {
+            if (sourceNameRef.current.value.length > 0 && sourceLinkRef.current.value.length > 0) {
                 console.log(sourceNameRef.current.value, "\n", sourceLinkRef.current.value);
 
                 toast.success('Success', {
                     description: "Source Added To Collection.",
-                    action: {
-                        label: "Undo",
-                        onClick: () => null,
-                    },
                 });
 
                 return
@@ -44,10 +40,6 @@ export function Settings() {
 
             toast.error('Error', {
                     description: "All fields Must Be Filled.",
-                    action: {
-                        label: "Hide",
-                        onClick: () => null,
-                    },
                 });
 
             console.log("error: text can't be blank")
@@ -78,7 +70,7 @@ export function Settings() {
 					</TableBody>
 				</Table>
 
-				<Dialog >
+				<Dialog open={false}>
 					<DialogTrigger asChild>
 						<Button className="float-right bg-zinc-800 hover:bg-zinc-700 mt-5">
 							Add
