@@ -1,7 +1,8 @@
 import { Button } from "@renderer/components/ui/button";
 import { Input } from "@renderer/components/ui/input";
 import { Label } from "@renderer/components/ui/label";
-
+import { Toaster } from "@renderer/components/ui/sonner";
+import { toast } from 'sonner';
 import {
 	Table,
 	TableBody,
@@ -10,7 +11,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "@renderer/components/ui/table";
-
 import {
 	Dialog,
 	DialogContent,
@@ -20,26 +20,38 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@renderer/components/ui/dialog";
-import { useRef } from "react";
+import {  useRef } from "react";
 
 export function Settings() {
-	const sourceNameRef = useRef(null);
-	const sourceLinkRef = useRef(null);
+	const sourceNameRef = useRef<HTMLInputElement>(null);
+	const sourceLinkRef = useRef<HTMLInputElement>(null);
 
-	function addSourceToDB(
-		name: React.MutableRefObject<HTMLInputElement | null>,
-		link: React.MutableRefObject<HTMLInputElement | null>,
-	) {
-		if (name.current && link.current) {
-			console.log(name.current.value, "\n", link.current.value);
-            if (name.current.value.length < 0 || link.current.value.length < 0) {
-                console.log("error: text can't be blank")
+	function addSourceToDB() {
+        if (sourceNameRef.current && sourceLinkRef.current){
+            if (sourceNameRef.current.value.length > 1 && sourceLinkRef.current.value.length > 1) {
+                console.log(sourceNameRef.current.value, "\n", sourceLinkRef.current.value);
+
+                toast.success('Success', {
+                    description: "Source Added To Collection.",
+                    action: {
+                        label: "Undo",
+                        onClick: () => null,
+                    },
+                });
+
+                return
             }
 
-            return
-		}
+            toast.error('Error', {
+                    description: "All fields Must Be Filled.",
+                    action: {
+                        label: "Hide",
+                        onClick: () => null,
+                    },
+                });
 
-		console.log("ref not defined.");
+            console.log("error: text can't be blank")
+		}
 	}
 
 	return (
@@ -66,7 +78,7 @@ export function Settings() {
 					</TableBody>
 				</Table>
 
-				<Dialog>
+				<Dialog >
 					<DialogTrigger asChild>
 						<Button className="float-right bg-zinc-800 hover:bg-zinc-700 mt-5">
 							Add
@@ -98,6 +110,7 @@ export function Settings() {
 									placeholder="Ex. Fitgirl Repacks"
 									className="col-span-3"
 									ref={sourceNameRef}
+                                    minLength={1}
 								/>
 							</div>
 
@@ -113,17 +126,18 @@ export function Settings() {
 								/>
 							</div>
 						</div>
-                        
+
 						<DialogFooter>
 							<Button
 								type="submit"
-								onClick={() => addSourceToDB(sourceNameRef, sourceLinkRef)}
+								onClick={addSourceToDB}
 							>
 								Save
 							</Button>
 						</DialogFooter>
 					</DialogContent>
 				</Dialog>
+                <Toaster className="bg-slate-950 drop-shadow-xl"/>
 			</div>
 		</div>
 	);
