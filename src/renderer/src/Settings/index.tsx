@@ -71,7 +71,7 @@ export function Settings() {
                                 <Label htmlFor="username" className="text-right">
                                     Link
                                 </Label>
-                                <Input id="username" placeholder="Ex. fitgirlrepacks.site" className="col-span-3" />
+                                <Input id="username" placeholder="Ex. fitgirl-repacks.site" className="col-span-3" />
                             </div>
                         </div>
                         <DialogFooter>
