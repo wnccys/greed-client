@@ -20,11 +20,13 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@renderer/components/ui/dialog";
-import {  useRef } from "react";
+import {  useRef, useState } from "react";
 
 export function Settings() {
 	const sourceNameRef = useRef<HTMLInputElement>(null);
 	const sourceLinkRef = useRef<HTMLInputElement>(null);
+
+	const [dialogVisible, setDialogVisible] = useState<boolean>(false);
 
 	function addSourceToDB() {
         if (sourceNameRef.current && sourceLinkRef.current){
@@ -34,6 +36,8 @@ export function Settings() {
                 toast.success('Success', {
                     description: "Source Added To Collection.",
                 });
+
+				setDialogVisible(false);
 
                 return
             }
@@ -46,6 +50,7 @@ export function Settings() {
 		}
 	}
 
+	// https://medium.com/@descometusah/mastering-dialog-components-in-shadcn-ui-library-9420ac736b9e
 	return (
 		<div className="flex flex-col items-center self-center mt-8 p-5 cursor-default border rounded max-w-[50vw] shadow-zinc-950 shadow-xl">
 			<p className="text-xl">Current Torrent Sources</p>
@@ -70,7 +75,7 @@ export function Settings() {
 					</TableBody>
 				</Table>
 
-				<Dialog open={false}>
+				<Dialog>
 					<DialogTrigger asChild>
 						<Button className="float-right bg-zinc-800 hover:bg-zinc-700 mt-5">
 							Add
