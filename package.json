@@ -29,15 +29,12 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "electron-updater": "^6.1.7",
-<<<<<<< HEAD
     "lucide-react": "^0.424.0",
     "recharts": "^2.12.7",
-=======
     "next-themes": "^0.3.0",
     "react-router-dom": "^6.25.1",
     "reflect-metadata": "^0.2.2",
     "sonner": "^1.5.0",
->>>>>>> 72bc8730c0248c55c02c3eba7aa9d7017253edda
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "typeorm": "^0.3.20",
