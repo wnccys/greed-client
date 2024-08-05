@@ -2,7 +2,7 @@ import { InputFile } from "@renderer/components/ui/inputfile";
 import GameDummyImage from "@renderer/assets/image.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import ArrowIcon from "@renderer/assets/icon-back.png";
+import { DoubleArrowLeftIcon } from "@radix-ui/react-icons";
 
 export function SelectedGame() {
 	const [downloadResult, setDownloadResult] = useState<string | undefined>(
@@ -14,7 +14,8 @@ export function SelectedGame() {
 			<div id="game-cover">
 				<div className="absolute text-lg translate-x-8 translate-y-6">
 					<Link to="../catalog">
-						<img src={ArrowIcon} alt="back-icon" className="size-9"/>	
+						{/* <img src={DoubleArrowLeftIcon} alt="back-icon" className="size-9"/>	 */}
+						<DoubleArrowLeftIcon className="size-5"/>
 					</Link>
 				</div>
 				<img src={GameDummyImage} alt="game-cover" className="rounded-e-md" />
