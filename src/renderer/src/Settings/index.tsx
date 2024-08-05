@@ -97,7 +97,7 @@ export function Settings() {
 							<DialogTitle>Adding Download Source</DialogTitle>
 							<DialogDescription>
 								To add new sources, set a path to a .json file or a link to a
-								source. Some community-trusted sources can be found here:{" "}
+								source. Some community-trusted sources can be found here:
 								<a
 									href="https://hydralinks.cloud/sources/"
 									target="_blank"
