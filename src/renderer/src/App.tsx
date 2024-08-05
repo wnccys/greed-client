@@ -1,4 +1,3 @@
-// TODO refactor icons imports
 import {
 	CatalogIcon,
 	LibraryIcon,
