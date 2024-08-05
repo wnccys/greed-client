@@ -72,7 +72,7 @@ export function Settings() {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						<TableRow className="hover:bg-zinc-700">
+						<TableRow className="hover:bg-zinc-800/50">
 							<TableCell className="font-medium">FitGirl Repacks</TableCell>
 							<TableCell>Syncronized</TableCell>
 							<TableCell className="text-right">1000</TableCell>
