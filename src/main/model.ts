@@ -1,3 +1,5 @@
+// TODO set @main to /src/main
+
 import { AppDataSource } from "./data-source"
 import { User } from "./entity/User"
 
