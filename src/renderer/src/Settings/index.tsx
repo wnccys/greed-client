@@ -33,7 +33,7 @@ export function Settings() {
 				sourceNameRef.current.value.length > 0 &&
 				sourceLinkRef.current.value.length > 0
 			) {
-				console.log(
+				window.api.setNewTorrentSource(
 					sourceNameRef.current.value,
 					sourceLinkRef.current.value,
 				);
@@ -58,7 +58,7 @@ export function Settings() {
 	return (
 		<div
 			className="flex flex-col items-center self-center mt-8 p-5 cursor-default 
-			border rounded max-w-[50vw] shadow-zinc-950 shadow-xl"
+		border rounded max-w-[50vw] shadow-zinc-950 shadow-xl"
 		>
 			<p className="text-xl">Current Torrent Sources</p>
 			<div>

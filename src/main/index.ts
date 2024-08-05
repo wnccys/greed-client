@@ -36,6 +36,10 @@ async function handleTorrentPath(_event: IpcMainInvokeEvent, path: string) {
 	}
 }
 
+async function handleNewTorrentSource() {
+
+}
+
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({
 		width: 900,
