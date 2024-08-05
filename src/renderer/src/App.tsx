@@ -34,28 +34,8 @@ export function App(): JSX.Element {
         </div>
       </div>
       <div id="main-section" className="container flex flex-col overflow-hidden p-0">
-<<<<<<< HEAD
-        <div id="menu-bar" className="h-[1.6rem] bg-[#171717]">
-        </div>
-          
-        <div id="game-cover">
-          <img src="./src/assets/image.png" alt="game-cover" className="rounded-e-md"/>
-        </div>
-
-
-
-        <div id="play-menu" className="flex justify-center pt-5">
-          <div 
-            className="absolute transform -translate-y-2/3 bg-[#242424] rounded-3xl text-white p-4"
-          >
-            <InputFile updateDownloadResult={setDownloadResult}/>
-            {/* <p className={`pt-4 ${downloadResult ? '' : 'hidden p-0 m-0'}`}>{downloadResult}</p> */}
-          </div>
-        </div>
-=======
         <div id="menu-bar" className="h-[1.6rem] bg-[#171717]" />
         <Outlet />
->>>>>>> 72bc8730c0248c55c02c3eba7aa9d7017253edda
       </div>
     </div>
   );

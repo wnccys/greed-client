@@ -3,14 +3,6 @@ import './assets/global.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { App } from './App'
-<<<<<<< HEAD
-import { Download } from './Download'
-
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <App />
-    <Download/>
-=======
 import { createBrowserRouter,
   RouterProvider,
  } from 'react-router-dom';
@@ -18,6 +10,7 @@ import { SelectedGame } from './SelectedGame';
 import { Catalog } from './Catalog';
 import { ErrorElement } from './ErrorElement';
 import { Settings } from './Settings'
+import { Download } from './Download'
  
  const router = createBrowserRouter([
   {
@@ -44,7 +37,7 @@ import { Settings } from './Settings'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
+    <Download/>
     <RouterProvider router={router}/>
->>>>>>> 72bc8730c0248c55c02c3eba7aa9d7017253edda
   </React.StrictMode>
 )

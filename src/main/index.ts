@@ -38,22 +38,6 @@ import {
   
   const createWindow = () => {
 	const mainWindow = new BrowserWindow({
-<<<<<<< HEAD
-	  width: 900,
-	  height: 670,
-	  autoHideMenuBar: true,
-	  webPreferences: {
-		preload: path.join(__dirname, "../preload/index.mjs"),
-		sandbox: false,
-		webSecurity: false,
-	  },
-	  titleBarStyle: 'hidden',
-	  titleBarOverlay: {
-		color: '#171717',
-		symbolColor: '#F5F5F5',
-		height: 25,
-	  }
-=======
 		width: 900,
 		height: 670,
 		autoHideMenuBar: true,
@@ -68,7 +52,6 @@ import {
 			symbolColor: '#F5F5F5',
 			height: 25,
 		},
->>>>>>> 72bc8730c0248c55c02c3eba7aa9d7017253edda
 	});
   
 	Menu.setApplicationMenu(null);
