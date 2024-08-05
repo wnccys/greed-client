@@ -10,7 +10,7 @@ import { Outlet } from 'react-router-dom';
 
 export function App(): JSX.Element {
   return (
-    <div id="app" className="flex">
+    <div id="app" className="flex select-none">
       <div id="menu" 
         className="container flex flex-col h-screen w-[25%] max-xl:min-w-56 max-w-64 ps-0"
       >

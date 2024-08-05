@@ -57,8 +57,8 @@ export function Settings() {
 
 	return (
 		<div
-			className="flex flex-col items-center self-center mt-8 p-5 
-			cursor-default border rounded max-w-[50vw] shadow-zinc-950 shadow-xl"
+			className="flex flex-col items-center self-center mt-8 p-5 cursor-default 
+			border rounded max-w-[50vw] shadow-zinc-950 shadow-xl"
 		>
 			<p className="text-xl">Current Torrent Sources</p>
 			<div>
