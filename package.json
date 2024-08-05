@@ -7,8 +7,6 @@
   "author": "example.com",
   "homepage": "https://electron-vite.org",
   "scripts": {
-    "format": "prettier --write .",
-    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "npm run typecheck:node && npm run typecheck:web",
@@ -24,16 +22,25 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
+    "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "electron-updater": "^6.1.7",
+<<<<<<< HEAD
     "lucide-react": "^0.424.0",
     "recharts": "^2.12.7",
+=======
+    "next-themes": "^0.3.0",
+    "react-router-dom": "^6.25.1",
+    "reflect-metadata": "^0.2.2",
+    "sonner": "^1.5.0",
+>>>>>>> 72bc8730c0248c55c02c3eba7aa9d7017253edda
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "typeorm": "^0.3.20",
     "webtorrent": "^2.4.12"
   },
   "devDependencies": {
@@ -44,14 +51,18 @@
     "@types/node": "^20.14.11",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@types/sqlite3": "^3.1.11",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
     "electron": "^31.0.2",
     "electron-builder": "^24.13.3",
     "electron-vite": "^2.3.0",
+    "install": "^0.13.0",
+    "npm": "^10.8.2",
     "postcss": "^8.4.39",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "sqlite3": "^5.1.7",
     "tailwindcss": "^3.4.6",
     "typescript": "^5.5.2",
     "vite": "^5.3.1"
