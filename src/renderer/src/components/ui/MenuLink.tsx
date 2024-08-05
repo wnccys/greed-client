@@ -12,6 +12,7 @@ export function MenuLink({ itemName, icon, route }: MenuLinkProps) {
 			to={route}
 			className={({ isActive }) => {
 				return `flex gap-3 hover:text-red-500 hover:bg-zinc-900 hover:shadow-md rounded p-3
+				transition-colors delay-75
 				 ${isActive ? "text-red-500 bg-zinc-900" : "text-[#a5a4a4]"}`;
 			}}
 		>
