@@ -4,7 +4,7 @@ import {
 	LibraryIcon,
 	DownloadIcon,
 	SettingsIcon,
-} from "@renderer/assets/icons/icons";
+} from "@renderer/assets/icons";
 import { RecentsLink } from "@renderer/components/ui/RecentsLink";
 import { MenuLink } from "@renderer/components/ui/MenuLink";
 import { MenuHeader } from "@renderer/components/ui/MenuHeader";
