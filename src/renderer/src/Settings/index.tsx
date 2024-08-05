@@ -82,7 +82,7 @@ export function Settings() {
 					</TableBody>
 				</Table>
 
-				<Dialog onOpenChange={handleDialog} open={isDialogOpen}>
+				<Dialog open={isDialogOpen}>
 					<DialogTrigger asChild>
 						<Button
 							className="float-right bg-zinc-800 hover:bg-zinc-700 mt-5"
