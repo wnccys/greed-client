@@ -1,6 +1,6 @@
 import { Input } from "@renderer/components/ui/input";
 import SearchIcon from "@renderer/assets/icon-search.svg"
-import { Link, Navigate, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export function Catalog() {
     return (
