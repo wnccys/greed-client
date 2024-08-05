@@ -9,6 +9,7 @@ import {
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
+import "reflect-metadata"
 
 async function handleFileOpen(): Promise<Array<string>> {
 	const { canceled, filePaths } = await dialog.showOpenDialog({
