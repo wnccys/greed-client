@@ -42,10 +42,12 @@ export function App(): JSX.Element {
       <div id="main-section" className="container flex flex-col overflow-hidden p-0">
         <div id="menu-bar" className="h-[1.6rem] bg-[#171717]">
         </div>
-
+          
         <div id="game-cover">
           <img src="./src/assets/image.png" alt="game-cover" className="rounded-e-md"/>
         </div>
+
+
 
         <div id="play-menu" className="flex justify-center pt-5">
           <div 

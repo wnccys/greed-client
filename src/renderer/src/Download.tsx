@@ -1,5 +1,6 @@
 
 import GreedIcon from "@renderer/assets/icon-greed.svg";
+import { BarGrid } from "./components/ui/bargrid";
 
 
 
@@ -42,19 +43,12 @@ export function Download(): JSX.Element {
         </div>
       </div>
 
-      <div id="main-section" className="container flex flex-col overflow-hidden p-0">
-        <div id="menu-bar" className="h-[1.6rem] bg-[#171717]">
-        </div>
-
-      
-
-        <div id="play-menu" className="flex justify-center pt-5">
-          <div 
-            className="absolute transform -translate-y-2/3 bg-[#242424] rounded-3xl text-white p-4"
-          >
-          </div>
-        </div>
+      <div id="grid" className="container flex flex-col h-screen overflow-hidden p-0">
+      <div className="flex-grow p-4"> {/* Adiciona padding e garante que o Grid tenha espaço */}
+        <BarGrid />
       </div>
     </div>
+        </div>
+    
   );
 }
