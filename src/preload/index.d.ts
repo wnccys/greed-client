@@ -11,6 +11,6 @@ declare global {
   interface Api {
     sendTorrentPath: (path: string) => ipcEvent, 
     handleFileSelect: () => string,
-    setNewTorrentSource: (name: string, link: string) => string,
+    setNewTorrentSource: (sourceName: string, sourceLink: string) => string,
   }
 }

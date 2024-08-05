@@ -36,7 +36,7 @@ async function handleTorrentPath(_event: IpcMainInvokeEvent, path: string) {
 	}
 }
 
-async function handleNewTorrentSource() {
+async function handleNewTorrentSource(sourceName: string, sourceLink) {
 
 }
 
