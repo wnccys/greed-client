@@ -2,7 +2,7 @@ import { Button } from "@renderer/components/ui/button";
 import { Input } from "@renderer/components/ui/input";
 import { Label } from "@renderer/components/ui/label";
 import { Toaster } from "@renderer/components/ui/sonner";
-import { toast } from 'sonner';
+import { toast } from "sonner";
 import {
 	Table,
 	TableBody,
@@ -27,36 +27,40 @@ export function Settings() {
 	const sourceLinkRef = useRef<HTMLInputElement>(null);
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
-	function handleDialog() {
-
-	}
+	function handleDialog() {}
 
 	function addSourceToDB() {
-        if (sourceNameRef.current && sourceLinkRef.current){
-            if (sourceNameRef.current.value.length > 0 && sourceLinkRef.current.value.length > 0) {
-                console.log(sourceNameRef.current.value, "\n", sourceLinkRef.current.value);
+		if (sourceNameRef.current && sourceLinkRef.current) {
+			if (
+				sourceNameRef.current.value.length > 0 &&
+				sourceLinkRef.current.value.length > 0
+			) {
+				console.log(
+					sourceNameRef.current.value,
+					sourceLinkRef.current.value,
+				);
 
-                toast.success('Success', {
-                    description: "Source Added To Collection.",
-                });
+				toast.success("Success", {
+					description: "Source Added To Collection.",
+				});
 
 				setIsDialogOpen(false);
 
-                return
-            }
+				return;
+			}
 
-            toast.error('Error', {
-                    description: "All fields Must Be Filled.",
-                });
+			toast.error("Error", {
+				description: "All fields Must Be Filled.",
+			});
 
-            console.log("error: text can't be blank")
+			console.log("error: text can't be blank");
 		}
 	}
 
 	return (
-		<div 
+		<div
 			className="flex flex-col items-center self-center mt-8 p-5 
-				cursor-default border rounded max-w-[50vw] shadow-zinc-950 shadow-xl"
+			cursor-default border rounded max-w-[50vw] shadow-zinc-950 shadow-xl"
 		>
 			<p className="text-xl">Current Torrent Sources</p>
 			<div>
@@ -82,7 +86,8 @@ export function Settings() {
 
 				<Dialog onOpenChange={handleDialog} open={isDialogOpen}>
 					<DialogTrigger asChild>
-						<Button className="float-right bg-zinc-800 hover:bg-zinc-700 mt-5"
+						<Button
+							className="float-right bg-zinc-800 hover:bg-zinc-700 mt-5"
 							onClick={() => setIsDialogOpen(true)}
 						>
 							Add
@@ -114,7 +119,7 @@ export function Settings() {
 									placeholder="Ex. Fitgirl Repacks"
 									className="col-span-3"
 									ref={sourceNameRef}
-                                    minLength={1}
+									minLength={1}
 								/>
 							</div>
 
@@ -132,16 +137,13 @@ export function Settings() {
 						</div>
 
 						<DialogFooter>
-							<Button
-								type="submit"
-								onClick={addSourceToDB}
-							>
+							<Button type="submit" onClick={addSourceToDB}>
 								Save
 							</Button>
 						</DialogFooter>
 					</DialogContent>
 				</Dialog>
-                <Toaster className="bg-slate-950 drop-shadow-xl"/>
+				<Toaster className="bg-slate-950 drop-shadow-xl" />
 			</div>
 		</div>
 	);
