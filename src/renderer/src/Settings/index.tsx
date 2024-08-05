@@ -27,8 +27,6 @@ export function Settings() {
 	const sourceLinkRef = useRef<HTMLInputElement>(null);
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
-	function handleDialog() {}
-
 	function addSourceToDB() {
 		if (sourceNameRef.current && sourceLinkRef.current) {
 			if (
