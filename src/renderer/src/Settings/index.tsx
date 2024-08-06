@@ -24,18 +24,15 @@ import { useRef, useState } from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
 export function Settings() {
-	const sourceNameRef = useRef<HTMLInputElement>(null);
 	const sourceLinkRef = useRef<HTMLInputElement>(null);
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
 	function addSourceToDB() {
-		if (sourceNameRef.current && sourceLinkRef.current) {
+		if (sourceLinkRef.current) {
 			if (
-				sourceNameRef.current.value.length > 0 &&
 				sourceLinkRef.current.value.length > 0
 			) {
 				window.api.setNewTorrentSource(
-					sourceNameRef.current.value,
 					sourceLinkRef.current.value,
 				);
 
@@ -92,12 +89,12 @@ export function Settings() {
 							Add
 						</Button>
 					</DialogTrigger>
-					<DialogContent className="sm:max-w-[500px] bg-zinc-950">
+					<DialogContent className="sm:max-w-[525px] bg-zinc-950">
 						<DialogHeader>
-							<DialogTitle>Adding Download Source</DialogTitle>
+							<DialogTitle>Adding Download Sources</DialogTitle>
 							<DialogDescription>
 								To add new sources, set a path to a .json file or a link to a
-								source. Some community-trusted sources can be found here:
+								source. Some community-trusted sources can be found here: {""}
 								<a
 									href="https://hydralinks.cloud/sources/"
 									target="_blank"
@@ -119,21 +116,8 @@ export function Settings() {
 						</DialogHeader>
 						<div className="grid gap-4 py-4">
 							<div className="grid grid-cols-4 items-center gap-4">
-								<Label htmlFor="name" className="text-right">
-									Name
-								</Label>
-								<Input
-									id="sourceName"
-									placeholder="Ex. Fitgirl Repacks"
-									className="col-span-3"
-									ref={sourceNameRef}
-									minLength={1}
-								/>
-							</div>
-
-							<div className="grid grid-cols-4 items-center gap-4">
 								<Label htmlFor="username" className="text-right">
-									Link
+									Source Link
 								</Label>
 								<Input
 									id="sourceLink"

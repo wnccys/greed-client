@@ -9,12 +9,12 @@ import {
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
-import "reflect-metadata"
+import "reflect-metadata";
 
 async function handleFileOpen(): Promise<Array<string>> {
 	const { canceled, filePaths } = await dialog.showOpenDialog({
 		title: "Select File",
-		properties: ["openFile"]
+		properties: ["openFile"],
 	});
 
 	if (!canceled) {
@@ -37,8 +37,19 @@ async function handleTorrentPath(_event: IpcMainInvokeEvent, path: string) {
 	}
 }
 
-async function handleNewTorrentSource(sourceName: string, sourceLink) {
+async function handleNewTorrentSource(
+	_event: IpcMainInvokeEvent,
+	sourceLink: string,
+) {
+	console.log(`sourceLink: ${sourceLink}`);
 
+	try {
+		fetch(sourceLink)
+		.then((response: Response) => response.json())
+		.then((body: ReadableStream<Uint8Array> | null) => console.log(body));
+	} catch (e) {
+		console.error(e);
+	}
 }
 
 const createWindow = () => {
@@ -51,10 +62,10 @@ const createWindow = () => {
 			sandbox: false,
 			webSecurity: false,
 		},
-		titleBarStyle: 'hidden',
+		titleBarStyle: "hidden",
 		titleBarOverlay: {
-			color: '#171717',
-			symbolColor: '#F5F5F5',
+			color: "#171717",
+			symbolColor: "#F5F5F5",
 			height: 25,
 		},
 	});
@@ -71,6 +82,7 @@ const createWindow = () => {
 app.whenReady().then(() => {
 	ipcMain.handle("handleFileSelect", handleFileOpen);
 	ipcMain.handle("sendTorrentPath", handleTorrentPath);
+	ipcMain.handle("setNewTorrentSource", handleNewTorrentSource);
 
 	app.on("activate", () => {
 		if (BrowserWindow.getAllWindows().length === 0) createWindow();

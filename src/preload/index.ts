@@ -7,8 +7,8 @@ const api = {
 		ipcRenderer.invoke("sendTorrentPath", path);
 	},
 	handleFileSelect: () => ipcRenderer.invoke("handleFileSelect"),
-	setNewTorrentSource: (sourceName: string, sourceLink: string) =>
-		ipcRenderer.invoke("handleNewTorrentSource", sourceName, sourceLink),
+	setNewTorrentSource: (sourceLink: string) =>
+		ipcRenderer.invoke("setNewTorrentSource", sourceLink),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
