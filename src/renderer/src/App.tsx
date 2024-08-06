@@ -44,7 +44,7 @@ export function App(): JSX.Element {
 			</div>
 			<div
 				id="main-section"
-				className="flex flex-col p-0 ps-[16rem] mb-[30vh] w-full"
+				className="flex flex-col p-0 ps-[16.5rem] mb-[30vh] w-full"
 			>
 				<div id="menu-bar" className="h-[1.6rem] bg-[#171717] fixed w-full" />
 				<Outlet />
