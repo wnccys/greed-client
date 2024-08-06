@@ -46,7 +46,11 @@ async function handleNewTorrentSource(
 	try {
 		fetch(sourceLink)
 		.then((response: Response) => response.json())
-		.then((body: ReadableStream<Uint8Array> | null) => console.log(body));
+		.then((body: ReadableStream<Uint8Array> | null) => {
+			const stringifiedBody = JSON.parse(JSON.stringify(body));
+			console.log(stringifiedBody.name);
+			console.log(stringifiedBody.downloads[0]);
+		});
 	} catch (e) {
 		console.error(e);
 	}
