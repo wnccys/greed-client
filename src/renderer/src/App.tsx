@@ -26,7 +26,7 @@ export function App(): JSX.Element {
         <div id="links-section" className="ps-6 mt-[3vh] flex flex-col gap-3 text-xs h-full max-w-sm">
           <MenuLink itemName="Catalog" icon={CatalogIcon} route="catalog" />
           <MenuLink itemName="Library" icon={LibraryIcon}  route="cu"/>
-          <MenuLink itemName="Downloads" icon={DownloadIcon} route="cu"/>
+          <MenuLink itemName="Downloads" icon={DownloadIcon} route="download"/>
         </div>
 
         <div className="text-xs ps-6 p-4">

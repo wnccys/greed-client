@@ -10,7 +10,7 @@ import { SelectedGame } from './SelectedGame';
 import { Catalog } from './Catalog';
 import { ErrorElement } from './ErrorElement';
 import { Settings } from './Settings'
-import { Download } from './Download'
+import { Download } from './Download/Download'
  
  const router = createBrowserRouter([
   {
@@ -29,6 +29,11 @@ import { Download } from './Download'
       {
         path: "settings",
         element: <Settings />
+      }, 
+      { path: "download", 
+        element: <Download/>
+
+
       }
     ],
     errorElement: <ErrorElement />
@@ -37,7 +42,6 @@ import { Download } from './Download'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Download/>
     <RouterProvider router={router}/>
   </React.StrictMode>
 )
