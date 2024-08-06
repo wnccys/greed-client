@@ -17,7 +17,7 @@ import {
   ChartTooltipContent,
 } from "@renderer/components/ui/chart"
 const chartData = [
-  { date: "2024-04-01", desktop: 222, mobile: 150 },
+  { date: "2024-04-01", desktop: 222, mobile: 150  },
   { date: "2024-04-02", desktop: 97, mobile: 180 },
   { date: "2024-04-03", desktop: 167, mobile: 120 },
   { date: "2024-04-04", desktop: 242, mobile: 260 },
@@ -116,58 +116,45 @@ const chartConfig = {
   },
   desktop: {
     label: "Desktop",
-    color: "hsl(var(--chart-1))",
+    color: "#ddd",
   },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
-  },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
-export function BarGrid() {
+export function BarGrid() { 
   const [activeChart, setActiveChart] =
-    React.useState<keyof typeof chartConfig>("desktop")
+    React.useState<keyof typeof chartConfig>("desktop");
 
   const total = React.useMemo(
     () => ({
       desktop: chartData.reduce((acc, curr) => acc + curr.desktop, 0),
-      mobile: chartData.reduce((acc, curr) => acc + curr.mobile, 0),
     }),
     []
-  )
+  );
 
-
-  const SheetCard = ({ title, description }) => { 
   return (
     <Card>
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <CardTitle>{title}</CardTitle>
-            <CardDescription>
-                   {description}
-           </CardDescription>
+          <CardTitle></CardTitle>
+          <CardDescription></CardDescription>
         </div>
         <div className="flex">
-          {["desktop", "mobile"].map((key) => {
-            const chart = key as keyof typeof chartConfig
-            return (
-              <button
-                key={chart}
-                data-active={activeChart === chart}
-                className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
-                onClick={() => setActiveChart(chart)}
-              >
-                <span className="text-xs text-muted-foreground">
-                  {chartConfig[chart].label}
-                </span>
-                <span className="text-lg font-bold leading-none sm:text-3xl">
-                  {total[key as keyof typeof total].toLocaleString()}
-                </span>
-              </button>
-            )
-          })}
+          <button
+            key="desktop"
+            data-active={activeChart === "desktop"}
+            className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+            onClick={() => setActiveChart("desktop")}
+          >
+            <span className="text-xs text-muted-foreground">
+              {chartConfig.desktop.label}
+            </span>
+            <span className="text-lg font-bold leading-none sm:text-3xl">
+              {total.desktop.toLocaleString()}
+            </span>
+          </button>
         </div>
       </CardHeader>
+
       <CardContent className="px-2 sm:p-6">
         <ChartContainer
           config={chartConfig}
@@ -189,11 +176,11 @@ export function BarGrid() {
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value) => {
-                const date = new Date(value)
+                const date = new Date(value);
                 return date.toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
-                })
+                });
               }}
             />
             <ChartTooltip
@@ -206,7 +193,7 @@ export function BarGrid() {
                       month: "short",
                       day: "numeric",
                       year: "numeric",
-                    })
+                    });
                   }}
                 />
               }
@@ -216,9 +203,6 @@ export function BarGrid() {
         </ChartContainer>
       </CardContent>
     </Card>
-    
-  )
-
-} 
+  );
 }
 

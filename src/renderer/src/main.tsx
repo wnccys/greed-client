@@ -1,12 +1,5 @@
 import './assets/main.css'
 import './assets/global.css'
-<<<<<<< HEAD
-
-import * as React from 'react'
-import * as ReactDOM from 'react-dom/client'
-import { App } from './App'
-//import { Download } from './Download'
-=======
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { App } from './App'
@@ -46,7 +39,6 @@ import { Download } from './Download/Download'
     errorElement: <ErrorElement />
   },
  ])
->>>>>>> 1c39b7d213f7ced21e12632c7ed1f2da473dfac6
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
