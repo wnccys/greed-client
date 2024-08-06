@@ -50,7 +50,8 @@ async function handleNewTorrentSource(
 			const stringifiedBody = JSON.parse(JSON.stringify(body));
 			console.log(stringifiedBody.name);
 			console.log(stringifiedBody.downloads[0]);
-		});
+		})
+		.catch( (e) => console.error(`Could not fetch from given link: ${sourceLink}.\n Error: ${e}.`) );
 	} catch (e) {
 		console.error(e);
 	}
