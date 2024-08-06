@@ -1,6 +1,6 @@
 import { Input } from "@renderer/components/ui/input";
 import { SearchIcon } from "@renderer/assets/icons";
-import GameDummyImage from "@renderer/assets/image.png";
+import { CustomCarousel } from "@renderer/components/ui/CustomCarousel";
 import { Link } from "react-router-dom";
 import {
 	Card,
@@ -9,7 +9,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@renderer/components/ui/card";
-
 
 export function Catalog() {
 	return (
@@ -21,8 +20,8 @@ export function Catalog() {
 					</h1>
 				</div>{" "}
 				<div
-					className="rounded-md bg-zinc-800 flex p-2 ps-4 items-center
-                    hover:shadow-xl"
+					className="rounded-md bg-zinc-800 flex p-2 ps-4 
+					items-center hover:shadow-xl"
 				>
 					<img src={SearchIcon} alt="search-icon" className="size-4" />
 					<Input
@@ -34,17 +33,18 @@ export function Catalog() {
 				</div>
 			</div>
 
-			<div className="ms-3 mt-[5vh] h-full">
+			<div className="ms-3 mt-[2rem] h-full">
 				<div>
-					<Card className="ms-5 bg-zinc-950 border-none me-10 shadow-2xl 
-                        shadow-black pt-5">
-						<CardContent>
-                            <img src={GameDummyImage} alt="game-image" className="rounded-lg"/>
+					<Card className="ms-5 bg-zinc-950 border-none me-10 drop-shadow-md
+					shadow-md hover:drop-shadow-2xl shadow-black pt-5 p-0">
+						<CardContent className="hover:cursor-pointer p-0">
+							<CustomCarousel />
+                            {/* <img src={GameDummyImage} alt="game-image" className="rounded-lg"/> */}
 						</CardContent>
-                        <CardHeader>
+                        {/* <CardHeader>
                             <CardTitle>Game Title</CardTitle>
                             <CardDescription>Game Description</CardDescription>
-                        </CardHeader>
+                        </CardHeader> */}
 					</Card>
 				</div>
 			</div>
