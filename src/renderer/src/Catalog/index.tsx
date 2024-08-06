@@ -34,8 +34,8 @@ export function Catalog() {
 			</div>
 
 			<div className="ms-3 mt-[2rem] h-full">
-				<div className="ms-5 bg-zinc-950 me-10 drop-shadow-md
-                    shadow-md hover:drop-shadow-2xl shadow-black rounded-lg"
+				<div className="ms-5 bg-zinc-950 me-10 shadow-lg
+                    drop-shadow-lg hover:drop-shadow-2xl shadow-black rounded-lg"
                 >
                     <CustomCarousel />
 				</div>
