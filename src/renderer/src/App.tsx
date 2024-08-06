@@ -14,11 +14,12 @@ export function App(): JSX.Element {
 		<div id="app" className="flex select-none">
 			<div
 				id="menu"
-				className="container flex flex-col h-screen w-[25%] max-xl:min-w-56 max-w-64 ps-0"
+				className="container flex flex-col h-screen w-[25%] 
+			max-xl:min-w-56 max-w-64 ps-0 fixed z-10"
 			>
 				<MenuHeader />
 
-				<h2 className="mt-[10vh] text-sm font-bold ps-6">Recents</h2>
+				<h2 className="mt-[5em] text-sm font-bold ps-6">Recents</h2>
 				<div className="pt-3 ps-4">
 					<RecentsLink text="Baldur's Gate III" src="https://placehold.co/30" />
 					<RecentsLink
@@ -30,7 +31,7 @@ export function App(): JSX.Element {
 
 				<div
 					id="links-section"
-					className="ps-6 mt-[3vh] flex flex-col gap-3 text-xs h-full max-w-sm"
+					className="ps-6 mt-[1.5em] flex flex-col gap-3 text-xs h-full max-w-sm"
 				>
 					<MenuLink itemName="Catalog" icon={CatalogIcon} route="catalog" />
 					<MenuLink itemName="Library" icon={LibraryIcon} route="cu" />
@@ -43,9 +44,10 @@ export function App(): JSX.Element {
 			</div>
 			<div
 				id="main-section"
-				className="container flex flex-col overflow-hidden p-0"
+				className="flex flex-col p-0 ps-[20vw]
+				max-xl:ps-[15rem] mb-[30vh] w-full"
 			>
-				<div id="menu-bar" className="h-[1.6rem] bg-[#171717]" />
+				<div id="menu-bar" className="h-[1.6rem] bg-[#171717] fixed w-full" />
 				<Outlet />
 			</div>
 		</div>

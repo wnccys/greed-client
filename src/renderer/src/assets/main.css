@@ -5,6 +5,9 @@
     font-family: 'Jetbrains Mono';
     src: url('../assets/jetbrains-ttf/JetBrainsMono-Regular.ttf');
 }
+ *::-webkit-scrollbar {
+    display: none;
+ }
 
 body {
     background-color: #171717;

@@ -55,11 +55,11 @@ export function Settings() {
 
 	return (
 		<div
-			className="flex flex-col items-center self-center mt-8 p-5 cursor-default 
-		border rounded max-w-[50vw] shadow-zinc-950 shadow-xl"
+			className="flex flex-col items-center self-center mt-[10em] p-5 
+			cursor-default border rounded shadow-zinc-950 shadow-xl"
 		>
 			<p className="text-xl">Current Torrent Sources</p>
-			<div>
+			<div className="self-center">
 				<Table className="mt-5">
 					<TableHeader className="hover:bg-zinc-900">
 						<TableRow>
