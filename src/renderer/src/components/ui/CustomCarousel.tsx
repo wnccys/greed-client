@@ -12,13 +12,13 @@ import GameDummyImage from "@renderer/assets/image.png";
 
 export function CustomCarousel() {
     const plugin = React.useRef(
-        Autoplay({ delay: 2000, stopOnInteraction: true })
+        Autoplay({ delay: 2000, stopOnInteraction: false, stopOnMouseEnter: false })
     );
     
     return (
         <Carousel
         plugins={[plugin.current]}
-        className="w-full max-w-xs"
+        className="w-full"
         onMouseEnter={plugin.current.stop}
         onMouseLeave={plugin.current.reset}
         >
@@ -27,8 +27,8 @@ export function CustomCarousel() {
             // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 <CarouselItem key={index}>
                 <div className="p-1">
-                <Card>
-                    <CardContent className="flex aspect-square items-center justify-center p-6">
+                <Card className="border-none bg-zinc-950">
+                    <CardContent className="flex items-center justify-center p-0">
                         <img src={GameDummyImage} alt="game-image" className="rounded-lg" />
                     </CardContent>
                 </Card>
@@ -36,8 +36,6 @@ export function CustomCarousel() {
             </CarouselItem>
             ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
         </Carousel>
     );
 }

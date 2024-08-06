@@ -34,18 +34,10 @@ export function Catalog() {
 			</div>
 
 			<div className="ms-3 mt-[2rem] h-full">
-				<div>
-					<Card className="ms-5 bg-zinc-950 border-none me-10 drop-shadow-md
-					shadow-md hover:drop-shadow-2xl shadow-black pt-5 p-0">
-						<CardContent className="hover:cursor-pointer p-0">
-							<CustomCarousel />
-                            {/* <img src={GameDummyImage} alt="game-image" className="rounded-lg"/> */}
-						</CardContent>
-                        {/* <CardHeader>
-                            <CardTitle>Game Title</CardTitle>
-                            <CardDescription>Game Description</CardDescription>
-                        </CardHeader> */}
-					</Card>
+				<div className="ms-5 bg-zinc-950 me-10 drop-shadow-md
+                    shadow-md hover:drop-shadow-2xl shadow-black rounded-lg"
+                >
+                    <CustomCarousel />
 				</div>
 			</div>
 		</>
