@@ -1,7 +1,7 @@
 import { Input } from "@renderer/components/ui/input";
 import { SearchIcon } from "@renderer/assets/icons";
 import { CustomCarousel } from "@renderer/components/ui/CustomCarousel";
-import { GameCards } from "@renderer/components/ui/GameCard";
+import { GameCard } from "@renderer/components/ui/GameCard";
 
 export function Catalog() {
 	return (
@@ -35,7 +35,10 @@ export function Catalog() {
 					id="games-section"
 					className="mt-5 flex flex-wrap justify-between"
 				>
-					<GameCards />
+					{Array.from({ length: 6 }).map((_, key) => {
+						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+						return <GameCard key={key} />
+					})}
 				</div>
 			</div>
 		</>
