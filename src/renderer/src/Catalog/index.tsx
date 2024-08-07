@@ -1,7 +1,7 @@
-import { Input } from "@renderer/components/ui/input";
-import { SearchIcon } from "@renderer/assets/icons";
-import { CustomCarousel } from "@renderer/components/ui/CustomCarousel";
-import { GameCard } from "@renderer/components/ui/GameCard";
+import { Input } from "@renderer/ShadComponents/ui/input";
+import { SearchIcon } from "@renderer/Assets/icons";
+import { CustomCarousel } from "./CustomCarousel";
+import { GameCard } from "./GameCard";
 
 export function Catalog() {
 	return (

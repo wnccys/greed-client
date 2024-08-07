@@ -6,7 +6,7 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from "@renderer/components/ui/card";
+} from "@renderer/ShadComponents/ui/card";
 import { Link } from "react-router-dom";
 
 export function GameCard({ key }) {

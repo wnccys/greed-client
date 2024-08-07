@@ -72,11 +72,6 @@ const createWindow = () => {
 			webSecurity: false,
 		},
 		titleBarStyle: "hidden",
-		titleBarOverlay: {
-			color: "#171717",
-			symbolColor: "#F5F5F5",
-			height: 25,
-		},
 	});
 
 	Menu.setApplicationMenu(null);
@@ -86,6 +81,10 @@ const createWindow = () => {
 	mainWindow.on("ready-to-show", () => {
 		mainWindow.show();
 	});
+
+	ipcMain.handle("minimizeWindow", mainWindow.minimize);
+	ipcMain.handle("closeWindow", mainWindow.close);
+	ipcMain.handle("maximizeWindow", mainWindow.maximize);
 };
 
 app.whenReady().then(() => {

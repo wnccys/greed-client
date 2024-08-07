@@ -1,7 +1,7 @@
-import { Button } from "@renderer/components/ui/button";
-import { Input } from "@renderer/components/ui/input";
-import { Label } from "@renderer/components/ui/label";
-import { Toaster } from "@renderer/components/ui/sonner";
+import { Button } from "@renderer/ShadComponents/ui/button";
+import { Input } from "@renderer/ShadComponents/ui/input";
+import { Label } from "@renderer/ShadComponents/ui/label";
+import { Toaster } from "@renderer/ShadComponents/ui/sonner";
 import { toast } from "sonner";
 import {
 	Table,
@@ -10,7 +10,7 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@renderer/components/ui/table";
+} from "@renderer/ShadComponents/ui/table";
 import {
 	Dialog,
 	DialogContent,
@@ -19,7 +19,7 @@ import {
 	DialogFooter,
 	DialogTitle,
 	DialogTrigger,
-} from "@renderer/components/ui/dialog";
+} from "@renderer/ShadComponents/ui/dialog";
 import { useRef, useState } from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";
 

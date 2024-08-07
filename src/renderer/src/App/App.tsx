@@ -3,12 +3,12 @@ import {
 	LibraryIcon,
 	DownloadIcon,
 	SettingsIcon,
-} from "@renderer/assets/icons";
-import { RecentsLink } from "@renderer/components/ui/RecentsLink";
-import { MenuLink } from "@renderer/components/ui/MenuLink";
-import { MenuHeader } from "@renderer/components/ui/MenuHeader";
+} from "@renderer/Assets/icons";
+import { RecentsLink } from "@renderer/App/RecentsLink";
+import { MenuLink } from "@renderer/App/MenuLink";
+import { MenuHeader } from "@renderer/App/MenuHeader";
 import { Outlet } from "react-router-dom";
-import { MenuBar } from "@renderer/components/ui/MenuBar";
+import { MenuBar } from "@renderer/MenuBar";
 
 export function App(): JSX.Element {
 	return (

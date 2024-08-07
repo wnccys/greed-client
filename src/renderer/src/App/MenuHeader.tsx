@@ -1,4 +1,4 @@
-import { GreedIcon } from "@renderer/assets/icons";
+import { GreedIcon } from "@renderer/Assets/icons";
 
 export function MenuHeader() {
     return (

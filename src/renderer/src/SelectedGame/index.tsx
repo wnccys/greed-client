@@ -1,9 +1,9 @@
-import { InputFile } from "@renderer/components/ui/inputfile";
+import { InputFile } from "@renderer/ShadComponents/ui/inputfile";
 import GameDummyImage from "@renderer/assets/image.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { DoubleArrowLeftIcon } from "@radix-ui/react-icons";
-import { Button } from "@renderer/components/ui/button";
+import { Button } from "@renderer/ShadComponents/ui/button";
 
 export function SelectedGame() {
 	const [downloadResult, setDownloadResult] = useState<string | undefined>(
