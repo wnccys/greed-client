@@ -27,7 +27,7 @@ export function CustomCarousel() {
             // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 <CarouselItem key={index}>
                 <div className="p-1">
-                <Card className="border-none bg-zinc-950">
+                <Card className="border-2 bg-zinc-950">
                     <CardContent className="flex items-center justify-center p-0">
                         <img src={GameDummyImage} alt="game-image" className="rounded-lg" />
                     </CardContent>

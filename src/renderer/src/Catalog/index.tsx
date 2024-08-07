@@ -10,10 +10,18 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@renderer/components/ui/card";
-
-const dummyArr = Array.from({ length: 5 });
+import { useRef } from "react";
 
 export function Catalog() {
+	const cardInfo = useRef(null);
+	function setCardInfos() {
+		const cardInfo = useRef(null);
+
+		if (cardInfo.current) {
+			
+		}
+	}
+
 	return (
 		<>
 			<div className="flex gap-2 max-h-[10vh] justify-between mt-10 me-10">
@@ -50,21 +58,20 @@ export function Catalog() {
 							<Card
                                 // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 								key={index}
-								className="bg-zinc-950 border-none shadow-lg 
-                            hover:drop-shadow-2xl transition-colors shadow-black rounded-lg h-[20em] 
-                            w-[16em] mt-8 cursor-pointer"
+								className="bg-transparent border shadow-lg 
+                            hover:drop-shadow-2xl transition-colors shadow-black rounded-md h-[10em] 
+                            w-[22em] mt-8 cursor-pointer overflow-hidden"
 							>
-								<CardContent className="p-0">
+								<CardContent className="p-0" ref={cardInfo}>
 									<img
 										src={GameDummyImage}
 										alt="game-cover"
-										className="rounded-xl"
+										className="rounded-xl hover:scale-105"
+										onFocus={setCardInfos}
 									/>
-									<p className="p-2">Baldur's Gate III</p>
-								</CardContent>
-								<CardDescription className="p-3">
+									<p className="p-2 absolute">Baldur's Gate III</p>
 									No Downloads Available
-								</CardDescription>
+								</CardContent>
 							</Card>
 						);
 					})}
