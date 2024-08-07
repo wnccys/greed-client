@@ -3,7 +3,6 @@ import {
 	BrowserWindow,
 	ipcMain,
 	dialog,
-	Menu,
 	type IpcMainInvokeEvent,
 } from "electron";
 import { optimizer } from "@electron-toolkit/utils";
@@ -68,7 +67,6 @@ async function handleNewTorrentSource(
 	}
 }
 
-let windowId: number;
 
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({
@@ -81,32 +79,21 @@ const createWindow = () => {
 			webSecurity: false,
 		},
 		titleBarStyle: "hidden",
+		show: false,
 	});
+	mainWindow.loadURL("http://localhost:5173").then(() => mainWindow.show());
 
-	Menu.setApplicationMenu(null);
+	ipcMain.handle("minimizeWindow", () => mainWindow.minimize());
+	ipcMain.handle("maximizeWindow", () => mainWindow.maximize());
+	ipcMain.handle("closeWindow", () => mainWindow.close());
+}
 
-	mainWindow.loadURL("http://localhost:5173");
-
-	mainWindow.on("ready-to-show", () => {
-		mainWindow.show();
-	});
-
-	windowId = mainWindow.id;
-};
-
-ipcMain.handle("minimizeWindow", );
-ipcMain.handle("closeWindow", );
-ipcMain.handle("maximizeWindow", );
 
 app.whenReady().then(() => {
 	ipcMain.handle("handleFileSelect", handleFileOpen);
 	ipcMain.handle("sendTorrentPath", handleTorrentPath);
 	ipcMain.handle("setNewTorrentSource", handleNewTorrentSource);
 	ipcMain.handle("updateTorrentProgress", handleUpdateTorrentProgress);
-
-	app.on("activate", () => {
-		if (BrowserWindow.getAllWindows().length === 0) createWindow();
-	});
 
 	createWindow();
 });
