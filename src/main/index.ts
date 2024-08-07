@@ -5,15 +5,20 @@ import {
 	dialog,
 	Menu,
 	type IpcMainInvokeEvent,
-  } from "electron";
-  import { optimizer } from "@electron-toolkit/utils";
-  import path from "node:path";
-  import { initTorrentDownload } from "./torrentClient";
-  
-  async function handleFileOpen(): Promise<Array<string>> {
+} from "electron";
+import { optimizer } from "@electron-toolkit/utils";
+import path from "node:path";
+import { initTorrentDownload } from "./torrentClient";
+import "reflect-metadata";
+
+function handleUpdateTorrentProgress(_event: IpcMainInvokeEvent, torrentProgress: string) {
+	console.log(`Updated torrent progress: ${torrentProgress}`);
+}
+
+async function handleFileOpen(): Promise<Array<string>> {
 	const { canceled, filePaths } = await dialog.showOpenDialog({
-	  title: "Select File",
-	  properties: ["openFile"]
+		title: "Select File",
+		properties: ["openFile"],
 	});
   
 	if (!canceled) {
@@ -34,9 +39,29 @@ import {
 	if (!canceled) {
 	  initTorrentDownload(path, filePaths[0]);
 	}
-  }
-  
-  const createWindow = () => {
+}
+
+async function handleNewTorrentSource(
+	_event: IpcMainInvokeEvent,
+	sourceLink: string,
+) {
+	console.log(`sourceLink: ${sourceLink}`);
+
+	try {
+		fetch(sourceLink)
+		.then((response: Response) => response.json())
+		.then((body: ReadableStream<Uint8Array> | null) => {
+			const stringifiedBody = JSON.parse(JSON.stringify(body));
+			console.log(stringifiedBody.name);
+			console.log(stringifiedBody.downloads[0]);
+		})
+		.catch( (e) => console.error(`Could not fetch from given link: ${sourceLink}.\n Error: ${e}.`) );
+	} catch (e) {
+		console.error(e);
+	}
+}
+
+const createWindow = () => {
 	const mainWindow = new BrowserWindow({
 		width: 900,
 		height: 670,
@@ -46,10 +71,10 @@ import {
 			sandbox: false,
 			webSecurity: false,
 		},
-		titleBarStyle: 'hidden',
+		titleBarStyle: "hidden",
 		titleBarOverlay: {
-			color: '#171717',
-			symbolColor: '#F5F5F5',
+			color: "#171717",
+			symbolColor: "#F5F5F5",
 			height: 25,
 		},
 	});
@@ -93,7 +118,13 @@ import {
   app.whenReady().then(() => {
 	ipcMain.handle("handleFileSelect", handleFileOpen);
 	ipcMain.handle("sendTorrentPath", handleTorrentPath);
-  
+	ipcMain.handle("setNewTorrentSource", handleNewTorrentSource);
+	ipcMain.handle("updateTorrentProgress", handleUpdateTorrentProgress);
+
+	app.on("activate", () => {
+		if (BrowserWindow.getAllWindows().length === 0) createWindow();
+	});
+
 	createWindow();
 	createSecond();
   

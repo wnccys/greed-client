@@ -4,9 +4,11 @@ import { electronAPI } from "@electron-toolkit/preload";
 // Custom APIs for renderer
 const api = {
 	sendTorrentPath: (path: string) => {
-		ipcRenderer.invoke("sendTorrentPath", path)
+		ipcRenderer.invoke("sendTorrentPath", path);
 	},
-	handleFileSelect: () => ipcRenderer.invoke("handleFileSelect"), 
+	handleFileSelect: () => ipcRenderer.invoke("handleFileSelect"),
+	setNewTorrentSource: (sourceLink: string) =>
+		ipcRenderer.invoke("setNewTorrentSource", sourceLink),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

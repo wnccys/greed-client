@@ -6,10 +6,9 @@ declare global {
     api: Api 
   }
 
-  type ipcEvent = Promise<string | undefined>;
-
   interface Api {
-    sendTorrentPath: (string) => ipcEvent, 
+    sendTorrentPath: (path: string) => Promise<string | undefined>, 
     handleFileSelect: () => string,
+    setNewTorrentSource: (sourceLink: string) => string,
   }
 }

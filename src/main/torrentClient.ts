@@ -1,6 +1,7 @@
 import WebTorrent from "webtorrent";
 import path from "node:path"
 import fs from "node:fs";
+import { ipcMain } from "electron";
 
 const client = new WebTorrent();
 
@@ -33,6 +34,8 @@ export async function initTorrentDownload(
 				console.log(
 					`Time remaining: ${(torrent.timeRemaining / 1000 / 60).toFixed(0)} minutes.`,
 				);
+
+				ipcMain.emit('updateTorrentProgress', torrent.progress);
 			});
 
 			torrent.on("done", () => {
