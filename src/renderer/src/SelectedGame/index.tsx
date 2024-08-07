@@ -41,8 +41,8 @@ export function SelectedGame() {
 							Run
 						</Button>
 					</div>
-					{/* <InputFile updateDownloadResult={setDownloadResult} /> */}
-					{/* <p className={`pt-4 ${downloadResult ? '' : 'hidden p-0 m-0'}`}>{downloadResult}</p> */}
+					<InputFile updateDownloadResult={setDownloadResult} />
+					<p className={`pt-4 ${downloadResult ? '' : 'hidden p-0 m-0'}`}>{downloadResult}</p>
 				</div>
 			</div>
 		</>
