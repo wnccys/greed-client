@@ -3,25 +3,10 @@ import { SearchIcon } from "@renderer/assets/icons";
 import { CustomCarousel } from "@renderer/components/ui/CustomCarousel";
 import GameDummyImage from "@renderer/assets/image.png";
 import { Link } from "react-router-dom";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@renderer/components/ui/card";
 import { useRef } from "react";
+import { GameCards } from "@renderer/components/ui/GameCard";
 
 export function Catalog() {
-	const cardInfo = useRef(null);
-	function setCardInfos() {
-		const cardInfo = useRef(null);
-
-		if (cardInfo.current) {
-
-		}
-	}
-
 	return (
 		<>
 			<div className="flex gap-2 max-h-[10vh] justify-between mt-10 me-10">
@@ -53,29 +38,7 @@ export function Catalog() {
 					id="games-section"
 					className="mt-5 flex flex-wrap shrink content-evenly justify-between"
 				>
-					{Array.from({ length: 5 }).map((_, index) => {
-						return (
-							<Card
-                                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-								key={index}
-								className="border shadow-lg 
-                            hover:drop-shadow-2xl shadow-black rounded-md h-[10em] 
-                            w-[22em] mt-8 cursor-pointer overflow-hidden transition 
-							delay-150 hover:-translate-y-1 hover:scale-105 duration-[300]"
-							>
-								<CardContent className="p-0" ref={cardInfo}>
-									<img
-										src={GameDummyImage}
-										alt="game-cover"
-										className="rounded-lg"
-										onFocus={setCardInfos}
-									/>
-									<p className="p-2 absolute -translate-y-12 z-10">Baldur's Gate III</p>
-									<p className="text-xs">cuzao</p>
-								</CardContent>
-							</Card>
-						);
-					})}
+					<GameCards />
 				</div>
 			</div>
 		</>
