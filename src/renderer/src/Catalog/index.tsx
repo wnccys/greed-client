@@ -1,9 +1,6 @@
 import { Input } from "@renderer/components/ui/input";
 import { SearchIcon } from "@renderer/assets/icons";
 import { CustomCarousel } from "@renderer/components/ui/CustomCarousel";
-import GameDummyImage from "@renderer/assets/image.png";
-import { Link } from "react-router-dom";
-import { useRef } from "react";
 import { GameCards } from "@renderer/components/ui/GameCard";
 
 export function Catalog() {
