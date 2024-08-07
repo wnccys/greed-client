@@ -14,7 +14,7 @@ export function App(): JSX.Element {
 		<div id="app" className="flex select-none">
 			<div
 				id="menu"
-				className="container flex flex-col h-screen w-[25%] 
+				className="container flex flex-col h-screen w-[25%]
 				max-lg:min-w-56 max-w-64 ps-0 fixed z-10"
 			>
 				<MenuHeader />

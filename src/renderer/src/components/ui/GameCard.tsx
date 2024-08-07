@@ -19,8 +19,9 @@ export function GameCards() {
                         <Card
                             className="border shadow-lg 
                             hover:drop-shadow-2xl shadow-black rounded-md h-[10em] 
-                            w-[22em] mt-8 cursor-pointer overflow-hidden transition 
-                            delay-150 hover:-translate-y-1 hover:scale-105 duration-[300]"
+                            w-[20em] xl:w-[18em] xl:h-[8em] max-lg:w-[32em] max-lg:h-[16em] mt-8 
+                            cursor-pointer overflow-hidden transition delay-150 hover:-translate-y-1
+                            hover:scale-105 duration-[300]"
                         >
                             <CardContent className="p-0">
                                 <img

@@ -33,7 +33,7 @@ export function Catalog() {
 				</div>
 				<div
 					id="games-section"
-					className="mt-5 flex flex-wrap shrink content-evenly justify-between"
+					className="mt-5 flex flex-wrap justify-between"
 				>
 					<GameCards />
 				</div>
