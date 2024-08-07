@@ -11,6 +11,10 @@ import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import "reflect-metadata";
 
+function handleUpdateTorrentProgress(_event: IpcMainInvokeEvent, torrentProgress: string) {
+	console.log(`Updated torrent progress: ${torrentProgress}`);
+}
+
 async function handleFileOpen(): Promise<Array<string>> {
 	const { canceled, filePaths } = await dialog.showOpenDialog({
 		title: "Select File",
@@ -88,6 +92,7 @@ app.whenReady().then(() => {
 	ipcMain.handle("handleFileSelect", handleFileOpen);
 	ipcMain.handle("sendTorrentPath", handleTorrentPath);
 	ipcMain.handle("setNewTorrentSource", handleNewTorrentSource);
+	ipcMain.handle("updateTorrentProgress", handleUpdateTorrentProgress);
 
 	app.on("activate", () => {
 		if (BrowserWindow.getAllWindows().length === 0) createWindow();
