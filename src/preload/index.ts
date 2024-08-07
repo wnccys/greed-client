@@ -11,7 +11,9 @@ const api = {
 		ipcRenderer.invoke("setNewTorrentSource", sourceLink),
 	minimizeWindow: () => ipcRenderer.invoke("minimizeWindow"),
 	maximizeWindow: () => ipcRenderer.invoke("maximizeWindow"),
+	unmaximizeWindow: () => ipcRenderer.invoke("unmaximizeWindow"),
 	closeWindow: () => ipcRenderer.invoke("closeWindow"),
+	isMaximized: () => ipcRenderer.invoke("checkWindowIsMaximized"),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

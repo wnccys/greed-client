@@ -12,6 +12,8 @@ declare global {
     setNewTorrentSource: (sourceLink: string) => string,
     minimizeWindow: () => null,
     maximizeWindow: () => null,
+    unmaximizeWindow: () => null,
     closeWindow: () => null,
+    isMaximized: () => boolean,
   }
 }
