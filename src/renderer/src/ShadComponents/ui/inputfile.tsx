@@ -1,4 +1,4 @@
-import { Button } from "@renderer/components/ui/button";
+import { Button } from "@renderer/ShadComponents/ui/button";
 import { useState } from "react";
 
 interface InputFileProps {

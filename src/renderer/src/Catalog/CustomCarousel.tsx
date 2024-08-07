@@ -4,11 +4,11 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@renderer/components/ui/carousel"
+} from "@renderer/ShadComponents/ui/carousel"
 import Autoplay from "embla-carousel-autoplay";
 import React from "react";
-import { Card, CardContent } from "@renderer/components/ui/card";
-import GameDummyImage from "@renderer/assets/image.png";
+import { Card, CardContent } from "@renderer/ShadComponents/ui/card";
+import GameDummyImage from "@renderer/Assets/image.png";
 
 export function CustomCarousel() {
     const plugin = React.useRef(

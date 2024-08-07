@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { cn } from "@renderer/components/lib/utils"
+import { cn } from "@renderer/ShadComponents/lib/utils"
 
 const Table = React.forwardRef<
   HTMLTableElement,
