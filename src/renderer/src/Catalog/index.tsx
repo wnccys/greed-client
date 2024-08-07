@@ -18,7 +18,7 @@ export function Catalog() {
 		const cardInfo = useRef(null);
 
 		if (cardInfo.current) {
-			
+
 		}
 	}
 
@@ -58,19 +58,20 @@ export function Catalog() {
 							<Card
                                 // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 								key={index}
-								className="bg-transparent border shadow-lg 
-                            hover:drop-shadow-2xl transition-colors shadow-black rounded-md h-[10em] 
-                            w-[22em] mt-8 cursor-pointer overflow-hidden"
+								className="border shadow-lg 
+                            hover:drop-shadow-2xl shadow-black rounded-md h-[10em] 
+                            w-[22em] mt-8 cursor-pointer overflow-hidden transition 
+							delay-150 hover:-translate-y-1 hover:scale-105 duration-[300]"
 							>
 								<CardContent className="p-0" ref={cardInfo}>
 									<img
 										src={GameDummyImage}
 										alt="game-cover"
-										className="rounded-xl hover:scale-105"
+										className="rounded-lg"
 										onFocus={setCardInfos}
 									/>
-									<p className="p-2 absolute">Baldur's Gate III</p>
-									No Downloads Available
+									<p className="p-2 absolute -translate-y-12 z-10">Baldur's Gate III</p>
+									<p className="text-xs">cuzao</p>
 								</CardContent>
 							</Card>
 						);
