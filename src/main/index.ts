@@ -85,7 +85,9 @@ const createWindow = () => {
 
 	ipcMain.handle("minimizeWindow", () => mainWindow.minimize());
 	ipcMain.handle("maximizeWindow", () => mainWindow.maximize());
+	ipcMain.handle("unmaximizeWindow", () => mainWindow.unmaximize());
 	ipcMain.handle("closeWindow", () => mainWindow.close());
+	ipcMain.handle("checkWindowIsMaximized", () => mainWindow.isMaximized());
 }
 
 
