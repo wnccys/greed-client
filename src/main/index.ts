@@ -11,7 +11,10 @@ import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import "reflect-metadata";
 
-function handleUpdateTorrentProgress(_event: IpcMainInvokeEvent, torrentProgress: string) {
+function handleUpdateTorrentProgress(
+	_event: IpcMainInvokeEvent,
+	torrentProgress: string,
+) {
 	console.log(`Updated torrent progress: ${torrentProgress}`);
 }
 
@@ -49,17 +52,23 @@ async function handleNewTorrentSource(
 
 	try {
 		fetch(sourceLink)
-		.then((response: Response) => response.json())
-		.then((body: ReadableStream<Uint8Array> | null) => {
-			const stringifiedBody = JSON.parse(JSON.stringify(body));
-			console.log(stringifiedBody.name);
-			console.log(stringifiedBody.downloads[0]);
-		})
-		.catch( (e) => console.error(`Could not fetch from given link: ${sourceLink}.\n Error: ${e}.`) );
+			.then((response: Response) => response.json())
+			.then((body: ReadableStream<Uint8Array> | null) => {
+				const stringifiedBody = JSON.parse(JSON.stringify(body));
+				console.log(stringifiedBody.name);
+				console.log(stringifiedBody.downloads[0]);
+			})
+			.catch((e) =>
+				console.error(
+					`Could not fetch from given link: ${sourceLink}.\n Error: ${e}.`,
+				),
+			);
 	} catch (e) {
 		console.error(e);
 	}
 }
+
+let windowId: number;
 
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({
@@ -82,10 +91,12 @@ const createWindow = () => {
 		mainWindow.show();
 	});
 
-	ipcMain.handle("minimizeWindow", mainWindow.minimize);
-	ipcMain.handle("closeWindow", mainWindow.close);
-	ipcMain.handle("maximizeWindow", mainWindow.maximize);
+	windowId = mainWindow.id;
 };
+
+ipcMain.handle("minimizeWindow", );
+ipcMain.handle("closeWindow", );
+ipcMain.handle("maximizeWindow", );
 
 app.whenReady().then(() => {
 	ipcMain.handle("handleFileSelect", handleFileOpen);

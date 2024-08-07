@@ -9,6 +9,9 @@ const api = {
 	handleFileSelect: () => ipcRenderer.invoke("handleFileSelect"),
 	setNewTorrentSource: (sourceLink: string) =>
 		ipcRenderer.invoke("setNewTorrentSource", sourceLink),
+	minimizeWindow: () => ipcRenderer.invoke("minimizeWindow"),
+	maximizeWindow: () => ipcRenderer.invoke("maximizeWindow"),
+	closeWindow: () => ipcRenderer.invoke("closeWindow"),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

@@ -10,5 +10,8 @@ declare global {
     sendTorrentPath: (path: string) => Promise<string | undefined>, 
     handleFileSelect: () => string,
     setNewTorrentSource: (sourceLink: string) => string,
+    minimizeWindow: () => null,
+    maximizeWindow: () => null,
+    closeWindow: () => null,
   }
 }

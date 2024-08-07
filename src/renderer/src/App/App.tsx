@@ -8,7 +8,7 @@ import { RecentsLink } from "@renderer/App/RecentsLink";
 import { MenuLink } from "@renderer/App/MenuLink";
 import { MenuHeader } from "@renderer/App/MenuHeader";
 import { Outlet } from "react-router-dom";
-import { MenuBar } from "@renderer/MenuBar";
+import { MenuBar } from "@renderer/App/MenuBar";
 
 export function App(): JSX.Element {
 	return (
@@ -47,7 +47,7 @@ export function App(): JSX.Element {
 				</div>
 			<div
 				id="main-section"
-				className="flex flex-col p-0 mb-[100px] w-screen ms-[16rem]"
+				className="flex flex-col p-0 mb-[100px] w-screen ms-[16rem] mt-[1.8rem]"
 			>
 				<Outlet />
 			</div>
