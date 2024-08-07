@@ -11,14 +11,14 @@ export function SelectedGame() {
 
 	return (
 		<>
-			<div id="game-cover">
+			<div id="game-cover" className="mt-6">
 				<div className="absolute text-lg translate-x-8 translate-y-6">
 					<Link to="../catalog">
-						{/* <img src={DoubleArrowLeftIcon} alt="back-icon" className="size-9"/>	 */}
-						<DoubleArrowLeftIcon className="size-5"/>
+						<DoubleArrowLeftIcon className="size-5 transition 
+                            delay-150 hover:-translate-y-1 hover:scale-105 duration-[300]"/>
 					</Link>
 				</div>
-				<img src={GameDummyImage} alt="game-cover" className="rounded-e-md" />
+				<img src={GameDummyImage} alt="game-cover" className="" />
 			</div>
 
 			<div id="play-menu" className="flex justify-center pt-5">
