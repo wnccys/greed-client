@@ -19,9 +19,8 @@ export function GameCards() {
                         <Card
                             className="border shadow-lg 
                             hover:drop-shadow-2xl shadow-black rounded-md h-[10em] 
-                            w-[20em] xl:w-[18em] xl:h-[8em] max-lg:w-[32em] max-lg:h-[16em] mt-8 
-                            cursor-pointer overflow-hidden transition delay-150 hover:-translate-y-1
-                            hover:scale-105 duration-[300]"
+                            w-[18em] mt-8 cursor-pointer overflow-hidden transition delay-15
+                            hover:-translate-y- hover:scale-105 duration-[300]"
                         >
                             <CardContent className="p-0">
                                 <img
@@ -29,8 +28,8 @@ export function GameCards() {
                                     alt="game-cover"
                                     className="rounded-lg"
                                 />
-                                <p className="p-2 absolute -translate-y-12 z-10">Baldur's Gate III</p>
-                                <p className="text-xs">cuzao</p>
+                                <p className="p-2 fixed -translate-y-12 z-10">Baldur's Gate III</p>
+                                <p className="text-xs fixed text-black">cuzao</p>
                             </CardContent>
                         </Card>
                     </Link>

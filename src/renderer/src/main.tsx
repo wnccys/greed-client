@@ -10,7 +10,7 @@ import { SelectedGame } from './SelectedGame';
 import { Catalog } from './Catalog';
 import { ErrorElement } from './ErrorElement';
 import { Settings } from './Settings'
- 
+
  const router = createBrowserRouter([
   {
     path: '/',
