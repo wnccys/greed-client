@@ -28,8 +28,6 @@ export async function initTorrentDownload(
 				return;
 			}
 
-			console.log("here!!!!!!!!");
-
 			torrent.on("download", (bytes) => {
 				console.log(`downloaded: ${(bytes / 1000).toFixed(1)} megabytes.`);
 				console.log(`progress: ${(torrent.progress * 100).toFixed(2)}%`);

@@ -4,6 +4,7 @@ import {
 	ipcMain,
 	dialog,
 	type IpcMainInvokeEvent,
+	type IpcMainEvent,
 } from "electron";
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
@@ -11,8 +12,7 @@ import { initTorrentDownload } from "./torrentClient";
 import "reflect-metadata";
 
 function handleUpdateTorrentProgress(
-	_event: IpcMainInvokeEvent,
-	torrentProgress: number,
+	torrentProgress: IpcMainEvent,
 ) {
 	console.log(`Updated torrent progress: ${torrentProgress}`);
 }
@@ -67,7 +67,6 @@ async function handleNewTorrentSource(
 	}
 }
 
-
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({
 		width: 950,
@@ -90,15 +89,15 @@ const createWindow = () => {
 	ipcMain.handle("unmaximizeWindow", () => mainWindow.unmaximize());
 	ipcMain.handle("closeWindow", () => mainWindow.close());
 	ipcMain.handle("checkWindowIsMaximized", () => mainWindow.isMaximized());
-}
-
+};
 
 app.whenReady().then(() => {
 	ipcMain.handle("handleFileSelect", handleFileOpen);
 	ipcMain.handle("sendTorrentPath", handleTorrentPath);
 	ipcMain.handle("setNewTorrentSource", handleNewTorrentSource);
-	ipcMain.on("updateTorrentProgress", (_event, e: number) => handleUpdateTorrentProgress(_event, e));
-
+	ipcMain.on("updateTorrentProgress", (torrentProgress: IpcMainEvent) => {
+		handleUpdateTorrentProgress(torrentProgress)
+	});
 
 	createWindow();
 });
