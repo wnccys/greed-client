@@ -9,10 +9,10 @@ import {
 } from "@renderer/ShadComponents/ui/card";
 import { Link } from "react-router-dom";
 
-export function GameCard({ key }) {
+export function GameCard() {
     return (
             <>
-                <Link to="../selected-game" key={key}>
+                <Link to="../selected-game">
                     <Card
                         className="border shadow-lg 
                         hover:drop-shadow-2xl shadow-black rounded-md h-[10em] 
