@@ -27,7 +27,7 @@ export async function initTorrentDownload(
 			console.log("magnet URI: ", torrent.magnetURI, "\n");
 
 			torrent.on("download", () => {
-				console.log(`progress: ${(torrent.progress * 100).toFixed(2)}%`);
+				console.log(`Progress: ${(torrent.progress * 100).toFixed(2)}%`);
 				console.log(
 					`Time remaining: ${(torrent.timeRemaining / 1000 / 60).toFixed(0)} minutes.`,
 				);

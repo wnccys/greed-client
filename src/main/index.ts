@@ -21,11 +21,8 @@ const createWindow = () => {
 	});
 	mainWindow.loadURL("http://localhost:5173").then(() => mainWindow.show());
 
-	ipcMain.handle("minimizeWindow", () => mainWindow.minimize());
-	ipcMain.handle("maximizeWindow", () => mainWindow.maximize());
-	ipcMain.handle("unmaximizeWindow", () => mainWindow.unmaximize());
-	ipcMain.handle("closeWindow", () => mainWindow.close());
-	ipcMain.handle("checkWindowIsMaximized", () => mainWindow.isMaximized());
+	mainEventHandler.registerWindowEvents(mainWindow.id);
+
 	mainWindow.on("enter-html-full-screen", () =>
 		mainWindow.webContents.send(
 			"updateMaximizedState",

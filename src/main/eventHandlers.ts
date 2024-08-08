@@ -3,9 +3,24 @@ import {
 	type IpcMainInvokeEvent,
 	dialog,
 	BrowserWindow,
+	ipcMain
 } from "electron";
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
+
+
+export function registerWindowEvents(windowId: number) {
+	const mainWindow = BrowserWindow.fromId(windowId);
+	if (mainWindow) {
+		ipcMain.handle("minimizeWindow", () => mainWindow.minimize());
+		ipcMain.handle("maximizeWindow", () => mainWindow.maximize());
+		ipcMain.handle("unmaximizeWindow", () => mainWindow.unmaximize());
+		ipcMain.handle("closeWindow", () => mainWindow.close());
+		ipcMain.handle("checkWindowIsMaximized", () => mainWindow.isMaximized());
+	} else {
+		throw Error("Could Not Get Window from Id.");
+	}
+}
 
 export function handleUpdateTorrentProgress(torrentProgress: IpcMainEvent) {
 	for (const win of BrowserWindow.getAllWindows()) {
