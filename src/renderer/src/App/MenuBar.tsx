@@ -78,8 +78,10 @@ export function MenuBar() {
 					</Button>
 				</div>
 			</div>
-			<div className="h-[3rem] bg-zinc-950 fixed flex w-full z-10 justify-center mt-[1.8rem] center">
-				<p className="self-center text-white">Torrent Progress: {data}</p>
+			<div className="h-[2rem] bg-zinc-950 fixed flex w-full z-10 justify-center bottom-0">
+				<p className="self-center text-white">
+					Torrent Progress: {data}
+				</p>
 			</div>
 		</>
 	);
