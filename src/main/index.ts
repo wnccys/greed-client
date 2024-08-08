@@ -70,8 +70,10 @@ async function handleNewTorrentSource(
 
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({
-		width: 900,
+		width: 950,
 		height: 670,
+		minWidth: 750,
+		minHeight: 625,
 		autoHideMenuBar: true,
 		webPreferences: {
 			preload: path.join(__dirname, "../preload/index.mjs"),
