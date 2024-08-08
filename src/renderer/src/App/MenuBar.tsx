@@ -44,7 +44,7 @@ export function MenuBar() {
 					</Button>
 					<Button
 						onClick={() => window.api.closeWindow()}
-						className="hover:bg-zinc-700 delay-100 bg-[#171717] ps-3 pe-3 h-[1.8rem]"
+						className="hover:bg-red-500 delay-100 bg-[#171717] ps-3 pe-3 h-[1.8rem]"
 					>
 						<Cross1Icon />
 					</Button>
