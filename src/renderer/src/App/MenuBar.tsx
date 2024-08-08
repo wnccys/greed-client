@@ -8,9 +8,7 @@ import {
 import { useEffect, useState } from "react";
 
 export function MenuBar() {
-	const [isMaximized, setIsMaximized] = useState<boolean>(
-		window.api.isMaximized()  
-	);
+	const [isMaximized, setIsMaximized] = useState<boolean>(false);
 
 	useEffect(() => {
 		window.electron.ipcRenderer.on(
@@ -42,12 +40,11 @@ export function MenuBar() {
 	}, []);
 
 	const checkIsMaximized = () => {
+		setIsMaximized(!isMaximized);
 		if (isMaximized) {
 			window.api.unmaximizeWindow();
-			setIsMaximized(!isMaximized);
 		} else {
 			window.api.maximizeWindow();
-			setIsMaximized(!isMaximized);
 		}
 	};
 
@@ -61,28 +58,27 @@ export function MenuBar() {
 					<Button
 						onClick={() => window.api.minimizeWindow()}
 						className="hover:bg-zinc-700 bg-[#171717] rounded-none 
-						rounded-s-md delay-100 ps-3 pe-3 h-[1.8rem]"
+					rounded-s-md delay-100 ps-3 pe-3 h-[1.8rem]"
 					>
 						<MinusIcon />
 					</Button>
 					<Button
 						onClick={() => checkIsMaximized()}
 						className="hover:bg-zinc-700 bg-[#171717] rounded-none
-						delay-100 ps-3 pe-3 h-[1.8rem]"
+					delay-100 ps-3 pe-3 h-[1.8rem]"
 					>
-						{JSON.stringify(isMaximized)}
-						{isMaximized ? <CopyIcon /> : <SquareIcon />}
+						{isMaximized === true ? <CopyIcon /> : <SquareIcon />}
 					</Button>
 					<Button
 						onClick={() => window.api.closeWindow()}
 						className="hover:bg-red-500 delay-100 bg-[#171717] rounded-none
-						rounded-e-md ps-3 pe-3 h-[1.8rem]"
+					rounded-e-md ps-3 pe-3 h-[1.8rem]"
 					>
 						<Cross1Icon />
 					</Button>
 				</div>
 			</div>
-			<p>Torrent Progress: {JSON.stringify(data)}</p>
+			<p className="">Torrent Progress: {JSON.stringify(data)}</p>
 		</>
 	);
 }
