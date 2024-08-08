@@ -2,70 +2,12 @@ import {
 	app,
 	BrowserWindow,
 	ipcMain,
-	dialog,
-	type IpcMainInvokeEvent,
 	type IpcMainEvent,
 } from "electron";
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
-import { initTorrentDownload } from "./torrentClient";
 import "reflect-metadata";
-
-function handleUpdateTorrentProgress(
-	torrentProgress: IpcMainEvent,
-) {
-	console.log(`Updated torrent progress: ${torrentProgress}`);
-}
-
-async function handleFileOpen(): Promise<Array<string>> {
-	const { canceled, filePaths } = await dialog.showOpenDialog({
-		title: "Select File",
-		properties: ["openFile"],
-	});
-
-	if (!canceled) {
-		console.log(filePaths);
-		return [`Selected File: ${path.basename(filePaths[0])}`, filePaths[0]];
-	}
-
-	return ["", "Please, Select a Valid Torrent File"];
-}
-
-async function handleTorrentPath(_event: IpcMainInvokeEvent, path: string) {
-	console.log("path to torrent is: ", path);
-	const { canceled, filePaths } = await dialog.showOpenDialog({
-		title: "Select Folder",
-		properties: ["openDirectory", "createDirectory"],
-	});
-
-	if (!canceled) {
-		initTorrentDownload(path, filePaths[0]);
-	}
-}
-
-async function handleNewTorrentSource(
-	_event: IpcMainInvokeEvent,
-	sourceLink: string,
-) {
-	console.log(`sourceLink: ${sourceLink}`);
-
-	try {
-		fetch(sourceLink)
-			.then((response: Response) => response.json())
-			.then((body: ReadableStream<Uint8Array> | null) => {
-				const stringifiedBody = JSON.parse(JSON.stringify(body));
-				console.log(stringifiedBody.name);
-				console.log(stringifiedBody.downloads[0]);
-			})
-			.catch((e) =>
-				console.error(
-					`Could not fetch from given link: ${sourceLink}.\n Error: ${e}.`,
-				),
-			);
-	} catch (e) {
-		console.error(e);
-	}
-}
+import * as mainEventHandler from '@main/eventHandlers'
 
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({
@@ -92,11 +34,11 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
-	ipcMain.handle("handleFileSelect", handleFileOpen);
-	ipcMain.handle("sendTorrentPath", handleTorrentPath);
-	ipcMain.handle("setNewTorrentSource", handleNewTorrentSource);
+	ipcMain.handle("handleFileSelect", mainEventHandler.handleFileOpen);
+	ipcMain.handle("sendTorrentPath", mainEventHandler.handleTorrentPath);
+	ipcMain.handle("setNewTorrentSource", mainEventHandler.handleNewTorrentSource);
 	ipcMain.on("updateTorrentProgress", (torrentProgress: IpcMainEvent) => {
-		handleUpdateTorrentProgress(torrentProgress)
+		mainEventHandler.handleUpdateTorrentProgress(torrentProgress)
 	});
 
 	createWindow();
