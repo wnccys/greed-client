@@ -15,5 +15,7 @@ declare global {
     unmaximizeWindow: () => null,
     closeWindow: () => null,
     isMaximized: () => boolean,
+    // send: (channel: string, data: unknown) => null,
+    // on: (channel: string, func: (...args: unknown[]) => unknown) => null,
   }
 }

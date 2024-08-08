@@ -7,7 +7,20 @@ import {
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import "reflect-metadata";
-import * as mainEventHandler from './eventHandlers'
+import * as mainEventHandler from './eventHandlers';
+
+// ipcMain.on('request-update', (event, arg) => {
+// 	event.reply('update-data', { key: `arg sent: ${arg}` });
+// });
+
+function notifyRenderer() {
+	for (const win of BrowserWindow.getAllWindows()) {
+		win.webContents.send('update-data', new Date());
+		console.log("sent");
+	}
+}
+
+setInterval(notifyRenderer, 2000);
 
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({

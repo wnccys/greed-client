@@ -5,13 +5,29 @@ import {
 	MinusIcon,
 	CopyIcon,
 } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function MenuBar() {
     // REVIEW useEffect to update component state
 	const [isMaximized, setIsMaximized] = useState<boolean>(
 		window.api.isMaximized(),
 	);
+
+	const [data, setData] = useState<string>("nothing");
+
+	useEffect(() => {
+		// window.electron.ipcRenderer.send('request-update');
+
+		window.electron.ipcRenderer.on('update-data', (_event, update: string) => {
+			setData(update);
+			console.log("received!!", update);
+		});
+
+		return () => {
+			// Clean up the listener when the component is unmounted
+			window.electron.ipcRenderer.removeAllListeners('update-data');
+		};
+	}, []);
 
 	const checkIsMaximized = () => {
 		if (isMaximized) {
@@ -48,6 +64,7 @@ export function MenuBar() {
 					>
 						<Cross1Icon />
 					</Button>
+					<p>Data: {JSON.stringify(data)}</p>
 				</div>
 			</div>
 		</>
