@@ -1,15 +1,19 @@
 import {
-    type IpcMainEvent,
-    type IpcMainInvokeEvent,
-    dialog,
-} from 'electron'
-import path from 'node:path'
-import { initTorrentDownload } from './torrentClient';
+	type IpcMainEvent,
+	type IpcMainInvokeEvent,
+	dialog,
+	BrowserWindow,
+} from "electron";
+import path from "node:path";
+import { initTorrentDownload } from "./torrentClient";
 
-export function handleUpdateTorrentProgress(
-	torrentProgress: IpcMainEvent,
-) {
-	console.log(`Updated torrent progress: ${(Number(torrentProgress) / 1000).toFixed(1)}`);
+export function handleUpdateTorrentProgress(torrentProgress: IpcMainEvent) {
+	for (const win of BrowserWindow.getAllWindows()) {
+		win.webContents.send(
+			"updateTorrentProgress",
+			(Number(torrentProgress) * 100).toFixed(2),
+		);
+	}
 }
 
 export async function handleFileOpen(): Promise<Array<string>> {
@@ -26,7 +30,10 @@ export async function handleFileOpen(): Promise<Array<string>> {
 	return ["", "Please, Select a Valid Torrent File"];
 }
 
-export async function handleTorrentPath(_event: IpcMainInvokeEvent, path: string) {
+export async function handleTorrentPath(
+	_event: IpcMainInvokeEvent,
+	path: string,
+) {
 	console.log("Path to torrent is: ", path);
 	const { canceled, filePaths } = await dialog.showOpenDialog({
 		title: "Select Folder",

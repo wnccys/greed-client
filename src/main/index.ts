@@ -1,26 +1,8 @@
-import {
-	app,
-	BrowserWindow,
-	ipcMain,
-	type IpcMainEvent,
-} from "electron";
+import { app, BrowserWindow, ipcMain, type IpcMainEvent } from "electron";
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import "reflect-metadata";
-import * as mainEventHandler from './eventHandlers';
-
-// ipcMain.on('request-update', (event, arg) => {
-// 	event.reply('update-data', { key: `arg sent: ${arg}` });
-// });
-
-function notifyRenderer() {
-	for (const win of BrowserWindow.getAllWindows()) {
-		win.webContents.send('update-data', new Date());
-		console.log("sent");
-	}
-}
-
-setInterval(notifyRenderer, 2000);
+import * as mainEventHandler from "./eventHandlers";
 
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({
@@ -44,14 +26,41 @@ const createWindow = () => {
 	ipcMain.handle("unmaximizeWindow", () => mainWindow.unmaximize());
 	ipcMain.handle("closeWindow", () => mainWindow.close());
 	ipcMain.handle("checkWindowIsMaximized", () => mainWindow.isMaximized());
+	mainWindow.on("enter-html-full-screen", () =>
+		mainWindow.webContents.send(
+			"updateMaximizedState",
+			mainWindow.isMaximized(),
+		),
+	);
+	mainWindow.on("leave-html-full-screen", () =>
+		mainWindow.webContents.send(
+			"updateMaximizedState",
+			mainWindow.isMaximized(),
+		),
+	);
+	mainWindow.on("maximize", () =>
+		mainWindow.webContents.send(
+			"updateMaximizedState",
+			mainWindow.isMaximized(),
+		),
+	);
+	mainWindow.on("unmaximize", () =>
+		mainWindow.webContents.send(
+			"updateMaximizedState",
+			mainWindow.isMaximized(),
+		),
+	);
 };
 
 app.whenReady().then(() => {
 	ipcMain.handle("handleFileSelect", mainEventHandler.handleFileOpen);
 	ipcMain.handle("sendTorrentPath", mainEventHandler.handleTorrentPath);
-	ipcMain.handle("setNewTorrentSource", mainEventHandler.handleNewTorrentSource);
+	ipcMain.handle(
+		"setNewTorrentSource",
+		mainEventHandler.handleNewTorrentSource,
+	);
 	ipcMain.on("updateTorrentProgress", (torrentProgress: IpcMainEvent) => {
-		mainEventHandler.handleUpdateTorrentProgress(torrentProgress)
+		mainEventHandler.handleUpdateTorrentProgress(torrentProgress);
 	});
 
 	createWindow();
