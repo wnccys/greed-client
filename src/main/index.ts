@@ -12,7 +12,7 @@ import "reflect-metadata";
 
 function handleUpdateTorrentProgress(
 	_event: IpcMainInvokeEvent,
-	torrentProgress: string,
+	torrentProgress: number,
 ) {
 	console.log(`Updated torrent progress: ${torrentProgress}`);
 }
@@ -97,7 +97,8 @@ app.whenReady().then(() => {
 	ipcMain.handle("handleFileSelect", handleFileOpen);
 	ipcMain.handle("sendTorrentPath", handleTorrentPath);
 	ipcMain.handle("setNewTorrentSource", handleNewTorrentSource);
-	ipcMain.handle("updateTorrentProgress", handleUpdateTorrentProgress);
+	ipcMain.on("updateTorrentProgress", (_event, e: number) => handleUpdateTorrentProgress(_event, e));
+
 
 	createWindow();
 });

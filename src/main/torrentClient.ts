@@ -28,6 +28,8 @@ export async function initTorrentDownload(
 				return;
 			}
 
+			console.log("here!!!!!!!!");
+
 			torrent.on("download", (bytes) => {
 				console.log(`downloaded: ${(bytes / 1000).toFixed(1)} megabytes.`);
 				console.log(`progress: ${(torrent.progress * 100).toFixed(2)}%`);
@@ -35,7 +37,7 @@ export async function initTorrentDownload(
 					`Time remaining: ${(torrent.timeRemaining / 1000 / 60).toFixed(0)} minutes.`,
 				);
 
-				ipcMain.emit('updateTorrentProgress', torrent.progress);
+				console.log(ipcMain.emit('updateTorrentProgress', torrent.progress));
 			});
 
 			torrent.on("done", () => {
