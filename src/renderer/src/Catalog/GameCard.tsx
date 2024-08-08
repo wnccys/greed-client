@@ -15,9 +15,9 @@ export function GameCard() {
                 <Link to="../selected-game">
                     <Card
                         className="border shadow-lg 
-                        hover:drop-shadow-2xl shadow-black rounded-md h-[10em] 
-                        w-[18em] mt-8 cursor-pointer overflow-hidden transition delay-15
-                        hover:-translate-y- hover:scale-105 duration-[300]"
+                        hover:drop-shadow-2xl shadow-black rounded-md h-[15.5vh] 
+                        w-[20vw] mt-8 cursor-pointer transition delay-15
+                        hover:-translate-y-1 hover:scale-105 duration-[300]"
                     >
                         <CardContent className="p-0">
                             <img
