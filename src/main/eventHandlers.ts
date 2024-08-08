@@ -27,7 +27,7 @@ export async function handleFileOpen(): Promise<Array<string>> {
 }
 
 export async function handleTorrentPath(_event: IpcMainInvokeEvent, path: string) {
-	console.log("path to torrent is: ", path);
+	console.log("Path to torrent is: ", path);
 	const { canceled, filePaths } = await dialog.showOpenDialog({
 		title: "Select Folder",
 		properties: ["openDirectory", "createDirectory"],

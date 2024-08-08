@@ -7,7 +7,7 @@ import {
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import "reflect-metadata";
-import * as mainEventHandler from '@main/eventHandlers'
+import * as mainEventHandler from './eventHandlers'
 
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({
