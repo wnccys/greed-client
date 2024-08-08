@@ -32,19 +32,19 @@ export function MenuBar() {
 				<div className="p-0 m-0"> 
 					<Button
 						onClick={() => window.api.minimizeWindow()}
-						className="hover:bg-zinc-700 bg-[#171717] delay-100 ps-3 pe-3 h-[1.8rem]"
+						className="hover:bg-zinc-700 bg-[#171717] rounded-none rounded-s-md delay-100 ps-3 pe-3 h-[1.8rem]"
 					>
 						<MinusIcon />
 					</Button>
 					<Button
 						onClick={() => checkIsMaximized()}
-						className="hover:bg-zinc-700 bg-[#171717] delay-100 ps-3 pe-3 h-[1.8rem]"
+						className="hover:bg-zinc-700 bg-[#171717] rounded-none delay-100 ps-3 pe-3 h-[1.8rem]"
 					>
 						{isMaximized ? <CopyIcon /> : <SquareIcon />}
 					</Button>
 					<Button
 						onClick={() => window.api.closeWindow()}
-						className="hover:bg-red-500 delay-100 bg-[#171717] ps-3 pe-3 h-[1.8rem]"
+						className="hover:bg-red-500 delay-100 bg-[#171717] rounded-none rounded-e-md ps-3 pe-3 h-[1.8rem]"
 					>
 						<Cross1Icon />
 					</Button>
