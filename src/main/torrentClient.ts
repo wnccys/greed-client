@@ -10,23 +10,22 @@ export async function initTorrentDownload(
 	filePath: string,
 	downloadFolder: string,
 ) {
+	console.log(
+		"Checked if file exists: ",
+		path.join(downloadFolder, path.basename(filePath)),
+	);
+
+	if (fs.existsSync(path.join(downloadFolder, path.basename(filePath)))) {
+		console.log("File already exists at: ", downloadFolder);
+		return;
+	}
+
 	client.add(
 		filePath,
 		{ path: downloadFolder },
 		(torrent) => {
 			console.log("Download path is: ", downloadFolder);
-			console.log("\n torrent info hash: ", torrent.infoHash);
 			console.log("magnet URI: ", torrent.magnetURI, "\n");
-
-			console.log(
-				"Checked if file exists: ",
-				path.join(downloadFolder, torrent.name),
-			);
-
-			if (fs.existsSync(path.join(downloadFolder, torrent.name))) {
-				console.log("File already exists at: ", downloadFolder);
-				return;
-			}
 
 			torrent.on("download", (bytes) => {
 				console.log(`downloaded: ${(bytes / 1000).toFixed(1)} megabytes.`);
