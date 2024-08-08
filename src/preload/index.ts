@@ -14,17 +14,6 @@ const api = {
 	unmaximizeWindow: () => ipcRenderer.invoke("unmaximizeWindow"),
 	closeWindow: () => ipcRenderer.invoke("closeWindow"),
 	isMaximized: () => ipcRenderer.invoke("checkWindowIsMaximized"),
-
-	// send: (channel: string, data: unknown) => {
-	// 	if(channel && data) {
-	// 		ipcRenderer.send(channel, data);
-	// 	} else {
-	// 		throw Error("Invalid channel/data");
-	// 	}
-	// },
-	// on: (channel: string, func: (...args: unknown[]) => unknown) => {
-	// 	ipcRenderer.on(channel, (_event, ...args) => func(args));
-	// }
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
