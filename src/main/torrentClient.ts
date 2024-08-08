@@ -5,7 +5,6 @@ import { ipcMain } from "electron";
 
 const client = new WebTorrent();
 
-// FIXME fix heavy.torrent duplicated download (it points it already exists but still downloads)
 export async function initTorrentDownload(
 	filePath: string,
 	downloadFolder: string,
