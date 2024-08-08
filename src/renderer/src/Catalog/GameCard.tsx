@@ -18,7 +18,7 @@ export function GameCard() {
                         hover:drop-shadow-2xl shadow-black rounded-md h-[15.5vh] 
                         lg:w-60 lg:h-36 md:w-52 md:h-24
                         w-[20vw] mt-8 cursor-pointer transition delay-15
-                        hover:-translate-y-1 hover:scale-105 duration-[300]"
+                        hover:-translate-y-1 hover:scale-105 duration-300"
                     >
                         <CardContent className="p-0">
                             <img
@@ -27,7 +27,7 @@ export function GameCard() {
                                 className="rounded-lg"
                             />
                             <p className="p-2 fixed -translate-y-12 z-10">Baldur's Gate III</p>
-                            <p className="text-xs fixed text-black">cuzao</p>
+                            <p className="text-xs fixed text-black p-1">Description</p>
                         </CardContent>
                     </Card>
             </Link>

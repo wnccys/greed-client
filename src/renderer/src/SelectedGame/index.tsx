@@ -15,8 +15,8 @@ export function SelectedGame() {
 			<div id="game-cover" className="mt-6">
 				<div className="absolute text-lg translate-x-8 translate-y-6">
 					<Link to="../catalog">
-						<DoubleArrowLeftIcon className="size-5 transition 
-                            delay-150 hover:-translate-y-1 hover:scale-105 duration-[300]"/>
+						<DoubleArrowLeftIcon className="size-5 delay-150 hover:-translate-y-1
+						 transition hover:scale-105 duration-300"/>
 					</Link>
 				</div>
 				<img src={GameDummyImage} alt="game-cover" className="" />
@@ -24,7 +24,7 @@ export function SelectedGame() {
 
 			<div id="play-menu" 
 				className="flex justify-center pt-5 transition delay-150
-				drop-shadow-lg shadow-black duration-[300]">
+				drop-shadow-lg shadow-black duration-300">
 				<div
 					className="absolute transform -translate-y-3/4 bg-[#242424] 
                         rounded-xl text-white w-[25em] flex justify-center"
