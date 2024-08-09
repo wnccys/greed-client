@@ -10,9 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@renderer/ShadComponents/ui/card"
-// biome-ignore lint/style/useImportType: <explanation>
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -116,14 +115,14 @@ const chartData = [
 
 const chartConfig = {
   views: {
-    label: "Page Views",
+    label: "Mbps",
   },
   desktop: {
-    label: "Desktop",
+    label: "Download Speed",
     color: "hsl(var(--chart-1))",
   },
   mobile: {
-    label: "Mobile",
+    label: "Disk Usage",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig
@@ -140,13 +139,14 @@ export function Downloads() {
     []
   )
 
-  return (
-    <Card>
+return (
+  <div className="mt-20 flex flex-col container scale-90 content-center">
+    <Card className="bg-black scale-100">
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <CardTitle>Bar Chart - Interactive</CardTitle>
+          <CardTitle>Download Stats</CardTitle>
           <CardDescription>
-            Showing total visitors for the last 3 months
+            Showing total download speed and disk usage
           </CardDescription>
         </div>
         <div className="flex">
@@ -202,7 +202,7 @@ export function Downloads() {
             <ChartTooltip
               content={
                 <ChartTooltipContent
-                  className="w-[150px]"
+                  className="w-[150px] red-500"
                   nameKey="views"
                   labelFormatter={(value) => {
                     return new Date(value).toLocaleDateString("en-US", {
@@ -214,10 +214,11 @@ export function Downloads() {
                 />
               }
             />
-            <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
+            <Bar dataKey={activeChart} fill={"#ef4444"} />
           </BarChart>
         </ChartContainer>
       </CardContent>
     </Card>
+  </div>
   )
 }
