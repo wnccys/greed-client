@@ -9,7 +9,8 @@ import { createBrowserRouter,
 import { SelectedGame } from './SelectedGame';
 import { Catalog } from './Catalog';
 import { ErrorElement } from './ErrorElement';
-import { Settings } from './Settings'
+import { Settings } from './Settings';
+import { Downloads } from './Downloads';
 
  const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ import { Settings } from './Settings'
       {
         path: "settings",
         element: <Settings />
+      },
+      {
+        path: "downloads",
+        element: <Downloads />,
       }
     ],
     errorElement: <ErrorElement />
