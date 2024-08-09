@@ -136,7 +136,7 @@ export function Downloads() {
   )
 
 return (
-  <div className="flex flex-col container scale-90 content-center h-screen justify-center">
+  <div className="flex flex-col container scale-90 content-center h-screen">
     <Card className="bg-black scale-100">
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
@@ -203,7 +203,7 @@ return (
             <ChartTooltip
               content={
                 <ChartTooltipContent
-                  className="w-[150px] red-500"
+                  className="w-[150px] bg-zinc-950"
                   nameKey="views"
                   labelFormatter={(value) => {
                     return new Date(value).toLocaleDateString("en-US", {
@@ -220,6 +220,13 @@ return (
         </ChartContainer>
       </CardContent>
     </Card>
+
+    <div className="flex flex-col gap-4 mt-10">
+        <h1 className="text-2xl">Queue</h1>
+        <div className="size-24 w-full border border-white bg-zinc-950 rounded-xl">
+
+        </div>
+    </div>
   </div>
   )
 }
