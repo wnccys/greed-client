@@ -47,7 +47,7 @@ export function App(): JSX.Element {
 				</div>
 			<div
 				id="main-section"
-				className="flex flex-col p-0 mb-[100px] w-screen ms-[16rem] mt-[1.8rem]"
+				className="flex flex-col p-0 w-screen ms-[16rem] mt-[1.8rem]"
 			>
 				<Outlet />
 			</div>
