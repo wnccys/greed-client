@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { Progress } from "@renderer/ShadComponents/ui/progress"
 
 export function MenuBar() {
-	const [isMaximized, setIsMaximized] = useState<boolean>(false);
+	const [isMaximized, setIsMaximized] = useState<boolean>(true);
 
 	useEffect(() => {
 		window.electron.ipcRenderer.on(
@@ -41,7 +41,6 @@ export function MenuBar() {
 	}, []);
 
 	const checkIsMaximized = () => {
-		setIsMaximized(!isMaximized);
 		if (isMaximized) {
 			window.api.unmaximizeWindow();
 		} else {
