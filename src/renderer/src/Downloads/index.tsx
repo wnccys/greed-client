@@ -136,7 +136,7 @@ export function Downloads() {
   )
 
 return (
-  <div className="flex flex-col container scale-90 content-center mb-10 justify-center">
+  <div className="flex flex-col container scale-90 content-center h-screen justify-center">
     <Card className="bg-black scale-100">
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
@@ -153,17 +153,19 @@ return (
                 type="button"
                 key={chart}
                 data-active={activeChart === chart}
-                className="relative z-30 flex flex-1 flex-col justify-center 
-                gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/15
+                className="relative z-30 justify-center border-t px-6 py-4
+                text-left even:border-l data-[active=true]:bg-muted/15
                 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
                 onClick={() => setActiveChart(chart)}
               >
-                <span className="text-xs text-muted-foreground text-white">
-                  {chartConfig[chart].label}
-                </span>
-                <span className="text-lg font-bold leading-none sm:text-3xl">
-                  {total[key as keyof typeof total].toLocaleString()}
-                </span>
+                <div className="flex flex-col">
+                  <span className="text-xs text-muted-foreground text-white mb-1">
+                    {chartConfig[chart].label}
+                  </span>
+                  <span className="text-lg font-bold leading-none sm:text-3xl">
+                    {total[key as keyof typeof total].toLocaleString()}
+                  </span>
+              </div>
               </button>
             )
           })}
@@ -178,8 +180,8 @@ return (
             accessibilityLayer
             data={chartData}
             margin={{
-              left: 12,
-              right: 12,
+              left: 15,
+              right: 15,
             }}
           >
             <CartesianGrid vertical={false} />
