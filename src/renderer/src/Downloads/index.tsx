@@ -1,59 +1,21 @@
-// import type { Bar, BarChart } from "recharts"
-// import {
-//     type ChartContainer, ChartTooltipContent 
-// } from "@renderer/ShadComponents/ui/chart"
-
-// const data = [
-//   { month: "January", desktop: 186, mobile: 80 },
-//   { month: "February", desktop: 305, mobile: 200 },
-//   { month: "March", desktop: 237, mobile: 120 },
-//   { month: "April", desktop: 73, mobile: 190 },
-//   { month: "May", desktop: 209, mobile: 130 },
-//   { month: "June", desktop: 214, mobile: 140 },
-// ]
-
-// import type { ChartConfig } from "@renderer/ShadComponents/ui/chart"
- 
-// const chartConfig = {
-//   desktop: {
-//     label: "Desktop",
-//     color: "#2563eb",
-//   },
-//   mobile: {
-//     label: "Mobile",
-//     color: "#60a5fa",
-//   },
-// } satisfies ChartConfig
-
-// export function Downloads() {
-//     return (
-//         <ChartContainer>
-//             <BarChart data={data}>
-//                 <Bar dataKey="value" />
-//                 <ChartTooltip content={<ChartTooltipContent />} />
-//             </BarChart>
-//         </ChartContainer>
-//     )
-// }
-
 "use client"
 
 import * as React from "react"
-import { Bar, type BarChart, CartesianGrid, XAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 
 import {
-  type Card,
+  Card,
   CardContent,
-  type CardDescription,
-  type CardHeader,
-  type CardTitle,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@renderer/ShadComponents/ui/card"
-
+// biome-ignore lint/style/useImportType: <explanation>
 import {
-  type ChartConfig,
-  type ChartContainer,
+  ChartConfig,
+  ChartContainer,
   ChartTooltip,
-  type ChartTooltipContent,
+  ChartTooltipContent,
 } from "@renderer/ShadComponents/ui/chart"
 
 export const description = "An interactive bar chart"
@@ -166,7 +128,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function Component() {
+export function Downloads() {
   const [activeChart, setActiveChart] =
     React.useState<keyof typeof chartConfig>("desktop")
 
@@ -191,6 +153,7 @@ export function Component() {
           {["desktop", "mobile"].map((key) => {
             const chart = key as keyof typeof chartConfig
             return (
+              // biome-ignore lint/a11y/useButtonType: <explanation>
               <button
                 key={chart}
                 data-active={activeChart === chart}
