@@ -41,6 +41,7 @@ export function MenuBar() {
 	}, []);
 
 	const checkIsMaximized = () => {
+		setIsMaximized(!isMaximized);
 		if (isMaximized) {
 			window.api.unmaximizeWindow();
 		} else {
