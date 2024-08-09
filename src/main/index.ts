@@ -6,8 +6,8 @@ import * as mainEventHandler from "./eventHandlers";
 
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({
-		width: 950,
-		height: 670,
+		roundedCorners: true,
+		backgroundColor: "#171717",
 		minWidth: 750,
 		minHeight: 625,
 		autoHideMenuBar: true,
@@ -23,13 +23,13 @@ const createWindow = () => {
 
 	mainEventHandler.registerWindowEvents(mainWindow.id);
 
-	mainWindow.on("enter-html-full-screen", () =>
+	mainWindow.on("enter-full-screen", () =>
 		mainWindow.webContents.send(
 			"updateMaximizedState",
 			mainWindow.isMaximized(),
 		),
 	);
-	mainWindow.on("leave-html-full-screen", () =>
+	mainWindow.on("leave-full-screen", () =>
 		mainWindow.webContents.send(
 			"updateMaximizedState",
 			mainWindow.isMaximized(),
