@@ -7,9 +7,10 @@ import {
 } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { Progress } from "@renderer/ShadComponents/ui/progress"
+import { Link } from "react-router-dom";
 
 export function MenuBar() {
-	const [isMaximized, setIsMaximized] = useState<boolean>(true);
+	const [isMaximized, setIsMaximized] = useState<boolean>(false);
 
 	useEffect(() => {
 		window.electron.ipcRenderer.on(
@@ -79,11 +80,13 @@ export function MenuBar() {
 					</Button>
 				</div>
 			</div>
-			{ data !== 0 &&
+			{ data > 0 &&
 			<div className="h-[2rem] bg-zinc-950 fixed flex w-full z-10 justify-center bottom-0">
 				<div className="self-center flex w-[30%] ms-[12rem]">
-					<p className="text-sm me-8">{data}%</p>
-					<Progress value={data} className="bg-zinc-800 self-center" />
+					<p className="text-sm me-4">{data}%</p>
+					<Link to="../downloads" className="self-center w-[100%]">
+						<Progress value={data} className="bg-zinc-800 self-center" />
+					</Link>
 				</div>
 			</div>
 			}

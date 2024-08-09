@@ -43,7 +43,7 @@ export async function initTorrentDownload(
 
 			torrent.on("done", () => {
 				console.log("Torrent Download Complete.");
-				ipcMain.emit('updateTorrentProgress', 0);
+				ipcMain.emit('updateTorrentProgress', -1);
 				ipcMain.removeAllListeners('updateTorrentProgress');
 
 				torrent.destroy();
