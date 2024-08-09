@@ -17,7 +17,6 @@ export function MenuBar() {
 			"updateMaximizedState",
 			(_event, maximizedState: boolean) => {
 				setIsMaximized(maximizedState);
-				console.log(`Updated maximized state ${maximizedState}`);
 			},
 		);
 
