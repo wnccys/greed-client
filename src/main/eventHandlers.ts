@@ -8,6 +8,16 @@ import {
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 
+ipcMain.handle("handleFileSelect", handleFileOpen);
+ipcMain.handle("sendTorrentPath", handleTorrentPath);
+ipcMain.handle(
+	"setNewTorrentSource",
+	handleNewTorrentSource,
+);
+// ipcMain.on("updateTorrentProgress", (torrentProgress: IpcMainEvent) => {
+// 	handleUpdateTorrentProgress(torrentProgress);
+// });
+
 
 export function registerWindowEvents(windowId: number) {
 	const mainWindow = BrowserWindow.fromId(windowId);
@@ -24,9 +34,19 @@ export function registerWindowEvents(windowId: number) {
 
 export function handleUpdateTorrentProgress(torrentProgress: IpcMainEvent) {
 	for (const win of BrowserWindow.getAllWindows()) {
+		const formattedProgress = Number(torrentProgress) * 100;
+		if (formattedProgress > 99.7) {
+			win.webContents.send(
+				"updateTorrentProgress",
+				100,
+			);
+
+			return;
+		};
+
 		win.webContents.send(
 			"updateTorrentProgress",
-			(Number(torrentProgress) * 100).toFixed(2),
+			formattedProgress.toFixed(2),
 		);
 	}
 }

@@ -50,16 +50,6 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
-	ipcMain.handle("handleFileSelect", mainEventHandler.handleFileOpen);
-	ipcMain.handle("sendTorrentPath", mainEventHandler.handleTorrentPath);
-	ipcMain.handle(
-		"setNewTorrentSource",
-		mainEventHandler.handleNewTorrentSource,
-	);
-	ipcMain.on("updateTorrentProgress", (torrentProgress: IpcMainEvent) => {
-		mainEventHandler.handleUpdateTorrentProgress(torrentProgress);
-	});
-
 	createWindow();
 });
 

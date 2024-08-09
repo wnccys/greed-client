@@ -6,6 +6,7 @@ import {
 	CopyIcon,
 } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
+import { Progress } from "@renderer/ShadComponents/ui/progress"
 
 export function MenuBar() {
 	const [isMaximized, setIsMaximized] = useState<boolean>(false);
@@ -24,11 +25,11 @@ export function MenuBar() {
 		};
 	}, []);
 
-	const [data, setData] = useState<string>("");
+	const [data, setData] = useState<number>(0);
 	useEffect(() => {
 		window.electron.ipcRenderer.on(
 			"updateTorrentProgress",
-			(_event, torrentProgress: string) => {
+			(_event, torrentProgress: number) => {
 				setData(torrentProgress);
 			},
 		);
@@ -78,11 +79,14 @@ export function MenuBar() {
 					</Button>
 				</div>
 			</div>
+			{ data !== 0 &&
 			<div className="h-[2rem] bg-zinc-950 fixed flex w-full z-10 justify-center bottom-0">
-				<p className="self-center text-white">
-					Torrent Progress: {data}
-				</p>
+				<div className="self-center flex w-[30%] ms-[12rem]">
+					<p className="text-sm me-8">{data}%</p>
+					<Progress value={data} className="bg-zinc-800 self-center" />
+				</div>
 			</div>
+			}
 		</>
 	);
 }
