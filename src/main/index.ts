@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, type IpcMainEvent } from "electron";
+import { app, BrowserWindow } from "electron";
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import "reflect-metadata";
