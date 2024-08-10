@@ -7,7 +7,9 @@ import {
 } from "electron";
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
+import { handleStartTorrentDownload } from "./tests";
 
+ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
 ipcMain.handle("sendTorrentPath", handleTorrentPath);
 ipcMain.handle(
@@ -15,23 +17,12 @@ ipcMain.handle(
 	handleNewTorrentSource,
 );
 
-export function registerWindowEvents(windowId: number) {
-	const mainWindow = BrowserWindow.fromId(windowId);
-	if (mainWindow) {
-		ipcMain.handle("minimizeWindow", () => mainWindow.minimize());
-		ipcMain.handle("maximizeWindow", () => mainWindow.maximize());
-		ipcMain.handle("unmaximizeWindow", () => mainWindow.unmaximize());
-		ipcMain.handle("closeWindow", () => mainWindow.close());
-		ipcMain.handle("checkWindowIsMaximized", () => mainWindow.isMaximized());
-	} else {
-		throw Error("Could Not Get Window from Id.");
-	}
-}
-
+ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 export function handleUpdateTorrentProgress(torrentProgress: IpcMainEvent) {
 	for (const win of BrowserWindow.getAllWindows()) {
 		const formattedProgress = Number(torrentProgress) * 100;
 
+		// Send data to all listeners registered in selected Window.
 		win.webContents.send(
 			"updateTorrentProgress",
 			formattedProgress.toFixed(2),
@@ -89,5 +80,18 @@ export async function handleNewTorrentSource(
 			);
 	} catch (e) {
 		console.error(e);
+	}
+}
+
+export function registerWindowEvents(windowId: number) {
+	const mainWindow = BrowserWindow.fromId(windowId);
+	if (mainWindow) {
+		ipcMain.handle("minimizeWindow", () => mainWindow.minimize());
+		ipcMain.handle("maximizeWindow", () => mainWindow.maximize());
+		ipcMain.handle("unmaximizeWindow", () => mainWindow.unmaximize());
+		ipcMain.handle("closeWindow", () => mainWindow.close());
+		ipcMain.handle("checkWindowIsMaximized", () => mainWindow.isMaximized());
+	} else {
+		throw Error("Could Not Get Window from Id.");
 	}
 }
