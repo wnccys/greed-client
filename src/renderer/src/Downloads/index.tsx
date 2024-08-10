@@ -16,7 +16,6 @@ import {
 } from "@renderer/ShadComponents/ui/chart"
 import { Progress } from "@renderer/ShadComponents/ui/progress"
 import { useEffect, useState } from "react"
-import { DidNavigateEvent } from "electron"
 
 const chartData = [
   { date: "2024-04-01", desktop: 222, mobile: 150 },
