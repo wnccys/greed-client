@@ -4,6 +4,7 @@ declare global {
   interface Window {
     electron: ElectronAPI
     api: Api 
+    tests: Tests
   }
 
   interface Api {
@@ -15,5 +16,9 @@ declare global {
     unmaximizeWindow: () => null,
     closeWindow: () => null,
     isMaximized: () => boolean,
+  }
+
+  interface Tests {
+    startTorrentDownloadTest: () => null,
   }
 }
