@@ -14,6 +14,9 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@renderer/ShadComponents/ui/chart"
+import { Progress } from "@renderer/ShadComponents/ui/progress"
+import { useEffect, useState } from "react"
+import { DidNavigateEvent } from "electron"
 
 const chartData = [
   { date: "2024-04-01", desktop: 222, mobile: 150 },
@@ -135,6 +138,34 @@ export function Downloads() {
     []
   )
 
+  const [torrentProgress, setTorrentProgress] = useState<number>(0);
+  useEffect(() => {
+    window.electron.ipcRenderer.on('updateTorrentProgress', (_event, torrentProgress: number) => {
+      setTorrentProgress(torrentProgress);
+    });
+
+    return () => {
+      // window.electron.ipcRenderer.removeAllListeners('updateTorrentProgress');
+    }
+  }, []);
+
+  function DownloadCard() {
+      if (torrentProgress > 0) {
+        return (
+          <div className="flex items-center gap-5">
+            <img src="https://placehold.co/75" alt="game-image" />
+            <div className="text-sm pe-5">{"<GameName>"}</div>
+            <div className="w-[45rem]">
+              <p className="pe-4">{torrentProgress}%</p>
+              <Progress value={torrentProgress} />
+            </div>
+          </div>
+        )
+    }
+
+    return ""
+  }
+
 return (
   <div className="flex flex-col container scale-90 content-center h-screen">
     <Card className="bg-black scale-100">
@@ -223,8 +254,14 @@ return (
 
     <div className="flex flex-col gap-4 mt-10">
         <h1 className="text-2xl">Queue</h1>
-        <div className="size-24 w-full border border-white bg-zinc-950 rounded-xl">
-
+        <div className="size-24 w-full h-full flex flex-col border 
+        border-white bg-zinc-950 rounded-xl gap-2 p-5">
+            {Array.from({ length: 4 }).map((_, index) => {
+              return (
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                <DownloadCard key={index} />
+              )
+            })}
         </div>
     </div>
   </div>

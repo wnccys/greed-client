@@ -7,10 +7,11 @@ import {
 } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { Progress } from "@renderer/ShadComponents/ui/progress"
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export function MenuBar() {
 	const [isMaximized, setIsMaximized] = useState<boolean>(false);
+	const location = useLocation();
 
 	useEffect(() => {
 		window.electron.ipcRenderer.on(
@@ -36,7 +37,7 @@ export function MenuBar() {
 
 		return () => {
 			// Clean up the listener when the component is unmounted
-			window.electron.ipcRenderer.removeAllListeners("updateTorrentProgress");
+			// window.electron.ipcRenderer.removeAllListeners("updateTorrentProgress");
 		};
 	}, []);
 
@@ -79,15 +80,13 @@ export function MenuBar() {
 					</Button>
 				</div>
 			</div>
-			{ data > 0 &&
-			<div className="h-[2rem] bg-zinc-950 fixed flex w-full z-10 justify-center bottom-0">
+			{ data > 0 && location.pathname !== "/downloads" &&
+			<Link to="../downloads" className="self-center h-[2rem] bg-zinc-950 hover:bg-zinc-800 fixed flex w-full z-10 justify-center bottom-0">
 				<div className="self-center flex w-[30%] ms-[12rem]">
 					<p className="text-sm me-4">{data}%</p>
-					<Link to="../downloads" className="self-center w-[100%]">
-						<Progress value={data} className="bg-zinc-800 self-center" />
-					</Link>
+					<Progress value={data} className="bg-zinc-800 self-center" />
 				</div>
-			</div>
+			</Link>
 			}
 		</>
 	);
