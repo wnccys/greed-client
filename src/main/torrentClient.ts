@@ -1,7 +1,5 @@
 import WebTorrent from "webtorrent";
-import path from "node:path";
-import fs from "node:fs";
-import { ipcMain, type IpcMainEvent } from "electron";
+import { ipcMain } from "electron";
 // import { handleUpdateTorrentProgress } from "./eventHandlers";
 
 const client = new WebTorrent();
