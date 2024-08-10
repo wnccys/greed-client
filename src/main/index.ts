@@ -63,39 +63,14 @@ import {
 	});
   };
   
-  const createSecond = () => {
-	const secondaryWindow = new BrowserWindow({
-	  width: 900,
-	  height: 670,
-	  autoHideMenuBar: true,
-	  webPreferences: {
-		preload: path.join(__dirname, "../preload/index.mjs"),
-		sandbox: false,
-		webSecurity: false,
-	  },
-	  titleBarStyle: 'hidden',
-	  titleBarOverlay: {
-		color: '#171717',
-		symbolColor: '#F5F5F5',
-		height: 25,
-	  }
-	});
-  
 	Menu.setApplicationMenu(null);
   
-	secondaryWindow.loadURL("http://localhost:5173/download");
-  
-	secondaryWindow.on("ready-to-show", () => {
-	  secondaryWindow.show();
-	});
-  };
   
   app.whenReady().then(() => {
 	ipcMain.handle("handleFileSelect", handleFileOpen);
 	ipcMain.handle("sendTorrentPath", handleTorrentPath);
   
 	createWindow();
-	createSecond();
   
 	app.on("activate", () => {
 	  if (BrowserWindow.getAllWindows().length === 0) createWindow();
