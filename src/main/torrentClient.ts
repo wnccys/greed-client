@@ -1,6 +1,5 @@
 import WebTorrent from "webtorrent";
 import { ipcMain } from "electron";
-// import { handleUpdateTorrentProgress } from "./eventHandlers";
 
 const client = new WebTorrent();
 
