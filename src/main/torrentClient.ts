@@ -24,3 +24,13 @@ export async function initTorrentDownload(
 		}, 1000);
 	});
 }
+
+export async function pauseTorrentDownload(torrentId: string) {
+	const torrent = client.get(torrentId);
+	if (torrent) {
+		console.log(torrent);
+		return;
+	}
+
+	console.log("Invalid Torrent Id.");
+}
