@@ -1,4 +1,3 @@
-import { InputFile } from "@renderer/ShadComponents/ui/inputfile";
 import GameDummyImage from "@renderer/Assets/image.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -12,7 +11,7 @@ export function SelectedGame() {
 
 	return (
 		<>
-			<div id="game-cover" className="mt-6">
+			<div id="game-cover">
 				<div className="absolute text-lg translate-x-8 translate-y-6">
 					<Link to="../catalog">
 						<DoubleArrowLeftIcon className="size-5 delay-150 hover:-translate-y-1
@@ -37,12 +36,11 @@ export function SelectedGame() {
 						<Button 
 						className="p-6 bg-white text-zinc-900 hover:text-white w-full 
 						h-full ps-10 pe-10 text-lg transition delay-150 duration-300"
+						onClick={() => window.tests.startTorrentDownloadTest()}
 					>
 							Run
 						</Button>
 					</div>
-					<InputFile updateDownloadResult={setDownloadResult} />
-					<p className={`pt-4 ${downloadResult ? '' : 'hidden p-0 m-0'}`}>{downloadResult}</p>
 				</div>
 			</div>
 		</>
