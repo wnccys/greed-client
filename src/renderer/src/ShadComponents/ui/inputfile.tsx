@@ -1,4 +1,4 @@
-import { Button } from "@renderer/components/ui/button";
+import { Button } from "@renderer/ShadComponents/ui/button";
 import { useState } from "react";
 
 interface InputFileProps {
@@ -17,9 +17,10 @@ export function InputFile({ updateDownloadResult }: InputFileProps){
 	}
 
 	async function sendTorrentFilePath() {
-		const result = await window.api.sendTorrentPath(filePath);
-
-		updateDownloadResult(result);
+		if (filePath) {
+			const result = await window.api.sendTorrentPath(filePath);
+			updateDownloadResult(result);
+		}
 	}
 
 	return (

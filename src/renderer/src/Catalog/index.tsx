@@ -1,28 +1,46 @@
-import { Input } from "@renderer/components/ui/input";
-import SearchIcon from "@renderer/assets/icon-search.svg"
-import { Link } from "react-router-dom";
+import { Input } from "@renderer/ShadComponents/ui/input";
+import { SearchIcon } from "@renderer/Assets/icons";
+import { CustomCarousel } from "./CustomCarousel";
+import { GameCard } from "./GameCard";
 
 export function Catalog() {
-    return (
-        <>
-            <div className="flex gap-2 max-h-[10vh] justify-end mt-10 me-10">
-                <div className="rounded-md bg-zinc-800 flex p-2 ps-4 items-center 
-                hover:shadow-xl">
-                    <img src={SearchIcon} alt="search-icon" className="size-4" />
-                    <Input 
-                        className="max-w-[14vw] max-h-8 border-none focus-visible:ring-0
-                            focus-visible:ring-offset-0" 
-                        type="text" placeholder="Search"/>
-                </div>
-            </div>
+	return (
+		<div className="bg-[#171717]">
+			<div className="flex gap-2 justify-between mt-10 me-10">
+				<div className="ms-10 flex self-center">
+					<h1 className="text-2xl font-bold">Catalog</h1>
+				</div>{" "}
+				<div
+					className="rounded-md bg-zinc-800 flex p-2 ps-4 
+				items-center hover:shadow-xl"
+				>
+					<img src={SearchIcon} alt="search-icon" className="size-4" />
+					<Input
+						className="max-w-[12vw] max-h-8 border-none focus-visible:ring-0 
+                        focus:max-w-[14vw] focus-visible:ring-offset-0"
+						type="text"
+						placeholder="Search"
+					/>
+				</div>
+			</div>
 
-            <div className="mt-[10vh] ps-10">
-                <h1 className="text-2xl font-bold">
-                    Catalog 
-                </h1>
-
-                <Link to="../selected-game" >Game</Link>
-            </div>
-        </>
-    )
+			<div className="ms-8 mt-[2rem] me-10 bg-[#171717] mb-10">
+				<div
+					className="shadow-lg hover:drop-shadow-2xl
+                transition-colors shadow-black rounded-lg"
+				>
+					<CustomCarousel />
+				</div>
+				<div
+					id="games-section"
+					className="mt-5 flex flex-wrap justify-between gap-4"
+				>
+					{Array.from({ length: 6 }).map((_, key) => {
+						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+						return <GameCard key={key} />
+					})}
+				</div>
+			</div>
+		</div>
+	);
 }

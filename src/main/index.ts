@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {
 	app,
 	BrowserWindow,
@@ -37,22 +38,30 @@ import {
   }
   
   const createWindow = () => {
+=======
+import { app, BrowserWindow } from "electron";
+import { optimizer } from "@electron-toolkit/utils";
+import path from "node:path";
+import "reflect-metadata";
+import * as mainEventHandler from "./eventHandlers";
+
+const createWindow = () => {
+>>>>>>> 5095f491525e76447a40d89d34828e9d282c5da2
 	const mainWindow = new BrowserWindow({
-		width: 900,
-		height: 670,
+		roundedCorners: true,
+		backgroundColor: "#171717",
+		minWidth: 750,
+		minHeight: 625,
 		autoHideMenuBar: true,
 		webPreferences: {
 			preload: path.join(__dirname, "../preload/index.mjs"),
 			sandbox: false,
 			webSecurity: false,
 		},
-		titleBarStyle: 'hidden',
-		titleBarOverlay: {
-			color: '#171717',
-			symbolColor: '#F5F5F5',
-			height: 25,
-		},
+		titleBarStyle: "hidden",
+		show: false,
 	});
+<<<<<<< HEAD
   
 	Menu.setApplicationMenu(null);
   
@@ -70,6 +79,39 @@ import {
 	ipcMain.handle("handleFileSelect", handleFileOpen);
 	ipcMain.handle("sendTorrentPath", handleTorrentPath);
   
+=======
+	mainWindow.loadURL("http://localhost:5173").then(() => mainWindow.show());
+
+	mainEventHandler.registerWindowEvents(mainWindow.id);
+
+	mainWindow.on("enter-full-screen", () =>
+		mainWindow.webContents.send(
+			"updateMaximizedState",
+			mainWindow.isMaximized(),
+		),
+	);
+	mainWindow.on("leave-full-screen", () =>
+		mainWindow.webContents.send(
+			"updateMaximizedState",
+			mainWindow.isMaximized(),
+		),
+	);
+	mainWindow.on("maximize", () =>
+		mainWindow.webContents.send(
+			"updateMaximizedState",
+			mainWindow.isMaximized(),
+		),
+	);
+	mainWindow.on("unmaximize", () =>
+		mainWindow.webContents.send(
+			"updateMaximizedState",
+			mainWindow.isMaximized(),
+		),
+	);
+};
+
+app.whenReady().then(() => {
+>>>>>>> 5095f491525e76447a40d89d34828e9d282c5da2
 	createWindow();
   
 	app.on("activate", () => {
@@ -83,5 +125,9 @@ import {
   
   app.on("browser-window-created", (_, window) => {
 	optimizer.watchWindowShortcuts(window);
+<<<<<<< HEAD
   });
   
+=======
+});
+>>>>>>> 5095f491525e76447a40d89d34828e9d282c5da2
