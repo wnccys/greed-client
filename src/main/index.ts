@@ -1,44 +1,3 @@
-<<<<<<< HEAD
-import {
-	app,
-	BrowserWindow,
-	ipcMain,
-	dialog,
-	Menu,
-	type IpcMainInvokeEvent,
-  } from "electron";
-  import { optimizer } from "@electron-toolkit/utils";
-  import path from "node:path";
-  import { initTorrentDownload } from "./torrentClient";
-  
-  async function handleFileOpen(): Promise<Array<string>> {
-	const { canceled, filePaths } = await dialog.showOpenDialog({
-	  title: "Select File",
-	  properties: ["openFile"]
-	});
-  
-	if (!canceled) {
-	  console.log(filePaths);
-	  return [`Selected File: ${path.basename(filePaths[0])}`, filePaths[0]];
-	}
-  
-	return ["", "Please, Select a Valid Torrent File"];
-  }
-  
-  async function handleTorrentPath(_event: IpcMainInvokeEvent, path: string) {
-	console.log("path to torrent is: ", path);
-	const { canceled, filePaths } = await dialog.showOpenDialog({
-	  title: "Select Folder",
-	  properties: ["openDirectory", "createDirectory"],
-	});
-  
-	if (!canceled) {
-	  initTorrentDownload(path, filePaths[0]);
-	}
-  }
-  
-  const createWindow = () => {
-=======
 import { app, BrowserWindow } from "electron";
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
@@ -46,7 +5,6 @@ import "reflect-metadata";
 import * as mainEventHandler from "./eventHandlers";
 
 const createWindow = () => {
->>>>>>> 5095f491525e76447a40d89d34828e9d282c5da2
 	const mainWindow = new BrowserWindow({
 		roundedCorners: true,
 		backgroundColor: "#171717",
@@ -61,25 +19,6 @@ const createWindow = () => {
 		titleBarStyle: "hidden",
 		show: false,
 	});
-<<<<<<< HEAD
-  
-	Menu.setApplicationMenu(null);
-  
-	mainWindow.loadURL("http://localhost:5173");
-  
-	mainWindow.on("ready-to-show", () => {
-	  mainWindow.show();
-	});
-  };
-  
-	Menu.setApplicationMenu(null);
-  
-  
-  app.whenReady().then(() => {
-	ipcMain.handle("handleFileSelect", handleFileOpen);
-	ipcMain.handle("sendTorrentPath", handleTorrentPath);
-  
-=======
 	mainWindow.loadURL("http://localhost:5173").then(() => mainWindow.show());
 
 	mainEventHandler.registerWindowEvents(mainWindow.id);
@@ -111,7 +50,6 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
->>>>>>> 5095f491525e76447a40d89d34828e9d282c5da2
 	createWindow();
   
 	app.on("activate", () => {
@@ -125,9 +63,4 @@ app.whenReady().then(() => {
   
   app.on("browser-window-created", (_, window) => {
 	optimizer.watchWindowShortcuts(window);
-<<<<<<< HEAD
-  });
-  
-=======
 });
->>>>>>> 5095f491525e76447a40d89d34828e9d282c5da2
