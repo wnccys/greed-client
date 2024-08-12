@@ -8,6 +8,7 @@ import {
 import { useEffect, useState } from "react";
 import { Progress } from "@renderer/ShadComponents/ui/progress"
 import { Link, useLocation } from "react-router-dom";
+import { useDownloads } from "@renderer/Hooks/downloads";
 
 export function MenuBar() {
 	const [isMaximized, setIsMaximized] = useState<boolean>(false);
@@ -26,20 +27,7 @@ export function MenuBar() {
 		};
 	}, []);
 
-	const [data, setData] = useState<number>(0);
-	useEffect(() => {
-		window.electron.ipcRenderer.on(
-			"updateTorrentProgress",
-			(_event, torrentProgress: number) => {
-				setData(torrentProgress);
-			},
-		);
-
-		return () => {
-			// Clean up the listener when the component is unmounted
-			// window.electron.ipcRenderer.removeAllListeners("updateTorrentProgress");
-		};
-	}, []);
+	const downloadsInfo = useDownloads();
 
 	const checkIsMaximized = () => {
 		setIsMaximized(!isMaximized);
@@ -80,11 +68,11 @@ export function MenuBar() {
 					</Button>
 				</div>
 			</div>
-			{ data > 0 && location.pathname !== "/downloads" &&
+			{ downloadsInfo > 0 && location.pathname !== "/downloads" &&
 			<Link to="../downloads" className="self-center h-[2rem] bg-zinc-950 hover:bg-zinc-800 fixed flex w-full z-10 justify-center bottom-0">
 				<div className="self-center flex w-[30%] ms-[12rem]">
-					<p className="text-sm me-4">{data}%</p>
-					<Progress value={data} className="bg-zinc-800 self-center" />
+					<p className="text-sm me-4">{downloadsInfo}%</p>
+					<Progress value={downloadsInfo} className="bg-zinc-800 self-center" />
 				</div>
 			</Link>
 			}

@@ -15,7 +15,7 @@ import {
   ChartTooltipContent,
 } from "@renderer/ShadComponents/ui/chart"
 import { Progress } from "@renderer/ShadComponents/ui/progress"
-import { useEffect, useState } from "react"
+import { useDownloads } from "@renderer/Hooks/downloads"
 
 const chartData = [
   { date: "2024-04-01", desktop: 222, mobile: 150 },
@@ -137,16 +137,7 @@ export function Downloads() {
     []
   )
 
-  const [torrentProgress, setTorrentProgress] = useState<number>(0);
-  useEffect(() => {
-    window.electron.ipcRenderer.on('updateTorrentProgress', (_event, torrentProgress: number) => {
-      setTorrentProgress(torrentProgress);
-    });
-
-    return () => {
-      // window.electron.ipcRenderer.removeAllListeners('updateTorrentProgress');
-    }
-  }, []);
+  const torrentProgress = useDownloads();
 
   function DownloadCard() {
       if (torrentProgress > 0) {
