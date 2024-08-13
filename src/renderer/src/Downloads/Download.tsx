@@ -1,10 +1,7 @@
   
-import { BarGrid } from "../components/ui/bargrid";
+import { BarGrid } from "../ShadComponents/ui/bargrid";
 import { useState } from "react";
-import { CardHeader } from "@renderer/components/ui/gridHeader";
-
-
-
+import { CardHeader } from "@renderer/ShadComponents/ui/gridHeader";
 
 export function Download() {
   const [downloadResult, setDownloadResult] = useState<string | undefined>(

@@ -1,4 +1,4 @@
-import GameDummyImage from "@renderer/Assets/image.png";
+import GameDummyImage from "@renderer/assets/image.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { DoubleArrowLeftIcon } from "@radix-ui/react-icons";
