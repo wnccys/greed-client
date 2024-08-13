@@ -5,6 +5,8 @@ type downloadsInfo = {
 	currentProgress: number;
 	timeRemaining: number;
 	downloadSpeed: number;
+	downloaded: number;
+	totalSize: number;
 };
 
 export function useDownloads(): downloadsInfo {
@@ -13,6 +15,8 @@ export function useDownloads(): downloadsInfo {
 		currentProgress: 0,
 		timeRemaining: 0,
 		downloadSpeed: 0,
+		downloaded: 0,
+		totalSize: 0,
 	});
 	useEffect(() => {
 		window.electron.ipcRenderer.on(

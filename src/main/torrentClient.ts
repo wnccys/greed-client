@@ -24,6 +24,9 @@ export async function initTorrentDownload(
 					torrent.progress,
 					torrent.name,
 					((torrent.timeRemaining / 1000) / 60),
+					torrent.downloadSpeed,
+					torrent.downloaded,
+					torrent.length,
 				);
 			}
 		}, 1000);

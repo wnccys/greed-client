@@ -16,6 +16,7 @@ import {
 } from "@renderer/ShadComponents/ui/chart";
 import { Progress } from "@renderer/ShadComponents/ui/progress";
 import { useDownloads } from "@renderer/Hooks/downloads";
+import { Button } from "@renderer/ShadComponents/ui/button";
 
 const chartData = [
 	{ date: "2024-04-01", desktop: 222, mobile: 150 },
@@ -137,16 +138,16 @@ export function Downloads() {
 		[],
 	);
 
-	const torrentProgress = useDownloads();
+	const torrentInfo = useDownloads();
 	function DownloadCard({ game }) {
-		if (torrentProgress.currentProgress > 0) {
+		if (torrentInfo.currentProgress > 0) {
 			return (
 				<div className="flex items-center gap-5">
 					<img src="https://placehold.co/75" alt="game-image" />
 					<div className="text-sm pe-5">{game}</div>
 					<div className="w-[45rem]">
-						<p className="pe-4">{torrentProgress.currentProgress}%</p>
-						<Progress value={torrentProgress.currentProgress} />
+						<p className="pe-4">{torrentInfo.currentProgress}%</p>
+						<Progress value={torrentInfo.currentProgress} />
 					</div>
 				</div>
 			);
@@ -247,15 +248,25 @@ export function Downloads() {
 					className="size-24 w-full h-full flex flex-col border 
         border-white bg-zinc-950 rounded-xl gap-2 p-5"
 				>
-					{torrentProgress.currentProgress && torrentProgress.timeRemaining && (
-						<div className="flex">
-							<DownloadCard game={torrentProgress.game} />
-							<p>
-								<DownloadTimeRemaining
-									timeRemaining={torrentProgress.timeRemaining}
-								/>
-							</p>
-						</div>
+					{torrentInfo.currentProgress && torrentInfo.timeRemaining && (
+            <>
+              <div className="flex h-1/2rem">
+                <DownloadCard game={torrentInfo.game} />
+                <div className="ms-6 flex flex-col">
+                  <DownloadTimeRemaining
+                    timeRemaining={torrentInfo.timeRemaining}
+                  />
+                  <div className="">
+                    <p>Download Speed: {torrentInfo.downloadSpeed} Mbps</p>
+                    { torrentInfo.downloaded } / { torrentInfo.totalSize } MB
+                  </div>
+                  <Button className="mt-1">
+                    Pause
+                  </Button>
+                </div>
+
+              </div>
+            </>
 					)}
 				</div>
 			</div>

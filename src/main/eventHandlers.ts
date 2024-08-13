@@ -19,6 +19,9 @@ export function handleUpdateTorrentProgress(
 	torrentProgress: IpcMainEvent,
 	game: string,
 	timeRemaining: number,
+	downloadSpeed: number,
+	downloaded: number,
+	size: number,
 ) {
 	for (const win of BrowserWindow.getAllWindows()) {
 		// Send data to all listeners registered in selected Window.
@@ -26,6 +29,9 @@ export function handleUpdateTorrentProgress(
 			game,
 			timeRemaining,
 			currentProgress: (Number(torrentProgress) * 100).toFixed(2),
+			downloadSpeed: (downloadSpeed / 100000).toFixed(0),
+			downloaded: (downloaded / 1000000).toFixed(0),
+			totalSize: (size / 1000000).toFixed(0),
 		});
 	}
 }
