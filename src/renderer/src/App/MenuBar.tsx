@@ -28,7 +28,6 @@ export function MenuBar() {
 	}, []);
 
 	const downloadsInfo = useDownloads().currentProgress;
-
 	const checkIsMaximized = () => {
 		setIsMaximized(!isMaximized);
 		if (isMaximized) {
