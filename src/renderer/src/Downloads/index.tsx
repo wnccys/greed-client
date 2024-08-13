@@ -250,7 +250,7 @@ export function Downloads() {
 					className="size-24 w-full h-full flex flex-col border 
 				border-white bg-zinc-950 rounded-xl gap-2 p-5"
 				>
-					{torrentInfo.currentProgress >= 0 && torrentInfo.timeRemaining && (
+					{torrentInfo.currentProgress > 0 && torrentInfo.timeRemaining && (
 						<>
 							<div className="flex h-1/2rem">
 								<DownloadCard game={torrentInfo.game} />
