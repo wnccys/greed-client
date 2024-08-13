@@ -252,17 +252,17 @@ export function Downloads() {
 					<>
 						<div className="flex h-1/2rem">
 							<DownloadCard game={torrentInfo.game} />
-							<div className="ms-6 flex flex-col">
-							<DownloadTimeRemaining
-								timeRemaining={torrentInfo.timeRemaining}
-							/>
-							<div className="">
-								<p>Download Speed: {torrentInfo.downloadSpeed} Mbps</p>
-								{ torrentInfo.downloaded } / { torrentInfo.totalSize } MB
-							</div>
-							<Button className="mt-1">
-								Pause
-							</Button>
+							<div className="ms-6 flex flex-col w-full">
+								<DownloadTimeRemaining
+									timeRemaining={torrentInfo.timeRemaining}
+								/>
+								<div className="w-full">
+									<p>{(torrentInfo.downloadSpeed / 8).toFixed(1)} Mbps</p>
+									{ torrentInfo.downloaded } / { torrentInfo.totalSize } MB
+								</div>
+								<Button className="mt-1" onClick={window.electron.ipcRenderer.emit('pauseTorrent')}>
+									Pause
+								</Button>
 							</div>
 						</div>
 					</>

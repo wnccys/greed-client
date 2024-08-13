@@ -1,5 +1,5 @@
-import WebTorrent from "webtorrent";
-import { ipcMain } from "electron";
+import WebTorrent, { type Torrent } from "webtorrent";
+import { ipcMain, type IpcMainEvent } from "electron";
 
 const client = new WebTorrent();
 
@@ -15,7 +15,12 @@ export async function initTorrentDownload(
 			torrent.destroy();
 		});
 
-		// Sets polling to front-end specific listeners
+		torrent.addListener('pauseTorrent', (torrent) => {
+			torrent.emit();
+		});
+
+		ipcMain.on('pauseTorrent', (_event, torrent) => pauseCurrentTorrent(torrent));
+
 		setInterval(() => {
 			if (torrent.progress < 1) {
 				console.log(`Torrent.progress: ${torrent.progress}`);
@@ -33,12 +38,8 @@ export async function initTorrentDownload(
 	});
 }
 
-export async function pauseTorrentDownload(torrentId: string) {
-	const torrent = client.get(torrentId);
-	if (torrent) {
-		console.log(torrent);
-		return;
-	}
-
-	console.log("Invalid Torrent Id.");
+function pauseCurrentTorrent(torrent: Torrent) {
+	console.log(torrent);
+	// const torrent = event as unknown as Torrent;
+	torrent.pause();
 }
