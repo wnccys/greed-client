@@ -15,11 +15,9 @@ export async function initTorrentDownload(
 			torrent.destroy();
 		});
 
-		torrent.addListener('pauseTorrent', (torrent) => {
-			torrent.emit();
+		ipcMain.handle('resumePauseTorrent', () => {
+			torrent.paused ? torrent.resume() : torrent.pause();
 		});
-
-		ipcMain.on('pauseTorrent', (_event, torrent) => pauseCurrentTorrent(torrent));
 
 		setInterval(() => {
 			if (torrent.progress < 1) {
@@ -32,14 +30,9 @@ export async function initTorrentDownload(
 					torrent.downloadSpeed,
 					torrent.downloaded,
 					torrent.length,
+					torrent.paused,
 				);
 			}
 		}, 1000);
 	});
-}
-
-function pauseCurrentTorrent(torrent: Torrent) {
-	console.log(torrent);
-	// const torrent = event as unknown as Torrent;
-	torrent.pause();
 }

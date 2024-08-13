@@ -16,6 +16,7 @@ declare global {
     unmaximizeWindow: () => null,
     closeWindow: () => null,
     isMaximized: () => boolean,
+    resumePauseTorrent: () => null,
   }
 
   interface Tests {

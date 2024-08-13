@@ -22,6 +22,7 @@ export function handleUpdateTorrentProgress(
 	downloadSpeed: number,
 	downloaded: number,
 	size: number,
+	isPaused: boolean,
 ) {
 	for (const win of BrowserWindow.getAllWindows()) {
 		// Send data to all listeners registered in selected Window.
@@ -32,6 +33,7 @@ export function handleUpdateTorrentProgress(
 			downloadSpeed: (downloadSpeed / 100000).toFixed(0),
 			downloaded: (downloaded / 1000000).toFixed(0),
 			totalSize: (size / 1000000).toFixed(0),
+			isPaused,
 		});
 	}
 }
