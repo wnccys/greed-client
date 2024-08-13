@@ -8,6 +8,7 @@ import { RecentsLink } from "@renderer/components/ui/RecentsLink";
 import { MenuLink } from "@renderer/components/ui/MenuLink";
 import { MenuHeader } from "@renderer/components/ui/MenuHeader";
 import { Outlet } from "react-router-dom";
+import { Download } from "./Download/Download";
 
 export function App(): JSX.Element {
 	return (
@@ -35,7 +36,7 @@ export function App(): JSX.Element {
 				>
 					<MenuLink itemName="Catalog" icon={CatalogIcon} route="catalog" />
 					<MenuLink itemName="Library" icon={LibraryIcon} route="cu" />
-					<MenuLink itemName="Downloads" icon={DownloadIcon} route="cu" />
+					<MenuLink itemName="Downloads" icon={DownloadIcon} route="Download" />
 				</div>
 
 				<div className="text-xs ps-6 p-4">
