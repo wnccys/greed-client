@@ -16,7 +16,6 @@ declare global {
     unmaximizeWindow: () => null,
     closeWindow: () => null,
     isMaximized: () => boolean,
-    resumePauseTorrent: () => null,
     pauseTorrent: () => null,
     resumeTorrent: () => null,
   }
