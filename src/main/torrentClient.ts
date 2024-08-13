@@ -11,7 +11,7 @@ export async function initTorrentDownload(
 		console.log("Torrent Added.");
 		torrent.on("done", () => {
 			console.log("Torrent Download Done.");
-			ipcMain.emit('updateTorrentProgress', -1);
+			ipcMain.emit("updateTorrentProgress", -1);
 			torrent.destroy();
 		});
 
@@ -19,7 +19,12 @@ export async function initTorrentDownload(
 		setInterval(() => {
 			if (torrent.progress < 1) {
 				console.log(`Torrent.progress: ${torrent.progress}`);
-				ipcMain.emit("updateTorrentProgress", torrent.progress);
+				ipcMain.emit(
+					"updateTorrentProgress",
+					torrent.progress,
+					torrent.name,
+					((torrent.timeRemaining / 1000) / 60),
+				);
 			}
 		}, 1000);
 	});

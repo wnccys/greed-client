@@ -1,12 +1,24 @@
 import { useEffect, useState } from "react";
 
-export function useDownloads() {
-	const [downloadsInfo, setDownloadsInfo] = useState<number>(0);
-    useEffect(() => {
+type downloadsInfo = {
+	game: string;
+	currentProgress: number;
+	timeRemaining: number;
+	downloadSpeed: number;
+};
+
+export function useDownloads(): downloadsInfo {
+	const [downloadsInfo, setDownloadsInfo] = useState<downloadsInfo>({
+		game: "",
+		currentProgress: 0,
+		timeRemaining: 0,
+		downloadSpeed: 0,
+	});
+	useEffect(() => {
 		window.electron.ipcRenderer.on(
 			"updateTorrentProgress",
-			(_event, torrentProgress: number) => {
-				setDownloadsInfo(torrentProgress);
+			(_event, torrentInfos: downloadsInfo) => {
+				setDownloadsInfo(torrentInfos);
 			},
 		);
 
