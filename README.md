@@ -59,3 +59,5 @@ https://blog.rocketseat.com.br/scalar-uma-ferramenta-poderosa-para-documentacao-
 
 ### Aria2 Download Package
 https://github.com/sonnyp/aria2.js/
+
+https://hydralinks.cloud/sources/fitgirl.json

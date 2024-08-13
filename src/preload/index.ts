@@ -1,6 +1,10 @@
 import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
 
+const tests = {
+	startTorrentDownloadTest: () => ipcRenderer.invoke("startTorrentDownloadTest"),
+}
+
 // Custom APIs for renderer
 const api = {
 	sendTorrentPath: (path: string) => {
@@ -9,6 +13,11 @@ const api = {
 	handleFileSelect: () => ipcRenderer.invoke("handleFileSelect"),
 	setNewTorrentSource: (sourceLink: string) =>
 		ipcRenderer.invoke("setNewTorrentSource", sourceLink),
+	minimizeWindow: () => ipcRenderer.invoke("minimizeWindow"),
+	maximizeWindow: () => ipcRenderer.invoke("maximizeWindow"),
+	unmaximizeWindow: () => ipcRenderer.invoke("unmaximizeWindow"),
+	closeWindow: () => ipcRenderer.invoke("closeWindow"),
+	isMaximized: () => ipcRenderer.invoke("checkWindowIsMaximized"),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
@@ -18,6 +27,7 @@ if (process.contextIsolated) {
 	try {
 		contextBridge.exposeInMainWorld("electron", electronAPI);
 		contextBridge.exposeInMainWorld("api", api);
+		contextBridge.exposeInMainWorld("tests", tests);
 	} catch (err) {
 		console.error(err);
 	}
@@ -26,4 +36,6 @@ if (process.contextIsolated) {
 	window.electron = electronAPI;
 	// @ts-ignore (define in dts)
 	window.api = api;
+	// @ts-ignore (define in dts)
+	window.tests = tests;
 }

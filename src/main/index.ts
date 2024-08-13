@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {
 	app,
 	BrowserWindow,
@@ -6,10 +7,13 @@ import {
 	Menu,
 	type IpcMainInvokeEvent,
 } from "electron";
+=======
+import { app, BrowserWindow } from "electron";
+>>>>>>> eb98e840accd19076d6aee0113956b1b8cb66b2f
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
-import { initTorrentDownload } from "./torrentClient";
 import "reflect-metadata";
+<<<<<<< HEAD
 
 function handleUpdateTorrentProgress(_event: IpcMainInvokeEvent, torrentProgress: string) {
 	console.log(`Updated torrent progress: ${torrentProgress}`);
@@ -60,11 +64,16 @@ async function handleNewTorrentSource(
 		console.error(e);
 	}
 }
+=======
+import * as mainEventHandler from "./eventHandlers";
+>>>>>>> eb98e840accd19076d6aee0113956b1b8cb66b2f
 
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({
-		width: 900,
-		height: 670,
+		roundedCorners: true,
+		backgroundColor: "#171717",
+		minWidth: 750,
+		minHeight: 625,
 		autoHideMenuBar: true,
 		webPreferences: {
 			preload: path.join(__dirname, "../preload/index.mjs"),
@@ -72,12 +81,9 @@ const createWindow = () => {
 			webSecurity: false,
 		},
 		titleBarStyle: "hidden",
-		titleBarOverlay: {
-			color: "#171717",
-			symbolColor: "#F5F5F5",
-			height: 25,
-		},
+		show: false,
 	});
+<<<<<<< HEAD
   
 	Menu.setApplicationMenu(null);
   
@@ -120,13 +126,43 @@ const createWindow = () => {
 	ipcMain.handle("sendTorrentPath", handleTorrentPath);
 	ipcMain.handle("setNewTorrentSource", handleNewTorrentSource);
 	ipcMain.handle("updateTorrentProgress", handleUpdateTorrentProgress);
+=======
+	mainWindow.loadURL("http://localhost:5173").then(() => mainWindow.show());
+>>>>>>> eb98e840accd19076d6aee0113956b1b8cb66b2f
 
-	app.on("activate", () => {
-		if (BrowserWindow.getAllWindows().length === 0) createWindow();
-	});
+	mainEventHandler.registerWindowEvents(mainWindow.id);
 
+<<<<<<< HEAD
+=======
+	mainWindow.on("enter-full-screen", () =>
+		mainWindow.webContents.send(
+			"updateMaximizedState",
+			mainWindow.isMaximized(),
+		),
+	);
+	mainWindow.on("leave-full-screen", () =>
+		mainWindow.webContents.send(
+			"updateMaximizedState",
+			mainWindow.isMaximized(),
+		),
+	);
+	mainWindow.on("maximize", () =>
+		mainWindow.webContents.send(
+			"updateMaximizedState",
+			mainWindow.isMaximized(),
+		),
+	);
+	mainWindow.on("unmaximize", () =>
+		mainWindow.webContents.send(
+			"updateMaximizedState",
+			mainWindow.isMaximized(),
+		),
+	);
+};
+
+app.whenReady().then(() => {
+>>>>>>> eb98e840accd19076d6aee0113956b1b8cb66b2f
 	createWindow();
-	createSecond();
   
 	app.on("activate", () => {
 	  if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -139,5 +175,4 @@ const createWindow = () => {
   
   app.on("browser-window-created", (_, window) => {
 	optimizer.watchWindowShortcuts(window);
-  });
-  
+});

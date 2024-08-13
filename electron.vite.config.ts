@@ -13,8 +13,17 @@ export default defineConfig({
     resolve: {
       alias: {
         '@renderer': resolve('src/renderer/src'),
+<<<<<<< HEAD
         '@main': resolve('src/main'),
         '@preload': resolve('src/preload'),
+=======
+<<<<<<< HEAD
+        '@': resolve('src/renderer/src')
+=======
+        '@main': resolve('src/main'),
+        '@preload': resolve('src/preload'),
+>>>>>>> 5095f491525e76447a40d89d34828e9d282c5da2
+>>>>>>> eb98e840accd19076d6aee0113956b1b8cb66b2f
       }
     },
     plugins: [react()]
