@@ -27,7 +27,7 @@ export function MenuBar() {
 		};
 	}, []);
 
-	const downloadsInfo = useDownloads();
+	const downloadsInfo = useDownloads().currentProgress;
 
 	const checkIsMaximized = () => {
 		setIsMaximized(!isMaximized);
