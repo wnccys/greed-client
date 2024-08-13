@@ -164,7 +164,7 @@ export function Downloads() {
 						<CardTitle>
 							Download Stats <span className="text-xs">{"(Mbps)"}</span>
 						</CardTitle>
-						<CardDescription>Downloading: {"<GameName>"}</CardDescription>
+						<CardDescription>Downloading: {`${torrentInfo.game}` || "None"}</CardDescription>
 					</div>
 					<div>
 						{["desktop", "mobile"].map((key) => {
@@ -175,8 +175,8 @@ export function Downloads() {
 									key={chart}
 									data-active={activeChart === chart}
 									className="relative z-30 justify-center border-t px-6 py-4
-                text-left even:border-l data-[active=true]:bg-muted/15
-                sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+									text-left even:border-l data-[active=true]:bg-muted/15
+									sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
 									onClick={() => setActiveChart(chart)}
 								>
 									<div className="flex flex-col">
@@ -246,28 +246,27 @@ export function Downloads() {
 				<h1 className="text-2xl">Queue</h1>
 				<div
 					className="size-24 w-full h-full flex flex-col border 
-        border-white bg-zinc-950 rounded-xl gap-2 p-5"
-				>
-					{torrentInfo.currentProgress && torrentInfo.timeRemaining && (
-            <>
-              <div className="flex h-1/2rem">
-                <DownloadCard game={torrentInfo.game} />
-                <div className="ms-6 flex flex-col">
-                  <DownloadTimeRemaining
-                    timeRemaining={torrentInfo.timeRemaining}
-                  />
-                  <div className="">
-                    <p>Download Speed: {torrentInfo.downloadSpeed} Mbps</p>
-                    { torrentInfo.downloaded } / { torrentInfo.totalSize } MB
-                  </div>
-                  <Button className="mt-1">
-                    Pause
-                  </Button>
-                </div>
-
-              </div>
-            </>
-					)}
+					border-white bg-zinc-950 rounded-xl gap-2 p-5"
+					>
+				{torrentInfo.currentProgress > 0 && torrentInfo.timeRemaining && (
+					<>
+						<div className="flex h-1/2rem">
+							<DownloadCard game={torrentInfo.game} />
+							<div className="ms-6 flex flex-col">
+							<DownloadTimeRemaining
+								timeRemaining={torrentInfo.timeRemaining}
+							/>
+							<div className="">
+								<p>Download Speed: {torrentInfo.downloadSpeed} Mbps</p>
+								{ torrentInfo.downloaded } / { torrentInfo.totalSize } MB
+							</div>
+							<Button className="mt-1">
+								Pause
+							</Button>
+							</div>
+						</div>
+					</>
+				)}
 				</div>
 			</div>
 		</div>
