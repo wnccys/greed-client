@@ -261,15 +261,8 @@ export function Downloads() {
 									<div className="w-full">
 										<p>{(torrentInfo.downloadSpeed / 8).toFixed(1)} Mbps</p>
 										{torrentInfo.downloaded} / {torrentInfo.totalSize} MB
+										<ResumePauseTorrent isPaused={torrentInfo.isPaused} />
 									</div>
-									<Button
-										className="mt-1"
-										onClick={() =>
-											window.api.resumePauseTorrent()		
-										}
-									>
-										{ torrentInfo.isPaused ? "Resume" : "Pause" }
-									</Button>
 								</div>
 							</div>
 						</>
@@ -289,6 +282,28 @@ function DownloadTimeRemaining({ timeRemaining }: timeRemainingProps) {
 		: `${(timeRemaining * 100).toFixed(0)} Seconds`;
 }
 
-function changeTorrentResumePause(isPaused: boolean) {
-	return isPaused ? <Button>Resume</Button> : <Button>Pause</Button>;
+function ResumePauseTorrent({ isPaused }): JSX.Element {
+	if (isPaused) {
+		return (
+			<Button
+				className="mt-1"
+				onClick={() =>
+					window.api.resumeTorrent()
+				}
+				>
+				{ "Resume" }
+			</Button>
+		)
+	}
+
+	return (
+		<Button
+			className="mt-1"
+			onClick={() =>
+				window.api.pauseTorrent()		
+			}
+			>
+			{ "Pause" }
+		</Button>
+	)
 }

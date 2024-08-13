@@ -18,7 +18,7 @@ export function useDownloads(): downloadsInfo {
 		downloadSpeed: 0,
 		downloaded: 0,
 		totalSize: 0,
-		isPaused: true,
+		isPaused: false,
 	});
 	useEffect(() => {
 		window.electron.ipcRenderer.on(
