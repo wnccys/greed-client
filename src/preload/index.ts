@@ -18,6 +18,7 @@ const api = {
 	unmaximizeWindow: () => ipcRenderer.invoke("unmaximizeWindow"),
 	closeWindow: () => ipcRenderer.invoke("closeWindow"),
 	isMaximized: () => ipcRenderer.invoke("checkWindowIsMaximized"),
+	resumePauseTorrent: () => ipcRenderer.invoke("resumePauseTorrent"),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

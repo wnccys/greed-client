@@ -3,7 +3,7 @@ import {
 	type IpcMainInvokeEvent,
 	dialog,
 	BrowserWindow,
-	ipcMain
+	ipcMain,
 } from "electron";
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
@@ -12,21 +12,29 @@ import { handleStartTorrentDownload } from "./tests";
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
 ipcMain.handle("sendTorrentPath", handleTorrentPath);
-ipcMain.handle(
-	"setNewTorrentSource",
-	handleNewTorrentSource,
-);
+ipcMain.handle("setNewTorrentSource", handleNewTorrentSource);
 
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
-export function handleUpdateTorrentProgress(torrentProgress: IpcMainEvent) {
+export function handleUpdateTorrentProgress(
+	torrentProgress: IpcMainEvent,
+	game: string,
+	timeRemaining: number,
+	downloadSpeed: number,
+	downloaded: number,
+	size: number,
+	isPaused: boolean,
+) {
 	for (const win of BrowserWindow.getAllWindows()) {
-		const formattedProgress = Number(torrentProgress) * 100;
-
 		// Send data to all listeners registered in selected Window.
-		win.webContents.send(
-			"updateTorrentProgress",
-			formattedProgress.toFixed(2),
-		);
+		win.webContents.send("updateTorrentProgress", {
+			game,
+			timeRemaining,
+			currentProgress: (Number(torrentProgress) * 100).toFixed(2),
+			downloadSpeed: (downloadSpeed / 100000).toFixed(0),
+			downloaded: (downloaded / 1000000).toFixed(0),
+			totalSize: (size / 1000000).toFixed(0),
+			isPaused,
+		});
 	}
 }
 
