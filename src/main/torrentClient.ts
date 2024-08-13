@@ -1,56 +1,64 @@
-import WebTorrent from "webtorrent";
+import WebTorrent, { type Torrent } from "webtorrent";
 import { ipcMain } from "electron";
 
 const client = new WebTorrent();
+let currentTorrentInterval: ReturnType<typeof setInterval>;
 
 export async function initTorrentDownload(
-	filePath: string,
+	magnetURI: string,
 	downloadFolder: string,
 ) {
-	let currentTorrent = client.add(filePath, { path: downloadFolder }, (torrent) => {
-		console.log("Torrent Added.");
-		torrent.on("done", () => {
-			console.log("Torrent Download Done.");
-			ipcMain.emit("updateTorrentProgress", -1);
-			torrent.destroy();
-		});
+	if (await client.get(magnetURI)) {
+		console.log("Cannot duplicate torrent.");
+		return;
+	}
 
-		setInterval(() => {
-			if (torrent.progress < 1) {
-				console.log(`Torrent.progress: ${torrent.progress}`);
-				ipcMain.emit(
-					"updateTorrentProgress",
-					torrent.progress,
-					torrent.name,
-					((torrent.timeRemaining / 1000) / 60),
-					torrent.downloadSpeed,
-					torrent.downloaded,
-					torrent.length,
-					torrent.paused,
-				);
-			}
-		}, 1000);
-	});
+	let currentTorrent = setCurrentTorrent(magnetURI, downloadFolder);
+	currentTorrentInterval = registerTorrentEvents(currentTorrent);
 
-	ipcMain.handle('pauseTorrent', () => {
+	ipcMain.handle("pauseTorrent", () => {
 		currentTorrent.pause();
-		console.log("paused");
-		client.remove(currentTorrent);
+		client.remove(magnetURI);
 	});
 
-	// NOTE verify for torrent magnetlink to substitute filePath and storeOpts
-	// https://github.com/webtorrent/webtorrent/issues/1004
-	ipcMain.handle('resumeTorrent', () => {
-		// currentTorrent.resume();
-		console.log("resumed");
-
-		const newTorrent = client.get(currentTorrent);
-		if (newTorrent) {
-			currentTorrent = client.add(filePath, { path: downloadFolder });
-			console.log("paused? ", currentTorrent.paused);
-			return
-		} 
-
-		console.log("could not get torrent Client");
+	ipcMain.handle("resumeTorrent", () => {
+		clearInterval(currentTorrentInterval);
+		currentTorrent = setCurrentTorrent(magnetURI, downloadFolder) 
+		currentTorrentInterval = registerTorrentEvents(currentTorrent);
 	});
+}
+
+function setCurrentTorrent(magnetURI: string, downloadFolder: string) {
+	const currentTorrent = client.add(
+		magnetURI,
+		{ path: downloadFolder },
+		(torrent) => {
+			console.log("Torrent Added.");
+			torrent.on("done", () => {
+				console.log("Torrent Download Done.");
+				ipcMain.emit("updateTorrentProgress", -1);
+				torrent.destroy();
+			});
+		},
+	);
+
+	return currentTorrent;
+}
+
+function registerTorrentEvents(torrent: Torrent) {
+	return setInterval(() => {
+		if (torrent.progress < 1) {
+			console.log(`Torrent.progress: ${torrent.progress}`);
+			ipcMain.emit(
+				"updateTorrentProgress",
+				torrent.progress,
+				torrent.name,
+				torrent.timeRemaining / 1000 / 60,
+				torrent.downloadSpeed,
+				torrent.downloaded,
+				torrent.length,
+				torrent.paused,
+			);
+		}
+	}, 1000);
 }

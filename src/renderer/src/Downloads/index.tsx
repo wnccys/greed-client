@@ -290,7 +290,7 @@ function ResumePauseTorrent({ isPaused }): JSX.Element {
 				onClick={() =>
 					window.api.resumeTorrent()
 				}
-				>
+			>
 				{ "Resume" }
 			</Button>
 		)
@@ -302,7 +302,7 @@ function ResumePauseTorrent({ isPaused }): JSX.Element {
 			onClick={() =>
 				window.api.pauseTorrent()		
 			}
-			>
+		>
 			{ "Pause" }
 		</Button>
 	)
