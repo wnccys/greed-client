@@ -113,13 +113,13 @@ export function Settings() {
 								</DialogDescription>
 								<div
 									className="absolute right-4 top-2 rounded-sm opacity-70 
-										ring-offset-background hover:bg-zinc-800 hover:-translate-y-1
-										hover:duration-500 
-										transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 
+										ring-offset-background hover:bg-zinc-800 
+										hover:-translate-y-[2px] hover:duration-300 
+										transition-all hover:opacity-100 focus:outline-none focus:ring-2 
 										focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
 										data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
 								>
-									<Cross2Icon className="h-4 w-4 cursor-pointer" onClick={() => setIsDialogOpen(false)}	/>
+									<Cross2Icon className="size-4 cursor-pointer" onClick={() => setIsDialogOpen(false)}	/>
 								</div>
 							</DialogHeader>
 							<div className="grid gap-4 py-4">
