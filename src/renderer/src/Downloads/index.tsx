@@ -146,7 +146,14 @@ export function Downloads() {
 					<img src="https://placehold.co/75" alt="game-image" />
 					<div className="text-sm pe-5">{game}</div>
 					<div className="w-[45rem]">
-						<p className="pe-4">{torrentInfo.currentProgress}%</p>
+						<div className="pe-4 flex">
+							<div>
+								{torrentInfo.currentProgress}%
+							</div>
+							<div className="flex ps-10 w-full justify-end">
+								<p>{torrentInfo.downloaded} / {torrentInfo.totalSize} MB</p>
+							</div>
+						</div>
 						<Progress value={torrentInfo.currentProgress} />
 					</div>
 				</div>
@@ -260,7 +267,6 @@ export function Downloads() {
 									/>
 									<div className="w-full">
 										<p>{(torrentInfo.downloadSpeed / 8).toFixed(1)} Mbps</p>
-										{torrentInfo.downloaded} / {torrentInfo.totalSize} MB
 										<ResumePauseTorrent isPaused={torrentInfo.isPaused} />
 									</div>
 								</div>
