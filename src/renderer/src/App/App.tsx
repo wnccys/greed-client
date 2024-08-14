@@ -41,7 +41,7 @@ export function App(): JSX.Element {
 							<MenuLink itemName="Downloads" icon={DownloadIcon} route="downloads" />
 						</div>
 
-						<div className="text-xs ps-6 p-4">
+						<div className="text-xs ps-6 p-4 no-drag">
 							<MenuLink itemName="Settings" icon={SettingsIcon} route="settings" />
 						</div>
 				</div>

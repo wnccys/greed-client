@@ -35,7 +35,7 @@ export function Catalog() {
 					id="games-section"
 					className="mt-5 flex flex-wrap justify-between gap-4"
 				>
-					{Array.from({ length: 6 }).map((_, key) => {
+					{Array.from({ length: 16 }).map((_, key) => {
 						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 						return <GameCard key={key} />
 					})}

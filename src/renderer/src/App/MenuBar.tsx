@@ -8,6 +8,7 @@ import {
 import { useEffect, useState } from "react";
 import { Progress } from "@renderer/ShadComponents/ui/progress"
 import { Link, useLocation } from "react-router-dom";
+import { useDownloads } from "@renderer/Hooks/downloads";
 
 export function MenuBar() {
 	const [isMaximized, setIsMaximized] = useState<boolean>(false);
@@ -26,21 +27,7 @@ export function MenuBar() {
 		};
 	}, []);
 
-	const [data, setData] = useState<number>(0);
-	useEffect(() => {
-		window.electron.ipcRenderer.on(
-			"updateTorrentProgress",
-			(_event, torrentProgress: number) => {
-				setData(torrentProgress);
-			},
-		);
-
-		return () => {
-			// Clean up the listener when the component is unmounted
-			// window.electron.ipcRenderer.removeAllListeners("updateTorrentProgress");
-		};
-	}, []);
-
+	const downloadsInfo = useDownloads().currentProgress;
 	const checkIsMaximized = () => {
 		setIsMaximized(!isMaximized);
 		if (isMaximized) {
@@ -54,9 +41,9 @@ export function MenuBar() {
 		<>
 			<div
 				id="menu-bar"
-				className="h-[2rem] bg-[#171717] fixed flex w-full z-10 justify-end"
+				className="h-[2rem] bg-[#171717] flex fixed w-full z-10 justify-end"
 			>
-				<div className="p-0 m-0">
+				<div className="p-0 m-0 no-drag">
 					<Button
 						onClick={() => window.api.minimizeWindow()}
 						className="hover:bg-zinc-700 bg-[#171717] rounded-none 
@@ -80,11 +67,13 @@ export function MenuBar() {
 					</Button>
 				</div>
 			</div>
-			{ data > 0 && location.pathname !== "/downloads" &&
-			<Link to="../downloads" className="self-center h-[2rem] bg-zinc-950 hover:bg-zinc-800 fixed flex w-full z-10 justify-center bottom-0">
+			{ downloadsInfo > 0 && location.pathname !== "/downloads" &&
+			<Link to="../downloads" className="self-center h-[2rem] bg-zinc-950 
+				hover:bg-zinc-800 fixed flex w-full z-10 justify-center 
+				bottom-0 hover:duration-300 transition-all selectable">
 				<div className="self-center flex w-[30%] ms-[12rem]">
-					<p className="text-sm me-4">{data}%</p>
-					<Progress value={data} className="bg-zinc-800 self-center" />
+					<p className="text-sm me-4">{downloadsInfo}%</p>
+					<Progress value={downloadsInfo} className="bg-zinc-800 self-center" />
 				</div>
 			</Link>
 			}

@@ -1,36 +1,64 @@
-import WebTorrent from "webtorrent";
+import WebTorrent, { type Torrent } from "webtorrent";
 import { ipcMain } from "electron";
 
 const client = new WebTorrent();
+let currentTorrentInterval: ReturnType<typeof setInterval>;
 
 export async function initTorrentDownload(
-	filePath: string,
+	magnetURI: string,
 	downloadFolder: string,
 ) {
-	client.add(filePath, { path: downloadFolder }, (torrent) => {
-		console.log("Torrent Added.");
-		torrent.on("done", () => {
-			console.log("Torrent Download Done.");
-			ipcMain.emit('updateTorrentProgress', -1);
-			torrent.destroy();
-		});
-
-		// Sets polling to front-end specific listeners
-		setInterval(() => {
-			if (torrent.progress < 1) {
-				console.log(`Torrent.progress: ${torrent.progress}`);
-				ipcMain.emit("updateTorrentProgress", torrent.progress);
-			}
-		}, 1000);
-	});
-}
-
-export async function pauseTorrentDownload(torrentId: string) {
-	const torrent = client.get(torrentId);
-	if (torrent) {
-		console.log(torrent);
+	if (await client.get(magnetURI)) {
+		console.log("Cannot duplicate torrent.");
 		return;
 	}
 
-	console.log("Invalid Torrent Id.");
+	let currentTorrent = setCurrentTorrent(magnetURI, downloadFolder);
+	currentTorrentInterval = registerTorrentEvents(currentTorrent);
+
+	ipcMain.handle("pauseTorrent", () => {
+		currentTorrent.pause();
+		client.remove(magnetURI);
+	});
+
+	ipcMain.handle("resumeTorrent", () => {
+		clearInterval(currentTorrentInterval);
+		currentTorrent = setCurrentTorrent(magnetURI, downloadFolder) 
+		currentTorrentInterval = registerTorrentEvents(currentTorrent);
+	});
+}
+
+function setCurrentTorrent(magnetURI: string, downloadFolder: string) {
+	const currentTorrent = client.add(
+		magnetURI,
+		{ path: downloadFolder },
+		(torrent) => {
+			console.log("Torrent Added.");
+			torrent.on("done", () => {
+				console.log("Torrent Download Done.");
+				ipcMain.emit("updateTorrentProgress", -1);
+				torrent.destroy();
+			});
+		},
+	);
+
+	return currentTorrent;
+}
+
+function registerTorrentEvents(torrent: Torrent) {
+	return setInterval(() => {
+		if (torrent.progress < 1) {
+			console.log(`Torrent.progress: ${torrent.progress}`);
+			ipcMain.emit(
+				"updateTorrentProgress",
+				torrent.progress,
+				torrent.name,
+				torrent.timeRemaining / 1000 / 60,
+				torrent.downloadSpeed,
+				torrent.downloaded,
+				torrent.length,
+				torrent.paused,
+			);
+		}
+	}, 1000);
 }
