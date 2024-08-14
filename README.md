@@ -1,7 +1,25 @@
-# greed-client
-greed-client is a game launcher that features it's own embedded BitTorrent client and a dynamic torrent source scrapper, It's written in Typescript built over Electron, allowing users to use the launcher locally without any external central server.
+# <div align="center">Greed-Client
 
-## Project Setup (UNDER DEVELOPMENT)
+## What Is It?
+Greed is a game launcher that features it's own embedded BitTorrent client and a dynamic torrent source scrapper, It's written in Typescript built over Electron, allowing users to use the launcher locally without any external central server.
+
+## Contributor's Guide
+Project Folder's Structure follow these patterns:
+- src/main > Back-End Files
+- src/preload > Exposes Back-End To Front-End
+- src/renderer > Front-End Files
+
+### Back-End (@main)
+As Greed is built over Electron, it uses a isolated environment model that uses differents IPC's who stands for Inter-Process Communication as IpcMain and IpcRenderer, these channels are used to receive and send data over the entire Application. At the final, these IPC's are nothing more than interfaces that mounts over NodeJS, Greed specifically uses Node's event-loop to make the entire communication over the processes.
+
+### Preload (@preload)
+Files that exposes functions from main to renderer throught an event-based architecture, where one listens and react's when other's data comes.
+
+### Front-End (@renderer)
+Rendered pages receives data from Back-End using React and updates it's data.
+
+
+## Project Setup
 
 ### Install
 
@@ -61,3 +79,4 @@ https://blog.rocketseat.com.br/scalar-uma-ferramenta-poderosa-para-documentacao-
 https://github.com/sonnyp/aria2.js/
 
 https://hydralinks.cloud/sources/fitgirl.json
+https://www.steamgriddb.com/
