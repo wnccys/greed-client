@@ -3,7 +3,7 @@ import {
 	LibraryIcon,
 	DownloadIcon,
 	SettingsIcon,
-} from "@renderer/assets/icons";
+} from "@renderer/Assets/icons";
 import { RecentsLink } from "@renderer/App/RecentsLink";
 import { MenuLink } from "@renderer/App/MenuLink";
 import { MenuHeader } from "@renderer/App/MenuHeader";

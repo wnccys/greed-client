@@ -9,15 +9,9 @@ import { createBrowserRouter,
 import { SelectedGame } from './SelectedGame';
 import { Catalog } from './Catalog';
 import { ErrorElement } from './ErrorElement';
-<<<<<<< HEAD
-import { Settings } from './Settings'
-import { Download } from './Download/Download'
- 
-=======
 import { Settings } from './Settings';
 import { Downloads } from './Downloads';
 
->>>>>>> 5095f491525e76447a40d89d34828e9d282c5da2
  const router = createBrowserRouter([
   {
     path: '/',
@@ -35,18 +29,11 @@ import { Downloads } from './Downloads';
       {
         path: "settings",
         element: <Settings />
-<<<<<<< HEAD
       }, 
       { path: "download", 
-        element: <Download/>
+        element: <Downloads />
 
 
-=======
-      },
-      {
-        path: "downloads",
-        element: <Downloads />,
->>>>>>> 5095f491525e76447a40d89d34828e9d282c5da2
       }
     ],
     errorElement: <ErrorElement />
