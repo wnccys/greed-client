@@ -13,8 +13,8 @@ ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
 ipcMain.handle("sendTorrentPath", handleTorrentPath);
 ipcMain.handle("setNewTorrentSource", handleNewTorrentSource);
-
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
+
 export function handleUpdateTorrentProgress(
 	torrentProgress: IpcMainEvent,
 	game: string,
