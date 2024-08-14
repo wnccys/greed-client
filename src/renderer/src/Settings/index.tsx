@@ -75,7 +75,12 @@ export function Settings() {
 								<TableCell>Syncronized</TableCell>
 								<TableCell className="text-right">1000</TableCell>
 								<TableCell className="text-right">
-									<Button className="bg-zinc-800 hover:bg-red-500">Remove</Button>
+									<Button 
+										className="bg-zinc-800 hover:bg-red-500
+										hover:-translate-y-1 hover:duration-500 transition-all"
+									>
+										Remove
+									</Button>
 								</TableCell>
 							</TableRow>
 						</TableBody>
@@ -84,7 +89,8 @@ export function Settings() {
 					<Dialog open={isDialogOpen}>
 						<DialogTrigger asChild>
 							<Button
-								className="float-right bg-zinc-800 hover:bg-zinc-700 mt-5"
+								className="float-right bg-zinc-800 mt-5
+								hover:bg-zinc-700 hover:-translate-y-1 hover:duration-500 transition-all"
 								onClick={() => setIsDialogOpen(true)}
 							>
 								Add
@@ -107,7 +113,8 @@ export function Settings() {
 								</DialogDescription>
 								<div
 									className="absolute right-4 top-2 rounded-sm opacity-70 
-										ring-offset-background 
+										ring-offset-background hover:bg-zinc-800 hover:-translate-y-1
+										hover:duration-500 
 										transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 
 										focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
 										data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
@@ -130,7 +137,9 @@ export function Settings() {
 							</div>
 
 							<DialogFooter>
-								<Button type="submit" onClick={addSourceToDB}>
+								<Button type="submit" onClick={addSourceToDB} 
+									className="hover:bg-zinc-800 hover:-translate-y-1
+									hover:duration-500 transition-all">
 									Save
 								</Button>
 							</DialogFooter>

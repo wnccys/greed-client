@@ -258,20 +258,20 @@ export function Downloads() {
 				border-white bg-zinc-950 rounded-xl gap-2 p-5"
 				>
 					{torrentInfo.currentProgress > 0 && torrentInfo.timeRemaining && (
-						<>
-							<div className="flex h-1/2rem">
-								<DownloadCard game={torrentInfo.game} />
-								<div className="ms-6 flex flex-col w-full">
-									<DownloadTimeRemaining
-										timeRemaining={torrentInfo.timeRemaining}
-									/>
-									<div className="w-full">
-										<p>{(torrentInfo.downloadSpeed / 8).toFixed(1)} Mbps</p>
-										<ResumePauseTorrent isPaused={torrentInfo.isPaused} />
-									</div>
+						<div className="flex h-1/2rem">
+							<DownloadCard game={torrentInfo.game} />
+							<div className="ms-6 flex flex-col w-full">
+								<DownloadTimeRemaining
+									timeRemaining={torrentInfo.timeRemaining}
+								/>
+								<div className="w-full">
+									<p>{(torrentInfo.downloadSpeed / 8).toFixed(1)} Mbps</p>
+									<ResumePauseTorrent isPaused={torrentInfo.isPaused} 
+									className="mt-1 hover:bg-zinc-800 hover:-translate-y-1
+									hover:duration-500 transition-all" />
 								</div>
 							</div>
-						</>
+						</div>
 					)}
 				</div>
 			</div>
@@ -288,11 +288,11 @@ function DownloadTimeRemaining({ timeRemaining }: timeRemainingProps) {
 		: `${(timeRemaining * 100).toFixed(0)} Seconds`;
 }
 
-function ResumePauseTorrent({ isPaused }): JSX.Element {
+function ResumePauseTorrent({ isPaused, className }): JSX.Element {
 	if (isPaused) {
 		return (
 			<Button
-				className="mt-1"
+				className={className}
 				onClick={() =>
 					window.api.resumeTorrent()
 				}
@@ -304,7 +304,7 @@ function ResumePauseTorrent({ isPaused }): JSX.Element {
 
 	return (
 		<Button
-			className="mt-1"
+			className={className}
 			onClick={() =>
 				window.api.pauseTorrent()		
 			}
