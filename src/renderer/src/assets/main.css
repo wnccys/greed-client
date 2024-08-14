@@ -6,8 +6,8 @@
     src: url('../assets/jetbrains-ttf/JetBrainsMono-Regular.ttf');
 }
 
-*, *::after, *::before {
-	-webkit-user-select: none;
+.no-drag {
+    -webkit-user-select: none;
 	-webkit-user-drag: none;
 	-webkit-app-region: no-drag;
 }
@@ -23,6 +23,12 @@ body {
 
 #menu-bar {
     -webkit-app-region: drag;
+    -webkit-user-select: none;
+}
+
+button, link, a, img {
+    -webkit-user-select: none;
+    -webkit-app-region: no-drag;
 }
 
 #app {

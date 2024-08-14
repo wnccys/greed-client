@@ -41,9 +41,9 @@ export function MenuBar() {
 		<>
 			<div
 				id="menu-bar"
-				className="h-[2rem] bg-[#171717] fixed flex w-full z-10 justify-end"
+				className="h-[2rem] bg-[#171717] flex fixed w-full z-10 justify-end"
 			>
-				<div className="p-0 m-0">
+				<div className="p-0 m-0 no-drag">
 					<Button
 						onClick={() => window.api.minimizeWindow()}
 						className="hover:bg-zinc-700 bg-[#171717] rounded-none 
