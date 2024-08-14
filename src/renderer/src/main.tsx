@@ -30,7 +30,7 @@ import { Downloads } from './Downloads';
         path: "settings",
         element: <Settings />
       }, 
-      { path: "download", 
+      { path: "downloads", 
         element: <Downloads />
 
 
