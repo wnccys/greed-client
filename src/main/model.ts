@@ -17,7 +17,10 @@ export function testDBConn() {
         const settingsData = await GreedDataSource.manager.find(GreedSettings);
         console.log("Loaded settings: ", settingsData);
         const sourceData = await GreedDataSource.manager.find(Sources);
-        console.log("Loaded sources: ", sourceData);
+
+        for (const source of sourceData) {
+            console.log(source.sources.toString());
+        }
     }).catch(error => console.log(error))
 }
 
