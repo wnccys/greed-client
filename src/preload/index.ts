@@ -13,11 +13,6 @@ const api = {
 	handleFileSelect: () => ipcRenderer.invoke("handleFileSelect"),
 	setNewTorrentSource: (sourceLink: string) =>
 		ipcRenderer.invoke("setNewTorrentSource", sourceLink),
-	minimizeWindow: () => ipcRenderer.invoke("minimizeWindow"),
-	maximizeWindow: () => ipcRenderer.invoke("maximizeWindow"),
-	unmaximizeWindow: () => ipcRenderer.invoke("unmaximizeWindow"),
-	closeWindow: () => ipcRenderer.invoke("closeWindow"),
-	isMaximized: () => ipcRenderer.invoke("checkWindowIsMaximized"),
 	pauseTorrent: () => ipcRenderer.invoke("pauseTorrent"),
 	resumeTorrent: () => ipcRenderer.invoke("resumeTorrent"),
 	addSourceToDB: () => ipcRenderer.invoke("addSourceFromDB"),
