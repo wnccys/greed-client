@@ -4,7 +4,7 @@
 Greed is a game launcher that features it's own embedded BitTorrent client and a dynamic torrent source scrapper, It's written in Typescript built over Electron, allowing users to use the launcher locally without any external central server.
 
 ## Contributor's Guide
-See [Guide](./CONTRIBUTORS.md)
+See [How to Contribute](./CONTRIBUTORS.md)
 
 ### Back-End (@main)
 As Greed is built over Electron, it uses a isolated environment model that uses differents IPC's who stands for Inter-Process Communication as IpcMain and IpcRenderer, these channels are used to receive and send data over the entire Application. At the final, these IPC's are nothing more than interfaces that mounts over NodeJS, Greed specifically uses Node's event-loop to make the entire communication over the processes.
