@@ -20,7 +20,7 @@ const createWindow = () => {
 		titleBarStyle: "hidden",
 		show: false,
 	});
-	mainWindow.loadURL("http://localhost:5173").then(() => mainWindow.show());
+	mainWindow.loadURL("http://localhost:5173/catalog").then(() => mainWindow.show());
 
 	mainEventHandler.registerWindowEvents(mainWindow.id);
 
