@@ -18,6 +18,8 @@ declare global {
     isMaximized: () => boolean,
     pauseTorrent: () => null,
     resumeTorrent: () => null,
+    addSourceToDB: (sourceLink: string) => null,
+    removeSourceFromDB: (sourceLink: string) => null,
   }
 
   interface Tests {

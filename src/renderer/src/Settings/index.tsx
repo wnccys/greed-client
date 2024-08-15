@@ -32,25 +32,29 @@ export function Settings() {
 			if (
 				sourceLinkRef.current.value.length > 0
 			) {
-				window.api.setNewTorrentSource(
+				const result = window.api.addSourceToDB(
 					sourceLinkRef.current.value,
 				);
 
-				toast.success("Success", {
-					description: "Source Added To Collection.",
-				});
+				if (result === "200") {
+					toast.success("Success", {
+						description: "Source Added To Collection.",
+					});
 
-				setIsDialogOpen(false);
+					setIsDialogOpen(false);
 
-				return;
+					return;
+				}
 			}
 
 			toast.error("Error", {
-				description: "All fields Must Be Filled.",
+				description: "Add a valid Source Link.",
 			});
-
-			console.log("error: text can't be blank");
 		}
+	}
+
+	function removeSourceFromDB() {
+
 	}
 
 	return (
@@ -78,6 +82,7 @@ export function Settings() {
 									<Button 
 										className="bg-zinc-800 hover:bg-red-500
 										hover:-translate-y-1 hover:duration-500 transition-all"
+										onClick={removeSourceFromDB}
 									>
 										Remove
 									</Button>
