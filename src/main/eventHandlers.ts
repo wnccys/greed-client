@@ -15,6 +15,7 @@ ipcMain.handle("sendTorrentPath", handleTorrentPath);
 ipcMain.handle("setNewTorrentSource", handleNewTorrentSource);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 
+// ----Torrent----
 export function handleUpdateTorrentProgress(
 	torrentProgress: IpcMainEvent,
 	game: string,
@@ -36,20 +37,6 @@ export function handleUpdateTorrentProgress(
 			isPaused,
 		});
 	}
-}
-
-export async function handleFileOpen(): Promise<Array<string>> {
-	const { canceled, filePaths } = await dialog.showOpenDialog({
-		title: "Select File",
-		properties: ["openFile"],
-	});
-
-	if (!canceled) {
-		console.log(filePaths);
-		return [`Selected File: ${path.basename(filePaths[0])}`, filePaths[0]];
-	}
-
-	return ["", "Please, Select a Valid Torrent File"];
 }
 
 export async function handleTorrentPath(
@@ -91,15 +78,17 @@ export async function handleNewTorrentSource(
 	}
 }
 
-export function registerWindowEvents(windowId: number) {
-	const mainWindow = BrowserWindow.fromId(windowId);
-	if (mainWindow) {
-		ipcMain.handle("minimizeWindow", () => mainWindow.minimize());
-		ipcMain.handle("maximizeWindow", () => mainWindow.maximize());
-		ipcMain.handle("unmaximizeWindow", () => mainWindow.unmaximize());
-		ipcMain.handle("closeWindow", () => mainWindow.close());
-		ipcMain.handle("checkWindowIsMaximized", () => mainWindow.isMaximized());
-	} else {
-		throw Error("Could Not Get Window from Id.");
+// ----Torrent Select File Handling----
+export async function handleFileOpen(): Promise<Array<string>> {
+	const { canceled, filePaths } = await dialog.showOpenDialog({
+		title: "Select File",
+		properties: ["openFile"],
+	});
+
+	if (!canceled) {
+		console.log(filePaths);
+		return [`Selected File: ${path.basename(filePaths[0])}`, filePaths[0]];
 	}
+
+	return ["", "Please, Select a Valid Torrent File"];
 }

@@ -27,41 +27,10 @@ const createWindow = () => {
 	});
 	mainWindow.maximize();
 	mainWindow.loadURL("http://localhost:5173/catalog").then(() => mainWindow.show());
-
-	mainEventHandler.registerWindowEvents(mainWindow.id);
-
-	mainWindow.on("enter-full-screen", () =>
-		mainWindow.webContents.send(
-			"updateMaximizedState",
-			mainWindow.isMaximized(),
-		),
-	);
-	mainWindow.on("leave-full-screen", () =>
-		mainWindow.webContents.send(
-			"updateMaximizedState",
-			mainWindow.isMaximized(),
-		),
-	);
-	mainWindow.on("maximize", () =>
-		mainWindow.webContents.send(
-			"updateMaximizedState",
-			mainWindow.isMaximized(),
-		),
-	);
-	mainWindow.on("unmaximize", () =>
-		mainWindow.webContents.send(
-			"updateMaximizedState",
-			mainWindow.isMaximized(),
-		),
-	);
 };
 
 app.whenReady().then(() => {
 	createWindow();
-  
-	app.on("activate", () => {
-	  if (BrowserWindow.getAllWindows().length === 0) createWindow();
-	});
   });
   
   app.on("window-all-closed", () => {
