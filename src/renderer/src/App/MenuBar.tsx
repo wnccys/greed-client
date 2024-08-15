@@ -15,7 +15,7 @@ export function MenuBar() {
 		<>
 			<div
 				id="menu-bar"
-				className="h-[2rem] bg-[#171717] flex fixed w-full z-10 justify-end"
+				className="h-[2.1rem] bg-[#171717] flex fixed w-full z-10 justify-end"
 			>
 				<div className="p-0 m-0 no-drag">
 					<Button

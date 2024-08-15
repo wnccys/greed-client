@@ -10,7 +10,7 @@ import GameDummyImage from "@renderer/Assets/image.png";
 import { useFeatured } from "@renderer/Hooks/featured";
 
 export function CustomCarousel() {
-    const carouselGames = useFeatured();
+    const featuredGames = useFeatured();
 
 	const plugin = React.useRef(
 		Autoplay({
