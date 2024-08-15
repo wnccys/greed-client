@@ -17,9 +17,15 @@ const createWindow = () => {
 			sandbox: false,
 			webSecurity: false,
 		},
+		  titleBarOverlay: {
+			color: '#171717',
+			symbolColor: '#F5F5F5',
+			height: 30
+		},
 		titleBarStyle: "hidden",
 		show: false,
 	});
+	mainWindow.maximize();
 	mainWindow.loadURL("http://localhost:5173/catalog").then(() => mainWindow.show());
 
 	mainEventHandler.registerWindowEvents(mainWindow.id);
