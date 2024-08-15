@@ -1,10 +1,11 @@
 // TODO set @main to /src/main
 
-import { AppDataSource } from "./data-source"
+import { GreedDataSource } from "./data-source"
 import { GreedSettings } from "./entity/Settings"
+import { Sources } from "./entity/Sources"
 
 export function testDBConn() {
-    AppDataSource.initialize().then(async () => {
+    GreedDataSource.initialize().then(async () => {
         // console.log("Inserting a new settings into the database...")
         // const settings = new GreedSettings();
         // settings.username = "WINDOWS 11";
@@ -12,8 +13,30 @@ export function testDBConn() {
         // await AppDataSource.manager.save(settings);
         // console.log(`Saved a new settings with id: ${settings.id}`);
 
-        console.log("Loading settings from the database...");
-        const settingsData = await AppDataSource.manager.find(GreedSettings);
+        console.log("Loading settings and sources from the database...");
+        const settingsData = await GreedDataSource.manager.find(GreedSettings);
         console.log("Loaded settings: ", settingsData);
+        const sourceData = await GreedDataSource.manager.find(Sources);
+        console.log("Loaded sources: ", sourceData);
     }).catch(error => console.log(error))
+}
+
+export type GameSource = {
+    title: string,
+    downloads: {
+        title: string,
+        uris: string[],
+        uploadDate: string,
+        fileSize: string,
+    }[];
+}
+
+export async function addGameSource(receivedSource: string) {
+    const newSource = new Sources();
+
+    newSource.sources = JSON.parse(receivedSource);
+
+    await GreedDataSource.manager.save(newSource);
+    const sourceData = await GreedDataSource.manager.find(Sources);
+    console.log("source added: ", sourceData);
 }

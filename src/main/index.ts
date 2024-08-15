@@ -3,6 +3,9 @@ import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import "reflect-metadata";
 import { testDBConn } from "./model";
+import * as MainEventHandle from "./eventHandlers";
+
+MainEventHandle;
 
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({
