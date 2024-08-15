@@ -16,10 +16,10 @@ export function Catalog() {
 				>
 					<img src={SearchIcon} alt="search-icon" className="size-4" />
 					<Input
-						className="max-w-[12vw] max-h-8 border-none focus-visible:ring-0 
-                        focus:max-w-[14vw] focus-visible:ring-offset-0"
+						className="max-w-[12vw] max-h-8 border-none focus-visible:ring-0 focus:max-w-[14vw] focus-visible:ring-offset-0
+						transition-all focus-visible:duration-300 focus-visible:border-none"
 						type="text"
-						placeholder="Search"
+						placeholder="Search Games"
 					/>
 				</div>
 			</div>
