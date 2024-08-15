@@ -7,5 +7,8 @@ export class Sources {
     id: number
 
     @Column()
-    sources: string 
+    name: string
+
+    @Column()
+    downloads: string 
 }
