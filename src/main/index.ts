@@ -2,6 +2,7 @@ import { app, BrowserWindow } from "electron";
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import "reflect-metadata";
+import { testDBConn } from "./model";
 import * as mainEventHandler from "./eventHandlers";
 
 const createWindow = () => {
@@ -64,3 +65,5 @@ app.whenReady().then(() => {
   app.on("browser-window-created", (_, window) => {
 	optimizer.watchWindowShortcuts(window);
 });
+
+testDBConn();

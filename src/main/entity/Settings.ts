@@ -1,18 +1,14 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
 
 @Entity()
-export class Settings {
+export class GreedSettings {
 
     @PrimaryGeneratedColumn()
     id: number
 
     @Column()
-    firstName: string
+    username: string
 
     @Column()
-    lastName: string
-
-    @Column()
-    age: number
-
+    sources: string
 }

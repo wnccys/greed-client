@@ -1,13 +1,13 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { Settings } from "./entity/Settings"
+import { GreedSettings } from "./entity/Settings"
 
 export const AppDataSource = new DataSource({
     type: "sqlite",
     database: "./src/db/settings.sqlite",
     synchronize: true,
     logging: false,
-    entities: [Settings],
+    entities: [GreedSettings],
     migrations: [],
     subscribers: [],
 })

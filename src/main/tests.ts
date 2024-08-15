@@ -1,6 +1,5 @@
 import { initTorrentDownload } from "./torrentClient";
 import path from "node:path";
-// import fs from "node:fs"
 
 export function handleStartTorrentDownload() {
 	const magnetURI =
