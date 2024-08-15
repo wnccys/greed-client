@@ -12,19 +12,9 @@ export function testDBConn() {
         const sourceData = await GreedDataSource.manager.find(Sources);
 
         for (const source of sourceData) {
-            console.log(JSON.stringify(source.sources));
+            console.log(JSON.parse(source.sources).name);
         }
     }).catch(error => console.log(error))
-}
-
-export type GameSource = {
-    title: string,
-    downloads: {
-        title: string,
-        uris: string[],
-        uploadDate: string,
-        fileSize: string,
-    }[];
 }
 
 export async function addGameSource(receivedSource: string) {
@@ -33,5 +23,5 @@ export async function addGameSource(receivedSource: string) {
 
     await GreedDataSource.manager.save(newSource);
     const sourceData = await GreedDataSource.manager.find(Sources);
-    console.log("source added: ", sourceData);
+    console.log("Source added: ", sourceData);
 }
