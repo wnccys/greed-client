@@ -45,6 +45,12 @@ export function Settings() {
 
 					return;
 				}
+
+				toast.error("Error", {
+					description: "DB Error.",
+				});
+
+				return
 			}
 
 			toast.error("Error", {

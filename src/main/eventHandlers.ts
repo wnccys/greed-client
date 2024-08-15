@@ -8,11 +8,12 @@ import {
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
+import { addGameSource } from "./model"
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
 ipcMain.handle("sendTorrentPath", handleTorrentPath);
-ipcMain.handle("setNewTorrentSource", handleNewTorrentSource);
+ipcMain.handle("addSourceToDB", handleNewTorrentSource);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 
 // ----Torrent----
@@ -64,9 +65,8 @@ export async function handleNewTorrentSource(
 		fetch(sourceLink)
 			.then((response: Response) => response.json())
 			.then((body: ReadableStream<Uint8Array> | null) => {
-				const stringifiedBody = JSON.parse(JSON.stringify(body));
-				console.log(stringifiedBody.name);
-				console.log(stringifiedBody.downloads[0]);
+				const stringifiedBody = JSON.stringify(body);
+				addGameSource(stringifiedBody);
 			})
 			.catch((e) =>
 				console.error(

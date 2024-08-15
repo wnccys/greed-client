@@ -8,7 +8,4 @@ export class GreedSettings {
 
     @Column()
     username: string
-
-    @Column()
-    sources: string
 }

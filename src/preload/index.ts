@@ -2,8 +2,9 @@ import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
 
 const tests = {
-	startTorrentDownloadTest: () => ipcRenderer.invoke("startTorrentDownloadTest"),
-}
+	startTorrentDownloadTest: () =>
+		ipcRenderer.invoke("startTorrentDownloadTest"),
+};
 
 // Custom APIs for renderer
 const api = {
@@ -15,7 +16,8 @@ const api = {
 		ipcRenderer.invoke("setNewTorrentSource", sourceLink),
 	pauseTorrent: () => ipcRenderer.invoke("pauseTorrent"),
 	resumeTorrent: () => ipcRenderer.invoke("resumeTorrent"),
-	addSourceToDB: () => ipcRenderer.invoke("addSourceFromDB"),
+	addSourceToDB: (sourceLink: string) =>
+		ipcRenderer.invoke("addSourceToDB", sourceLink),
 	removeSourceFromDB: () => ipcRenderer.invoke("removeSourceFromDB"),
 };
 
