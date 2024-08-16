@@ -1,5 +1,3 @@
-// TODO set @main to /src/main
-import { ipcMain } from "electron";
 import { GreedDataSource } from "./data-source";
 import { GreedSettings } from "./entity/Settings";
 import { Sources } from "./entity/Sources";

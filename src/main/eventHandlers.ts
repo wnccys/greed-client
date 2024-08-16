@@ -27,7 +27,10 @@ async function handleGetSourcesList(event: IpcMainInvokeEvent) {
 	return sourcesList;
 }
 
-async function handleRemoveSourceFromDB(_event: IpcMainInvokeEvent, sourceName: string) {
+async function handleRemoveSourceFromDB(
+	_event: IpcMainInvokeEvent,
+	sourceName: string,
+) {
 	console.log("Source Name: ", sourceName);
 }
 
@@ -79,8 +82,8 @@ export async function handleNewTorrentSource(
 	try {
 		new URL(sourceLink);
 	} catch (error) {
-		console.error('Invalid URL:', error);
-		return Promise.resolve(['Error', 'Provide a valid URL.']);
+		console.error("Invalid URL:", error);
+		return Promise.resolve(["Error", "Provide a valid URL."]);
 	}
 
 	const result = await fetch(sourceLink);
