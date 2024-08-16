@@ -40,16 +40,6 @@ export function Settings() {
 		};
 	}, []);
 
-	// useEffect(() => {
-	// 	window.electron.ipcRenderer.on("updateSourcesList", (receivedSources) => {
-	// 		setSources(receivedSources);
-	// 	});
-
-	//     return () => {
-	//         window.electron.ipcRenderer.removeAllListeners("updateSourcesList");
-	//     }
-	// }, []);
-
 	function addSourceToDB() {
 		if (sourceLinkRef.current) {
 			if (sourceLinkRef.current.value.length > 0) {
