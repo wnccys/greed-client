@@ -25,8 +25,8 @@ export async function addGameSource(receivedSource: string) {
 	const parsedSource = JSON.parse(receivedSource);
 
 	try {
-		newSource.name = JSON.stringify(parsedSource.name);
-		newSource.downloads = JSON.stringify(parsedSource.downloads);
+		newSource.name = JSON.stringify(parsedSource.name.shift().pop());
+		newSource.downloads = JSON.stringify(parsedSource.downloads.shift().pop());
 		newSource.downloadsCount = parsedSource.downloads.length;
 	} catch (e) {
 		return ["Error", "Could not get downloads count"];

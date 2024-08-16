@@ -26,29 +26,22 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 export function Settings() {
 	const sourceLinkRef = useRef<HTMLInputElement>(null);
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+	const [sources, setSources] = useState([]);
 
 	useEffect(() => {
-		window.electron.ipcRenderer.invoke("getSourcesList").then((sources) => {
-			for (const source of sources) {
-				console.log("Source Name: ", source.name);
-				console.log("Downloads Count: ", source.downloadsCount);
-			}
+		window.electron.ipcRenderer.invoke("getSourcesList").then((receivedSources) => {
+			setSources(receivedSources);
 		});
 
 		return () => {
 			window.electron.ipcRenderer.removeAllListeners("getSourcesList");
 		}
 	}, []);
-	// for (const source of sources) {
-	// 	console.log("Source Name: ", source.name);
-	// 	console.log("Downloads Count: ", source.downloadsCount);
-	// }
 
 	function addSourceToDB() {
 		if (sourceLinkRef.current) {
 			if (sourceLinkRef.current.value.length > 0) {
 				window.api.addSourceToDB(sourceLinkRef.current.value).then((result) => {
-					console.log(result);
 					if (result[0] === "Success") {
 						toast.success(result[0], {
 							description: result[1],
@@ -66,8 +59,8 @@ export function Settings() {
 		}
 	}
 
-	function removeSourceFromDB(SourceName: string) {
-
+	function removeSourceFromDB(sourceName: string) {
+		console.log(sourceName);
 	}
 
 	return (
@@ -87,20 +80,26 @@ export function Settings() {
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							<TableRow className="hover:bg-zinc-800/50">
-								<TableCell className="font-medium">FitGirl Repacks</TableCell>
-								<TableCell>Syncronized</TableCell>
-								<TableCell className="text-right">1000</TableCell>
-								<TableCell className="text-right">
-									<Button
-										className="bg-zinc-800 hover:bg-red-500
-									hover:-translate-y-1 hover:duration-500 transition-all"
-										onClick={() => removeSourceFromDB("none")}
-									>
-										Remove
-									</Button>
-								</TableCell>
-							</TableRow>
+						{/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+						{ sources.map((source: any, index) => {
+							return (
+								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+								<TableRow className="hover:bg-zinc-800/50" key={index}>
+									<TableCell className="font-medium">{source.name}</TableCell>
+									<TableCell>Syncronized</TableCell>
+									<TableCell className="text-right">{source.downloadsCount}</TableCell>
+									<TableCell className="text-right">
+										<Button
+											className="bg-zinc-800 hover:bg-red-500
+										hover:-translate-y-1 hover:duration-500 transition-all"
+											onClick={() => removeSourceFromDB(source.name)}
+										>
+											Remove
+										</Button>
+									</TableCell>
+								</TableRow>
+							)}
+						)}
 						</TableBody>
 					</Table>
 
