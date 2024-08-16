@@ -13,7 +13,7 @@ declare global {
     setNewTorrentSource: (sourceLink: string) => string,
     pauseTorrent: () => null,
     resumeTorrent: () => null,
-    addSourceToDB: (sourceLink: string) => null,
+    addSourceToDB: (sourceLink: string) => Promise<string[]>,
     removeSourceFromDB: (sourceLink: string) => null,
   }
 
