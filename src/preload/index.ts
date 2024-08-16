@@ -18,7 +18,8 @@ const api = {
 	resumeTorrent: () => ipcRenderer.invoke("resumeTorrent"),
 	addSourceToDB: (sourceLink: string) =>
 		ipcRenderer.invoke("addSourceToDB", sourceLink),
-	removeSourceFromDB: (sourceName: string) => ipcRenderer.invoke("removeSourceFromDB", sourceName),
+	removeSourceFromDB: (sourceName: string) =>
+		ipcRenderer.invoke("removeSourceFromDB", sourceName),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
