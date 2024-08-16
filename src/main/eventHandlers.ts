@@ -9,7 +9,6 @@ import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
 import { addGameSource } from "./model";
-import { i } from "vite/dist/node/types.d-aGj9QkWt";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
