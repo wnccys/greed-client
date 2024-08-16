@@ -16,7 +16,7 @@ export function testDBConn() {
 				console.log("name: ", source.name);
 			}
 		})
-		.catch((error) => console.log(error));
+		.catch((error) => console.log("Failed to load contents: ", error));
 }
 
 export async function addGameSource(receivedSource: string) {
