@@ -8,7 +8,8 @@ import {
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
-import { addGameSource } from "./model"
+import { addGameSource } from "./model";
+import { i } from "vite/dist/node/types.d-aGj9QkWt";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
@@ -58,24 +59,21 @@ export async function handleTorrentPath(
 export async function handleNewTorrentSource(
 	_event: IpcMainInvokeEvent,
 	sourceLink: string,
-) {
+): Promise<string[]> {
 	console.log(`sourceLink: ${sourceLink}`);
 
 	try {
-		fetch(sourceLink)
-			.then((response: Response) => response.json())
-			.then((body: ReadableStream<Uint8Array> | null) => {
-				const stringifiedBody = JSON.stringify(body);
-				addGameSource(stringifiedBody);
-			})
-			.catch((e) =>
-				console.error(
-					`Could not fetch from given link: ${sourceLink}.\n Error: ${e}.`,
-				),
-			);
-	} catch (e) {
-		console.error(e);
+		new URL(sourceLink);
+	} catch (error) {
+		console.error('Invalid URL:', error);
+		return Promise.resolve(['Error', 'Provide a valid URL.']);
 	}
+
+	const result = await fetch(sourceLink);
+	const stringifiedBody = JSON.stringify(await result.json());
+	const response = addGameSource(stringifiedBody);
+
+	return response;
 }
 
 // ----Torrent Select File Handling----
