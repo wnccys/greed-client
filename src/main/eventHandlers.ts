@@ -8,13 +8,27 @@ import {
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
-import { addGameSource } from "./model";
+import { addGameSource, getSourcesList } from "./model";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
 ipcMain.handle("sendTorrentPath", handleTorrentPath);
 ipcMain.handle("addSourceToDB", handleNewTorrentSource);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
+ipcMain.handle("getSourcesList", handleGetSourcesList);
+
+// ---- Sources ----
+async function handleGetSourcesList(event: IpcMainInvokeEvent) {
+	console.log("Event: ", event.processId);
+	const sourcesList = await getSourcesList();
+	console.log("Sources List: ", sourcesList);
+
+	return sourcesList;
+}
+
+async function updateSourcesList(event: IpcMainEvent) {
+
+}
 
 // ----Torrent----
 export function handleUpdateTorrentProgress(

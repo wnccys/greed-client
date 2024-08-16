@@ -20,12 +20,29 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@renderer/ShadComponents/ui/dialog";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
 export function Settings() {
 	const sourceLinkRef = useRef<HTMLInputElement>(null);
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
+	useEffect(() => {
+		window.electron.ipcRenderer.invoke("getSourcesList").then((sources) => {
+			for (const source of sources) {
+				console.log("Source Name: ", source.name);
+				console.log("Downloads Count: ", source.downloadsCount);
+			}
+		});
+
+		return () => {
+			window.electron.ipcRenderer.removeAllListeners("getSourcesList");
+		}
+	}, []);
+	// for (const source of sources) {
+	// 	console.log("Source Name: ", source.name);
+	// 	console.log("Downloads Count: ", source.downloadsCount);
+	// }
 
 	function addSourceToDB() {
 		if (sourceLinkRef.current) {
@@ -33,16 +50,15 @@ export function Settings() {
 				window.api.addSourceToDB(sourceLinkRef.current.value).then((result) => {
 					console.log(result);
 					if (result[0] === "Success") {
-						toast.success("Success", {
+						toast.success(result[0], {
 							description: result[1],
 						});
 
 						setIsDialogOpen(false);
-
 						return;
 					}
 
-					toast.error("Error", {
+					toast.error(result[0], {
 						description: result[1],
 					});
 				});
