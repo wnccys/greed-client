@@ -1,5 +1,5 @@
-import './Assets/main.css'
-import './Assets/global.css'
+import './assets/main.css'
+import './assets/global.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { App } from './App/App'
@@ -9,7 +9,7 @@ import { createBrowserRouter,
 import { SelectedGame } from './SelectedGame';
 import { Catalog } from './Catalog';
 import { ErrorElement } from './ErrorElement';
-import { Settings } from './Settings';
+import { Settings } from './Settings'; 
 import { Downloads } from './Downloads';
 
  const router = createBrowserRouter([
@@ -29,11 +29,10 @@ import { Downloads } from './Downloads';
       {
         path: "settings",
         element: <Settings />
-      }, 
-      { path: "downloads", 
-        element: <Downloads />
-
-
+      },
+      {
+        path: "downloads",
+        element: <Downloads />,
       }
     ],
     errorElement: <ErrorElement />
