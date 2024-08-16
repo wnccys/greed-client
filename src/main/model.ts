@@ -23,19 +23,14 @@ export async function addGameSource(receivedSource: string) {
 	const newSource = new Sources();
 	const parsedSource = JSON.parse(receivedSource);
 
+	newSource.name = JSON.stringify(parsedSource.name);
+	newSource.downloads = JSON.stringify(parsedSource.downloads);
+
 	try {
-		newSource.name = JSON.stringify(parsedSource.name);
-		newSource.downloads = JSON.stringify(parsedSource.downloads);
+		await GreedDataSource.manager.save(newSource);
 	} catch (e) {
-        return ["Error", "Invalid Data Received."];
-	}
+		return ["Error", "Duplicated Sources are not allowed"] 
+	};
 
-	console.log("Parsed Source Name: ", parsedSource.name);
-	const isDuplicated = await GreedDataSource.getRepository(Sources).findOneBy({
-		name: parsedSource.name
-	});
-	if (isDuplicated != null) return ["Error", "Cannot Add Duplicated Source."]
-
-	await GreedDataSource.manager.save(newSource);
     return ["Success", "Source Successfully Added."];
 }
