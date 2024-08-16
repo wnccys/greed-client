@@ -11,9 +11,10 @@ export function testDBConn() {
 			console.log("Loaded settings: ", settingsData);
 			const sourceData = await GreedDataSource.manager.find(Sources);
 
-            console.log("Loaded Sources: ");
+			console.log("Loaded Sources: ");
 			for (const source of sourceData) {
-				console.log("name: ", source.name);
+				console.log("Name: ", source.name);
+				console.log("Links Count: ", source.downloadsCount);
 			}
 		})
 		.catch((error) => console.log("Failed to load contents: ", error));
@@ -23,14 +24,24 @@ export async function addGameSource(receivedSource: string) {
 	const newSource = new Sources();
 	const parsedSource = JSON.parse(receivedSource);
 
-	newSource.name = JSON.stringify(parsedSource.name);
-	newSource.downloads = JSON.stringify(parsedSource.downloads);
+	try {
+		newSource.name = JSON.stringify(parsedSource.name);
+		newSource.downloads = JSON.stringify(parsedSource.downloads);
+		newSource.downloadsCount = parsedSource.downloads.length;
+	} catch (e) {
+		return ["Error", "Could not get downloads count"];
+	}
 
 	try {
 		await GreedDataSource.manager.save(newSource);
+		return ["Success", "Source Successfully Added."];
 	} catch (e) {
-		return ["Error", "Duplicated Sources are not allowed"] 
-	};
+		return ["Error", "Duplicated Sources are not allowed"];
+	}
+}
 
-    return ["Success", "Source Successfully Added."];
+export async function getSourcesList() {
+	return await GreedDataSource.manager.find(Sources, {
+		select: ['name', 'downloadsCount']
+	});
 }
