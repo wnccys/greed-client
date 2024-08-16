@@ -67,3 +67,8 @@ https://github.com/sonnyp/aria2.js/
 
 https://hydralinks.cloud/sources/fitgirl.json
 https://www.steamgriddb.com/
+
+## Links Json Games 
+https://raw.githubusercontent.com/hydralauncher/hydra/main/seeds/steam-games.json
+https://hydralinks.cloud/sources/dodi.json
+https://steamdb.info/app/1663640/info/#assets
