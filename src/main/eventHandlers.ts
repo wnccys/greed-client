@@ -16,6 +16,7 @@ ipcMain.handle("sendTorrentPath", handleTorrentPath);
 ipcMain.handle("addSourceToDB", handleNewTorrentSource);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 ipcMain.handle("getSourcesList", handleGetSourcesList);
+ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 
 // ---- Sources ----
 async function handleGetSourcesList(event: IpcMainInvokeEvent) {
@@ -26,8 +27,8 @@ async function handleGetSourcesList(event: IpcMainInvokeEvent) {
 	return sourcesList;
 }
 
-async function updateSourcesList(event: IpcMainEvent) {
-
+async function handleRemoveSourceFromDB(_event: IpcMainInvokeEvent, sourceName: string) {
+	console.log("Source Name: ", sourceName);
 }
 
 // ----Torrent----

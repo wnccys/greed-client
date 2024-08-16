@@ -1,4 +1,5 @@
 // TODO set @main to /src/main
+import { ipcMain } from "electron";
 import { GreedDataSource } from "./data-source";
 import { GreedSettings } from "./entity/Settings";
 import { Sources } from "./entity/Sources";
@@ -25,8 +26,8 @@ export async function addGameSource(receivedSource: string) {
 	const parsedSource = JSON.parse(receivedSource);
 
 	try {
-		newSource.name = JSON.stringify(parsedSource.name.shift().pop());
-		newSource.downloads = JSON.stringify(parsedSource.downloads.shift().pop());
+		newSource.name = JSON.stringify(parsedSource.name);
+		newSource.downloads = JSON.stringify(parsedSource.downloads);
 		newSource.downloadsCount = parsedSource.downloads.length;
 	} catch (e) {
 		return ["Error", "Could not get downloads count"];
@@ -44,4 +45,8 @@ export async function getSourcesList() {
 	return await GreedDataSource.manager.find(Sources, {
 		select: ['name', 'downloadsCount']
 	});
+}
+
+export async function removeSourceFromDB() {
+
 }

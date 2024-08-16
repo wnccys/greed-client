@@ -29,14 +29,26 @@ export function Settings() {
 	const [sources, setSources] = useState([]);
 
 	useEffect(() => {
-		window.electron.ipcRenderer.invoke("getSourcesList").then((receivedSources) => {
-			setSources(receivedSources);
-		});
+		window.electron.ipcRenderer
+			.invoke("getSourcesList")
+			.then((receivedSources) => {
+				setSources(receivedSources);
+			});
 
 		return () => {
 			window.electron.ipcRenderer.removeAllListeners("getSourcesList");
-		}
+		};
 	}, []);
+
+	// useEffect(() => {
+	// 	window.electron.ipcRenderer.on("updateSourcesList", (receivedSources) => {
+	// 		setSources(receivedSources);
+	// 	});
+
+	//     return () => {
+	//         window.electron.ipcRenderer.removeAllListeners("updateSourcesList");
+	//     }
+	// }, []);
 
 	function addSourceToDB() {
 		if (sourceLinkRef.current) {
@@ -46,6 +58,12 @@ export function Settings() {
 						toast.success(result[0], {
 							description: result[1],
 						});
+
+						window.electron.ipcRenderer
+							.invoke("getSourcesList")
+							.then((receivedSources) => {
+								setSources(receivedSources);
+							});
 
 						setIsDialogOpen(false);
 						return;
@@ -60,13 +78,13 @@ export function Settings() {
 	}
 
 	function removeSourceFromDB(sourceName: string) {
-		console.log(sourceName);
+		window.api.removeSourceFromDB(sourceName);
 	}
 
 	return (
 		<div
 			className="flex flex-col items-center self-center mt-[10em] p-5 
-		cursor-default rounded h-screen"
+	cursor-default rounded h-screen"
 		>
 			<div className="max-h-full border p-5 rounded shadow-zinc-950 shadow-xl">
 				<p className="text-xl">Current Torrent Sources</p>
@@ -80,26 +98,30 @@ export function Settings() {
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-						{/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
-						{ sources.map((source: any, index) => {
-							return (
-								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-								<TableRow className="hover:bg-zinc-800/50" key={index}>
-									<TableCell className="font-medium">{source.name}</TableCell>
-									<TableCell>Syncronized</TableCell>
-									<TableCell className="text-right">{source.downloadsCount}</TableCell>
-									<TableCell className="text-right">
-										<Button
-											className="bg-zinc-800 hover:bg-red-500
-										hover:-translate-y-1 hover:duration-500 transition-all"
-											onClick={() => removeSourceFromDB(source.name)}
-										>
-											Remove
-										</Button>
-									</TableCell>
-								</TableRow>
-							)}
-						)}
+							{/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+							{sources.map((source: any, index) => {
+								return (
+									// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+									<TableRow className="hover:bg-zinc-800/50" key={index}>
+										<TableCell className="font-medium">
+											{String(source.name).slice(1,-1)}
+										</TableCell>
+										<TableCell>Syncronized</TableCell>
+										<TableCell className="text-right">
+											{source.downloadsCount}
+										</TableCell>
+										<TableCell className="text-right">
+											<Button
+												className="bg-zinc-800 hover:bg-red-500
+												hover:-translate-y-1 hover:duration-500 transition-all"
+												onClick={() => removeSourceFromDB(source.name)}
+											>
+												Remove
+											</Button>
+										</TableCell>
+									</TableRow>
+								);
+							})}
 						</TableBody>
 					</Table>
 
@@ -107,7 +129,7 @@ export function Settings() {
 						<DialogTrigger asChild>
 							<Button
 								className="float-right bg-zinc-800 mt-5
-							hover:bg-zinc-700 hover:-translate-y-1 hover:duration-500 transition-all"
+						hover:bg-zinc-700 hover:-translate-y-1 hover:duration-500 transition-all"
 								onClick={() => setIsDialogOpen(true)}
 							>
 								Add
@@ -130,11 +152,11 @@ export function Settings() {
 								</DialogDescription>
 								<div
 									className="absolute right-4 top-2 rounded-sm opacity-70 
-									ring-offset-background hover:bg-zinc-800 
-									hover:-translate-y-[2px] hover:duration-300 
-									transition-all hover:opacity-100 focus:outline-none focus:ring-2 
-									focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
-									data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+								ring-offset-background hover:bg-zinc-800 
+								hover:-translate-y-[2px] hover:duration-300 
+								transition-all hover:opacity-100 focus:outline-none focus:ring-2 
+								focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
+								data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
 								>
 									<Cross2Icon
 										className="size-4 cursor-pointer"
@@ -161,7 +183,7 @@ export function Settings() {
 									type="submit"
 									onClick={addSourceToDB}
 									className="hover:bg-zinc-800 hover:-translate-y-1
-								hover:duration-500 transition-all"
+							hover:duration-500 transition-all"
 								>
 									Save
 								</Button>
