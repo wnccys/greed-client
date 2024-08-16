@@ -8,7 +8,7 @@ import {
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
-import { addGameSource, getSourcesList } from "./model";
+import { addGameSource, getSourcesList, removeSourceFromDB } from "./model";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
@@ -31,7 +31,9 @@ async function handleRemoveSourceFromDB(
 	_event: IpcMainInvokeEvent,
 	sourceName: string,
 ) {
-	console.log("Source Name: ", sourceName);
+	const result = removeSourceFromDB(sourceName);
+
+	return result;
 }
 
 // ----Torrent----

@@ -68,7 +68,25 @@ export function Settings() {
 	}
 
 	function removeSourceFromDB(sourceName: string) {
-		window.api.removeSourceFromDB(sourceName);
+		window.api.removeSourceFromDB(sourceName).then((result) => {
+			if (result[0] === "Success") {
+				window.electron.ipcRenderer
+					.invoke("getSourcesList")
+					.then((receivedSources) => {
+						setSources(receivedSources);
+					});
+
+					toast.success(result[0], {
+						description: result[1],
+					});
+
+				return;
+			}
+
+			toast.error(result[0], {
+				description: result[1],
+			})
+		});
 	}
 
 	return (
