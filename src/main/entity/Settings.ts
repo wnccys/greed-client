@@ -1,18 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { hostname } from "node:os";
 
 @Entity()
-export class Settings {
+export class GreedSettings {
 
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
-    firstName: string
-
-    @Column()
-    lastName: string
-
-    @Column()
-    age: number
-
+    @Column({ type: 'varchar', default: true })
+    username: string = hostname(); 
 }

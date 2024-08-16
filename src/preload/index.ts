@@ -2,8 +2,9 @@ import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
 
 const tests = {
-	startTorrentDownloadTest: () => ipcRenderer.invoke("startTorrentDownloadTest"),
-}
+	startTorrentDownloadTest: () =>
+		ipcRenderer.invoke("startTorrentDownloadTest"),
+};
 
 // Custom APIs for renderer
 const api = {
@@ -13,15 +14,12 @@ const api = {
 	handleFileSelect: () => ipcRenderer.invoke("handleFileSelect"),
 	setNewTorrentSource: (sourceLink: string) =>
 		ipcRenderer.invoke("setNewTorrentSource", sourceLink),
-	minimizeWindow: () => ipcRenderer.invoke("minimizeWindow"),
-	maximizeWindow: () => ipcRenderer.invoke("maximizeWindow"),
-	unmaximizeWindow: () => ipcRenderer.invoke("unmaximizeWindow"),
-	closeWindow: () => ipcRenderer.invoke("closeWindow"),
-	isMaximized: () => ipcRenderer.invoke("checkWindowIsMaximized"),
 	pauseTorrent: () => ipcRenderer.invoke("pauseTorrent"),
 	resumeTorrent: () => ipcRenderer.invoke("resumeTorrent"),
-	addSourceToDB: () => ipcRenderer.invoke("addSourceFromDB"),
-	removeSourceFromDB: () => ipcRenderer.invoke("removeSourceFromDB"),
+	addSourceToDB: (sourceLink: string) =>
+		ipcRenderer.invoke("addSourceToDB", sourceLink),
+	removeSourceFromDB: (sourceName: string) =>
+		ipcRenderer.invoke("removeSourceFromDB", sourceName),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

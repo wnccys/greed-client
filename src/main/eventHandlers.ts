@@ -8,13 +8,35 @@ import {
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
+import { addGameSource, getSourcesList, removeSourceFromDB } from "./model";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
 ipcMain.handle("sendTorrentPath", handleTorrentPath);
-ipcMain.handle("setNewTorrentSource", handleNewTorrentSource);
+ipcMain.handle("addSourceToDB", handleNewTorrentSource);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
+ipcMain.handle("getSourcesList", handleGetSourcesList);
+ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 
+// ---- Sources ----
+async function handleGetSourcesList(event: IpcMainInvokeEvent) {
+	console.log("Event: ", event.processId);
+	const sourcesList = await getSourcesList();
+	console.log("Sources List: ", sourcesList);
+
+	return sourcesList;
+}
+
+async function handleRemoveSourceFromDB(
+	_event: IpcMainInvokeEvent,
+	sourceName: string,
+) {
+	const result = removeSourceFromDB(sourceName);
+
+	return result;
+}
+
+// ----Torrent----
 export function handleUpdateTorrentProgress(
 	torrentProgress: IpcMainEvent,
 	game: string,
@@ -38,20 +60,6 @@ export function handleUpdateTorrentProgress(
 	}
 }
 
-export async function handleFileOpen(): Promise<Array<string>> {
-	const { canceled, filePaths } = await dialog.showOpenDialog({
-		title: "Select File",
-		properties: ["openFile"],
-	});
-
-	if (!canceled) {
-		console.log(filePaths);
-		return [`Selected File: ${path.basename(filePaths[0])}`, filePaths[0]];
-	}
-
-	return ["", "Please, Select a Valid Torrent File"];
-}
-
 export async function handleTorrentPath(
 	_event: IpcMainInvokeEvent,
 	path: string,
@@ -70,36 +78,34 @@ export async function handleTorrentPath(
 export async function handleNewTorrentSource(
 	_event: IpcMainInvokeEvent,
 	sourceLink: string,
-) {
+): Promise<string[]> {
 	console.log(`sourceLink: ${sourceLink}`);
 
 	try {
-		fetch(sourceLink)
-			.then((response: Response) => response.json())
-			.then((body: ReadableStream<Uint8Array> | null) => {
-				const stringifiedBody = JSON.parse(JSON.stringify(body));
-				console.log(stringifiedBody.name);
-				console.log(stringifiedBody.downloads[0]);
-			})
-			.catch((e) =>
-				console.error(
-					`Could not fetch from given link: ${sourceLink}.\n Error: ${e}.`,
-				),
-			);
-	} catch (e) {
-		console.error(e);
+		new URL(sourceLink);
+	} catch (error) {
+		console.error("Invalid URL:", error);
+		return Promise.resolve(["Error", "Provide a valid URL."]);
 	}
+
+	const result = await fetch(sourceLink);
+	const stringifiedBody = JSON.stringify(await result.json());
+	const response = addGameSource(stringifiedBody);
+
+	return response;
 }
 
-export function registerWindowEvents(windowId: number) {
-	const mainWindow = BrowserWindow.fromId(windowId);
-	if (mainWindow) {
-		ipcMain.handle("minimizeWindow", () => mainWindow.minimize());
-		ipcMain.handle("maximizeWindow", () => mainWindow.maximize());
-		ipcMain.handle("unmaximizeWindow", () => mainWindow.unmaximize());
-		ipcMain.handle("closeWindow", () => mainWindow.close());
-		ipcMain.handle("checkWindowIsMaximized", () => mainWindow.isMaximized());
-	} else {
-		throw Error("Could Not Get Window from Id.");
+// ----Torrent Select File Handling----
+export async function handleFileOpen(): Promise<Array<string>> {
+	const { canceled, filePaths } = await dialog.showOpenDialog({
+		title: "Select File",
+		properties: ["openFile"],
+	});
+
+	if (!canceled) {
+		console.log(filePaths);
+		return [`Selected File: ${path.basename(filePaths[0])}`, filePaths[0]];
 	}
+
+	return ["", "Please, Select a Valid Torrent File"];
 }

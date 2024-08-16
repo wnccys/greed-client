@@ -2,7 +2,10 @@ import { app, BrowserWindow } from "electron";
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import "reflect-metadata";
-import * as mainEventHandler from "./eventHandlers";
+import { testDBConn } from "./model";
+import * as MainEventHandle from "./eventHandlers";
+
+MainEventHandle;
 
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({
@@ -16,45 +19,20 @@ const createWindow = () => {
 			sandbox: false,
 			webSecurity: false,
 		},
+		  titleBarOverlay: {
+			color: '#171717',
+			symbolColor: '#F5F5F5',
+			height: 30
+		},
 		titleBarStyle: "hidden",
 		show: false,
 	});
-	mainWindow.loadURL("http://localhost:5173").then(() => mainWindow.show());
-
-	mainEventHandler.registerWindowEvents(mainWindow.id);
-
-	mainWindow.on("enter-full-screen", () =>
-		mainWindow.webContents.send(
-			"updateMaximizedState",
-			mainWindow.isMaximized(),
-		),
-	);
-	mainWindow.on("leave-full-screen", () =>
-		mainWindow.webContents.send(
-			"updateMaximizedState",
-			mainWindow.isMaximized(),
-		),
-	);
-	mainWindow.on("maximize", () =>
-		mainWindow.webContents.send(
-			"updateMaximizedState",
-			mainWindow.isMaximized(),
-		),
-	);
-	mainWindow.on("unmaximize", () =>
-		mainWindow.webContents.send(
-			"updateMaximizedState",
-			mainWindow.isMaximized(),
-		),
-	);
+	mainWindow.maximize();
+	mainWindow.loadURL("http://localhost:5173/catalog").then(() => mainWindow.show());
 };
 
 app.whenReady().then(() => {
 	createWindow();
-  
-	app.on("activate", () => {
-	  if (BrowserWindow.getAllWindows().length === 0) createWindow();
-	});
   });
   
   app.on("window-all-closed", () => {
@@ -64,3 +42,5 @@ app.whenReady().then(() => {
   app.on("browser-window-created", (_, window) => {
 	optimizer.watchWindowShortcuts(window);
 });
+
+testDBConn();
