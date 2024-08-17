@@ -52,13 +52,11 @@ export function Downloads() {
 		}), [torrentInfo]);
 
 	useEffect(() => {
-		console.log("New torrent Info: ", torrentInfo);
 		const newData: chartData = {
 			downloaded: torrentInfo.downloaded, 
 			downloadSpeed: torrentInfo.downloadSpeed,
 			diskUsage: torrentInfo.currentProgress,
 		};
-		console.log(newData);
 		
 		setChartData(oldChartData => {
 			const updatedChartData = [...oldChartData, newData];
