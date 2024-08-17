@@ -173,7 +173,7 @@ export function Downloads() {
 										className="mt-1 hover:bg-zinc-800 hover:-translate-y-1
 										hover:duration-500 transition-all" 
 									/>
-									<Button onClick={() => window.electron.ipcRenderer.invoke("removeTorrent")}
+									<Button onClick={() => window.api.removeTorrent()}
 										className="mt-1 hover:bg-red-500 hover:-translate-y-1
 										hover:duration-500 transition-all ms-4"
 									>
