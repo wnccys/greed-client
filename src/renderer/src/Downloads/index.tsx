@@ -98,7 +98,8 @@ export function Downloads() {
 
 	return (
 		<div className="flex flex-col container scale-90 content-center h-screen">
-			<Card className="bg-black scale-100">
+			{ torrentInfo.currentProgress > 0 &&
+			<Card className="bg-black scale-100 pb-10">
 				<CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
 					<div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
 						<CardTitle>
@@ -155,6 +156,7 @@ export function Downloads() {
 					</ChartContainer>
 				</CardContent>
 			</Card>
+			}
 
 			<div className="flex flex-col gap-4 mt-10">
 				<h1 className="text-2xl">Queue</h1>
@@ -172,8 +174,15 @@ export function Downloads() {
 								<div className="w-full">
 									<p>{(torrentInfo.downloadSpeed / 8).toFixed(1)} Mbps</p>
 									<ResumePauseTorrent isPaused={torrentInfo.isPaused} 
-									className="mt-1 hover:bg-zinc-800 hover:-translate-y-1
-									hover:duration-500 transition-all" />
+										className="mt-1 hover:bg-zinc-800 hover:-translate-y-1
+										hover:duration-500 transition-all" 
+									/>
+									<Button onClick={() => window.electron.ipcRenderer.send("removeTorrentFromQueue")}
+										className="mt-1 hover:bg-red-500 hover:-translate-y-1
+										hover:duration-500 transition-all ms-4"
+									>
+										Remove
+									</Button>
 								</div>
 							</div>
 						</div>
