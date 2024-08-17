@@ -25,7 +25,7 @@ type chartData = {
 	diskUsage: number,
 };
 
-const initialChartData = [{downloaded: 10, downloadSpeed: 240, diskUsage: 300}];
+// const initialChartData = [{downloaded: 10, downloadSpeed: 240, diskUsage: 300}];
 
 const chartConfig = {
 	downloaded: {
@@ -44,14 +44,14 @@ const chartConfig = {
 export function Downloads() {
 	const [activeChart, setActiveChart] =
 		React.useState<keyof typeof chartConfig>("downloadSpeed");
-	const [chartData, setChartData] = useState<chartData[]>(initialChartData);
+	const [chartData, setChartData] = useState<chartData[]>([]);
 	const torrentInfo = useDownloads();
 
 	const total = React.useMemo(
 		() => ({
-			downloadSpeed: chartData.reduce((acc, curr) => acc + curr.downloadSpeed, 0),
-			diskUsage: chartData.reduce((acc, curr) => acc + curr.diskUsage, 0),
-		}), [chartData]);
+			downloadSpeed: (torrentInfo.downloadSpeed / 8).toFixed(1) || 0,
+			diskUsage: 0,
+		}), [torrentInfo]);
 
 	useEffect(() => {
 		console.log("New torrent Info: ", torrentInfo);
@@ -60,8 +60,16 @@ export function Downloads() {
 			downloadSpeed: torrentInfo.downloadSpeed,
 			diskUsage: torrentInfo.currentProgress,
 		};
+		console.log(newData);
 		
-		setChartData(oldChartData => [...oldChartData, newData]);
+		setChartData(oldChartData => {
+			const updatedChartData = [...oldChartData, newData];
+			if (updatedChartData.length > 40) {
+				updatedChartData.shift();
+			}
+
+			return updatedChartData;
+		});
 	}, [torrentInfo]);
 
 	function DownloadCard({ game }) {
@@ -137,17 +145,17 @@ export function Downloads() {
 							margin={{
 								left: 15,
 								right: 15,
+								top: 40,
 							}}
 						>
 							<CartesianGrid vertical={false} />
-							<XAxis
-								tickLine={false}
+							{/* <XAxis
+								tickLine={true}
 								axisLine={false}
-								tickMargin={8}
+								tickMargin={10}
 								minTickGap={32}
-								tickFormatter={(value) => value}
-							/>
-							<YAxis />
+							/> */}
+							<YAxis minTickGap={100} />
 							<Bar dataKey={activeChart} fill={"#ef4444"} />
 						</BarChart>
 					</ChartContainer>
