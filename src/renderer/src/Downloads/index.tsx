@@ -149,13 +149,7 @@ export function Downloads() {
 							}}
 						>
 							<CartesianGrid vertical={false} />
-							{/* <XAxis
-								tickLine={true}
-								axisLine={false}
-								tickMargin={10}
-								minTickGap={32}
-							/> */}
-							<YAxis minTickGap={100} />
+							<YAxis capHeight={100} />
 							<Bar dataKey={activeChart} fill={"#ef4444"} />
 						</BarChart>
 					</ChartContainer>
