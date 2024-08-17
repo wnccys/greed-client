@@ -26,6 +26,14 @@ export async function initTorrentDownload(
 		currentTorrent = setCurrentTorrent(magnetURI, downloadFolder) 
 		currentTorrentInterval = registerTorrentEvents(currentTorrent);
 	});
+
+	ipcMain.handle("removeTorrent", () => {
+		clearInterval(currentTorrentInterval);
+		client.remove(magnetURI, {
+			destroyStore: true,
+		});
+		ipcMain.emit("updateTorrentProgress", -1);
+	})
 }
 
 function setCurrentTorrent(magnetURI: string, downloadFolder: string) {

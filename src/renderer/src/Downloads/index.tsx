@@ -11,8 +11,6 @@ import {
 import {
 	type ChartConfig,
 	ChartContainer,
-	ChartTooltip,
-	ChartTooltipContent,
 } from "@renderer/ShadComponents/ui/chart";
 import { Progress } from "@renderer/ShadComponents/ui/progress";
 import { useDownloads } from "@renderer/Hooks/downloads";
@@ -32,7 +30,7 @@ const chartConfig = {
 		label: "Mbps",
 	},
 	downloadSpeed: {
-		label: "Download Speed",
+		label: "Download Speed (Mbps)",
 		color: "hsl(var(--chart-1))",
 	},
 	diskUsage: {
@@ -64,7 +62,7 @@ export function Downloads() {
 		
 		setChartData(oldChartData => {
 			const updatedChartData = [...oldChartData, newData];
-			if (updatedChartData.length > 40) {
+			if (updatedChartData.length > 50) {
 				updatedChartData.shift();
 			}
 
@@ -177,7 +175,7 @@ export function Downloads() {
 										className="mt-1 hover:bg-zinc-800 hover:-translate-y-1
 										hover:duration-500 transition-all" 
 									/>
-									<Button onClick={() => window.electron.ipcRenderer.send("removeTorrentFromQueue")}
+									<Button onClick={() => window.electron.ipcRenderer.invoke("removeTorrent")}
 										className="mt-1 hover:bg-red-500 hover:-translate-y-1
 										hover:duration-500 transition-all ms-4"
 									>
@@ -186,7 +184,7 @@ export function Downloads() {
 								</div>
 							</div>
 						</div>
-					)}
+					) || "Nothing Here."}
 				</div>
 			</div>
 		</div>
