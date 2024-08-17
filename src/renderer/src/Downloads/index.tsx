@@ -17,15 +17,18 @@ import {
 import { Progress } from "@renderer/ShadComponents/ui/progress";
 import { useDownloads } from "@renderer/Hooks/downloads";
 import { Button } from "@renderer/ShadComponents/ui/button";
+import { useEffect, useState } from "react";
 
-const chartData = [
-	{ downloaded: 10, downloadSpeed: 255, diskUsage: 150 },
-	{ downloaded: 10, downloadSpeed: 255, diskUsage: 150 },
-	{ downloaded: 10, downloadSpeed: 255, diskUsage: 150 },
-];
+type chartData = {
+	downloaded: number,
+	downloadSpeed: number,
+	diskUsage: number,
+};
+
+const initialChartData = [{downloaded: 10, downloadSpeed: 240, diskUsage: 300}];
 
 const chartConfig = {
-	downlaoded: {
+	downloaded: {
 		label: "Mbps",
 	},
 	downloadSpeed: {
@@ -41,16 +44,26 @@ const chartConfig = {
 export function Downloads() {
 	const [activeChart, setActiveChart] =
 		React.useState<keyof typeof chartConfig>("downloadSpeed");
+	const [chartData, setChartData] = useState<chartData[]>(initialChartData);
+	const torrentInfo = useDownloads();
 
 	const total = React.useMemo(
 		() => ({
 			downloadSpeed: chartData.reduce((acc, curr) => acc + curr.downloadSpeed, 0),
 			diskUsage: chartData.reduce((acc, curr) => acc + curr.diskUsage, 0),
-		}),
-		[],
-	);
+		}), [chartData]);
 
-	const torrentInfo = useDownloads();
+	useEffect(() => {
+		console.log("New torrent Info: ", torrentInfo);
+		const newData: chartData = {
+			downloaded: torrentInfo.downloaded, 
+			downloadSpeed: torrentInfo.downloadSpeed,
+			diskUsage: torrentInfo.currentProgress,
+		};
+		
+		setChartData(oldChartData => [...oldChartData, newData]);
+	}, [torrentInfo]);
+
 	function DownloadCard({ game }) {
 		if (torrentInfo.currentProgress > 0) {
 			return (
@@ -135,15 +148,6 @@ export function Downloads() {
 								tickFormatter={(value) => value}
 							/>
 							<YAxis />
-							<ChartTooltip
-								content={
-									<ChartTooltipContent
-										className="w-[150px] bg-zinc-950"
-										nameKey="downloadSpeed"
-										labelFormatter={(value) => value}
-									/>
-								}
-							/>
 							<Bar dataKey={activeChart} fill={"#ef4444"} />
 						</BarChart>
 					</ChartContainer>
