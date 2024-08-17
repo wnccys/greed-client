@@ -15,6 +15,7 @@ ipcMain.handle("handleFileSelect", handleFileOpen);
 ipcMain.handle("sendTorrentPath", handleTorrentPath);
 ipcMain.handle("addSourceToDB", handleNewTorrentSource);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
+ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
 ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 
@@ -93,6 +94,12 @@ export async function handleNewTorrentSource(
 	const response = addGameSource(stringifiedBody);
 
 	return response;
+}
+
+function handleTorrentDownloadComplete() {
+	for (const win of BrowserWindow.getAllWindows()) {
+		win.webContents.send("torrentDownloadComplete");
+	}
 }
 
 // ----Torrent Select File Handling----

@@ -45,6 +45,7 @@ function setCurrentTorrent(magnetURI: string, downloadFolder: string) {
 			torrent.on("done", () => {
 				console.log("Torrent Download Done.");
 				ipcMain.emit("updateTorrentProgress", -1);
+				ipcMain.emit("torrentDownloadComplete");
 				torrent.destroy();
 			});
 		},
