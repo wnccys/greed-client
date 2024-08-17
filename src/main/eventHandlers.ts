@@ -20,10 +20,8 @@ ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 
 // ---- Sources ----
-async function handleGetSourcesList(event: IpcMainInvokeEvent) {
-	console.log("Event: ", event.processId);
+async function handleGetSourcesList() {
 	const sourcesList = await getSourcesList();
-	console.log("Sources List: ", sourcesList);
 
 	return sourcesList;
 }
