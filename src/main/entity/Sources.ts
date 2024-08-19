@@ -6,9 +6,12 @@ export class Sources {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
-    name: string
+    @Column({ unique: true })
+    name: string;
 
     @Column()
-    downloads: string 
+    downloads: string;
+
+    @Column()
+    downloadsCount: number;
 }

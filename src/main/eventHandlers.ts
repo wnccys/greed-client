@@ -8,13 +8,33 @@ import {
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
-import { addGameSource } from "./model"
+import { addGameSource, getSourcesList, removeSourceFromDB } from "./model";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
 ipcMain.handle("sendTorrentPath", handleTorrentPath);
 ipcMain.handle("addSourceToDB", handleNewTorrentSource);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
+ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
+ipcMain.on("updateTorrentPauseStatus" , handleUpdateTorrentPausedStatus);
+ipcMain.handle("getSourcesList", handleGetSourcesList);
+ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
+
+// ---- Sources ----
+async function handleGetSourcesList() {
+	const sourcesList = await getSourcesList();
+
+	return sourcesList;
+}
+
+async function handleRemoveSourceFromDB(
+	_event: IpcMainInvokeEvent,
+	sourceName: string,
+) {
+	const result = removeSourceFromDB(sourceName);
+
+	return result;
+}
 
 // ----Torrent----
 export function handleUpdateTorrentProgress(
@@ -24,7 +44,6 @@ export function handleUpdateTorrentProgress(
 	downloadSpeed: number,
 	downloaded: number,
 	size: number,
-	isPaused: boolean,
 ) {
 	for (const win of BrowserWindow.getAllWindows()) {
 		// Send data to all listeners registered in selected Window.
@@ -35,8 +54,14 @@ export function handleUpdateTorrentProgress(
 			downloadSpeed: (downloadSpeed / 100000).toFixed(0),
 			downloaded: (downloaded / 1000000).toFixed(0),
 			totalSize: (size / 1000000).toFixed(0),
-			isPaused,
 		});
+	}
+}
+
+function handleUpdateTorrentPausedStatus(status: IpcMainEvent) {
+	console.log("status: ", status);
+	for (const win of BrowserWindow.getAllWindows()) {
+		win.webContents.send("updateTorrentPauseStatus",  status);
 	}
 }
 
@@ -58,23 +83,26 @@ export async function handleTorrentPath(
 export async function handleNewTorrentSource(
 	_event: IpcMainInvokeEvent,
 	sourceLink: string,
-) {
+): Promise<string[]> {
 	console.log(`sourceLink: ${sourceLink}`);
 
 	try {
-		fetch(sourceLink)
-			.then((response: Response) => response.json())
-			.then((body: ReadableStream<Uint8Array> | null) => {
-				const stringifiedBody = JSON.stringify(body);
-				addGameSource(stringifiedBody);
-			})
-			.catch((e) =>
-				console.error(
-					`Could not fetch from given link: ${sourceLink}.\n Error: ${e}.`,
-				),
-			);
-	} catch (e) {
-		console.error(e);
+		new URL(sourceLink);
+	} catch (error) {
+		console.error("Invalid URL:", error);
+		return Promise.resolve(["Error", "Provide a valid URL."]);
+	}
+
+	const result = await fetch(sourceLink);
+	const stringifiedBody = JSON.stringify(await result.json());
+	const response = addGameSource(stringifiedBody);
+
+	return response;
+}
+
+function handleTorrentDownloadComplete() {
+	for (const win of BrowserWindow.getAllWindows()) {
+		win.webContents.send("torrentDownloadComplete");
 	}
 }
 
