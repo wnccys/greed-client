@@ -3,17 +3,17 @@ const fs = require('fs');
 const path = require('path');
 
 const db = new sqlite3.Database('./linksjsondb.db');
-const filePath = path.join(__dirname, '/fitgirl.txt');
+const filePath = path.join(__dirname, '/output.txt');
 
 db.serialize(() => {
     db.run(`
-        CREATE TABLE IF NOT EXISTS download (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+        CREATE TABLE IF NOT EXISTS games (
             name TEXT NOT NULL,
             title TEXT NOT NULL,
             uri TEXT NOT NULL,
             date TEXT NOT NULL,
-            file TEXT NOT NULL
+            file TEXT NOT NULL,
+            id INTEGER PRIMARY KEY
         )
     `);
 
@@ -36,8 +36,8 @@ db.serialize(() => {
     const downloads = parsedData.downloads;
 
     const stmt = db.prepare(`
-        INSERT INTO download (name, title, uri, date, file)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO games (name, title, uri, date, file, id)
+        VALUES (?, ?, ?, ?, ?, ?)
     `);
 
     downloads.forEach(download => {
@@ -45,13 +45,14 @@ db.serialize(() => {
         const uri = download.uris[0]; 
         const date = download.uploadDate;
         const fileSize = download.fileSize;
+        const id = download.id;
 
-        stmt.run(name, title, uri, date, fileSize);
+        stmt.run(name, title, uri, date, fileSize, id);
     });
 
     stmt.finalize();
 
-    db.each("SELECT id, name, title, uri, date, file FROM download", (err, row) => {
+    db.each("SELECT name, title, uri, date, file, id FROM games", (err, row) => {
         if (err) {
             console.error('error', err.message);
         } else {
