@@ -16,6 +16,7 @@ ipcMain.handle("sendTorrentPath", handleTorrentPath);
 ipcMain.handle("addSourceToDB", handleNewTorrentSource);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
+ipcMain.on("updateTorrentPauseStatus" , handleUpdateTorrentPausedStatus);
 ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 
@@ -43,7 +44,6 @@ export function handleUpdateTorrentProgress(
 	downloadSpeed: number,
 	downloaded: number,
 	size: number,
-	isPaused: boolean,
 ) {
 	for (const win of BrowserWindow.getAllWindows()) {
 		// Send data to all listeners registered in selected Window.
@@ -54,8 +54,14 @@ export function handleUpdateTorrentProgress(
 			downloadSpeed: (downloadSpeed / 100000).toFixed(0),
 			downloaded: (downloaded / 1000000).toFixed(0),
 			totalSize: (size / 1000000).toFixed(0),
-			isPaused,
 		});
+	}
+}
+
+function handleUpdateTorrentPausedStatus(status: IpcMainEvent) {
+	console.log("status: ", status);
+	for (const win of BrowserWindow.getAllWindows()) {
+		win.webContents.send("updateTorrentPauseStatus",  status);
 	}
 }
 

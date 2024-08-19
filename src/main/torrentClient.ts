@@ -18,6 +18,8 @@ export async function initTorrentDownload(
 
 	ipcMain.handle("pauseTorrent", () => {
 		currentTorrent.pause();
+		ipcMain.emit("updateTorrentPauseStatus", currentTorrent.paused);
+		clearInterval(currentTorrentInterval);
 		client.remove(magnetURI);
 	});
 
@@ -25,6 +27,7 @@ export async function initTorrentDownload(
 		clearInterval(currentTorrentInterval);
 		currentTorrent = setCurrentTorrent(magnetURI, downloadFolder) 
 		currentTorrentInterval = registerTorrentEvents(currentTorrent);
+		ipcMain.emit("updateTorrentPauseStatus", currentTorrent.paused);
 	});
 
 	ipcMain.handle("removeTorrent", () => {
