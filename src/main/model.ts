@@ -60,3 +60,18 @@ export async function removeSourceFromDB(sourceName: string) {
 		return ["Error", "Source not found in Database."];
 	}
 }
+
+export async function changeDBDefaultPath(folderPath: string[]) {
+	try {
+		console.log("Received Folder Path: ", folderPath);
+		const currentPath = await GreedDataSource.getRepository(GreedSettings).findOneBy({
+			id: 1
+		});
+		console.log("current path: ", currentPath);
+
+		return ["Success", "Fetched from DB."];
+
+	} catch (e) {
+		return ["Error", "Could not update default path."];
+	}
+}

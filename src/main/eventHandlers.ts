@@ -8,17 +8,18 @@ import {
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
-import { addGameSource, getSourcesList, removeSourceFromDB } from "./model";
+import { addGameSource, changeDBDefaultPath, getSourcesList, removeSourceFromDB } from "./model";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
 ipcMain.handle("sendTorrentPath", handleTorrentPath);
 ipcMain.handle("addSourceToDB", handleNewTorrentSource);
+ipcMain.handle("getSourcesList", handleGetSourcesList);
+ipcMain.handle("changeDefaultPath", handleChangeDefaultPath);
+ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
 ipcMain.on("updateTorrentPauseStatus" , handleUpdateTorrentPausedStatus);
-ipcMain.handle("getSourcesList", handleGetSourcesList);
-ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 
 // ---- Sources ----
 async function handleGetSourcesList() {
@@ -119,4 +120,18 @@ export async function handleFileOpen(): Promise<Array<string>> {
 	}
 
 	return ["", "Please, Select a Valid Torrent File"];
+}
+
+// ----Path Select Handling----
+async function handleChangeDefaultPath(): Promise<string[]> {
+	const { canceled, filePaths } = await dialog.showOpenDialog({
+		title: "Select Folder",
+		properties: ["openDirectory"],
+	});
+
+	if (!canceled) {
+		return await changeDBDefaultPath(filePaths);
+	}
+
+	return Promise.resolve(["Error", "Path can't be empty."]);
 }

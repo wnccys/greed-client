@@ -9,4 +9,7 @@ export class GreedSettings {
 
     @Column({ type: 'varchar', default: true })
     username: string = hostname(); 
+
+    @Column()
+    downloadPath: string
 }
