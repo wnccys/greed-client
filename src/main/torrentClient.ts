@@ -15,6 +15,16 @@ export async function initTorrentDownload(
 			torrent.destroy();
 		});
 
+	client.remove(filePath, {path: downloadFolder}, (torrent) => {
+			
+	}
+
+	);
+		/* torrentId: Torrent | string | Buffer,
+            opts?: TorrentDestroyOptions,
+            callback?: (err: Error | string) => void,
+        ): void; */
+
 		ipcMain.handle('resumePauseTorrent', () => {
 			torrent.paused ? torrent.resume() : torrent.pause();
 		});
