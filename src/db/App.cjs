@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const dbPath = path.join(__dirname, 'linksjsondb.db');
-const filePath = path.join(__dirname, 'output.json');
+const filePath = path.join(__dirname, 'dodiGreed.json');
 
 
 if (!fs.existsSync(dbPath)) {

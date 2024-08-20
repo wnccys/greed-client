@@ -6,7 +6,7 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import React from "react";
 import { Card, CardContent } from "@renderer/ShadComponents/ui/card";
-import GameDummyImage from "@renderer/Assets/image.png";
+import GameDummyImage from "@renderer/assets/image.png";
 import { useFeatured } from "@renderer/Hooks/featured";
 
 export function CustomCarousel() {
