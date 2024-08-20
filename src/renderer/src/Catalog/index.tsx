@@ -6,6 +6,7 @@ import { useCatalogGames } from "@renderer/Hooks/games";
 
 export function Catalog() {
 	const games = useCatalogGames();
+	console.log("games indexed: ", games);
 
 	return (
 		<div className="bg-[#171717]">

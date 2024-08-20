@@ -9,6 +9,6 @@ export const GreedDataSource = new DataSource({
     synchronize: true,
     logging: false,
     entities: [GreedSettings, Sources],
-    migrations: [],
+    migrations: ["./src/main/migrations/*.ts"],
     subscribers: [],
 })

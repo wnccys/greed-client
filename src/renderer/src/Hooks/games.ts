@@ -1,16 +1,15 @@
 import { useState } from "react";
-import Games from "../../../steam-games/steam-games.json"
+import gameData from "../../../steam-games/steam-games.json"
 
 interface Game {
-    id: number,
-    name: string,
+  id: number;
+  name: string;
+  clientIcon: string;
 }
 
-export function useCatalogGames() {
-    const [index, setIndex] = useState<number>(1)
-    const selectedGames = Games as Game[];
+export function useCatalogGames(): Game[] {
+    const [index] = useState<number>(0);
+    const gamesData: Game[] = gameData as Game[];
 
-    for (const game in selectedGames) {
-        console.log("game title: ", game);
-    }
+    return gamesData.slice(index * 15, (index * 15) + 15);
 }
