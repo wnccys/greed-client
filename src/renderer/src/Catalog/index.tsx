@@ -1,5 +1,5 @@
 import { Input } from "@renderer/ShadComponents/ui/input";
-import { SearchIcon } from "@renderer/assets/icons";
+import { SearchIcon } from "@renderer/Assets/icons";
 import { CustomCarousel } from "./CustomCarousel";
 import { GameCard } from "./GameCard";
 

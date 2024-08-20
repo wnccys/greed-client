@@ -1,4 +1,4 @@
-import GameDummyImage from "@renderer/assets/image.png";
+import GameDummyImage from "@renderer/Assets/image.png";
 
 import {
 	Card,
