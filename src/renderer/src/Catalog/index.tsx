@@ -2,8 +2,11 @@ import { Input } from "@renderer/ShadComponents/ui/input";
 import { SearchIcon } from "@renderer/Assets/icons";
 import { CustomCarousel } from "./CustomCarousel";
 import { GameCard } from "./GameCard";
+import { useCatalogGames } from "@renderer/Hooks/games";
 
 export function Catalog() {
+	const games = useCatalogGames();
+
 	return (
 		<div className="bg-[#171717]">
 			<div className="flex gap-2 justify-between mt-10 me-10">
