@@ -11,12 +11,11 @@ declare global {
     sendTorrentPath: (path: string) => Promise<string | undefined>, 
     handleFileSelect: () => string,
     setNewTorrentSource: (sourceLink: string) => string,
-    minimizeWindow: () => null,
-    maximizeWindow: () => null,
-    unmaximizeWindow: () => null,
-    closeWindow: () => null,
-    isMaximized: () => boolean,
-    resumePauseTorrent: () => null,
+    pauseTorrent: () => null,
+    resumeTorrent: () => null,
+    removeTorrent: () => null,
+    addSourceToDB: (sourceLink: string) => Promise<string[]>,
+    removeSourceFromDB: (sourceLink: string) => Promise<string[]>,
   }
 
   interface Tests {

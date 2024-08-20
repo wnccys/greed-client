@@ -1,48 +1,76 @@
 import WebTorrent, { type Torrent } from "webtorrent";
-import { ipcMain, type IpcMainEvent } from "electron";
+import { ipcMain } from "electron";
 
 const client = new WebTorrent();
+let currentTorrentInterval: ReturnType<typeof setInterval>;
 
 export async function initTorrentDownload(
-	filePath: string,
+	magnetURI: string,
 	downloadFolder: string,
 ) {
-	client.add(filePath, { path: downloadFolder }, (torrent) => {
-		console.log("Torrent Added.");
-		torrent.on("done", () => {
-			console.log("Torrent Download Done.");
-			ipcMain.emit("updateTorrentProgress", -1);
-			torrent.destroy();
-		});
-
-	client.remove(filePath, {path: downloadFolder}, (torrent) => {
-			
+	if (await client.get(magnetURI)) {
+		console.log("Cannot duplicate torrent.");
+		return;
 	}
 
-	);
-		/* torrentId: Torrent | string | Buffer,
-            opts?: TorrentDestroyOptions,
-            callback?: (err: Error | string) => void,
-        ): void; */
+	let currentTorrent = setCurrentTorrent(magnetURI, downloadFolder);
+	currentTorrentInterval = registerTorrentEvents(currentTorrent);
 
-		ipcMain.handle('resumePauseTorrent', () => {
-			torrent.paused ? torrent.resume() : torrent.pause();
-		});
-
-		setInterval(() => {
-			if (torrent.progress < 1) {
-				console.log(`Torrent.progress: ${torrent.progress}`);
-				ipcMain.emit(
-					"updateTorrentProgress",
-					torrent.progress,
-					torrent.name,
-					((torrent.timeRemaining / 1000) / 60),
-					torrent.downloadSpeed,
-					torrent.downloaded,
-					torrent.length,
-					torrent.paused,
-				);
-			}
-		}, 1000);
+	ipcMain.handle("pauseTorrent", () => {
+		currentTorrent.pause();
+		ipcMain.emit("updateTorrentPauseStatus", currentTorrent.paused);
+		clearInterval(currentTorrentInterval);
+		client.remove(magnetURI);
 	});
+
+	ipcMain.handle("resumeTorrent", () => {
+		clearInterval(currentTorrentInterval);
+		currentTorrent = setCurrentTorrent(magnetURI, downloadFolder) 
+		currentTorrentInterval = registerTorrentEvents(currentTorrent);
+		ipcMain.emit("updateTorrentPauseStatus", currentTorrent.paused);
+	});
+
+	ipcMain.handle("removeTorrent", () => {
+		clearInterval(currentTorrentInterval);
+		client.remove(magnetURI, {
+			destroyStore: true,
+		});
+		ipcMain.emit("updateTorrentProgress", -1);
+	})
+}
+
+function setCurrentTorrent(magnetURI: string, downloadFolder: string) {
+	const currentTorrent = client.add(
+		magnetURI,
+		{ path: downloadFolder },
+		(torrent) => {
+			console.log("Torrent Added.");
+			torrent.on("done", () => {
+				console.log("Torrent Download Done.");
+				ipcMain.emit("updateTorrentProgress", -1);
+				ipcMain.emit("torrentDownloadComplete");
+				torrent.destroy();
+			});
+		},
+	);
+
+	return currentTorrent;
+}
+
+function registerTorrentEvents(torrent: Torrent) {
+	return setInterval(() => {
+		if (torrent.progress < 1) {
+			console.log(`Torrent.progress: ${torrent.progress}`);
+			ipcMain.emit(
+				"updateTorrentProgress",
+				torrent.progress,
+				torrent.name,
+				torrent.timeRemaining / 1000 / 60,
+				torrent.downloadSpeed,
+				torrent.downloaded,
+				torrent.length,
+				torrent.paused,
+			);
+		}
+	}, 1000);
 }

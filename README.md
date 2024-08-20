@@ -1,7 +1,12 @@
-# greed-client
-greed-client is a game launcher that features it's own embedded BitTorrent client and a dynamic torrent source scrapper, It's written in Typescript built over Electron, allowing users to use the launcher locally without any external central server.
+# <div align="center">Greed-Client
 
-## Project Setup (UNDER DEVELOPMENT)
+## What Is It?
+Greed is a game launcher that features it's own embedded BitTorrent client and a dynamic torrent source scrapper, It's written in Typescript built over Electron, allowing users to use the launcher locally without any external central server.
+
+## Contributor's Guide
+See [How to Contribute](./CONTRIBUTORS.md)
+
+## Project Setup
 
 ### Install
 
@@ -61,3 +66,9 @@ https://blog.rocketseat.com.br/scalar-uma-ferramenta-poderosa-para-documentacao-
 https://github.com/sonnyp/aria2.js/
 
 https://hydralinks.cloud/sources/fitgirl.json
+https://www.steamgriddb.com/
+
+## Links Json Games 
+https://raw.githubusercontent.com/hydralauncher/hydra/main/seeds/steam-games.json
+https://hydralinks.cloud/sources/dodi.json
+https://steamdb.info/app/1663640/info/#assets
