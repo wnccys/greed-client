@@ -182,7 +182,7 @@ export function Downloads() {
 									<ResumePauseTorrent
 										isPaused={isPaused}
 										className="mt-1 hover:bg-zinc-800 hover:-translate-y-1
-									hover:duration-500 transition-all"
+										hover:duration-500 transition-all"
 									/>
 									<Button
 										onClick={() => window.api.removeTorrent()}
