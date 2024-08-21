@@ -31,15 +31,6 @@ export function GameCard() {
                                 <p className="text-xs text-black p-1">Description</p>
                             </CardContent>
                         </div>
-                        {/* <CardContent className="p-0">
-                            <img
-                                src={GameDummyImage}
-                                alt="game-cover"
-                                className="rounded-lg"
-                            />
-                            <p className="p-2 hover:fixed -translate-y-12 z-10">Baldur's Gate III</p>
-                            <p className="text-xs hover:-translate-y-1 text-black p-1">Description</p>
-                        </CardContent> */}
                     </Card>
             </Link>
         </>
