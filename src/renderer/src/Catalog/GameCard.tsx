@@ -26,7 +26,6 @@ export function GameCard({ gameName, gameImage }) {
                         <div className="">
                             <CardContent className="p-0">
                                 <img
-                                    // src={`data:image/png;base64,${gameImage}`}
                                     src={gameImage}
                                     alt="game-cover"
                                     className="rounded-lg"
