@@ -8,13 +8,12 @@ interface Game {
 }
 
 const gamesData: Game[] = gameData as Game[];
-export function useCatalogGames(): [Dispatch<SetStateAction<number>>, Game[], string[]] {
+export function useCatalogGames(): [Dispatch<SetStateAction<number>>, Game[]] {
 	const [index, setIndex] = useState<number>(0);
 
-	const selectedGames: [Dispatch<SetStateAction<number>>, Game[], string[]] = [
+	const selectedGames: [Dispatch<SetStateAction<number>>, Game[]] = [
 		setIndex,
 		gamesData.slice(index * 15, index * 15 + 15),
-		[],
 	];
 
 	return selectedGames;
