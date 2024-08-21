@@ -3,6 +3,7 @@ import { SearchIcon } from "@renderer/Assets/icons";
 import { CustomCarousel } from "./CustomCarousel";
 import { GameCard } from "./GameCard";
 import { useCatalogGames } from "@renderer/Hooks/games";
+import { Button } from "@renderer/ShadComponents/ui/button";
 
 export function Catalog() {
 	const games = useCatalogGames();
@@ -40,10 +41,24 @@ export function Catalog() {
 					id="games-section"
 					className="mt-5 flex flex-wrap justify-between gap-4"
 				>
-					{Array.from({ length: 16 }).map((_, key) => {
+					{games[1].map((_, key) => {
 						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 						return <GameCard key={key} />
 					})}
+				</div>
+				<div 
+					className="fixed right-1/2 left-3/4 z-20 top-full -translate-y-14 translate-x-48"
+				>
+					<Button onClick={() => games[0]((currentValue) => currentValue + 1)}>
+						Next Page
+					</Button>
+				</div>
+				<div 
+					className="fixed right-1/2 left-1/4 top-full z-20 -translate-y-14 -translate-x-12"
+				>
+					<Button onClick={() => games[0]((currentValue) => currentValue - 1)}>
+						Previous Page
+					</Button>
 				</div>
 			</div>
 		</div>

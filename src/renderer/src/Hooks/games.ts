@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import gameData from "../../../steam-games/steam-games.json"
 
 interface Game {
@@ -7,9 +7,9 @@ interface Game {
   clientIcon: string;
 }
 
-export function useCatalogGames(): Game[] {
-    const [index] = useState<number>(0);
-    const gamesData: Game[] = gameData as Game[];
+const gamesData: Game[] = gameData as Game[];
+export function useCatalogGames(): [Dispatch<SetStateAction<number>>, Game[]] {
+    const [index, setIndex] = useState<number>(0);
 
-    return gamesData.slice(index * 15, (index * 15) + 15);
+    return [setIndex, gamesData.slice(index * 15, (index * 15) + 15)];
 }
