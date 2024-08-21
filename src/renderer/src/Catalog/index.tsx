@@ -49,14 +49,18 @@ export function Catalog() {
 				<div 
 					className="fixed right-1/2 left-3/4 z-20 top-full -translate-y-14 translate-x-48"
 				>
-					<Button onClick={() => games[0]((currentValue) => currentValue + 1)}>
+					<Button onClick={() => games[0]((currentValue) => currentValue + 1)}
+						{...(games[1].length > 113500 && { disabled: true } ) }
+					>
 						Next Page
 					</Button>
 				</div>
 				<div 
 					className="fixed right-1/2 left-1/4 top-full z-20 -translate-y-14 -translate-x-12"
 				>
-					<Button onClick={() => games[0]((currentValue) => currentValue - 1)}>
+					<Button onClick={() => games[0]((currentValue) => currentValue - 1)}
+						{...(games[1].length < 1 && { disabled: true } ) }
+					>
 						Previous Page
 					</Button>
 				</div>
