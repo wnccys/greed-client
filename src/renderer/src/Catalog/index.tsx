@@ -52,19 +52,19 @@ export function Catalog() {
 						);
 					})}
 				</div>
-				<div className="fixed right-1/2 left-3/4 z-20 top-full -translate-y-14 translate-x-48 hover:bg-zinc-900">
+				<div className="fixed right-1/2 left-3/4 z-20 top-full -translate-y-14 translate-x-48">
 					<Button 
 						onClick={() => games[0]((currentValue) => currentValue + 1)}
-						className="bg-zinc-900/30 duration-300 transition-all"
+						className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
 					>
 						Next Page
 					</Button>
 				</div>
-				<div className="fixed right-1/2 left-1/4 z-20 top-full -translate-y-14 -translate-x-12 hover:bg-zinc-900 w-fit rounded">
+				<div className="fixed right-1/2 left-1/4 z-20 top-full -translate-y-14 -translate-x-12 w-fit rounded">
 					<Button
 						onClick={() => games[0]((currentValue) => currentValue - 1)}
 						{...(games[1][0].id < 30 && { disabled: true })}
-						className="bg-zinc-900/30 duration-300 transition-all"
+						className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
 					>
 						Previous Page
 					</Button>
