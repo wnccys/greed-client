@@ -4,10 +4,31 @@ import { CustomCarousel } from "./CustomCarousel";
 import { GameCard } from "./GameCard";
 import { useCatalogGames } from "@renderer/Hooks/games";
 import { Button } from "@renderer/ShadComponents/ui/button";
+import { useEffect } from "react";
 
 export function Catalog() {
 	const games = useCatalogGames();
-	console.log("games indexed: ", games);
+
+	useEffect(() => {
+		for (const game of games[1]) {
+			fetch(
+				`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${game.id}/header.jpg`,
+			)
+				.then((image) => image.blob())
+				.then((blobImage) => {
+					const reader = new FileReader();
+					reader.onload = function () {
+						// console.log(this.result);
+						games[2].push(this.result as string);
+						console.log("games[2]: ", games[2]);
+					};
+					reader.readAsDataURL(blobImage);
+				})
+			.catch((e) => {
+					console.log("Error: ", e);
+			});
+		}
+	}, [games[1], games[2]])
 
 	return (
 		<div className="bg-[#171717]">
@@ -42,15 +63,18 @@ export function Catalog() {
 					className="mt-5 flex flex-wrap justify-between gap-4"
 				>
 					{games[1].map((_, key) => {
-						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-						return <GameCard key={key} />
+						return <GameCard 
+							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+							key={key} 
+							gameName={games[1][key].name} 
+							gameImage={games[2][key]} 
+						/>
 					})}
 				</div>
 				<div 
 					className="fixed right-1/2 left-3/4 z-20 top-full -translate-y-14 translate-x-48"
 				>
 					<Button onClick={() => games[0]((currentValue) => currentValue + 1)}
-						{...(games[1].length > 113500 && { disabled: true } ) }
 					>
 						Next Page
 					</Button>
@@ -59,7 +83,7 @@ export function Catalog() {
 					className="fixed right-1/2 left-1/4 top-full z-20 -translate-y-14 -translate-x-12"
 				>
 					<Button onClick={() => games[0]((currentValue) => currentValue - 1)}
-						{...(games[1].length < 1 && { disabled: true } ) }
+						{...(games[1].length < 15 && { disabled: true } ) }
 					>
 						Previous Page
 					</Button>
