@@ -10,6 +10,7 @@ MainEventHandle;
 const createWindow = () => {
 	const mainWindow = new BrowserWindow({
 		roundedCorners: true,
+		icon: "./build/icon.png",
 		backgroundColor: "#171717",
 		minWidth: 750,
 		minHeight: 625,
