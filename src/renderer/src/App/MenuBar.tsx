@@ -15,7 +15,7 @@ export function MenuBar() {
 		<>
 			<div
 				id="menu-bar"
-				className="h-[2.1rem] bg-[#171717] flex fixed w-full z-10 justify-end"
+				className="fixed h-[2.1rem] bg-[#171717] flex w-full z-50 justify-end"
 			/>
 			{ downloadsInfo > 0 && location.pathname !== "/downloads" &&
 			<Link to="../downloads" className="self-center h-[2rem] bg-zinc-950 
