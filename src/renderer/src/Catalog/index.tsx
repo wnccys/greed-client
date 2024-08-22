@@ -35,7 +35,7 @@ export function Catalog() {
 					className="shadow-lg hover:drop-shadow-2xl
                 transition-colors shadow-black rounded-lg"
 				>
-					<CustomCarousel />
+					{ games[1][14].id <= 340 ? <CustomCarousel /> : null }
 				</div>
 				<div
 					id="games-section"
