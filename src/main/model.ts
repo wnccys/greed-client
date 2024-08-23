@@ -83,13 +83,11 @@ export async function removeSourceFromDB(sourceName: string) {
 
 export async function changeDBDefaultPath(folderPath: string[]) {
 	try {
-		console.log("Received Folder Path: ", folderPath);
 		const currentPath = await GreedDataSource.getRepository(GreedSettings).findOneBy({
 			id: 1
 		});
 
 		if (currentPath) {
-			console.log("current path: ", currentPath?.downloadPath);
 			currentPath.downloadPath = folderPath[0];
 			await GreedDataSource.manager.save(currentPath);
 
