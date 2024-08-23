@@ -1,6 +1,19 @@
+import { hostname } from "node:os";
 import { GreedDataSource } from "./data-source";
 import { GreedSettings } from "./entity/Settings";
 import { Sources } from "./entity/Sources";
+import path from "node:path";
+
+setBasicDBConfigs();
+
+async function setBasicDBConfigs() {
+	await GreedDataSource.initialize();
+	const greedSettings = new GreedSettings();
+	greedSettings.downloadPath = path.resolve("./src/downloads");
+	greedSettings.username = greedSettings.username || hostname();
+
+	await GreedDataSource.getRepository(GreedSettings).save(greedSettings);	
+}
 
 export function testDBConn() {
 	GreedDataSource.initialize()
