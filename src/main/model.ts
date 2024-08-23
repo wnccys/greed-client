@@ -3,6 +3,7 @@ import { GreedDataSource } from "./data-source";
 import { GreedSettings } from "./entity/Settings";
 import { Sources } from "./entity/Sources";
 import path from "node:path";
+import { ipcMain } from "electron";
 
 export function testDBConn() {
 	GreedDataSource.initialize()
@@ -86,9 +87,18 @@ export async function changeDBDefaultPath(folderPath: string[]) {
 		const currentPath = await GreedDataSource.getRepository(GreedSettings).findOneBy({
 			id: 1
 		});
-		console.log("current path: ", currentPath);
 
-		return ["Success", "Fetched from DB."];
+		if (currentPath) {
+			console.log("current path: ", currentPath?.downloadPath);
+			currentPath.downloadPath = folderPath[0];
+			await GreedDataSource.manager.save(currentPath);
+
+			ipcMain.emit("updateDownloadPath", currentPath.downloadPath);
+
+			return ["Success", "Download Path Updated."];
+		}
+
+		return ["Error", "Default Path not Found."];
 
 	} catch (e) {
 		return ["Error", "Could not update default path."];

@@ -17,6 +17,7 @@ ipcMain.handle("addSourceToDB", handleNewTorrentSource);
 ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("changeDefaultPath", handleChangeDefaultPath);
 ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
+ipcMain.on("updateDownloadPath", handleUpdateDownloadPath);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
 ipcMain.on("updateTorrentPauseStatus" , handleUpdateTorrentPausedStatus);
@@ -60,7 +61,6 @@ export function handleUpdateTorrentProgress(
 }
 
 function handleUpdateTorrentPausedStatus(status: IpcMainEvent) {
-	console.log("status: ", status);
 	for (const win of BrowserWindow.getAllWindows()) {
 		win.webContents.send("updateTorrentPauseStatus",  status);
 	}
@@ -134,4 +134,12 @@ async function handleChangeDefaultPath(): Promise<string[]> {
 	}
 
 	return Promise.resolve(["Error", "Path can't be empty."]);
+}
+
+async function handleUpdateDownloadPath(newPath: IpcMainEvent) {
+	console.log("newPath: ", newPath);
+
+	for (const win of BrowserWindow.getAllWindows()) {
+		win.webContents.send("updateDownloadPath", newPath);
+	}
 }
