@@ -8,7 +8,7 @@ import {
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
-import { addGameSource, changeDBDefaultPath, getSourcesList, removeSourceFromDB } from "./model";
+import { addGameSource, changeDBDefaultPath, getDBCurrentPath, getSourcesList, removeSourceFromDB } from "./model";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
@@ -17,6 +17,7 @@ ipcMain.handle("addSourceToDB", handleNewTorrentSource);
 ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("changeDefaultPath", handleChangeDefaultPath);
 ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
+ipcMain.handle("getCurrentDownloadPath", handleGetCurrentDownloadPath);
 ipcMain.on("updateDownloadPath", handleUpdateDownloadPath);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
@@ -137,9 +138,11 @@ async function handleChangeDefaultPath(): Promise<string[]> {
 }
 
 async function handleUpdateDownloadPath(newPath: IpcMainEvent) {
-	console.log("newPath: ", newPath);
-
 	for (const win of BrowserWindow.getAllWindows()) {
 		win.webContents.send("updateDownloadPath", newPath);
 	}
+}
+
+async function handleGetCurrentDownloadPath() {
+	return await getDBCurrentPath();
 }

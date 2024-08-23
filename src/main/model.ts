@@ -102,3 +102,9 @@ export async function changeDBDefaultPath(folderPath: string[]) {
 		return ["Error", "Could not update default path."];
 	}
 }
+
+export async function getDBCurrentPath () {
+	return await GreedDataSource.getRepository(GreedSettings).findOneBy({
+		id: 1
+	}).then((record) => record?.downloadPath || "No Path");
+}
