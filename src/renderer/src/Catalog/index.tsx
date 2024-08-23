@@ -17,7 +17,7 @@ export function Catalog() {
 				</div>{" "}
 				<div
 					className="rounded-md bg-zinc-800 flex p-2 ps-4 
-			items-center hover:shadow-xl"
+					items-center hover:shadow-xl"
 				>
 					<img src={SearchIcon} alt="search-icon" className="size-4" />
 					<Input
