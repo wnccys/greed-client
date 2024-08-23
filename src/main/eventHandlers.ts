@@ -18,6 +18,7 @@ ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("changeDefaultPath", handleChangeDefaultPath);
 ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 ipcMain.handle("getCurrentDownloadPath", handleGetCurrentDownloadPath);
+ipcMain.on("merge", handleMerge);
 ipcMain.on("updateDownloadPath", handleUpdateDownloadPath);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
@@ -145,4 +146,8 @@ async function handleUpdateDownloadPath(newPath: IpcMainEvent) {
 
 async function handleGetCurrentDownloadPath() {
 	return await getDBCurrentPath();
+}
+
+async function handleMerge() {
+
 }
