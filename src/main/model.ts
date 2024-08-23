@@ -4,16 +4,27 @@ import { GreedSettings } from "./entity/Settings";
 import { Sources } from "./entity/Sources";
 import path from "node:path";
 
-setBasicDBConfigs();
+export async function setBasicDBConfigs() {
+	GreedDataSource.initialize().then(async (initializedGreedSource) => {
+		const greedSettings = new GreedSettings();
+		const existingSettings = await initializedGreedSource
+			.getRepository(GreedSettings)
+			.exists();
 
-async function setBasicDBConfigs() {
-	await GreedDataSource.initialize();
-	const greedSettings = new GreedSettings();
-	greedSettings.downloadPath = path.resolve("./src/downloads");
-	greedSettings.username = greedSettings.username || hostname();
+		if (existingSettings) {
+			console.log("exists!!");
+		} else {
+			console.log("doesn't exists!!");
+			greedSettings.downloadPath = path.resolve("./src/downloads");
+			greedSettings.username = hostname();
 
-	await GreedDataSource.getRepository(GreedSettings).save(greedSettings);	
+			await initializedGreedSource
+				.getRepository(GreedSettings)
+				.save(greedSettings);
+		}
+	});
 }
+
 
 export function testDBConn() {
 	GreedDataSource.initialize()
@@ -77,13 +88,14 @@ export async function removeSourceFromDB(sourceName: string) {
 export async function changeDBDefaultPath(folderPath: string[]) {
 	try {
 		console.log("Received Folder Path: ", folderPath);
-		const currentPath = await GreedDataSource.getRepository(GreedSettings).findOneBy({
-			id: 1
+		const currentPath = await GreedDataSource.getRepository(
+			GreedSettings,
+		).findOneBy({
+			id: 1,
 		});
 		console.log("current path: ", currentPath);
 
 		return ["Success", "Fetched from DB."];
-
 	} catch (e) {
 		return ["Error", "Could not update default path."];
 	}

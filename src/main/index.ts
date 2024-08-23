@@ -2,7 +2,7 @@ import { app, BrowserWindow } from "electron";
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import "reflect-metadata";
-import { testDBConn } from "./model";
+import { setBasicDBConfigs, testDBConn } from "./model";
 import * as MainEventHandle from "./eventHandlers";
 
 MainEventHandle;
@@ -45,3 +45,4 @@ app.whenReady().then(() => {
 });
 
 testDBConn();
+await setBasicDBConfigs();
