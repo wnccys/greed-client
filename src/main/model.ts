@@ -3,19 +3,21 @@ import { GreedSettings } from "./entity/Settings";
 import { Sources } from "./entity/Sources";
 
 export function testDBConn() {
-	GreedDataSource.initialize()
-		.then(async () => {
+	//dbConn
+	GreedDataSource.initialize().then(async () => {
 			console.log("Loading settings and sources from the database...");
+
 			const settingsData = await GreedDataSource.manager.find(GreedSettings);
 			console.log("Loaded settings: ", settingsData);
 			const sourceData = await GreedDataSource.manager.find(Sources);
 
 			console.log("Loaded Sources: ");
-			for (const source of sourceData) {
-				console.log("Name: ", source.name);
-				console.log("Links Count: ", source.downloadsCount);
+
+				for (const source of sourceData) {
+					console.log("Name: ", source.name);
+						console.log("Links Count: ", source.downloadsCount);
 			}
-		})
+		})                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 		.catch((error) => console.log("Failed to load contents: ", error));
 }
 
