@@ -12,11 +12,11 @@ export class Downloads {
     @Column()
     normalizedTitle: string;
 
-    @Column({ type: 'simple-json' })
-    uris: unknown;
+    @Column({ type: 'simple-array' })
+    uris: string[];
 
     @Column()
-    uploadData: string;
+    uploadDate: string;
 
     @Column()
     fileSize: string;
