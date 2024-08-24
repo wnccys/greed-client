@@ -159,36 +159,14 @@ async function handleMerge(sourceData: string) {
 	const jsonifiedSource = JSON.parse(sourceData).downloads;
 	const gameData = (steamGames as steamGame[]);
 
-	let count = 0;
-	gameData.map((steamGame) => {
-		for (const jsonGame of jsonifiedSource) {
-			if (normalizeTitle(jsonGame.title) === normalizeTitle(steamGame.name)) {
-				console.log(`match!!! ${steamGame.name}, ${jsonGame.title}`);
-				count++
-				console.log("count: ", count);
-			} 
-		}
-	});
-}
-
-function normalizeTitle(title: string) {
-    // Convert to lowercase
-    let normalized = title.toLowerCase();
-
-    // Remove content within parentheses and brackets
-    normalized = normalized.replace(/\(.*?\)/g, '').replace(/\[.*?\]/g, '');
-
-    // Replace dots and hyphens with spaces
-    normalized = normalized.replace(/[.\-]/g, ' ');
-
-    // Remove '+' signs and other special characters
-    normalized = normalized.replace(/[+]/g, ' ');
-
-    // Remove any remaining special characters
-    normalized = normalized.replace(/[^a-z0-9\s]/g, '');
-
-    // Replace multiple spaces with a single space and trim
-    normalized = normalized.replace(/\s+/g, ' ').trim();
-
-    return normalized;
+	// let count = 0;
+	// gameData.map((steamGame) => {
+	// 	for (const jsonGame of jsonifiedSource) {
+	// 		if (normalizeTitle(jsonGame.title) === normalizeTitle(steamGame.name)) {
+	// 			console.log(`match!!! ${steamGame.name}, ${jsonGame.title}`);
+	// 			count++
+	// 			console.log("count: ", count);
+	// 		} 
+	// 	}
+	// });
 }

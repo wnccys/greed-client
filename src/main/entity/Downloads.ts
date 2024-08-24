@@ -1,10 +1,13 @@
-import { Entity, Column, PrimaryColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn} from "typeorm"
 
 @Entity()
 export class Downloads {
 
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id: number;
+
+    @Column()
+    sourceId: number;
 
     @Column()
     title: string;
