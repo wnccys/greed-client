@@ -10,8 +10,5 @@ export class Sources {
     name: string;
 
     @Column()
-    downloads: string;
-
-    @Column()
     downloadsCount: number;
 }

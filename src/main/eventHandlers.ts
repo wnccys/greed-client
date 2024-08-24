@@ -166,7 +166,7 @@ async function handleMerge(sourceData: string) {
 				console.log(`match!!! ${steamGame.name}, ${jsonGame.title}`);
 				count++
 				console.log("count: ", count);
-		} 
+			} 
 		}
 	});
 }
