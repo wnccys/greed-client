@@ -7,7 +7,6 @@ type downloadsInfo = {
 	downloadSpeed: number;
 	downloaded: number;
 	totalSize: number;
-	isPaused: boolean;
 };
 
 export function useDownloads(): downloadsInfo {
@@ -18,7 +17,6 @@ export function useDownloads(): downloadsInfo {
 		downloadSpeed: 0,
 		downloaded: 0,
 		totalSize: 0,
-		isPaused: false,
 	});
 	useEffect(() => {
 		window.electron.ipcRenderer.on(

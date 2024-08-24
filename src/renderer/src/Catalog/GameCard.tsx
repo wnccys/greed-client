@@ -9,7 +9,10 @@ import {
 } from "@renderer/ShadComponents/ui/card";
 import { Link } from "react-router-dom";
 
-export function GameCard() {
+export function GameCard({ gameName, gameImage }) {
+    console.log("received name: ", gameName);
+    console.log("source: ", gameImage)
+
     return (
             <>
                 <Link to="../selected-game">
@@ -23,23 +26,14 @@ export function GameCard() {
                         <div className="">
                             <CardContent className="p-0">
                                 <img
-                                    src={GameDummyImage}
+                                    src={gameImage}
                                     alt="game-cover"
                                     className="rounded-lg"
                                 />
-                                <p className="p-2 hover:fixed -translate-y-12 z-10">Baldur's Gate III</p>
+                                <p className="p-2 hover:fixed z-10 text-black">{gameName}</p>
                                 <p className="text-xs text-black p-1">Description</p>
                             </CardContent>
                         </div>
-                        {/* <CardContent className="p-0">
-                            <img
-                                src={GameDummyImage}
-                                alt="game-cover"
-                                className="rounded-lg"
-                            />
-                            <p className="p-2 hover:fixed -translate-y-12 z-10">Baldur's Gate III</p>
-                            <p className="text-xs hover:-translate-y-1 text-black p-1">Description</p>
-                        </CardContent> */}
                     </Card>
             </Link>
         </>

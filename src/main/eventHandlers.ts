@@ -8,21 +8,25 @@ import {
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
-import { addGameSource, getSourcesList, removeSourceFromDB } from "./model";
+import { addGameSource, changeDBDefaultPath, getDBCurrentPath, getSourcesList, removeSourceFromDB } from "./model";
+import steamGames from "../steam-games/steam-games.json";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
 ipcMain.handle("sendTorrentPath", handleTorrentPath);
 ipcMain.handle("addSourceToDB", handleNewTorrentSource);
-ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 ipcMain.handle("getSourcesList", handleGetSourcesList);
+ipcMain.handle("changeDefaultPath", handleChangeDefaultPath);
 ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
+ipcMain.handle("getCurrentDownloadPath", handleGetCurrentDownloadPath);
+ipcMain.on("updateDownloadPath", handleUpdateDownloadPath);
+ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
+ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
+ipcMain.on("updateTorrentPauseStatus" , handleUpdateTorrentPausedStatus);
 
 // ---- Sources ----
-async function handleGetSourcesList(event: IpcMainInvokeEvent) {
-	console.log("Event: ", event.processId);
+async function handleGetSourcesList() {
 	const sourcesList = await getSourcesList();
-	console.log("Sources List: ", sourcesList);
 
 	return sourcesList;
 }
@@ -44,7 +48,6 @@ export function handleUpdateTorrentProgress(
 	downloadSpeed: number,
 	downloaded: number,
 	size: number,
-	isPaused: boolean,
 ) {
 	for (const win of BrowserWindow.getAllWindows()) {
 		// Send data to all listeners registered in selected Window.
@@ -55,8 +58,13 @@ export function handleUpdateTorrentProgress(
 			downloadSpeed: (downloadSpeed / 100000).toFixed(0),
 			downloaded: (downloaded / 1000000).toFixed(0),
 			totalSize: (size / 1000000).toFixed(0),
-			isPaused,
 		});
+	}
+}
+
+function handleUpdateTorrentPausedStatus(status: IpcMainEvent) {
+	for (const win of BrowserWindow.getAllWindows()) {
+		win.webContents.send("updateTorrentPauseStatus",  status);
 	}
 }
 
@@ -90,9 +98,16 @@ export async function handleNewTorrentSource(
 
 	const result = await fetch(sourceLink);
 	const stringifiedBody = JSON.stringify(await result.json());
+	handleMerge(stringifiedBody);
 	const response = addGameSource(stringifiedBody);
 
 	return response;
+}
+
+function handleTorrentDownloadComplete() {
+	for (const win of BrowserWindow.getAllWindows()) {
+		win.webContents.send("torrentDownloadComplete");
+	}
 }
 
 // ----Torrent Select File Handling----
@@ -108,4 +123,50 @@ export async function handleFileOpen(): Promise<Array<string>> {
 	}
 
 	return ["", "Please, Select a Valid Torrent File"];
+}
+
+// ----Path Select Handling----
+async function handleChangeDefaultPath(): Promise<string[]> {
+	const { canceled, filePaths } = await dialog.showOpenDialog({
+		title: "Select Folder",
+		properties: ["openDirectory"],
+	});
+
+	if (!canceled) {
+		return await changeDBDefaultPath(filePaths);
+	}
+
+	return Promise.resolve(["Error", "Path can't be empty."]);
+}
+
+async function handleUpdateDownloadPath(newPath: IpcMainEvent) {
+	for (const win of BrowserWindow.getAllWindows()) {
+		win.webContents.send("updateDownloadPath", newPath);
+	}
+}
+
+async function handleGetCurrentDownloadPath() {
+	return await getDBCurrentPath();
+}
+
+interface steamGame {
+	id: number;
+	name: string;
+	clientIcon: string;
+}
+
+async function handleMerge(sourceData: string) {
+	const jsonifiedSource = JSON.parse(sourceData).downloads;
+	const gameData = (steamGames as steamGame[]);
+
+	// let count = 0;
+	// gameData.map((steamGame) => {
+	// 	for (const jsonGame of jsonifiedSource) {
+	// 		if (normalizeTitle(jsonGame.title) === normalizeTitle(steamGame.name)) {
+	// 			console.log(`match!!! ${steamGame.name}, ${jsonGame.title}`);
+	// 			count++
+	// 			console.log("count: ", count);
+	// 		} 
+	// 	}
+	// });
 }

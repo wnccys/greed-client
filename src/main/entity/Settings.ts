@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
-import { hostname } from "node:os";
 
 @Entity()
 export class GreedSettings {
@@ -7,6 +6,9 @@ export class GreedSettings {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({ type: 'varchar', default: true })
-    username: string = hostname(); 
+    @Column({ type: 'varchar', nullable: true })
+    username: string | null 
+
+    @Column()
+    downloadPath: string
 }
