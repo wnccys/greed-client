@@ -9,7 +9,7 @@ import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
 import { addGameSource, changeDBDefaultPath, getDBCurrentPath, getSourcesList, removeSourceFromDB } from "./model";
-import steamGames from "../steam-games/steam-games.json";
+import { Worker } from 'node:worker_threads';
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
@@ -156,8 +156,30 @@ interface steamGame {
 }
 
 async function handleMerge(sourceData: string) {
+	const worker1 = new Worker(path.resolve(__dirname, './worker.js'));
+	const worker2 = new Worker(path.resolve(__dirname, './worker.js'));
+	const worker3 = new Worker(path.resolve(__dirname, './worker.js'));
+
+	worker1.on("message", (event) => {
+		console.log("FINISHED 1!!!!! matches: ", event.data);
+		console.log("performace: ", performance.now());
+	});
+
+	worker2.on("message", (event) => {
+		console.log("FINISHED 2!!!!! matches: ", event.data);
+		console.log("performace: ", performance.now());
+	});
+
+	worker3.on("message", (event) => {
+		console.log("FINISHED 3!!!!! matches: ", event.data);
+		console.log("performace: ", performance.now());
+	});
+
 	const jsonifiedSource = JSON.parse(sourceData).downloads;
-	const gameData = (steamGames as steamGame[]);
+
+	worker1.postMessage(jsonifiedSource.slice(0, 100));
+	worker2.postMessage(jsonifiedSource.slice(101, 200));
+	worker3.postMessage(jsonifiedSource.slice(201, 300));
 
 	// let count = 0;
 	// gameData.map((steamGame) => {
@@ -170,3 +192,31 @@ async function handleMerge(sourceData: string) {
 	// 	}
 	// });
 }
+
+import steamGames from "../steam-games/steam-games.json";
+import { normalizeTitle } from "./model";
+import { parentPort } from "node:worker_threads";
+
+interface steamGame {
+	id: number;
+	name: string;
+	clientIcon: string;
+}
+
+const gameData = (steamGames as steamGame[]);
+parentPort?.on("message", (data) => {
+    const matches: string[] = [];
+    let count = 0;
+
+    gameData.map((game) => {
+        for (const jsonGames of data) {
+            if (normalizeTitle(game.name) === normalizeTitle(jsonGames.title)) {
+                matches.push(game.name, jsonGames.title);
+                count++
+                console.log("count: ", count);
+            }
+        }
+    })
+
+    postMessage(matches);
+});
