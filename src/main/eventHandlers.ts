@@ -9,6 +9,7 @@ import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
 import { addGameSource, changeDBDefaultPath, getDBCurrentPath, getSourcesList, removeSourceFromDB } from "./model";
+import steamGames from "../steam-games/steam-games.json";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
@@ -18,7 +19,6 @@ ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("changeDefaultPath", handleChangeDefaultPath);
 ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 ipcMain.handle("getCurrentDownloadPath", handleGetCurrentDownloadPath);
-ipcMain.on("merge", handleMerge);
 ipcMain.on("updateDownloadPath", handleUpdateDownloadPath);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
@@ -98,6 +98,7 @@ export async function handleNewTorrentSource(
 
 	const result = await fetch(sourceLink);
 	const stringifiedBody = JSON.stringify(await result.json());
+	handleMerge(stringifiedBody);
 	const response = addGameSource(stringifiedBody);
 
 	return response;
@@ -148,6 +149,46 @@ async function handleGetCurrentDownloadPath() {
 	return await getDBCurrentPath();
 }
 
-async function handleMerge() {
+interface steamGame {
+	id: number;
+	name: string;
+	clientIcon: string;
+}
 
+async function handleMerge(sourceData: string) {
+	const jsonifiedSource = JSON.parse(sourceData).downloads;
+	const gameData = (steamGames as steamGame[]);
+
+	let count = 0;
+	gameData.map((steamGame) => {
+		for (const jsonGame of jsonifiedSource) {
+			if (normalizeTitle(jsonGame.title) === normalizeTitle(steamGame.name)) {
+				console.log(`match!!! ${steamGame.name}, ${jsonGame.title}`);
+				count++
+				console.log("count: ", count);
+		} 
+		}
+	});
+}
+
+function normalizeTitle(title: string) {
+    // Convert to lowercase
+    let normalized = title.toLowerCase();
+
+    // Remove content within parentheses and brackets
+    normalized = normalized.replace(/\(.*?\)/g, '').replace(/\[.*?\]/g, '');
+
+    // Replace dots and hyphens with spaces
+    normalized = normalized.replace(/[.\-]/g, ' ');
+
+    // Remove '+' signs and other special characters
+    normalized = normalized.replace(/[+]/g, ' ');
+
+    // Remove any remaining special characters
+    normalized = normalized.replace(/[^a-z0-9\s]/g, '');
+
+    // Replace multiple spaces with a single space and trim
+    normalized = normalized.replace(/\s+/g, ' ').trim();
+
+    return normalized;
 }
