@@ -13,7 +13,7 @@ export function useCatalogGames(): [Dispatch<SetStateAction<number>>, Game[]] {
 
 	const selectedGames: [Dispatch<SetStateAction<number>>, Game[]] = [
 		setIndex,
-		gamesData.slice(index * 15, index * 15 + 15),
+		gamesData.slice(index * 20, index * 20 + 20),
 	];
 
 	return selectedGames;
