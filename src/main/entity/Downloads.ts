@@ -9,6 +9,9 @@ export class Downloads {
     @Column()
     title: string;
 
+    @Column()
+    normalizedTitle: string;
+
     @Column({ type: 'simple-json' })
     uris: unknown;
 

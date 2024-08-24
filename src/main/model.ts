@@ -2,6 +2,7 @@ import { hostname } from "node:os";
 import { GreedDataSource } from "./data-source";
 import { GreedSettings } from "./entity/Settings";
 import { Sources } from "./entity/Sources";
+import { Downloads } from "./entity/Downloads";
 import path from "node:path";
 import { ipcMain } from "electron";
 
@@ -41,11 +42,11 @@ export function testDBConn() {
 
 export async function addGameSource(receivedSource: string) {
 	const newSource = new Sources();
+	const newDownloads = new Downloads();
 	const parsedSource = JSON.parse(receivedSource);
 
 	try {
 		newSource.name = JSON.stringify(parsedSource.name);
-		newSource.downloads = JSON.stringify(parsedSource.downloads);
 		newSource.downloadsCount = parsedSource.downloads.length;
 	} catch (e) {
 		return ["Error", "Could not get downloads count"];
