@@ -131,7 +131,7 @@ export function Settings() {
 	return (
 		<div
 			className="flex flex-col items-center self-center mt-[10em] p-5 
-	cursor-default rounded h-screen"
+			cursor-default rounded h-screen"
 		>
 			<Tabs.Root className="flex flex-col w-[50rem]" defaultValue="tab1">
 				<Tabs.List
