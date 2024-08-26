@@ -155,11 +155,13 @@ function handleMerge(sourceData: string) {
 	const linksLength = jsonifiedLinks.length;
 	const workers: Worker[] = [];
 
-	for (let i = 0; i < 5; i++) {
+	const workerLimit = 12;
+	for (let i = 0; i < workerLimit; i++) {
 		const worker = createWorker({ workerData: 'worker' })
 
 		worker.on("message", (result) => {
 			console.log(`Message from Worker-${i}:`, result);
+			console.log("performance on worker: ", performance.now());
 		});
 
 		worker.on("error", (err) => {
@@ -170,8 +172,11 @@ function handleMerge(sourceData: string) {
 			console.log(`Worker-${i} exited with code: ` , code);
 		});
 
-		console.log(`from: ${Math.round((i/5)*linksLength)}, to: ${(Math.round(((i+1)/5)*linksLength) -1)}`);
-		worker.postMessage(jsonifiedLinks.slice(Math.round((i/5)*linksLength), Math.round(((i+1)/5)*linksLength) -1));
+		const initialSlice = (Math.round((i/workerLimit)*linksLength));
+		const finalSlice = (Math.round(((i+1)/workerLimit)*linksLength) -1);
+
+		console.log(`from: ${initialSlice}, to: ${finalSlice}`);
+		worker.postMessage(jsonifiedLinks.slice(initialSlice, finalSlice));
 		workers.push(worker);
 	}
 }
