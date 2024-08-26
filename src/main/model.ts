@@ -100,7 +100,7 @@ export async function removeSourceFromDB(sourceName: string) {
 			sourceId: toBeDeleted.id,
 		});
 		await source.remove(toBeDeleted);
-		
+
 		return ["Success", "Source Removed From Database."];
 	} catch (e) {
 		return ["Error", "Source not found in Database."];
