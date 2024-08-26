@@ -65,7 +65,6 @@ export async function addGameSource(receivedSource: string) {
 			newDownloads.push({
 				sourceId: downloadsId,
 				title: downloads.title,
-				normalizedTitle: normalizeTitle(downloads.title),
 				uris: downloads.uris,
 				uploadDate: downloads.uploadDate,
 				fileSize: downloads.fileSize,
@@ -133,26 +132,4 @@ export async function getDBCurrentPath () {
 	return await GreedDataSource.getRepository(GreedSettings).findOneBy({
 		id: 1
 	}).then((record) => record?.downloadPath || "No Path");
-}
-
-export function normalizeTitle(title: string) {
-    // Convert to lowercase
-    let normalized = title.toLowerCase();
-
-    // Remove content within parentheses and brackets
-    normalized = normalized.replace(/\(.*?\)/g, '').replace(/\[.*?\]/g, '');
-
-    // Replace dots and hyphens with spaces
-    normalized = normalized.replace(/[.\-]/g, ' ');
-
-    // Remove '+' signs and other special characters
-    normalized = normalized.replace(/[+]/g, ' ');
-
-    // Remove any remaining special characters
-    normalized = normalized.replace(/[^a-z0-9\s]/g, '');
-
-    // Replace multiple spaces with a single space and trim
-    normalized = normalized.replace(/\s+/g, ' ').trim();
-
-    return normalized;
 }

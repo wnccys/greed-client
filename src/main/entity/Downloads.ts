@@ -12,8 +12,8 @@ export class Downloads {
     @Column()
     title: string;
 
-    @Column()
-    normalizedTitle: string;
+    @Column({ type: "int", nullable: true })
+    steamId: number | null;
 
     @Column({ type: 'simple-array' })
     uris: string[];

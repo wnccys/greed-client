@@ -160,7 +160,7 @@ function handleMerge(sourceData: string) {
 		const worker = createWorker({ workerData: 'worker' })
 
 		worker.on("message", (result) => {
-			console.log(`Message from Worker-${i}:`, result);
+			// console.log(`Message from Worker-${i}:`, result);
 			console.log("performance on worker: ", performance.now());
 		});
 
