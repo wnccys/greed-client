@@ -9,7 +9,7 @@ import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
 import { addGameSource, changeDBDefaultPath, getDBCurrentPath, getSourcesList, removeSourceFromDB } from "./model";
-import { Worker } from 'node:worker_threads';
+import { isMainThread, Worker, parentPort } from 'node:worker_threads';
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
@@ -149,74 +149,39 @@ async function handleGetCurrentDownloadPath() {
 	return await getDBCurrentPath();
 }
 
-interface steamGame {
-	id: number;
-	name: string;
-	clientIcon: string;
-}
+import createWorker from './worker?nodeWorker'
+function handleMerge(sourceData: string) {
+	const jsonifiedLinks = JSON.parse(sourceData).downloads;
 
-async function handleMerge(sourceData: string) {
-	const worker1 = new Worker(path.resolve(__dirname, './worker.js'));
-	const worker2 = new Worker(path.resolve(__dirname, './worker.js'));
-	const worker3 = new Worker(path.resolve(__dirname, './worker.js'));
+	const worker = createWorker({ workerData: 'worker' })
 
-	worker1.on("message", (event) => {
-		console.log("FINISHED 1!!!!! matches: ", event.data);
-		console.log("performace: ", performance.now());
+	worker.on("message", (result) => {
+		console.log("message from worker: ", result);
 	});
 
-	worker2.on("message", (event) => {
-		console.log("FINISHED 2!!!!! matches: ", event.data);
-		console.log("performace: ", performance.now());
+	worker.on("error", (err) => {
+        console.error("Worker error:", err);
+    });
+
+    worker.on("exit", (code) => {
+        console.log("Worker exited with code:", code);
+    });
+
+	const worker1 = createWorker({ workerData: 'worker' })
+
+	worker1.on("message", (result) => {
+		console.log("message from worker1: ", result);
 	});
 
-	worker3.on("message", (event) => {
-		console.log("FINISHED 3!!!!! matches: ", event.data);
-		console.log("performace: ", performance.now());
-	});
+	worker1.on("error", (err) => {
+        console.error("worker1 error:", err);
+    });
 
-	const jsonifiedSource = JSON.parse(sourceData).downloads;
+    worker1.on("exit", (code) => {
+        console.log("worker1 exited with code:", code);
+    });
 
-	worker1.postMessage(jsonifiedSource.slice(0, 100));
-	worker2.postMessage(jsonifiedSource.slice(101, 200));
-	worker3.postMessage(jsonifiedSource.slice(201, 300));
 
-	// let count = 0;
-	// gameData.map((steamGame) => {
-	// 	for (const jsonGame of jsonifiedSource) {
-	// 		if (normalizeTitle(jsonGame.title) === normalizeTitle(steamGame.name)) {
-	// 			console.log(`match!!! ${steamGame.name}, ${jsonGame.title}`);
-	// 			count++
-	// 			console.log("count: ", count);
-	// 		} 
-	// 	}
-	// });
+	worker.postMessage(jsonifiedLinks.slice(0, 500));
+	worker1.postMessage(jsonifiedLinks.slice(501, 1000));
 }
-
-import steamGames from "../steam-games/steam-games.json";
-import { normalizeTitle } from "./model";
-import { parentPort } from "node:worker_threads";
-
-interface steamGame {
-	id: number;
-	name: string;
-	clientIcon: string;
-}
-
-const gameData = (steamGames as steamGame[]);
-parentPort?.on("message", (data) => {
-    const matches: string[] = [];
-    let count = 0;
-
-    gameData.map((game) => {
-        for (const jsonGames of data) {
-            if (normalizeTitle(game.name) === normalizeTitle(jsonGames.title)) {
-                matches.push(game.name, jsonGames.title);
-                count++
-                console.log("count: ", count);
-            }
-        }
-    })
-
-    postMessage(matches);
-});

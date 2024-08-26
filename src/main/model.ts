@@ -135,7 +135,7 @@ export async function getDBCurrentPath () {
 	}).then((record) => record?.downloadPath || "No Path");
 }
 
-function normalizeTitle(title: string) {
+export function normalizeTitle(title: string) {
     // Convert to lowercase
     let normalized = title.toLowerCase();
 
