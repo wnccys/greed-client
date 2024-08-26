@@ -182,6 +182,6 @@ function handleMerge(sourceData: string) {
     });
 
 
-	worker.postMessage(jsonifiedLinks.slice(0, 500));
-	worker1.postMessage(jsonifiedLinks.slice(501, 1000));
+	worker.postMessage(jsonifiedLinks.slice(0, 1000));
+	worker1.postMessage(jsonifiedLinks.slice(1001, 2000));
 }

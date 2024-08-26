@@ -15,7 +15,7 @@ parentPort?.on("message", (data) => {
     for (const game of gameData) {
         for (const jsonGames of data) {
             // if (normalizeTitle(game.name) === normalizeTitle(jsonGames.title)) {
-            if (jsonGames.include(game.name)) {
+            if (jsonGames.title.includes(game.name)) {
                 matches.push(game.name, jsonGames.title);
             }
         }
