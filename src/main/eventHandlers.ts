@@ -9,7 +9,7 @@ import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
 import { addGameSource, changeDBDefaultPath, getDBCurrentPath, getSourcesList, removeSourceFromDB } from "./model";
-import { isMainThread, Worker, parentPort } from 'node:worker_threads';
+import { isMainThread, type Worker, parentPort } from 'node:worker_threads';
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
@@ -152,36 +152,26 @@ async function handleGetCurrentDownloadPath() {
 import createWorker from './worker?nodeWorker'
 function handleMerge(sourceData: string) {
 	const jsonifiedLinks = JSON.parse(sourceData).downloads;
+	const linksLength = jsonifiedLinks.length;
+	const workers: Worker[] = [];
 
-	const worker = createWorker({ workerData: 'worker' })
+	for (let i = 0; i < 5; i++) {
+		const worker = createWorker({ workerData: 'worker' })
 
-	worker.on("message", (result) => {
-		console.log("message from worker: ", result);
-	});
+		worker.on("message", (result) => {
+			console.log(`Message from Worker-${i}:`, result);
+		});
 
-	worker.on("error", (err) => {
-        console.error("Worker error:", err);
-    });
+		worker.on("error", (err) => {
+			console.error(`Worker-${i} Error: `, err);
+		});
 
-    worker.on("exit", (code) => {
-        console.log("Worker exited with code:", code);
-    });
+		worker.on("exit", (code) => {
+			console.log(`Worker-${i} exited with code: ` , code);
+		});
 
-	const worker1 = createWorker({ workerData: 'worker' })
-
-	worker1.on("message", (result) => {
-		console.log("message from worker1: ", result);
-	});
-
-	worker1.on("error", (err) => {
-        console.error("worker1 error:", err);
-    });
-
-    worker1.on("exit", (code) => {
-        console.log("worker1 exited with code:", code);
-    });
-
-
-	worker.postMessage(jsonifiedLinks.slice(0, 1000));
-	worker1.postMessage(jsonifiedLinks.slice(1001, 2000));
+		console.log(`from: ${Math.round((i/5)*linksLength)}, to: ${(Math.round(((i+1)/5)*linksLength) -1)}`);
+		worker.postMessage(jsonifiedLinks.slice(Math.round((i/5)*linksLength), Math.round(((i+1)/5)*linksLength) -1));
+		workers.push(worker);
+	}
 }
