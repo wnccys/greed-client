@@ -2,6 +2,7 @@ import { hostname } from "node:os";
 import { GreedDataSource } from "./data-source";
 import { GreedSettings } from "./entity/Settings";
 import { Sources } from "./entity/Sources";
+import { Downloads } from "./entity/Downloads";
 import path from "node:path";
 import { ipcMain } from "electron";
 
@@ -41,21 +42,41 @@ export function testDBConn() {
 
 export async function addGameSource(receivedSource: string) {
 	const newSource = new Sources();
+	const newDownloads: Partial<Downloads>[] = [];
 	const parsedSource = JSON.parse(receivedSource);
 
 	try {
 		newSource.name = JSON.stringify(parsedSource.name);
-		newSource.downloads = JSON.stringify(parsedSource.downloads);
 		newSource.downloadsCount = parsedSource.downloads.length;
 	} catch (e) {
-		return ["Error", "Could not get downloads count"];
+		return ["Error", "Could not get downloads count."];
 	}
 
 	try {
 		await GreedDataSource.manager.save(newSource);
+	} catch (e) {
+		console.log(e);
+		return ["Error", "Duplicated Sources are not allowed."];
+	}
+
+	const downloadsId = newSource.id;
+	try {
+		for (const downloads of parsedSource.downloads) {
+			newDownloads.push({
+				sourceId: downloadsId,
+				title: downloads.title,
+				normalizedTitle: normalizeTitle(downloads.title),
+				uris: downloads.uris,
+				uploadDate: downloads.uploadDate,
+				fileSize: downloads.fileSize,
+			});
+		}
+		await GreedDataSource.getRepository(Downloads).save(newDownloads);
+
 		return ["Success", "Source Successfully Added."];
 	} catch (e) {
-		return ["Error", "Duplicated Sources are not allowed"];
+		console.log(e);
+		return ["Error", "Error during Downloads assignment."];
 	}
 }
 
@@ -68,13 +89,18 @@ export async function getSourcesList() {
 export async function removeSourceFromDB(sourceName: string) {
 	try {
 		const source = GreedDataSource.getRepository(Sources);
+		const downloads = GreedDataSource.getRepository(Downloads);
 		const toBeDeleted = await source.findOneBy({
 			name: sourceName,
 		});
 
 		if (!toBeDeleted) throw Error("Could not find requested source.");
 
+		await downloads.delete({
+			sourceId: toBeDeleted.id,
+		});
 		await source.remove(toBeDeleted);
+		
 		return ["Success", "Source Removed From Database."];
 	} catch (e) {
 		return ["Error", "Source not found in Database."];
@@ -107,4 +133,26 @@ export async function getDBCurrentPath () {
 	return await GreedDataSource.getRepository(GreedSettings).findOneBy({
 		id: 1
 	}).then((record) => record?.downloadPath || "No Path");
+}
+
+function normalizeTitle(title: string) {
+    // Convert to lowercase
+    let normalized = title.toLowerCase();
+
+    // Remove content within parentheses and brackets
+    normalized = normalized.replace(/\(.*?\)/g, '').replace(/\[.*?\]/g, '');
+
+    // Replace dots and hyphens with spaces
+    normalized = normalized.replace(/[.\-]/g, ' ');
+
+    // Remove '+' signs and other special characters
+    normalized = normalized.replace(/[+]/g, ' ');
+
+    // Remove any remaining special characters
+    normalized = normalized.replace(/[^a-z0-9\s]/g, '');
+
+    // Replace multiple spaces with a single space and trim
+    normalized = normalized.replace(/\s+/g, ' ').trim();
+
+    return normalized;
 }

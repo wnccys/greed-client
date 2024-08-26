@@ -131,7 +131,7 @@ export function Settings() {
 	return (
 		<div
 			className="flex flex-col items-center self-center mt-[10em] p-5 
-	cursor-default rounded h-screen"
+			cursor-default rounded h-screen"
 		>
 			<Tabs.Root className="flex flex-col w-[50rem]" defaultValue="tab1">
 				<Tabs.List
@@ -292,7 +292,7 @@ export function Settings() {
 											type="submit"
 											onClick={addSourceToDB}
 											className="hover:bg-zinc-800 hover:-translate-y-1
-									hover:duration-500 transition-all"
+											hover:duration-500 transition-all"
 										>
 											Save
 										</Button>
