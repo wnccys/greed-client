@@ -156,9 +156,15 @@ interface steamGame {
 }
 
 async function handleMerge(sourceData: string) {
+	try {
 	const jsonifiedSource = JSON.parse(sourceData).downloads;
 	const gameData = (steamGames as steamGame[]);
 
+		
+	} catch (error) {
+		console.log("error handleMerge", error)
+	}
+	
 	// let count = 0;
 	// gameData.map((steamGame) => {
 	// 	for (const jsonGame of jsonifiedSource) {

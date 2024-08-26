@@ -4,12 +4,17 @@ import { CustomCarousel } from "./CustomCarousel";
 import { GameCard } from "./GameCard";
 import { useCatalogGames, useGamesImages } from "@renderer/Hooks/games";
 import { Button } from "@renderer/ShadComponents/ui/button";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import { useState } from "react";
 
 export function Catalog() {
+	const [loading, setLoading] = useState(true);
 	const games = useCatalogGames();
 	const images = useGamesImages(games[1]);
 
 	return (
+		
 		<div className="bg-[#171717]">
 			<div className="flex gap-2 justify-between mt-10 me-10">
 				<div className="ms-10 flex self-center">
@@ -43,12 +48,16 @@ export function Catalog() {
 				>
 					{games[1].map((_, key) => {
 						return (
+							<div>
 							<GameCard
+							
 								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 								key={key}
 								gameName={games[1][key].name}
 								gameImage={images[key]}
 							/>
+							
+							</div>
 						);
 					})}
 				</div>
