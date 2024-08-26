@@ -1,23 +1,41 @@
+import { hostname } from "node:os";
 import { GreedDataSource } from "./data-source";
 import { GreedSettings } from "./entity/Settings";
 import { Sources } from "./entity/Sources";
+import path from "node:path";
+import { ipcMain } from "electron";
 
 export function testDBConn() {
-	//dbConn
-	GreedDataSource.initialize().then(async () => {
+	GreedDataSource.initialize()
+		.then(async (initializedGreedSource) => {
 			console.log("Loading settings and sources from the database...");
-
 			const settingsData = await GreedDataSource.manager.find(GreedSettings);
 			console.log("Loaded settings: ", settingsData);
 			const sourceData = await GreedDataSource.manager.find(Sources);
 
 			console.log("Loaded Sources: ");
-
-				for (const source of sourceData) {
-					console.log("Name: ", source.name);
-						console.log("Links Count: ", source.downloadsCount);
+			for (const source of sourceData) {
+				console.log("Name: ", source.name);
+				console.log("Links Count: ", source.downloadsCount);
 			}
-		})                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+
+			const greedSettings = new GreedSettings();
+			const existingSettings = await initializedGreedSource
+				.getRepository(GreedSettings)
+				.exists();
+
+			if (existingSettings) {
+				console.log("exists!!");
+			} else {
+				console.log("doesn't exists!!");
+				greedSettings.downloadPath = path.resolve("./src/downloads");
+				greedSettings.username = hostname();
+
+				await initializedGreedSource
+					.getRepository(GreedSettings)
+					.save(greedSettings);
+			}
+		})
 		.catch((error) => console.log("Failed to load contents: ", error));
 }
 
@@ -61,4 +79,32 @@ export async function removeSourceFromDB(sourceName: string) {
 	} catch (e) {
 		return ["Error", "Source not found in Database."];
 	}
+}
+
+export async function changeDBDefaultPath(folderPath: string[]) {
+	try {
+		const currentPath = await GreedDataSource.getRepository(GreedSettings).findOneBy({
+			id: 1
+		});
+
+		if (currentPath) {
+			currentPath.downloadPath = folderPath[0];
+			await GreedDataSource.manager.save(currentPath);
+
+			ipcMain.emit("updateDownloadPath", currentPath.downloadPath);
+
+			return ["Success", "Download Path Updated."];
+		}
+
+		return ["Error", "Default Path not Found."];
+
+	} catch (e) {
+		return ["Error", "Could not update default path."];
+	}
+}
+
+export async function getDBCurrentPath () {
+	return await GreedDataSource.getRepository(GreedSettings).findOneBy({
+		id: 1
+	}).then((record) => record?.downloadPath || "No Path");
 }

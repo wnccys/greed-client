@@ -10,7 +10,7 @@ export function SelectedGame() {
 	);
 
 	return (
-		<>
+		<div className="h-screen">
 			<div id="game-cover">
 				<div className="absolute text-lg translate-x-8 translate-y-6">
 					<Link to="../catalog">
@@ -43,6 +43,6 @@ export function SelectedGame() {
 					</div>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 }

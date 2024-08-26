@@ -16,6 +16,7 @@ declare global {
     removeTorrent: () => null,
     addSourceToDB: (sourceLink: string) => Promise<string[]>,
     removeSourceFromDB: (sourceLink: string) => Promise<string[]>,
+    changeDefaultPath: () => Promise<string[]>,
   }
 
   interface Tests {

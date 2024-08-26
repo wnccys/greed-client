@@ -103,7 +103,7 @@ export function Downloads() {
 	}
 
 	return (
-		<div className="flex flex-col container scale-90 content-center h-screen">
+		<div className="flex flex-col container scale-90 content-center h-screen mb-10">
 			{torrentInfo.currentProgress > 0 && (
 				<Card className="bg-black scale-100 pb-10">
 					<CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
@@ -168,7 +168,7 @@ export function Downloads() {
 				<h1 className="text-2xl">Queue</h1>
 				<div
 					className="size-24 w-full h-full flex flex-col border 
-			border-white bg-zinc-950 rounded-xl gap-2 p-5"
+			border-white bg-zinc-950 rounded-xl gap-2 p-5 pb-10"
 				>
 					{(torrentInfo.currentProgress >= 0 && torrentInfo.timeRemaining && (
 						<div className="flex h-1/2rem">
@@ -182,7 +182,7 @@ export function Downloads() {
 									<ResumePauseTorrent
 										isPaused={isPaused}
 										className="mt-1 hover:bg-zinc-800 hover:-translate-y-1
-									hover:duration-500 transition-all"
+										hover:duration-500 transition-all"
 									/>
 									<Button
 										onClick={() => window.api.removeTorrent()}

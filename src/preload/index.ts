@@ -21,6 +21,7 @@ const api = {
 		ipcRenderer.invoke("addSourceToDB", sourceLink),
 	removeSourceFromDB: (sourceName: string) =>
 		ipcRenderer.invoke("removeSourceFromDB", sourceName),
+	changeDefaultPath: () => ipcRenderer.invoke("changeDefaultPath"),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
