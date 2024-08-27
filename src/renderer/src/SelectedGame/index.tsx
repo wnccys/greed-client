@@ -60,13 +60,14 @@ export function SelectedGame() {
 					</Link>
 				</div>
 				{ 
+					(gameImage &&
 					(!isLoading && <img src={gameImage} alt="game-cover" />) ||
-					<SkeletonCard />	
+					<Skeleton className="h-[25rem] w-full" />) || <div className="bg-black w-full h-[25rem]">cu</div>
 				}
 			</div>
 			
 			<div className="ms-6 absolute -translate-y-[9rem]">
-				{ gameIcon ? <img src={gameIcon} alt="game-icon" className="h-[6rem]" /> : ""}
+				{ (gameIcon && <img src={gameIcon} alt="game-icon" className="h-[6rem]" />) || <Skeleton className="h-[25rem]" /> } 
 			</div>
 
 			<div id="play-menu" 
