@@ -7,16 +7,20 @@ interface steamGame {
 	clientIcon: string;
 }
 
+interface JSONGame {
+    title: string,
+    steamId: number | null,
+}
+
 const gameData = (steamGames as steamGame[]);
-parentPort?.on("message", (data) => {
-    const matches: string[] = [];
+parentPort?.on("message", (data: JSONGame[]) => {
+    const matches: [string, number][] = [];
     console.log("work received!");
 
     for (const game of gameData) {
         for (const jsonGames of data) {
-            // if (normalizeTitle(game.name) === normalizeTitle(jsonGames.title)) {
             if (game.name && jsonGames.title.startsWith(game.name) && jsonGames.title.includes(game.name)) {
-                matches.push(game.name, jsonGames.title);
+                matches.push([jsonGames.title, game.id]);
             }
         }
     };

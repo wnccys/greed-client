@@ -8,7 +8,7 @@ import {
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
-import { addGameSource, changeDBDefaultPath, getDBCurrentPath, getSourcesList, removeSourceFromDB } from "./model";
+import { addGameSource, addSteamId, changeDBDefaultPath, getDBCurrentPath, getSourcesList, removeSourceFromDB } from "./model";
 import { isMainThread, type Worker, parentPort } from 'node:worker_threads';
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
@@ -98,8 +98,8 @@ export async function handleNewTorrentSource(
 
 	const result = await fetch(sourceLink);
 	const stringifiedBody = JSON.stringify(await result.json());
-	handleMerge(stringifiedBody);
 	const response = addGameSource(stringifiedBody);
+	handleMerge(stringifiedBody);
 
 	return response;
 }
@@ -161,7 +161,8 @@ function handleMerge(sourceData: string) {
 
 		worker.on("message", (result) => {
 			// console.log(`Message from Worker-${i}:`, result);
-			console.log("performance on worker: ", performance.now());
+			console.log(`Performance on Worker-${i}: `, performance.now());
+			addSteamId(result);
 		});
 
 		worker.on("error", (err) => {

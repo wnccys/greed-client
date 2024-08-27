@@ -133,3 +133,7 @@ export async function getDBCurrentPath () {
 		id: 1
 	}).then((record) => record?.downloadPath || "No Path");
 }
+
+export async function addSteamId(games: [title: string, steamId: number][]) {
+	console.log("received games: ", games.slice(0, 5));
+}
