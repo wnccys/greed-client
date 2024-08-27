@@ -46,6 +46,7 @@ export function Catalog() {
 							<GameCard
 								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 								key={key}
+								gameId={games[1][key].id}
 								gameName={games[1][key].name}
 								gameImage={images[key]}
 							/>
