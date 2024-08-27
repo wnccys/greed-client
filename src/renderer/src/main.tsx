@@ -23,7 +23,10 @@ import { Downloads } from './Downloads';
         element: <Catalog />,
       },
       {
-        path: "selected-game",
+        path: "selected-game/:gameId",
+        loader: async ({ params }) => {
+          return params.gameId;
+        },
         element: <SelectedGame />
       },
       {
