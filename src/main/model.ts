@@ -40,7 +40,7 @@ export function testDBConn() {
 		.catch((error) => console.log("Failed to load contents: ", error));
 }
 
-export async function addGameSource(receivedSource: string) {
+export async function addGameSource(receivedSource: string): Promise<string[]> {
 	const newSource = new Sources();
 	const newDownloads: Partial<Downloads>[] = [];
 	const parsedSource = JSON.parse(receivedSource);
@@ -55,12 +55,10 @@ export async function addGameSource(receivedSource: string) {
 	try {
 		await GreedDataSource.manager.save(newSource);
 	} catch (e) {
-		console.log(e);
 		return ["Error", "Duplicated Sources are not allowed."];
 	}
 
 	const downloadsId = newSource.id;
-	console.log("");
 	try {
 		for (const downloads of parsedSource.downloads) {
 			newDownloads.push({
@@ -76,7 +74,6 @@ export async function addGameSource(receivedSource: string) {
 
 		return ["Success", "Source Successfully Added."];
 	} catch (e) {
-		console.log(e);
 		return ["Error", "Error during Downloads assignment."];
 	}
 }
