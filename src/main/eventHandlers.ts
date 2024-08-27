@@ -86,21 +86,16 @@ export async function handleTorrentPath(
 export async function handleNewTorrentSource(
 	_event: IpcMainInvokeEvent,
 	sourceLink: string,
-): Promise<string[]> {
-	console.log(`sourceLink: ${sourceLink}`);
-
+ ) {
 	try {
 		new URL(sourceLink);
 	} catch (error) {
 		console.error("Invalid URL:", error);
-		return Promise.resolve(["Error", "Provide a valid URL."]);
 	}
 
 	const result = await fetch(sourceLink);
 	const stringifiedBody = JSON.stringify(await result.json());
-	const response = handleMerge(stringifiedBody);
-
-	return response;
+	handleMerge(stringifiedBody);
 }
 
 function handleTorrentDownloadComplete() {
@@ -156,27 +151,33 @@ function handleMerge(sourceData: string) {
 	const linksLength = jsonifiedLinks.length;
 	const workers: Worker[] = [];
 	let newDownloads: JSONGame[] = [];
-	const response: Promise<string[]> = Promise.resolve(["Success", "Source Successfully Added."]);
 	let alreadyDone = 0;
 
 	const workerLimit = 12;
 	for (let i = 0; i < workerLimit; i++) {
 		const worker = createWorker({});
 
-		worker.on("message", (result: JSONGame[]) => {
+		worker.on("message", async (result: JSONGame[]) => {
 			console.log(`Performance on Worker-${i}: `, performance.now());
 			newDownloads = newDownloads.concat(result);
 			alreadyDone++;
+
 			if (alreadyDone === workerLimit) {
 				sourceData1.downloads = newDownloads;
-				console.log("New Downloads: ", newDownloads.slice(0, 2));
 				console.log("Total: ", newDownloads.length);
-				addGameSource(JSON.stringify(sourceData1));
+				const result = await addGameSource(JSON.stringify(sourceData1));
+				for (const win of BrowserWindow.getAllWindows()) {
+					win.webContents.send("mergeResult", result);
+				}
 			}
 		});
 
 		worker.on("error", (err) => {
 			console.error(`Worker-${i} Error: `, err);
+			
+			for (const win of BrowserWindow.getAllWindows()) {
+				win.webContents.send("mergeResult", ["Error", `Merge failed: ${err}`]);
+			}
 		});
 
 		worker.on("exit", (code) => {
@@ -190,6 +191,4 @@ function handleMerge(sourceData: string) {
 		worker.postMessage(jsonifiedLinks.slice(initialSlice, finalSlice));
 		workers.push(worker);
 	}
-
-	return response;
 }
