@@ -24,7 +24,7 @@ import { Downloads } from './Downloads';
       },
       {
         path: "selected-game/:gameId",
-        loader: async ({ params }) => {
+        loader: async ({ params }): Promise<string | undefined> => {
           return params.gameId;
         },
         element: <SelectedGame />

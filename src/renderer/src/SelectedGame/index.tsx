@@ -9,7 +9,23 @@ export function SelectedGame() {
 	const selectedGameInfos = window.api.getSelectedGameInfo(gameId);
 
 	useEffect(() => {
-	}, []);
+		try {
+			const reader = new FileReader();
+			fetch(`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${gameId}/library_hero.jpg`)
+			.then((response) => response.blob())
+			.then((blobImage) => { 
+				reader.onload = () => {
+					setGameImage(reader.result as string);
+					console.log("game image info: ", gameImage);
+				}
+				reader.readAsDataURL(blobImage);
+              }).catch((e) => {
+				console.log("error processing blobImage: ", e);
+			  })
+		} catch (e) {
+			console.log("failed to get game image: ", e);
+		}
+	}, [gameId, gameImage]);
 
 	return (
 		<div className="h-screen">
