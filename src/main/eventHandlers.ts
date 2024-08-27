@@ -166,12 +166,14 @@ function handleMerge(sourceData: string) {
 		worker.on("message", (result) => {
 			// console.log(`Message from Worker-${i}:`, result);
 			console.log(`Performance on Worker-${i}: `, performance.now());
-			newDownloads.push(result)
+			// REVIEW sets newDownloads to get every row of [][] correctly;
+			newDownloads.concat(result);
 			alreadyDone++
 			if (alreadyDone === workerLimit) {
 				sourceData1.downloads = newDownloads;
-				console.log("New Downloads: ", newDownloads.slice(0, 3));
-				response = addGameSource(sourceData);
+				console.log("New Downloads: ", newDownloads);
+				console.log("Total: ", newDownloads.length);
+				response = addGameSource(JSON.stringify(sourceData1));
 				return response;
 			}
 
