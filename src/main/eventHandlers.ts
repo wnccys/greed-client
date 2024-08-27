@@ -8,14 +8,8 @@ import {
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
-import {
-	addGameSource,
-	changeDBDefaultPath,
-	getDBCurrentPath,
-	getSourcesList,
-	removeSourceFromDB,
-} from "./model";
-import type { Worker } from "node:worker_threads";
+import { addGameSource, changeDBDefaultPath, getDBCurrentPath, getSourcesList, removeSourceFromDB } from "./model";
+import type { Worker } from 'node:worker_threads';
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
@@ -28,7 +22,7 @@ ipcMain.handle("getCurrentDownloadPath", handleGetCurrentDownloadPath);
 ipcMain.on("updateDownloadPath", handleUpdateDownloadPath);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
-ipcMain.on("updateTorrentPauseStatus", handleUpdateTorrentPausedStatus);
+ipcMain.on("updateTorrentPauseStatus" , handleUpdateTorrentPausedStatus);
 
 // ---- Sources ----
 async function handleGetSourcesList() {
@@ -70,7 +64,7 @@ export function handleUpdateTorrentProgress(
 
 function handleUpdateTorrentPausedStatus(status: IpcMainEvent) {
 	for (const win of BrowserWindow.getAllWindows()) {
-		win.webContents.send("updateTorrentPauseStatus", status);
+		win.webContents.send("updateTorrentPauseStatus",  status);
 	}
 }
 
@@ -92,7 +86,7 @@ export async function handleTorrentPath(
 export async function handleNewTorrentSource(
 	_event: IpcMainInvokeEvent,
 	sourceLink: string,
-) {
+ ) {
 	try {
 		new URL(sourceLink);
 	} catch (error) {
@@ -100,8 +94,7 @@ export async function handleNewTorrentSource(
 	}
 
 	const result = await fetch(sourceLink);
-	const stringifiedBody = JSON.stringify(await result.json());
-	handleMerge(stringifiedBody);
+	handleMerge(await result.json());
 }
 
 function handleTorrentDownloadComplete() {
@@ -149,11 +142,16 @@ async function handleGetCurrentDownloadPath() {
 	return await getDBCurrentPath();
 }
 
-import createWorker from "./worker?nodeWorker";
+import createWorker from './worker?nodeWorker'
 import type { JSONGame } from "./worker";
-function handleMerge(sourceData: string) {
-	const jsonifiedLinks = JSON.parse(sourceData).downloads;
-	const sourceData1 = JSON.parse(sourceData);
+
+interface Source {
+	name: string,
+	downloads: JSONGame[],
+}
+
+function handleMerge(Source: Source) {
+	const jsonifiedLinks = Source.downloads;
 	const linksLength = jsonifiedLinks.length;
 	const workers: Worker[] = [];
 	let newDownloads: JSONGame[] = [];
@@ -169,9 +167,9 @@ function handleMerge(sourceData: string) {
 			alreadyDone++;
 
 			if (alreadyDone === workerLimit) {
-				sourceData1.downloads = newDownloads;
+				Source.downloads = newDownloads;
 				console.log("Total: ", newDownloads.length);
-				const result = await addGameSource(JSON.stringify(sourceData1));
+				const result = await addGameSource(JSON.stringify(Source));
 				for (const win of BrowserWindow.getAllWindows()) {
 					win.webContents.send("mergeResult", result);
 				}
@@ -180,18 +178,18 @@ function handleMerge(sourceData: string) {
 
 		worker.on("error", (err) => {
 			console.error(`Worker-${i} Error: `, err);
-
+			
 			for (const win of BrowserWindow.getAllWindows()) {
 				win.webContents.send("mergeResult", ["Error", `Merge failed: ${err}`]);
 			}
 		});
 
 		worker.on("exit", (code) => {
-			console.log(`Worker-${i} exited with code: `, code);
+			console.log(`Worker-${i} exited with code: ` , code);
 		});
 
-		const initialSlice = Math.round((i / workerLimit) * linksLength);
-		const finalSlice = Math.round(((i + 1) / workerLimit) * linksLength) - 1;
+		const initialSlice = (Math.round((i/workerLimit)*linksLength));
+		const finalSlice = (Math.round(((i+1)/workerLimit)*linksLength) -1);
 
 		console.log(`from: ${initialSlice}, to: ${finalSlice}`);
 		worker.postMessage(jsonifiedLinks.slice(initialSlice, finalSlice));
