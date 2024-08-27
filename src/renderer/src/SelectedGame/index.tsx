@@ -1,6 +1,6 @@
 import GameDummyImage from "@renderer/Assets/image.png";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { DoubleArrowLeftIcon } from "@radix-ui/react-icons";
 import { Button } from "@renderer/ShadComponents/ui/button";
 
@@ -8,6 +8,10 @@ export function SelectedGame() {
 	const [downloadResult, setDownloadResult] = useState<string | undefined>(
 		undefined,
 	);
+
+	const loader = useLoaderData();
+
+	console.log("received params: ", loader);
 
 	return (
 		<div className="h-screen">
