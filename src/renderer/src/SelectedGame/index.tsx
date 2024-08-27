@@ -1,12 +1,15 @@
-import GameDummyImage from "@renderer/Assets/image.png";
 import { Link, useLoaderData } from "react-router-dom";
 import { DoubleArrowLeftIcon } from "@radix-ui/react-icons";
 import { Button } from "@renderer/ShadComponents/ui/button";
+import { useEffect, useState } from "react";
 
 export function SelectedGame() {
-	const loader = useLoaderData();
+	const gameId = useLoaderData() as number;
+	const [gameImage, setGameImage] = useState<string>();
+	const selectedGameInfos = window.api.getSelectedGameInfo(gameId);
 
-	console.log("received params: ", loader);
+	useEffect(() => {
+	}, []);
 
 	return (
 		<div className="h-screen">
@@ -17,7 +20,7 @@ export function SelectedGame() {
 						 transition hover:scale-105 duration-300"/>
 					</Link>
 				</div>
-				<img src={GameDummyImage} alt="game-cover" className="" />
+				<img src={gameImage} alt="game-cover" className="" />
 			</div>
 
 			<div id="play-menu" 
