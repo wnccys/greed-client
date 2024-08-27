@@ -19,6 +19,7 @@ const api = {
 	removeTorrent: () => ipcRenderer.invoke("removeTorrent"),
 	addSourceToDB: (sourceLink: string) =>
 		ipcRenderer.invoke("addSourceToDB", sourceLink),
+	getSelectedGameInfo: (gameId: number) => ipcRenderer.invoke("getSelectedGameInfo", gameId),
 	removeSourceFromDB: (sourceName: string) =>
 		ipcRenderer.invoke("removeSourceFromDB", sourceName),
 	changeDefaultPath: () => ipcRenderer.invoke("changeDefaultPath"),
