@@ -9,13 +9,13 @@ import {
 } from "@renderer/ShadComponents/ui/card";
 import { Link } from "react-router-dom";
 
-export function GameCard({ gameName, gameImage }) {
+export function GameCard({ gameName, gameImage, gameId }) {
     console.log("received name: ", gameName);
-    console.log("source: ", gameImage)
+    console.log("gameId: ", gameId);
 
     return (
             <>
-                <Link to="../selected-game">
+                <Link to={`../selected-game/${gameId}`}>
                     <Card
                         className="border shadow-lg 
                         hover:drop-shadow-2xl shadow-black rounded-md h-[15.5vh] 
