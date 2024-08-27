@@ -156,7 +156,7 @@ function handleMerge(sourceData: string) {
 	const linksLength = jsonifiedLinks.length;
 	const workers: Worker[] = [];
 	let newDownloads: JSONGame[] = [];
-	let response: Promise<string[]> = Promise.resolve(["Error", "cuzin"]);
+	const response: Promise<string[]> = Promise.resolve(["Success", "Source Successfully Added."]);
 	let alreadyDone = 0;
 
 	const workerLimit = 12;
@@ -173,11 +173,8 @@ function handleMerge(sourceData: string) {
 				sourceData1.downloads = newDownloads;
 				console.log("New Downloads: ", newDownloads.slice(0, 2));
 				console.log("Total: ", newDownloads.length);
-				response = addGameSource(JSON.stringify(sourceData1));
-				return response;
+				addGameSource(JSON.stringify(sourceData1));
 			}
-
-			return ["Error", "Could not define limit."];
 		});
 
 		worker.on("error", (err) => {
