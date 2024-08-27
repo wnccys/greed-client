@@ -164,9 +164,7 @@ function handleMerge(sourceData: string) {
 		const worker = createWorker({});
 
 		worker.on("message", (result: JSONGame[]) => {
-			// console.log(`Message from Worker-${i}:`, result);
 			console.log(`Performance on Worker-${i}: `, performance.now());
-			// REVIEW sets newDownloads to get every row of [][] correctly;
 			newDownloads = newDownloads.concat(result);
 			alreadyDone++;
 			if (alreadyDone === workerLimit) {
