@@ -1,11 +1,6 @@
-import GameDummyImage from "@renderer/Assets/image.png";
-
 import {
 	Card,
 	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
 } from "@renderer/ShadComponents/ui/card";
 import { Link } from "react-router-dom";
 
