@@ -66,25 +66,25 @@ export function Settings() {
 	function addSourceToDB() {
 		if (sourceLinkRef.current) {
 			if (sourceLinkRef.current.value.length > 0) {
-				window.api.addSourceToDB(sourceLinkRef.current.value).then((result) => {
+				window.api.addSourceToDB(sourceLinkRef.current.value);
+				window.electron.ipcRenderer.on("mergeResult", (_event, result: string[]) => {
 					if (result[0] === "Success") {
-						toast.success(result[0], {
-							description: result[1],
-						});
-
 						window.electron.ipcRenderer
 							.invoke("getSourcesList")
 							.then((receivedSources) => {
 								setSources(receivedSources);
 							});
 
-						setIsDialogOpen(false);
+						toast.success(result[0], {
+							description: result[1],
+						})
+						
 						return;
 					}
 
 					toast.error(result[0], {
 						description: result[1],
-					});
+					})
 				});
 			}
 		}
