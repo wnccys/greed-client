@@ -1,30 +1,54 @@
 import { Link, useLoaderData } from "react-router-dom";
 import { DoubleArrowLeftIcon } from "@radix-ui/react-icons";
 import { Button } from "@renderer/ShadComponents/ui/button";
+import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
 import { useEffect, useState } from "react";
 
 export function SelectedGame() {
 	const gameId = useLoaderData() as number;
+	const [isLoading, setIsLoading] = useState(true);
 	const [gameImage, setGameImage] = useState<string>();
+	const [gameIcon, setGameIcon] = useState<string>();
 	useEffect(() => {
-		const reader = new FileReader();
 		try {
+			const reader = new FileReader();
 			fetch(`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${gameId}/library_hero.jpg`)
 			.then((response) => response.blob())
 			.then((blobImage) => { 
 				reader.onload = () => {
 					setGameImage(reader.result as string);
+					setIsLoading(false);
 				}
 				reader.readAsDataURL(blobImage);
-              }).catch((e) => {
-				console.log("error processing blobImage: ", e);
-			  })
+              });
 		} catch (e) {
 			console.log("failed to get game image: ", e);
+		}
+
+		try {
+			const reader = new FileReader();
+			fetch(`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${gameId}/logo.png`)
+			.then((response) => response.blob())
+			.then((blobImage) => {
+				reader.onload = () => {
+					setGameIcon(reader.result as string);
+				}
+				reader.readAsDataURL(blobImage);
+			})
+		} catch(e) {
+
 		}
 	}, [gameId]);
 
 	const selectedGameInfos = window.api.getSelectedGameInfo(gameId);
+
+	function SkeletonCard() {
+		return (
+			<div className="flex flex-col space-y-3 z-10">
+				<Skeleton className="h-[25rem] w-full" />
+			</div>
+		)	
+	}
 
 	return (
 		<div className="h-screen">
@@ -35,7 +59,14 @@ export function SelectedGame() {
 						 transition hover:scale-105 duration-300 z-20"/>
 					</Link>
 				</div>
-				<img src={gameImage || "https://placehold.co/1800x300"} alt="game-cover" className="" />
+				{ 
+					(!isLoading && <img src={gameImage} alt="game-cover" />) ||
+					<SkeletonCard />	
+				}
+			</div>
+			
+			<div className="ms-6 absolute -translate-y-[9rem]">
+				{ gameIcon ? <img src={gameIcon} alt="game-icon" className="h-[6rem]" /> : ""}
 			</div>
 
 			<div id="play-menu" 
