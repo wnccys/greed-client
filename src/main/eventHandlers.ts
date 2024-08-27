@@ -157,12 +157,11 @@ function handleMerge(sourceData: string) {
 
 	const workerLimit = 12;
 	for (let i = 0; i < workerLimit; i++) {
-		const worker = createWorker({ workerData: 'worker' })
+		const worker = createWorker({});
 
 		worker.on("message", (result) => {
-			// console.log(`Message from Worker-${i}:`, result);
+			console.log(`Message from Worker-${i}:`, result);
 			console.log(`Performance on Worker-${i}: `, performance.now());
-			addSteamId(result);
 		});
 
 		worker.on("error", (err) => {
