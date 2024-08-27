@@ -63,7 +63,6 @@ export async function addGameSource(receivedSource: string) {
 	console.log("");
 	try {
 		for (const downloads of parsedSource.downloads) {
-			console.log("SteamID: ", downloads.steamId);
 			newDownloads.push({
 				sourceId: downloadsId,
 				title: downloads.title,
@@ -135,8 +134,4 @@ export async function getDBCurrentPath () {
 	return await GreedDataSource.getRepository(GreedSettings).findOneBy({
 		id: 1
 	}).then((record) => record?.downloadPath || "No Path");
-}
-
-export async function addSteamId(games: [title: string, steamId: number][]) {
-	console.log("received games: ", games.slice(0, 5));
 }
