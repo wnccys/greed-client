@@ -132,6 +132,6 @@ export async function getDBCurrentPath () {
 
 export async function getDBGameInfos(gameId: number) {
 	return await GreedDataSource.getRepository(Downloads).findBy({
-		sourceId: gameId,
+		steamId: gameId,
 	});
 }
