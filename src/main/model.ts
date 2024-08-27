@@ -129,3 +129,9 @@ export async function getDBCurrentPath () {
 		id: 1
 	}).then((record) => record?.downloadPath || "No Path");
 }
+
+export async function getDBGameInfos(gameId: number) {
+	return await GreedDataSource.getRepository(Downloads).findBy({
+		sourceId: gameId,
+	});
+}
