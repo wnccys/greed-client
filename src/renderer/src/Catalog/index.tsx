@@ -4,10 +4,15 @@ import { CustomCarousel } from "./CustomCarousel";
 import { GameCard } from "./GameCard";
 import { useCatalogGames, useGamesImages } from "@renderer/Hooks/games";
 import { Button } from "@renderer/ShadComponents/ui/button";
+import { useState } from "react";
 
 export function Catalog() {
 	const games = useCatalogGames();
 	const images = useGamesImages(games[1]);
+	const isSearching = useState(false);
+
+	function getGamesByName() {
+	}
 
 	return (
 		<div className="bg-[#171717]">
@@ -18,6 +23,7 @@ export function Catalog() {
 				<div
 					className="rounded-md bg-zinc-800 flex p-2 ps-4 
 					items-center hover:shadow-xl"
+					onInput={ getGamesByName }
 				>
 					<img src={SearchIcon} alt="search-icon" className="size-4" />
 					<Input
