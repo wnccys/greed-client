@@ -14,7 +14,6 @@ export function SelectedGame() {
 			.then((blobImage) => { 
 				reader.onload = () => {
 					setGameImage(reader.result as string);
-					console.log("game image info: ", gameImage);
 				}
 				reader.readAsDataURL(blobImage);
               }).catch((e) => {
@@ -23,20 +22,20 @@ export function SelectedGame() {
 		} catch (e) {
 			console.log("failed to get game image: ", e);
 		}
-	}, [gameId, gameImage]);
+	}, [gameId]);
 
 	const selectedGameInfos = window.api.getSelectedGameInfo(gameId);
 
 	return (
 		<div className="h-screen">
 			<div id="game-cover">
-				<div className="absolute text-lg translate-x-8 translate-y-6 pt-10">
+				<div className="absolute text-lg translate-x-8 translate-y-6 mt-2">
 					<Link to="../catalog">
 						<DoubleArrowLeftIcon className="size-5 delay-150 hover:-translate-y-1
 						 transition hover:scale-105 duration-300 z-20"/>
 					</Link>
 				</div>
-				<img src={gameImage} alt="game-cover" className="" />
+				<img src={gameImage || "https://placehold.co/1800x300"} alt="game-cover" className="" />
 			</div>
 
 			<div id="play-menu" 
