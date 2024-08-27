@@ -14,7 +14,7 @@ declare global {
     pauseTorrent: () => null,
     resumeTorrent: () => null,
     removeTorrent: () => null,
-    addSourceToDB: (sourceLink: string) => Promise<string[]>,
+    addSourceToDB: (sourceLink: string) => null,
     removeSourceFromDB: (sourceLink: string) => Promise<string[]>,
     changeDefaultPath: () => Promise<string[]>,
   }
