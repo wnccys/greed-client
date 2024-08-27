@@ -12,7 +12,7 @@ export class Downloads {
     @Column()
     title: string;
 
-    @Column({ type: "int", nullable: true })
+    @Column("int", { nullable: true })
     steamId: number | null;
 
     @Column({ type: 'simple-array' })

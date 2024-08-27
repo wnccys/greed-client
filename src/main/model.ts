@@ -60,12 +60,15 @@ export async function addGameSource(receivedSource: string) {
 	}
 
 	const downloadsId = newSource.id;
+	console.log("");
 	try {
 		for (const downloads of parsedSource.downloads) {
+			console.log("SteamID: ", downloads.steamId);
 			newDownloads.push({
 				sourceId: downloadsId,
 				title: downloads.title,
 				uris: downloads.uris,
+				steamId: downloads.steamId,
 				uploadDate: downloads.uploadDate,
 				fileSize: downloads.fileSize,
 			});

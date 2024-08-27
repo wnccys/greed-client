@@ -155,7 +155,7 @@ function handleMerge(sourceData: string) {
 	const sourceData1 = JSON.parse(sourceData);
 	const linksLength = jsonifiedLinks.length;
 	const workers: Worker[] = [];
-	const newDownloads: JSONGame[] = [];
+	let newDownloads: JSONGame[] = [];
 	let response: Promise<string[]> = Promise.resolve(["Error", "cuzin"]);
 	let alreadyDone = 0;
 
@@ -163,15 +163,15 @@ function handleMerge(sourceData: string) {
 	for (let i = 0; i < workerLimit; i++) {
 		const worker = createWorker({});
 
-		worker.on("message", (result) => {
+		worker.on("message", (result: JSONGame[]) => {
 			// console.log(`Message from Worker-${i}:`, result);
 			console.log(`Performance on Worker-${i}: `, performance.now());
 			// REVIEW sets newDownloads to get every row of [][] correctly;
-			newDownloads.concat(result);
-			alreadyDone++
+			newDownloads = newDownloads.concat(result);
+			alreadyDone++;
 			if (alreadyDone === workerLimit) {
 				sourceData1.downloads = newDownloads;
-				console.log("New Downloads: ", newDownloads);
+				console.log("New Downloads: ", newDownloads.slice(0, 2));
 				console.log("Total: ", newDownloads.length);
 				response = addGameSource(JSON.stringify(sourceData1));
 				return response;
