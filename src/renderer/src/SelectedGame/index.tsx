@@ -6,11 +6,9 @@ import { useEffect, useState } from "react";
 export function SelectedGame() {
 	const gameId = useLoaderData() as number;
 	const [gameImage, setGameImage] = useState<string>();
-	const selectedGameInfos = window.api.getSelectedGameInfo(gameId);
-
 	useEffect(() => {
+		const reader = new FileReader();
 		try {
-			const reader = new FileReader();
 			fetch(`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${gameId}/library_hero.jpg`)
 			.then((response) => response.blob())
 			.then((blobImage) => { 
@@ -26,6 +24,8 @@ export function SelectedGame() {
 			console.log("failed to get game image: ", e);
 		}
 	}, [gameId, gameImage]);
+
+	const selectedGameInfos = window.api.getSelectedGameInfo(gameId);
 
 	return (
 		<div className="h-screen">
