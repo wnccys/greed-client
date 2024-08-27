@@ -25,10 +25,7 @@ export function testDBConn() {
 				.getRepository(GreedSettings)
 				.exists();
 
-			if (existingSettings) {
-				console.log("exists!!");
-			} else {
-				console.log("doesn't exists!!");
+			if (!existingSettings) {
 				greedSettings.downloadPath = path.resolve("./src/downloads");
 				greedSettings.username = hostname();
 
