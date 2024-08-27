@@ -12,7 +12,7 @@ import {
 	addGameSource,
 	changeDBDefaultPath,
 	getDBCurrentPath,
-	getDBGameInfo,
+	getDBGameInfos,
 	getSourcesList,
 	removeSourceFromDB,
 } from "./model";
@@ -25,7 +25,7 @@ ipcMain.handle("addSourceToDB", handleNewTorrentSource);
 ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("changeDefaultPath", handleChangeDefaultPath);
 ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
-ipcMain.handle("getCurrentGameInfo", handleGetCurrentGameInfo);
+ipcMain.handle("getSelectedGameInfo", handleGetCurrentGameInfo);
 ipcMain.handle("getCurrentDownloadPath", handleGetCurrentDownloadPath);
 ipcMain.on("updateDownloadPath", handleUpdateDownloadPath);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
@@ -205,6 +205,7 @@ function handleMerge(Source: Source) {
 	}
 }
 
-function handleGetCurrentGameInfo(_event: IpcMainInvokeEvent, gameID: number){
-	const infos = getDBGameInfo(gameId);
+async function handleGetCurrentGameInfo(_event: IpcMainInvokeEvent, gameId: number) {
+	const infos = await getDBGameInfos(gameId);
+	console.log("received infos: ", infos);
 }
