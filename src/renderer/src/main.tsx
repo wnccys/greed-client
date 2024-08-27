@@ -32,8 +32,6 @@ import { Downloads } from './Downloads';
       }, 
       { path: "downloads", 
         element: <Downloads />
-
-
       }
     ],
     errorElement: <ErrorElement />
