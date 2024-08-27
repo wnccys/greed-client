@@ -5,9 +5,6 @@ import {
 import { Link } from "react-router-dom";
 
 export function GameCard({ gameName, gameImage, gameId }) {
-    console.log("received name: ", gameName);
-    console.log("gameId: ", gameId);
-
     return (
             <>
                 <Link to={`../selected-game/${gameId}`}>
