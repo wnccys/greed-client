@@ -30,10 +30,10 @@ export function SelectedGame() {
 	return (
 		<div className="h-screen">
 			<div id="game-cover">
-				<div className="absolute text-lg translate-x-8 translate-y-6">
+				<div className="absolute text-lg translate-x-8 translate-y-6 pt-10">
 					<Link to="../catalog">
 						<DoubleArrowLeftIcon className="size-5 delay-150 hover:-translate-y-1
-						 transition hover:scale-105 duration-300"/>
+						 transition hover:scale-105 duration-300 z-20"/>
 					</Link>
 				</div>
 				<img src={gameImage} alt="game-cover" className="" />
