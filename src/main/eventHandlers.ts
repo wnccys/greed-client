@@ -98,8 +98,7 @@ export async function handleNewTorrentSource(
 
 	const result = await fetch(sourceLink);
 	const stringifiedBody = JSON.stringify(await result.json());
-	const response = addGameSource(stringifiedBody);
-	handleMerge(stringifiedBody);
+	const response = handleMerge(stringifiedBody);
 
 	return response;
 }
@@ -150,18 +149,33 @@ async function handleGetCurrentDownloadPath() {
 }
 
 import createWorker from './worker?nodeWorker'
+import type { JSONGame } from "./worker";
 function handleMerge(sourceData: string) {
 	const jsonifiedLinks = JSON.parse(sourceData).downloads;
+	const sourceData1 = JSON.parse(sourceData);
 	const linksLength = jsonifiedLinks.length;
 	const workers: Worker[] = [];
+	const newDownloads: JSONGame[] = [];
+	let response: Promise<string[]> = Promise.resolve(["Error", "cuzin"]);
+	let alreadyDone = 0;
 
 	const workerLimit = 12;
 	for (let i = 0; i < workerLimit; i++) {
 		const worker = createWorker({});
 
 		worker.on("message", (result) => {
-			console.log(`Message from Worker-${i}:`, result);
+			// console.log(`Message from Worker-${i}:`, result);
 			console.log(`Performance on Worker-${i}: `, performance.now());
+			newDownloads.push(result)
+			alreadyDone++
+			if (alreadyDone === workerLimit) {
+				sourceData1.downloads = newDownloads;
+				console.log("New Downloads: ", newDownloads.slice(0, 3));
+				response = addGameSource(sourceData);
+				return response;
+			}
+
+			return ["Error", "Could not define limit."];
 		});
 
 		worker.on("error", (err) => {
@@ -179,4 +193,6 @@ function handleMerge(sourceData: string) {
 		worker.postMessage(jsonifiedLinks.slice(initialSlice, finalSlice));
 		workers.push(worker);
 	}
+
+	return response;
 }
