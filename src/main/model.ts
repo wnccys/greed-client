@@ -60,13 +60,15 @@ export async function addGameSource(receivedSource: string) {
 	}
 
 	const downloadsId = newSource.id;
+	console.log("");
 	try {
 		for (const downloads of parsedSource.downloads) {
+			console.log("SteamID: ", downloads.steamId);
 			newDownloads.push({
 				sourceId: downloadsId,
 				title: downloads.title,
-				normalizedTitle: normalizeTitle(downloads.title),
 				uris: downloads.uris,
+				steamId: downloads.steamId,
 				uploadDate: downloads.uploadDate,
 				fileSize: downloads.fileSize,
 			});
@@ -100,7 +102,7 @@ export async function removeSourceFromDB(sourceName: string) {
 			sourceId: toBeDeleted.id,
 		});
 		await source.remove(toBeDeleted);
-		
+
 		return ["Success", "Source Removed From Database."];
 	} catch (e) {
 		return ["Error", "Source not found in Database."];
@@ -135,24 +137,6 @@ export async function getDBCurrentPath () {
 	}).then((record) => record?.downloadPath || "No Path");
 }
 
-function normalizeTitle(title: string) {
-    // Convert to lowercase
-    let normalized = title.toLowerCase();
-
-    // Remove content within parentheses and brackets
-    normalized = normalized.replace(/\(.*?\)/g, '').replace(/\[.*?\]/g, '');
-
-    // Replace dots and hyphens with spaces
-    normalized = normalized.replace(/[.\-]/g, ' ');
-
-    // Remove '+' signs and other special characters
-    normalized = normalized.replace(/[+]/g, ' ');
-
-    // Remove any remaining special characters
-    normalized = normalized.replace(/[^a-z0-9\s]/g, '');
-
-    // Replace multiple spaces with a single space and trim
-    normalized = normalized.replace(/\s+/g, ' ').trim();
-
-    return normalized;
+export async function addSteamId(games: [title: string, steamId: number][]) {
+	console.log("received games: ", games.slice(0, 5));
 }

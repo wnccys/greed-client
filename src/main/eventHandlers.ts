@@ -8,8 +8,8 @@ import {
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
-import { addGameSource, changeDBDefaultPath, getDBCurrentPath, getSourcesList, removeSourceFromDB } from "./model";
-import steamGames from "../steam-games/steam-games.json";
+import { addGameSource, addSteamId, changeDBDefaultPath, getDBCurrentPath, getSourcesList, removeSourceFromDB } from "./model";
+import { isMainThread, type Worker, parentPort } from 'node:worker_threads';
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
@@ -98,8 +98,7 @@ export async function handleNewTorrentSource(
 
 	const result = await fetch(sourceLink);
 	const stringifiedBody = JSON.stringify(await result.json());
-	handleMerge(stringifiedBody);
-	const response = addGameSource(stringifiedBody);
+	const response = handleMerge(stringifiedBody);
 
 	return response;
 }
@@ -149,12 +148,18 @@ async function handleGetCurrentDownloadPath() {
 	return await getDBCurrentPath();
 }
 
-interface steamGame {
-	id: number;
-	name: string;
-	clientIcon: string;
-}
+import createWorker from './worker?nodeWorker'
+import type { JSONGame } from "./worker";
+function handleMerge(sourceData: string) {
+	const jsonifiedLinks = JSON.parse(sourceData).downloads;
+	const sourceData1 = JSON.parse(sourceData);
+	const linksLength = jsonifiedLinks.length;
+	const workers: Worker[] = [];
+	let newDownloads: JSONGame[] = [];
+	const response: Promise<string[]> = Promise.resolve(["Success", "Source Successfully Added."]);
+	let alreadyDone = 0;
 
+<<<<<<< HEAD
 async function handleMerge(sourceData: string) {
 	try {
 	const jsonifiedSource = JSON.parse(sourceData).downloads;
@@ -175,4 +180,41 @@ async function handleMerge(sourceData: string) {
 	// 		} 
 	// 	}
 	// });
+=======
+	const workerLimit = 12;
+	for (let i = 0; i < workerLimit; i++) {
+		const worker = createWorker({});
+
+		worker.on("message", (result: JSONGame[]) => {
+			// console.log(`Message from Worker-${i}:`, result);
+			console.log(`Performance on Worker-${i}: `, performance.now());
+			// REVIEW sets newDownloads to get every row of [][] correctly;
+			newDownloads = newDownloads.concat(result);
+			alreadyDone++;
+			if (alreadyDone === workerLimit) {
+				sourceData1.downloads = newDownloads;
+				console.log("New Downloads: ", newDownloads.slice(0, 2));
+				console.log("Total: ", newDownloads.length);
+				addGameSource(JSON.stringify(sourceData1));
+			}
+		});
+
+		worker.on("error", (err) => {
+			console.error(`Worker-${i} Error: `, err);
+		});
+
+		worker.on("exit", (code) => {
+			console.log(`Worker-${i} exited with code: ` , code);
+		});
+
+		const initialSlice = (Math.round((i/workerLimit)*linksLength));
+		const finalSlice = (Math.round(((i+1)/workerLimit)*linksLength) -1);
+
+		console.log(`from: ${initialSlice}, to: ${finalSlice}`);
+		worker.postMessage(jsonifiedLinks.slice(initialSlice, finalSlice));
+		workers.push(worker);
+	}
+
+	return response;
+>>>>>>> 6bae51eeb602b4ac58be8120326e749655a8728a
 }
