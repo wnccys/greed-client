@@ -9,6 +9,27 @@ export function SelectedGame() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [gameImage, setGameImage] = useState<string>();
 	const [gameIcon, setGameIcon] = useState<string>();
+	const steamInfoBaseURL = `https://store.steampowered.com/api/appdetails?appids=${gameId}`;
+
+	interface SteamDetailsT {
+		name: string;
+		detailedDescription: string;
+		pc_requirements: {
+			minimum: string;
+			recommended: string;
+		};
+		metacritic: {
+			score: number,
+			url: string,
+		};
+		developers: string[];
+		screenshots: {
+			path_thumbnail: string;
+		}[];
+	}
+
+	const [steamDetails, setSteamDetails] = useState<SteamDetailsT>();
+
 	useEffect(() => {
 		try {
 			const reader = new FileReader();
@@ -42,9 +63,42 @@ export function SelectedGame() {
 		} catch (e) {}
 	}, [gameId]);
 
-	console.log("game image: ", gameImage);
+	useEffect(() => {
+		fetch(steamInfoBaseURL)
+		.then((response) => response.json())
+		.then((steamJSON) => {
+			const {
+				name,
+				detailed_description,
+				pc_requirements,
+				metacritic,
+				developers,
+				screenshots,
+			} = steamJSON[gameId].data;
 
-	const selectedGameInfos = window.api.getSelectedGameInfo(gameId);
+			setSteamDetails({
+				name: name || "",
+				detailedDescription: detailed_description || "",
+				pc_requirements: {
+					minimum: pc_requirements?.minimum || "",
+					recommended: pc_requirements?.recommended || "",
+				},
+				metacritic: {
+					score: metacritic.score || 0,
+					url: metacritic.url || "",
+				},
+				developers: developers || [],
+				screenshots:
+					// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+					screenshots?.map((s: any) => ({
+						path_thumbnail: s.path_thumbnail || "",
+					})) || [],
+			});
+		});
+	}, [gameId, steamInfoBaseURL])
+
+	console.log("steam Details: ", steamDetails);
+	// const selectedGameInfos = window.api.getSelectedGameInfo(gameId);
 
 	return (
 		<div className="h-screen">
@@ -53,7 +107,7 @@ export function SelectedGame() {
 					<Link to="../catalog">
 						<DoubleArrowLeftIcon
 							className="size-5 delay-150 hover:-translate-y-1
-					 transition hover:scale-105 duration-300 z-20"
+				 transition hover:scale-105 duration-300 z-20"
 						/>
 					</Link>
 				</div>
@@ -77,7 +131,7 @@ export function SelectedGame() {
 			<div
 				id="play-menu"
 				className="flex justify-center transition delay-150
-			drop-shadow-lg shadow-black duration-300"
+		drop-shadow-lg shadow-black duration-300"
 			>
 				<div
 					className="absolute transform -translate-y-1/2 bg-[#242424] 
@@ -92,7 +146,7 @@ export function SelectedGame() {
 					<div className="h-full self-center p-0">
 						<Button
 							className="p-6 bg-white text-zinc-900 hover:text-white w-full 
-					h-full ps-10 pe-10 text-lg transition delay-150 duration-300"
+				h-full ps-10 pe-10 text-lg transition delay-150 duration-300"
 							onClick={() => window.tests.startTorrentDownloadTest()}
 						>
 							Run
