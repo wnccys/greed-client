@@ -1,8 +1,19 @@
 import { Link, useLoaderData } from "react-router-dom";
-import { DoubleArrowLeftIcon } from "@radix-ui/react-icons";
+import { Cross2Icon, DoubleArrowLeftIcon } from "@radix-ui/react-icons";
 import { Button } from "@renderer/ShadComponents/ui/button";
 import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
 import { useEffect, useState } from "react";
+import { DownloadIcon } from "@radix-ui/react-icons";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogFooter,
+	DialogTitle,
+	DialogTrigger,
+} from "@renderer/ShadComponents/ui/dialog";
+import { Label } from "@renderer/ShadComponents/ui/label";
 
 export function SelectedGame() {
 	const gameId = useLoaderData() as number;
@@ -10,7 +21,8 @@ export function SelectedGame() {
 	const [gameImage, setGameImage] = useState<string>();
 	const [gameIcon, setGameIcon] = useState<string>();
 	const steamInfoBaseURL = `https://store.steampowered.com/api/appdetails?appids=${gameId}`;
-	const [gameInfos, setGamesInfos] = useState<GlobalDownloads[]>();
+	const [gameInfos, setGamesInfos] = useState<GlobalDownloads[]>([]);
+	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
 	const [steamDetails, setSteamDetails] = useState<SteamDetailsT>();
 	useEffect(() => {
@@ -118,11 +130,11 @@ export function SelectedGame() {
 			<div
 				id="play-menu"
 				className="flex justify-center transition delay-150
-			drop-shadow-lg shadow-black duration-300"
+				drop-shadow-lg shadow-black duration-300"
 			>
 				<div
 					className="absolute transform -translate-y-1/2 bg-[#242424] 
-				rounded-xl text-white w-[25em] flex justify-center"
+					rounded-xl text-white w-[25em] flex justify-center"
 				>
 					<div className="p-3 w-full">
 						<h1>{steamDetails?.name}</h1>
@@ -136,10 +148,90 @@ export function SelectedGame() {
 						h-full ps-10 pe-10 text-lg transition delay-150 duration-300"
 							onClick={() => window.tests.startTorrentDownloadTest()}
 						>
-							Run
+							Play
 						</Button>
 					</div>
 				</div>
+				<Dialog open={isDialogOpen}>
+					<DialogTrigger asChild>
+					<Button
+						className="absolute -translate-y-1/2 translate-x-[22.5rem] bg-[#242424] w-fit rounded-md
+						text-white cursor-pointer p-6 hover:bg-zinc-800 transition-all duration-200 flex items-center"
+						onClick={() => setIsDialogOpen(true)}
+					>
+						<DownloadIcon className="size-6 me-2" />
+						<p className="text-sm">Download Options</p>
+					</Button>
+					</DialogTrigger>
+					<DialogContent className="sm:max-w-[525px] bg-zinc-950">
+						{(gameInfos?.length > 0 && <>
+						<DialogHeader>
+							<DialogTitle>
+								Available Downloads
+							</DialogTitle>
+							<DialogDescription>
+								Showing available Sources for {steamDetails?.name}
+							</DialogDescription>
+							<div
+								className="absolute right-4 top-2 rounded-sm opacity-70 
+								ring-offset-background hover:bg-zinc-800 
+								hover:-translate-y-[2px] hover:duration-300 
+								transition-all hover:opacity-100 focus:outline-none focus:ring-2 
+								focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
+								data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+							>
+								<Cross2Icon
+									className="size-4 cursor-pointer"
+									onClick={() => setIsDialogOpen(false)}
+								/>
+							</div>
+						</DialogHeader>
+						<div className="grid gap-4 py-4">
+							<div className="grid grid-cols-4 items-center gap-4">
+								<Label htmlFor="username" className="text-right">
+									Source Link
+								</Label>
+							</div>
+						</div>
+
+						<DialogFooter>
+							<Button
+								type="submit"
+								// onClick={addSourceToDB}
+								className="hover:bg-zinc-800 hover:-translate-y-1
+								hover:duration-500 transition-all"
+							>
+								Download	
+							</Button>
+						</DialogFooter>
+						</>) || 
+						(
+						<>
+						<DialogHeader>
+							<div
+								className="absolute right-4 top-2 rounded-sm opacity-70 
+								ring-offset-background hover:bg-zinc-800 p-1
+								hover:-translate-y-[2px] hover:duration-300 
+								transition-all hover:opacity-100 focus:outline-none focus:ring-2 
+								focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
+								data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+							>
+								<Cross2Icon
+									className="size-4 cursor-pointer"
+									onClick={() => setIsDialogOpen(false)}
+								/>
+							</div>
+						</DialogHeader>
+						<div className="w-full">
+							<Label htmlFor="username" className="text-right">
+								{`No Downloads available for ${steamDetails?.name}`}
+							</Label>
+						</div>
+						</>
+						)}
+					</DialogContent>
+				</Dialog>
+
 				<div className="ps-8 mt-[4rem] flex gap-12 bg-zinc-900 pb-10">
 					<div className="max-w-[70%]">
 						<div
