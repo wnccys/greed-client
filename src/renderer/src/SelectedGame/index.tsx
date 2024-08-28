@@ -130,7 +130,7 @@ export function SelectedGame() {
 				className="flex justify-center transition delay-150 duration-300"
 			>
 				<div
-					className="absolute transform -translate-y-1/2 bg-[#171717] 
+					className="absolute transform -translate-y-1/2 bg-[#1f1f1f] 
 					rounded-xl text-white w-[25em] flex justify-center shadow-md shadow-black"
 				>
 					<div className="p-3 w-full">
@@ -152,8 +152,8 @@ export function SelectedGame() {
 				<Dialog open={isDialogOpen}>
 					<DialogTrigger asChild>
 					<Button
-						className="absolute -translate-y-1/2 translate-x-[22.5rem] bg-[#171717] w-fit rounded-md
-						 shadow-black shadow-md text-white cursor-pointer p-6 hover:bg-[#1f1f1f] transition-all 
+						className="absolute -translate-y-1/2 translate-x-[22.5rem] bg-[#1f1f1f] w-fit rounded-md
+						 shadow-black shadow-md text-white cursor-pointer p-6 hover:shadow-lg hover:shadow-black transition-all 
 						 duration-200 flex items-center"
 						onClick={() => setIsDialogOpen(true)}
 					>
