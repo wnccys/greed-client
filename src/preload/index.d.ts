@@ -2,6 +2,8 @@ import type ElectronAPI from '@electron-toolkit/preload'
 import type { Downloads } from "@main/entity/Downloads";
 
 declare global {
+  type GlobalDownloads = Downloads;
+
   interface Window {
     electron: ElectronAPI
     api: Api 
