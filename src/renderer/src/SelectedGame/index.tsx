@@ -23,7 +23,7 @@ export function SelectedGame() {
 	const steamInfoBaseURL = `https://store.steampowered.com/api/appdetails?appids=${gameId}`;
 	const [gameInfos, setGamesInfos] = useState<GlobalDownloads[]>([]);
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-	const [selectedDownload, setSelectedDownload] = useState<number>(0);
+	const [selectedDownload, setSelectedDownload] = useState<string[]>([]);
 	const [steamDetails, setSteamDetails] = useState<SteamDetailsT>();
 
 	useEffect(() => {
@@ -96,6 +96,11 @@ export function SelectedGame() {
 			setGamesInfos(games);
 		});
 	}, [gameId]);
+
+	function startGameDownload() {
+		window.api.startGameDownload(selectedDownload);	
+		console.log(selectedDownload);
+	}
 
 	return (
 		<div className="h-screen">
@@ -185,21 +190,16 @@ export function SelectedGame() {
 								</DialogHeader>
 								<div className="">
 									<div className="flex flex-col gap-3 text-sm">
-										{gameInfos.map((downloadOption, index) => {
+										{gameInfos.map((downloadOption) => {
 											return (
 												// biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
 												<div
-													// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-													key={index}
-													data-select={
-														index === selectedDownload ? "true" : "false"
-													}
+													key={downloadOption.uris[0]}
 													className={`p-3 cursor-pointer hover:bg-white hover:text-black
 													transition-all duration-300 
-													${index === selectedDownload && "bg-white text-black"}`}
+													${downloadOption.uris === selectedDownload && "bg-white text-black"}`}
 													onClick={() => {
-														setSelectedDownload(index);
-														console.log("after press: ", selectedDownload);
+														setSelectedDownload(downloadOption.uris);
 													}}
 												>
 													{downloadOption.title}
@@ -217,6 +217,10 @@ export function SelectedGame() {
 										// onClick={addSourceToDB}
 										className="hover:bg-zinc-800 hover:-translate-y-1
 						hover:duration-500 transition-all"
+										onClick={() => {
+											setIsDialogOpen(false);
+											startGameDownload();
+										}}
 									>
 										Download
 									</Button>
