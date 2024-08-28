@@ -240,7 +240,7 @@ export function SelectedGame() {
 							}}
 						/>
 					</div>
-					<div className="bg-zinc-800 p-5 rounded-lg me-[1.5rem] h-fit">
+					<div className="bg-[#1f1f1f] p-5 rounded-lg me-[1.5rem] h-fit">
 						<p className="text-lg font-bold">Requirements</p>
 						<br />
 						<div
