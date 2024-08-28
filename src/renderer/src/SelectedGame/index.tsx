@@ -127,12 +127,11 @@ export function SelectedGame() {
 
 			<div
 				id="play-menu"
-				className="flex justify-center transition delay-150
-				drop-shadow-lg shadow-black duration-300"
+				className="flex justify-center transition delay-150 duration-300"
 			>
 				<div
-					className="absolute transform -translate-y-1/2 bg-[#1f1f1f] 
-					rounded-xl text-white w-[25em] flex justify-center"
+					className="absolute transform -translate-y-1/2 bg-[#171717] 
+					rounded-xl text-white w-[25em] flex justify-center shadow-md shadow-black"
 				>
 					<div className="p-3 w-full">
 						<h1>{gameName}</h1>
@@ -143,7 +142,7 @@ export function SelectedGame() {
 					<div>
 						<Button
 							className="p-6 bg-white text-zinc-900 hover:text-white w-full 
-							h-full ps-10 pe-10 text-lg transition delay-150 duration-300"
+							h-full ps-10 pe-10 text-lg transition delay-75 duration-300 hover:bg-zinc-950"
 							onClick={() => window.tests.startTorrentDownloadTest()}
 						>
 							Play
