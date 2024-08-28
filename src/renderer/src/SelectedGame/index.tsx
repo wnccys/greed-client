@@ -80,8 +80,12 @@ export function SelectedGame() {
 		} catch (e) {}
 	}, [gameId]);
 
-	window.api.getSelectedGameInfo(gameId)
-		.then((games) => console.log("selected game infos: ", games));
+	useEffect(() => {
+		window.api.getSelectedGameInfo(gameId)
+			.then((games: GlobalDownloads[]) => {
+			setGamesInfos(games);
+		});
+	}, [gameId]);
 
 	return (
 		<div className="h-screen">
