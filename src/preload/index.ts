@@ -17,6 +17,8 @@ const api = {
 	pauseTorrent: () => ipcRenderer.invoke("pauseTorrent"),
 	resumeTorrent: () => ipcRenderer.invoke("resumeTorrent"),
 	removeTorrent: () => ipcRenderer.invoke("removeTorrent"),
+	startGameDownload: (uris: string[]) =>
+		ipcRenderer.invoke("startGameDownload", uris),
 	addSourceToDB: (sourceLink: string) =>
 		ipcRenderer.invoke("addSourceToDB", sourceLink),
 	getSelectedGameInfo: (gameId: number) =>
