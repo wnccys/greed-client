@@ -1,8 +1,10 @@
 import WebTorrent, { type Torrent } from "webtorrent";
 import { ipcMain } from "electron";
 
+
 const client = new WebTorrent();
 let currentTorrentInterval: ReturnType<typeof setInterval>;
+
 
 export async function initTorrentDownload(
 	magnetURI: string,
@@ -57,7 +59,7 @@ function setCurrentTorrent(magnetURI: string, downloadFolder: string) {
 	return currentTorrent;
 }
 
-function registerTorrentEvents(torrent: Torrent) {
+export function registerTorrentEvents(torrent: Torrent) {
 	return setInterval(() => {
 		if (torrent.progress < 1) {
 			console.log(`Torrent.progress: ${torrent.progress}`);
@@ -74,3 +76,6 @@ function registerTorrentEvents(torrent: Torrent) {
 		}
 	}, 1000);
 }
+
+
+  

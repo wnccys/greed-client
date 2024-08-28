@@ -11,6 +11,7 @@ import { Catalog } from './Catalog';
 import { ErrorElement } from './ErrorElement';
 import { Settings } from './Settings'; 
 import { Downloads } from './Downloads';
+import { Library } from './Library'
 
  const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ import { Downloads } from './Downloads';
       {
         path: "downloads",
         element: <Downloads />,
+      },
+      {
+        path: "library",
+        element: <Library />
       }
     ],
     errorElement: <ErrorElement />

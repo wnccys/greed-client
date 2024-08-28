@@ -159,28 +159,6 @@ function handleMerge(sourceData: string) {
 	const response: Promise<string[]> = Promise.resolve(["Success", "Source Successfully Added."]);
 	let alreadyDone = 0;
 
-<<<<<<< HEAD
-async function handleMerge(sourceData: string) {
-	try {
-	const jsonifiedSource = JSON.parse(sourceData).downloads;
-	const gameData = (steamGames as steamGame[]);
-
-		
-	} catch (error) {
-		console.log("error handleMerge", error)
-	}
-	
-	// let count = 0;
-	// gameData.map((steamGame) => {
-	// 	for (const jsonGame of jsonifiedSource) {
-	// 		if (normalizeTitle(jsonGame.title) === normalizeTitle(steamGame.name)) {
-	// 			console.log(`match!!! ${steamGame.name}, ${jsonGame.title}`);
-	// 			count++
-	// 			console.log("count: ", count);
-	// 		} 
-	// 	}
-	// });
-=======
 	const workerLimit = 12;
 	for (let i = 0; i < workerLimit; i++) {
 		const worker = createWorker({});
@@ -216,5 +194,4 @@ async function handleMerge(sourceData: string) {
 	}
 
 	return response;
->>>>>>> 6bae51eeb602b4ac58be8120326e749655a8728a
 }
