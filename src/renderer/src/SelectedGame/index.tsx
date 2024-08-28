@@ -196,14 +196,13 @@ export function SelectedGame() {
 												<div
 													key={downloadOption.uris[0]}
 													className={`p-3 cursor-pointer hover:bg-white hover:text-black
-													transition-all duration-300 
+													transition-all duration-300
 													${downloadOption.uris === selectedDownload && "bg-white text-black"}`}
 													onClick={() => {
 														setSelectedDownload(downloadOption.uris);
 													}}
 												>
-													{downloadOption.title}
-													{downloadOption.uploadDate}
+													{downloadOption.title}{" - "}
 													{downloadOption.fileSize}
 												</div>
 											);
