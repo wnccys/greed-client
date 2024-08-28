@@ -11,7 +11,6 @@ declare global {
   }
 
   interface SteamDetailsT {
-    name: string;
     detailedDescription: string;
     pc_requirements: {
       minimum: string;
