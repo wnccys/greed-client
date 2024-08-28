@@ -152,6 +152,7 @@ async function handleGetCurrentDownloadPath() {
 
 import createWorker from "./worker?nodeWorker";
 import type { JSONGame } from "./worker";
+import type { Downloads } from "./entity/Downloads";
 
 interface Source {
 	name: string;
@@ -205,7 +206,12 @@ function handleMerge(Source: Source) {
 	}
 }
 
-async function handleGetCurrentGameInfo(_event: IpcMainInvokeEvent, gameId: number) {
+async function handleGetCurrentGameInfo(
+	_event: IpcMainInvokeEvent,
+	gameId: number,
+): Promise<Downloads[]> {
 	const infos = await getDBGameInfos(gameId);
-	console.log("received infos: ", infos);
+
+	console.log("infos : ", infos);
+	return infos;
 }
