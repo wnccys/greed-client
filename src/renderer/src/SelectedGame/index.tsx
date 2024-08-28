@@ -153,6 +153,15 @@ export function SelectedGame() {
 						</Button>
 					</div>
 				</div>
+				<div className="ms-10 mt-[4rem] flex gap-12">
+					<div className="w-4/5">
+						{(steamDetails?.detailedDescription)}
+					</div>
+					<div>
+						Requirements<br/>
+						{steamDetails?.pc_requirements.minimum}
+					</div>
+				</div>
 			</div>
 		</div>
 	);
