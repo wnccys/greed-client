@@ -154,7 +154,8 @@ export function SelectedGame() {
 					<DialogTrigger asChild>
 					<Button
 						className="absolute -translate-y-1/2 translate-x-[22.5rem] bg-[#171717] w-fit rounded-md
-						text-white cursor-pointer p-6 hover:bg-[#1f1f1f] transition-all duration-200 flex items-center"
+						 shadow-black shadow-md text-white cursor-pointer p-6 hover:bg-[#1f1f1f] transition-all 
+						 duration-200 flex items-center"
 						onClick={() => setIsDialogOpen(true)}
 					>
 						<DownloadIcon className="size-6 me-2" />
@@ -240,7 +241,9 @@ export function SelectedGame() {
 							}}
 						/>
 					</div>
-					<div className="bg-[#1f1f1f] p-5 rounded-lg me-[1.5rem] h-fit">
+					<div className="bg-[#1f1f1f] p-5 rounded-lg me-[1.5rem] h-fit shadow-black shadow-md 
+						hover:shadow-lg hover:shadow-black transition-all duration-200"
+					>
 						<p className="text-lg font-bold">Requirements</p>
 						<br />
 						<div
