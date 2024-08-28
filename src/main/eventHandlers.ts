@@ -24,6 +24,7 @@ ipcMain.handle("sendTorrentPath", handleTorrentPath);
 ipcMain.handle("addSourceToDB", handleNewTorrentSource);
 ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("changeDefaultPath", handleChangeDefaultPath);
+ipcMain.handle("startGameDownload", handleStartGameDownload);
 ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 ipcMain.handle("getSelectedGameInfo", handleGetCurrentGameInfo);
 ipcMain.handle("getCurrentDownloadPath", handleGetCurrentDownloadPath);
@@ -49,6 +50,10 @@ async function handleRemoveSourceFromDB(
 }
 
 // ----Torrent----
+function handleStartGameDownload(_event: IpcMainInvokeEvent, uris: string[]) {
+	console.log("received in back-end: ", uris);
+}
+
 export function handleUpdateTorrentProgress(
 	torrentProgress: IpcMainEvent,
 	game: string,
@@ -210,8 +215,5 @@ async function handleGetCurrentGameInfo(
 	_event: IpcMainInvokeEvent,
 	gameId: number,
 ): Promise<Downloads[]> {
-	const infos = await getDBGameInfos(gameId);
-
-	console.log("infos : ", infos);
-	return infos;
+	return await getDBGameInfos(gameId);
 }
