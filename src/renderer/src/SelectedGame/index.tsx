@@ -10,23 +10,7 @@ export function SelectedGame() {
 	const [gameImage, setGameImage] = useState<string>();
 	const [gameIcon, setGameIcon] = useState<string>();
 	const steamInfoBaseURL = `https://store.steampowered.com/api/appdetails?appids=${gameId}`;
-
-	interface SteamDetailsT {
-		name: string;
-		detailedDescription: string;
-		pc_requirements: {
-			minimum: string;
-			recommended: string;
-		};
-		metacritic: {
-			score: number;
-			url: string;
-		};
-		developers: string[];
-		screenshots: {
-			path_thumbnail: string;
-		}[];
-	}
+	const [gameInfos, setGamesInfos] = useState<GlobalDownloads[]>();
 
 	const [steamDetails, setSteamDetails] = useState<SteamDetailsT>();
 	useEffect(() => {
@@ -96,8 +80,8 @@ export function SelectedGame() {
 		} catch (e) {}
 	}, [gameId]);
 
-	console.log("steam Details: ", steamDetails);
-	// const selectedGameInfos = window.api.getSelectedGameInfo(gameId);
+	window.api.getSelectedGameInfo(gameId)
+		.then((games) => console.log("selected game infos: ", games));
 
 	return (
 		<div className="h-screen">
@@ -106,7 +90,7 @@ export function SelectedGame() {
 					<Link to="../catalog">
 						<DoubleArrowLeftIcon
 							className="size-5 delay-150 hover:-translate-y-1
-						transition hover:scale-105 duration-300 z-20"
+					transition hover:scale-105 duration-300 z-20"
 						/>
 					</Link>
 				</div>
@@ -130,11 +114,11 @@ export function SelectedGame() {
 			<div
 				id="play-menu"
 				className="flex justify-center transition delay-150
-				drop-shadow-lg shadow-black duration-300"
+			drop-shadow-lg shadow-black duration-300"
 			>
 				<div
 					className="absolute transform -translate-y-1/2 bg-[#242424] 
-					rounded-xl text-white w-[25em] flex justify-center"
+				rounded-xl text-white w-[25em] flex justify-center"
 				>
 					<div className="p-3 w-full">
 						<h1>{steamDetails?.name}</h1>
