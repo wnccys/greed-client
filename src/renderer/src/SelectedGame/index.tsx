@@ -230,8 +230,8 @@ export function SelectedGame() {
 					</DialogContent>
 				</Dialog>
 
-				<div className="ps-8 mt-[4rem] flex gap-12 bg-zinc-900 pb-10">
-					<div className="max-w-[70%]">
+				<div className="ps-8 mt-[4rem] flex gap-12 bg-[#171717] pb-10">
+					<div className="max-w-[65%]">
 						<div
 							// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 							dangerouslySetInnerHTML={{
