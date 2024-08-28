@@ -24,8 +24,8 @@ export function SelectedGame() {
 	const [gameInfos, setGamesInfos] = useState<GlobalDownloads[]>([]);
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 	const [selectedDownload, setSelectedDownload] = useState<number>(0);
-
 	const [steamDetails, setSteamDetails] = useState<SteamDetailsT>();
+
 	useEffect(() => {
 		fetch(steamInfoBaseURL)
 			.then((response) => response.json())
@@ -92,8 +92,7 @@ export function SelectedGame() {
 	}, [gameId]);
 
 	useEffect(() => {
-		window.api.getSelectedGameInfo(gameId)
-			.then((games: GlobalDownloads[]) => {
+		window.api.getSelectedGameInfo(gameId).then((games: GlobalDownloads[]) => {
 			setGamesInfos(games);
 		});
 	}, [gameId]);
@@ -105,7 +104,7 @@ export function SelectedGame() {
 					<Link to="../catalog">
 						<DoubleArrowLeftIcon
 							className="size-5 delay-150 hover:-translate-y-1
-							transition hover:scale-105 duration-300 z-20"
+					transition hover:scale-105 duration-300 z-20"
 						/>
 					</Link>
 				</div>
@@ -132,7 +131,7 @@ export function SelectedGame() {
 			>
 				<div
 					className="absolute transform -translate-y-1/2 bg-[#1f1f1f] 
-					rounded-xl text-white w-[25em] flex justify-center shadow-md shadow-black"
+			rounded-xl text-white w-[25em] flex justify-center shadow-md shadow-black"
 				>
 					<div className="p-3 w-full">
 						<h1>{gameName}</h1>
@@ -143,7 +142,7 @@ export function SelectedGame() {
 					<div>
 						<Button
 							className="p-6 bg-white text-zinc-900 hover:text-white w-full 
-							h-full ps-10 pe-10 text-lg transition delay-75 duration-300 hover:bg-zinc-950"
+					h-full ps-10 pe-10 text-lg transition delay-75 duration-300 hover:bg-zinc-950"
 							onClick={() => window.tests.startTorrentDownloadTest()}
 						>
 							Play
@@ -152,81 +151,100 @@ export function SelectedGame() {
 				</div>
 				<Dialog open={isDialogOpen}>
 					<DialogTrigger asChild>
-					<Button
-						className="absolute -translate-y-1/2 translate-x-[22.5rem] bg-[#1f1f1f] w-fit rounded-md
-						 shadow-black shadow-md text-white cursor-pointer p-6 hover:shadow-lg 
-						 hover:shadow-black transition-all duration-200 flex items-center hover:bg-opacity-100"
-						onClick={() => setIsDialogOpen(true)}
-					>
-						<DownloadIcon className="size-6 me-2" />
-						<p className="text-sm">Download Options</p>
-					</Button>
+						<Button
+							className="absolute -translate-y-1/2 translate-x-[22.5rem] bg-[#1f1f1f] w-fit rounded-md
+				 shadow-black shadow-md text-white cursor-pointer p-6 hover:shadow-lg 
+				 hover:shadow-black transition-all duration-200 flex items-center hover:bg-opacity-100"
+							onClick={() => setIsDialogOpen(true)}
+						>
+							<DownloadIcon className="size-6 me-2" />
+							<p className="text-sm">Download Options</p>
+						</Button>
 					</DialogTrigger>
 					<DialogContent className="sm:max-w-[525px] bg-zinc-950">
-						{(gameInfos?.length > 0 && <>
-						<DialogHeader>
-							<DialogTitle>
-								Available Downloads
-							</DialogTitle>
-							<DialogDescription>
-								Showing available Sources for {gameName}
-							</DialogDescription>
-							<div
-								className="absolute right-4 top-2 rounded-sm opacity-70 
-								ring-offset-background hover:bg-zinc-800 
-								hover:-translate-y-[2px] hover:duration-300 
-								transition-all hover:opacity-100 focus:outline-none focus:ring-2 
-								focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
-								data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
-							>
-								<Cross2Icon
-									className="size-4 cursor-pointer"
-									onClick={() => setIsDialogOpen(false)}
-								/>
-							</div>
-						</DialogHeader>
-						<div className="grid gap-4 py-4">
-							<div className="grid grid-cols-4 items-center gap-4">
-								<Label htmlFor="username" className="text-right">
-									Source Link
-								</Label>
-							</div>
-						</div>
-
-						<DialogFooter>
-							<Button
-								type="submit"
-								// onClick={addSourceToDB}
-								className="hover:bg-zinc-800 hover:-translate-y-1
-								hover:duration-500 transition-all"
-							>
-								Download	
-							</Button>
-						</DialogFooter>
-						</>) || 
-						(
-						<>
-							<DialogHeader>
-								<div
-									className="absolute right-4 top-2 rounded-sm opacity-70 
-									ring-offset-background hover:bg-zinc-800 p-1
-									hover:-translate-y-[2px] hover:duration-300 
-									transition-all hover:opacity-100 focus:outline-none focus:ring-2 
-									focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
-									data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
-								>
-									<Cross2Icon
-										className="size-4 cursor-pointer"
-										onClick={() => setIsDialogOpen(false)}
-									/>
+						{(gameInfos?.length > 0 && (
+							<>
+								<DialogHeader>
+									<DialogTitle>Available Downloads</DialogTitle>
+									<DialogDescription>
+										Showing available Downloads for {gameName}
+									</DialogDescription>
+									<div
+										className="absolute right-4 top-2 rounded-sm opacity-70 
+						ring-offset-background hover:bg-zinc-800 
+						hover:-translate-y-[2px] hover:duration-300 
+						transition-all hover:opacity-100 focus:outline-none focus:ring-2 
+						focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
+						data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+									>
+										<Cross2Icon
+											className="size-4 cursor-pointer"
+											onClick={() => setIsDialogOpen(false)}
+										/>
+									</div>
+								</DialogHeader>
+								<div className="">
+									<div className="flex flex-col gap-3 text-sm">
+										{gameInfos.map((downloadOption, index) => {
+											return (
+												// biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+												<div
+													// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+													key={index}
+													data-select={
+														index === selectedDownload ? "true" : "false"
+													}
+													className={`p-3 cursor-pointer hover:bg-white hover:text-black
+													transition-all duration-300 
+													${index === selectedDownload && "bg-white text-black"}`}
+													onClick={() => {
+														setSelectedDownload(index);
+														console.log("after press: ", selectedDownload);
+													}}
+												>
+													{downloadOption.title}
+													{downloadOption.uploadDate}
+													{downloadOption.fileSize}
+												</div>
+											);
+										})}
+									</div>
 								</div>
-							</DialogHeader>
-							<div className="w-full">
-								<Label htmlFor="username" className="text-right">
-									<strong>{`No Downloads available for ${gameName}`}</strong>
-								</Label>
-							</div>
-						</>
+
+								<DialogFooter>
+									<Button
+										type="submit"
+										// onClick={addSourceToDB}
+										className="hover:bg-zinc-800 hover:-translate-y-1
+						hover:duration-500 transition-all"
+									>
+										Download
+									</Button>
+								</DialogFooter>
+							</>
+						)) || (
+							<>
+								<DialogHeader>
+									<div
+										className="absolute right-4 top-2 rounded-sm opacity-70 
+							ring-offset-background hover:bg-zinc-800 p-1
+							hover:-translate-y-[2px] hover:duration-300 
+							transition-all hover:opacity-100 focus:outline-none focus:ring-2 
+							focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
+							data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+									>
+										<Cross2Icon
+											className="size-4 cursor-pointer"
+											onClick={() => setIsDialogOpen(false)}
+										/>
+									</div>
+								</DialogHeader>
+								<div className="w-full">
+									<Label htmlFor="username" className="text-right">
+										<strong>{`No Downloads available for ${gameName}`}</strong>
+									</Label>
+								</div>
+							</>
 						)}
 					</DialogContent>
 				</Dialog>
@@ -242,8 +260,9 @@ export function SelectedGame() {
 							}}
 						/>
 					</div>
-					<div className="bg-[#1f1f1f] p-5 rounded-lg me-[1.5rem] h-fit shadow-black shadow-md 
-						hover:shadow-lg hover:shadow-black transition-all duration-200 text-sm"
+					<div
+						className="bg-[#1f1f1f] p-5 rounded-lg me-[1.5rem] h-fit shadow-black shadow-md 
+				hover:shadow-lg hover:shadow-black transition-all duration-200 text-sm"
 					>
 						<p className="text-lg font-bold">Requirements</p>
 						<br />
