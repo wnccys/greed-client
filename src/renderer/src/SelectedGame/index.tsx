@@ -23,6 +23,7 @@ export function SelectedGame() {
 	const steamInfoBaseURL = `https://store.steampowered.com/api/appdetails?appids=${gameId}`;
 	const [gameInfos, setGamesInfos] = useState<GlobalDownloads[]>([]);
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+	const [selectedDownload, setSelectedDownload] = useState<number>(0);
 
 	const [steamDetails, setSteamDetails] = useState<SteamDetailsT>();
 	useEffect(() => {
@@ -153,8 +154,8 @@ export function SelectedGame() {
 					<DialogTrigger asChild>
 					<Button
 						className="absolute -translate-y-1/2 translate-x-[22.5rem] bg-[#1f1f1f] w-fit rounded-md
-						 shadow-black shadow-md text-white cursor-pointer p-6 hover:shadow-lg hover:shadow-black transition-all 
-						 duration-200 flex items-center"
+						 shadow-black shadow-md text-white cursor-pointer p-6 hover:shadow-lg 
+						 hover:shadow-black transition-all duration-200 flex items-center hover:bg-opacity-100"
 						onClick={() => setIsDialogOpen(true)}
 					>
 						<DownloadIcon className="size-6 me-2" />
@@ -233,6 +234,7 @@ export function SelectedGame() {
 				<div className="ps-8 mt-[4rem] flex gap-12 bg-[#171717] pb-10">
 					<div className="max-w-[65%]">
 						<div
+							className="text-center flex flex-col items-center gap-5"
 							// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 							dangerouslySetInnerHTML={{
 								__html:
@@ -241,11 +243,12 @@ export function SelectedGame() {
 						/>
 					</div>
 					<div className="bg-[#1f1f1f] p-5 rounded-lg me-[1.5rem] h-fit shadow-black shadow-md 
-						hover:shadow-lg hover:shadow-black transition-all duration-200"
+						hover:shadow-lg hover:shadow-black transition-all duration-200 text-sm"
 					>
 						<p className="text-lg font-bold">Requirements</p>
 						<br />
 						<div
+							className="flex flex-col"
 							// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 							dangerouslySetInnerHTML={{
 								__html:
