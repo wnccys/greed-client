@@ -1,10 +1,28 @@
 import type ElectronAPI from '@electron-toolkit/preload'
+import type { Downloads } from "@main/entity/Downloads";
 
 declare global {
   interface Window {
     electron: ElectronAPI
     api: Api 
     tests: Tests
+  }
+
+  interface SteamDetailsT {
+    name: string;
+    detailedDescription: string;
+    pc_requirements: {
+      minimum: string;
+      recommended: string;
+    };
+    metacritic: {
+      score: number;
+      url: string;
+    };
+    developers: string[];
+    screenshots: {
+      path_thumbnail: string;
+    }[];
   }
 
   interface Api {
@@ -15,7 +33,7 @@ declare global {
     resumeTorrent: () => null,
     removeTorrent: () => null,
     addSourceToDB: (sourceLink: string) => null,
-    getSelectedGameInfo: (gameId: number) => null,
+    getSelectedGameInfo: (gameId: number) => Promise<Downloads[]>,
     removeSourceFromDB: (sourceLink: string) => Promise<string[]>,
     changeDefaultPath: () => Promise<string[]>,
   }
