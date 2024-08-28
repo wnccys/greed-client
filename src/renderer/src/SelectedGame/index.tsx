@@ -104,7 +104,7 @@ export function SelectedGame() {
 					<Link to="../catalog">
 						<DoubleArrowLeftIcon
 							className="size-5 delay-150 hover:-translate-y-1
-					transition hover:scale-105 duration-300 z-20"
+							transition hover:scale-105 duration-300 z-20"
 						/>
 					</Link>
 				</div>
@@ -131,7 +131,7 @@ export function SelectedGame() {
 				drop-shadow-lg shadow-black duration-300"
 			>
 				<div
-					className="absolute transform -translate-y-1/2 bg-[#242424] 
+					className="absolute transform -translate-y-1/2 bg-[#1f1f1f] 
 					rounded-xl text-white w-[25em] flex justify-center"
 				>
 					<div className="p-3 w-full">
@@ -143,7 +143,7 @@ export function SelectedGame() {
 					<div>
 						<Button
 							className="p-6 bg-white text-zinc-900 hover:text-white w-full 
-						h-full ps-10 pe-10 text-lg transition delay-150 duration-300"
+							h-full ps-10 pe-10 text-lg transition delay-150 duration-300"
 							onClick={() => window.tests.startTorrentDownloadTest()}
 						>
 							Play
@@ -153,8 +153,8 @@ export function SelectedGame() {
 				<Dialog open={isDialogOpen}>
 					<DialogTrigger asChild>
 					<Button
-						className="absolute -translate-y-1/2 translate-x-[22.5rem] bg-[#242424] w-fit rounded-md
-						text-white cursor-pointer p-6 hover:bg-zinc-800 transition-all duration-200 flex items-center"
+						className="absolute -translate-y-1/2 translate-x-[22.5rem] bg-[#171717] w-fit rounded-md
+						text-white cursor-pointer p-6 hover:bg-[#1f1f1f] transition-all duration-200 flex items-center"
 						onClick={() => setIsDialogOpen(true)}
 					>
 						<DownloadIcon className="size-6 me-2" />
