@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 export function GameCard({ gameName, gameImage, gameId }) {
     return (
             <>
-                <Link to={`../selected-game/${gameId}`}>
+                <Link to={`../selected-game/${gameId}/${gameName}`}>
                     <Card
                         className="border shadow-lg 
                         hover:drop-shadow-2xl shadow-black rounded-md

@@ -16,7 +16,7 @@ import {
 import { Label } from "@renderer/ShadComponents/ui/label";
 
 export function SelectedGame() {
-	const gameId = useLoaderData() as number;
+	const [gameId, gameName] = useLoaderData() as [number, string];
 	const [isLoading, setIsLoading] = useState(true);
 	const [gameImage, setGameImage] = useState<string>();
 	const [gameIcon, setGameIcon] = useState<string>();
@@ -30,7 +30,6 @@ export function SelectedGame() {
 			.then((response) => response.json())
 			.then((steamJSON) => {
 				const {
-					name,
 					detailed_description,
 					pc_requirements,
 					metacritic,
@@ -39,7 +38,6 @@ export function SelectedGame() {
 				} = steamJSON[gameId].data;
 
 				setSteamDetails({
-					name: name || "",
 					detailedDescription: detailed_description || "",
 					pc_requirements: {
 						minimum: pc_requirements?.minimum || "",
@@ -137,7 +135,7 @@ export function SelectedGame() {
 					rounded-xl text-white w-[25em] flex justify-center"
 				>
 					<div className="p-3 w-full">
-						<h1>{steamDetails?.name}</h1>
+						<h1>{gameName}</h1>
 						<p className="text-xs text-zinc-700 font-bold mt-[1em]">
 							Play Time: 1540hrs
 						</p>
@@ -170,7 +168,7 @@ export function SelectedGame() {
 								Available Downloads
 							</DialogTitle>
 							<DialogDescription>
-								Showing available Sources for {steamDetails?.name}
+								Showing available Sources for {gameName}
 							</DialogDescription>
 							<div
 								className="absolute right-4 top-2 rounded-sm opacity-70 
@@ -207,26 +205,26 @@ export function SelectedGame() {
 						</>) || 
 						(
 						<>
-						<DialogHeader>
-							<div
-								className="absolute right-4 top-2 rounded-sm opacity-70 
-								ring-offset-background hover:bg-zinc-800 p-1
-								hover:-translate-y-[2px] hover:duration-300 
-								transition-all hover:opacity-100 focus:outline-none focus:ring-2 
-								focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
-								data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
-							>
-								<Cross2Icon
-									className="size-4 cursor-pointer"
-									onClick={() => setIsDialogOpen(false)}
-								/>
+							<DialogHeader>
+								<div
+									className="absolute right-4 top-2 rounded-sm opacity-70 
+									ring-offset-background hover:bg-zinc-800 p-1
+									hover:-translate-y-[2px] hover:duration-300 
+									transition-all hover:opacity-100 focus:outline-none focus:ring-2 
+									focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
+									data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+								>
+									<Cross2Icon
+										className="size-4 cursor-pointer"
+										onClick={() => setIsDialogOpen(false)}
+									/>
+								</div>
+							</DialogHeader>
+							<div className="w-full">
+								<Label htmlFor="username" className="text-right">
+									<strong>{`No Downloads available for ${gameName}`}</strong>
+								</Label>
 							</div>
-						</DialogHeader>
-						<div className="w-full">
-							<Label htmlFor="username" className="text-right">
-								{`No Downloads available for ${steamDetails?.name}`}
-							</Label>
-						</div>
 						</>
 						)}
 					</DialogContent>
