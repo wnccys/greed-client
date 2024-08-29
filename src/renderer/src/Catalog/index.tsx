@@ -4,15 +4,9 @@ import { CustomCarousel } from "./CustomCarousel";
 import { GameCard } from "./GameCard";
 import { useCatalogGames, useGamesImages } from "@renderer/Hooks/games";
 import { Button } from "@renderer/ShadComponents/ui/button";
-<<<<<<< HEAD
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
-=======
->>>>>>> dbdaa252f5e9b344c8de4e341d75d3a6d0f525c3
 import { useState } from "react";
 
 export function Catalog() {
-	const [loading, setLoading] = useState(true);
 	const games = useCatalogGames();
 	const images = useGamesImages(games[1]);
 	const [isSearching, setIsSearching] = useState<boolean>(false);
@@ -27,7 +21,6 @@ export function Catalog() {
 	}
 
 	return (
-		
 		<div className="bg-[#171717]">
 			<div className="flex gap-2 justify-between mt-10 me-10">
 				<div className="ms-10 flex self-center">
@@ -55,47 +48,6 @@ export function Catalog() {
 						<div
 							className="shadow-lg hover:drop-shadow-2xl
                 transition-colors shadow-black rounded-lg"
-<<<<<<< HEAD
-				>
-					{ games[1][14].id <= 340 ? <CustomCarousel /> : null }
-				</div>
-				<div
-					id="games-section"
-					className="mt-5 flex flex-wrap justify-between gap-4"
-				>
-					{games[1].map((_, key) => {
-						return (
-							<div>
-							<GameCard
-							
-								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-								key={key}
-								gameName={games[1][key].name}
-								gameImage={images[key]}
-							/>
-							
-							</div>
-						);
-					})}
-				</div>
-				<div className="fixed right-1/2 left-3/4 z-20 top-full -translate-y-14 translate-x-48">
-					<Button 
-						onClick={() => games[0]((currentValue) => currentValue + 1)}
-						className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
-					>
-						Next Page
-					</Button>
-				</div>
-				<div className="fixed right-1/2 left-1/4 z-20 top-full -translate-y-14 -translate-x-12 w-fit rounded">
-					<Button
-						onClick={() => games[0]((currentValue) => currentValue - 1)}
-						{...(games[1][0].id < 30 && { disabled: true })}
-						className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
-					>
-						Previous Page
-					</Button>
-				</div>
-=======
 						>
 							{games[1][14].id <= 340 ? <CustomCarousel /> : null}
 						</div>
@@ -135,7 +87,6 @@ export function Catalog() {
 					</>
 				)) ||
 					"Searching..."}
->>>>>>> dbdaa252f5e9b344c8de4e341d75d3a6d0f525c3
 			</div>
 		</div>
 	);
