@@ -135,3 +135,6 @@ export async function getDBGameInfos(gameId: number) {
 		steamId: gameId,
 	});
 }
+
+export async function getDBGamesByName(name: string) {
+}
