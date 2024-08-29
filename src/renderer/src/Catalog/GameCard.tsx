@@ -1,26 +1,22 @@
+<<<<<<< HEAD
 import GameDummyImage from "@renderer/assets/image.png";
 
+=======
+>>>>>>> dbdaa252f5e9b344c8de4e341d75d3a6d0f525c3
 import {
 	Card,
 	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
 } from "@renderer/ShadComponents/ui/card";
 import { Link } from "react-router-dom";
 
-export function GameCard({ gameName, gameImage }) {
-    console.log("received name: ", gameName);
-    console.log("source: ", gameImage)
-
+export function GameCard({ gameName, gameImage, gameId }) {
     return (
             <>
-                <Link to="../selected-game">
+                <Link to={`../selected-game/${gameId}/${gameName}`}>
                     <Card
                         className="border shadow-lg 
-                        hover:drop-shadow-2xl shadow-black rounded-md h-[15.5vh] 
-                        lg:w-60 lg:h-36 md:w-52 md:h-24
-                        w-[20vw] mt-8 cursor-pointer transition delay-15
+                        hover:drop-shadow-2xl shadow-black rounded-md
+                        w-[16em] mt-8 cursor-pointer transition delay-15
                         hover:-translate-y-1 hover:scale-105 duration-300 overflow-hidden"
                     >
                         <div className="">

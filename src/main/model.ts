@@ -25,10 +25,7 @@ export function testDBConn() {
 				.getRepository(GreedSettings)
 				.exists();
 
-			if (existingSettings) {
-				console.log("exists!!");
-			} else {
-				console.log("doesn't exists!!");
+			if (!existingSettings) {
 				greedSettings.downloadPath = path.resolve("./src/downloads");
 				greedSettings.username = hostname();
 
@@ -40,7 +37,7 @@ export function testDBConn() {
 		.catch((error) => console.log("Failed to load contents: ", error));
 }
 
-export async function addGameSource(receivedSource: string) {
+export async function addGameSource(receivedSource: string): Promise<string[]> {
 	const newSource = new Sources();
 	const newDownloads: Partial<Downloads>[] = [];
 	const parsedSource = JSON.parse(receivedSource);
@@ -55,15 +52,12 @@ export async function addGameSource(receivedSource: string) {
 	try {
 		await GreedDataSource.manager.save(newSource);
 	} catch (e) {
-		console.log(e);
 		return ["Error", "Duplicated Sources are not allowed."];
 	}
 
 	const downloadsId = newSource.id;
-	console.log("");
 	try {
 		for (const downloads of parsedSource.downloads) {
-			console.log("SteamID: ", downloads.steamId);
 			newDownloads.push({
 				sourceId: downloadsId,
 				title: downloads.title,
@@ -77,7 +71,6 @@ export async function addGameSource(receivedSource: string) {
 
 		return ["Success", "Source Successfully Added."];
 	} catch (e) {
-		console.log(e);
 		return ["Error", "Error during Downloads assignment."];
 	}
 }
@@ -137,6 +130,11 @@ export async function getDBCurrentPath () {
 	}).then((record) => record?.downloadPath || "No Path");
 }
 
-export async function addSteamId(games: [title: string, steamId: number][]) {
-	console.log("received games: ", games.slice(0, 5));
+export async function getDBGameInfos(gameId: number) {
+	return await GreedDataSource.getRepository(Downloads).findBy({
+		steamId: gameId,
+	});
+}
+
+export async function getDBGamesByName(name: string) {
 }

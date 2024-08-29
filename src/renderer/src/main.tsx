@@ -24,12 +24,16 @@ import { Library } from './Library'
         element: <Catalog />,
       },
       {
-        path: "selected-game",
+        path: "selected-game/:gameId/:gameName",
+        loader: async ({ params }): Promise<[string | undefined, string | undefined]> => {
+          return [params.gameId, params.gameName];
+        },
         element: <SelectedGame />
       },
       {
         path: "settings",
         element: <Settings />
+<<<<<<< HEAD
       },
       {
         path: "downloads",
@@ -38,6 +42,11 @@ import { Library } from './Library'
       {
         path: "library",
         element: <Library />
+=======
+      }, 
+      { path: "downloads", 
+        element: <Downloads />
+>>>>>>> dbdaa252f5e9b344c8de4e341d75d3a6d0f525c3
       }
     ],
     errorElement: <ErrorElement />
