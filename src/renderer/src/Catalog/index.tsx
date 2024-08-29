@@ -5,6 +5,7 @@ import { GameCard } from "./GameCard";
 import { useCatalogGames, useGamesImages } from "@renderer/Hooks/games";
 import { Button } from "@renderer/ShadComponents/ui/button";
 import { useEffect, useState } from "react";
+import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
 
 export function Catalog() {
 	const games = useCatalogGames();
@@ -18,6 +19,10 @@ export function Catalog() {
 			setSearchGames(games);
 		});
 	}, [search])
+
+	useEffect(() => {
+		console.log("images: ", images.slice(2));
+	}, [images])
 
 	return (
 		<div className="bg-[#171717]">
@@ -59,15 +64,15 @@ export function Catalog() {
 							className="mt-5 flex flex-wrap justify-between gap-4"
 						>
 							{games[1].map((_, key) => {
-								return (
-									<GameCard
-										// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-										key={key}
-										gameId={games[1][key].id}
-										gameName={games[1][key].name}
-										gameImage={images[key]}
-									/>
-								);
+									return ((
+										<GameCard
+											// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+											key={key}
+											gameId={games[1][key].id}
+											gameName={games[1][key].name}
+											gameImage={images[key]}
+										/>
+									))
 							})}
 						</div>
 						<div className="fixed right-1/2 left-3/4 z-20 top-full -translate-y-14 translate-x-48">
