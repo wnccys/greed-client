@@ -35,6 +35,7 @@ declare global {
     removeTorrent: () => null,
     addSourceToDB: (sourceLink: string) => null,
     startGameDownload: (uris: string[]) => null,
+    getGamesByName: (name: string) => GlobalDownloads[],
     getSelectedGameInfo: (gameId: number) => Promise<Downloads[]>,
     removeSourceFromDB: (sourceLink: string) => Promise<string[]>,
     changeDefaultPath: () => Promise<string[]>,
