@@ -127,7 +127,7 @@ export function SelectedGame() {
 			<div className="ms-6 absolute -translate-y-[9rem]">
 				{(gameIcon && (
 					<img src={gameIcon} alt="game-icon" className="h-[6rem]" />
-				)) || <Skeleton className="h-[25rem]" />}
+				)) || <Skeleton className="h-[25rem] w-[40rem]" />}
 			</div>
 
 			<div
