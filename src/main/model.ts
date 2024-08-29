@@ -7,6 +7,7 @@ import { SteamGames } from "./entity/SteamGames";
 import SteamJSONGames from "../steam-games/steam-games.json";
 import path from "node:path";
 import { ipcMain } from "electron";
+import { throttle } from "lodash-es";
 
 export function testDBConn() {
 	GreedDataSource.initialize()
@@ -149,13 +150,14 @@ export async function getDBGameInfos(gameId: number) {
 	});
 }
 
-export async function getDBGamesByName(name: string) {
+export const getDBGamesByName = throttle(async (name: string) => {
 	return await GreedDataSource.getRepository(SteamGames).find({
 		where: {
 			name: Like(`${name}%`),
-		}
+		},
+		take: 20,
 	})
-}
+}, 300);
 
 import createWorker from "./workerDB?nodeWorker";
 import { Like } from "typeorm";
@@ -166,11 +168,9 @@ export type SteamJSONGame = {
 
 async function setSteamGames() {
 	const steamGamesArr: SteamJSONGame[] = SteamJSONGames as SteamJSONGame[];
-	let alreadyDone = 0;
 	const worker = createWorker({});
 
 	worker.on("message", async (result: string[]) => {
-		alreadyDone++;
 		console.log(result);
 	});
 

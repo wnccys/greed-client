@@ -4,7 +4,7 @@ import { CustomCarousel } from "./CustomCarousel";
 import { GameCard } from "./GameCard";
 import { useCatalogGames, useGamesImages } from "@renderer/Hooks/games";
 import { Button } from "@renderer/ShadComponents/ui/button";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export function Catalog() {
 	const games = useCatalogGames();
@@ -13,13 +13,11 @@ export function Catalog() {
 	const [search, setSearch] = useState<string>("");
 	const [searchGames, setSearchGames] = useState<GlobalDownloads[]>([]);
 
-	async function getGamesByName(event) {
-		setIsSearching(event.target.value);
-		if (!isSearching) {
-			setSearchGames(await window.api.getGamesByName(event.target.value));
-		}
-	}
-
+	useEffect(() => {
+		window.api.getGamesByName(search).then((games) => {
+			setSearchGames(games);
+		});
+	}, [search])
 
 	return (
 		<div className="bg-[#171717]">
@@ -33,14 +31,8 @@ export function Catalog() {
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 						setIsSearching(e.target.value !== (undefined || ""));
 						setSearch(e.target.value) 
-						if (!isSearching) {
-							window.api.getGamesByName(e.target.value).then((result) => {
-								setSearchGames(result);
-								console.log("search: ", searchGames);
-								console.log("search string: ", e.target.value);
-							});
-						}}
-					}
+						console.log(e.target.value);
+					}}
 				>
 					<img src={SearchIcon} alt="search-icon" className="size-4" />
 					<Input
