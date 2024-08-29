@@ -1,12 +1,5 @@
-<<<<<<< HEAD
-import GameDummyImage from "@renderer/assets/image.png";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { DoubleArrowLeftIcon } from "@radix-ui/react-icons";
-=======
 import { Link, useLoaderData } from "react-router-dom";
 import { Cross2Icon, DoubleArrowLeftIcon } from "@radix-ui/react-icons";
->>>>>>> dbdaa252f5e9b344c8de4e341d75d3a6d0f525c3
 import { Button } from "@renderer/ShadComponents/ui/button";
 import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
 import { useEffect, useState } from "react";

@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-import GameDummyImage from "@renderer/assets/image.png";
-
-=======
->>>>>>> dbdaa252f5e9b344c8de4e341d75d3a6d0f525c3
 import {
 	Card,
 	CardContent,

@@ -33,20 +33,12 @@ import { Library } from './Library'
       {
         path: "settings",
         element: <Settings />
-<<<<<<< HEAD
-      },
-      {
-        path: "downloads",
-        element: <Downloads />,
-      },
-      {
-        path: "library",
-        element: <Library />
-=======
       }, 
       { path: "downloads", 
         element: <Downloads />
->>>>>>> dbdaa252f5e9b344c8de4e341d75d3a6d0f525c3
+      }
+      , { path: "library", 
+        element: < Library/>
       }
     ],
     errorElement: <ErrorElement />
