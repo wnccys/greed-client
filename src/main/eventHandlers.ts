@@ -13,6 +13,7 @@ import {
 	changeDBDefaultPath,
 	getDBCurrentPath,
 	getDBGameInfos,
+	getDBGamesByName,
 	getSourcesList,
 	removeSourceFromDB,
 } from "./model";
@@ -25,6 +26,7 @@ ipcMain.handle("addSourceToDB", handleNewTorrentSource);
 ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("changeDefaultPath", handleChangeDefaultPath);
 ipcMain.handle("startGameDownload", handleStartGameDownload);
+ipcMain.handle("getGamesByName", handleGetGamesByName);
 ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 ipcMain.handle("getSelectedGameInfo", handleGetCurrentGameInfo);
 ipcMain.handle("getCurrentDownloadPath", handleGetCurrentDownloadPath);
@@ -217,4 +219,8 @@ async function handleGetCurrentGameInfo(
 	gameId: number,
 ): Promise<Downloads[]> {
 	return await getDBGameInfos(gameId);
+}
+
+function handleGetGamesByName(event: IpcMainInvokeEvent, name: string) {
+	const games = getDBGamesByName(name);
 }
