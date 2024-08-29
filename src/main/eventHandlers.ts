@@ -221,6 +221,6 @@ async function handleGetCurrentGameInfo(
 	return await getDBGameInfos(gameId);
 }
 
-function handleGetGamesByName(_event: IpcMainInvokeEvent, name: string) {
-	const games = getDBGamesByName(name);
+async function handleGetGamesByName(_event: IpcMainInvokeEvent, name: string) {
+	return await getDBGamesByName(name);
 }

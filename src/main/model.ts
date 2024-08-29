@@ -149,9 +149,16 @@ export async function getDBGameInfos(gameId: number) {
 	});
 }
 
-export async function getDBGamesByName(name: string) {}
+export async function getDBGamesByName(name: string) {
+	return await GreedDataSource.getRepository(SteamGames).find({
+		where: {
+			name: Like(`${name}%`),
+		}
+	})
+}
 
 import createWorker from "./workerDB?nodeWorker";
+import { Like } from "typeorm";
 export type SteamJSONGame = {
 	id: number;
 	name: string;
