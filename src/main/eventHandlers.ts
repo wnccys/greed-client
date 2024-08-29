@@ -50,8 +50,9 @@ async function handleRemoveSourceFromDB(
 }
 
 // ----Torrent----
-function handleStartGameDownload(_event: IpcMainInvokeEvent, uris: string[]) {
-	console.log("received in back-end: ", uris);
+async function handleStartGameDownload(_event: IpcMainInvokeEvent, uris: string[]) {
+	const downloadFolder = await handleGetCurrentDownloadPath();
+	initTorrentDownload(uris[0], downloadFolder);
 }
 
 export function handleUpdateTorrentProgress(
