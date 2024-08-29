@@ -4,21 +4,22 @@ import { CustomCarousel } from "./CustomCarousel";
 import { GameCard } from "./GameCard";
 import { useCatalogGames, useGamesImages } from "@renderer/Hooks/games";
 import { Button } from "@renderer/ShadComponents/ui/button";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function Catalog() {
 	const games = useCatalogGames();
 	const images = useGamesImages(games[1]);
 	const [isSearching, setIsSearching] = useState<boolean>(false);
-	const [searchGames, setSearchGames] = useState();
+	const [search, setSearch] = useState<string>("");
+	const [searchGames, setSearchGames] = useState<GlobalDownloads[]>([]);
 
-	function getGamesByName(event) {
+	async function getGamesByName(event) {
 		setIsSearching(event.target.value);
 		if (!isSearching) {
-			const searchGames = window.api.getGamesByName(event.target.value);
-			console.log("searched games: ", searchGames);
+			setSearchGames(await window.api.getGamesByName(event.target.value));
 		}
 	}
+
 
 	return (
 		<div className="bg-[#171717]">
@@ -29,7 +30,17 @@ export function Catalog() {
 				<div
 					className="rounded-md bg-zinc-800 flex p-2 ps-4 
 				items-center hover:shadow-xl"
-					onInput={getGamesByName}
+					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+						setIsSearching(e.target.value !== (undefined || ""));
+						setSearch(e.target.value) 
+						if (!isSearching) {
+							window.api.getGamesByName(e.target.value).then((result) => {
+								setSearchGames(result);
+								console.log("search: ", searchGames);
+								console.log("search string: ", e.target.value);
+							});
+						}}
+					}
 				>
 					<img src={SearchIcon} alt="search-icon" className="size-4" />
 					<Input
@@ -86,7 +97,18 @@ export function Catalog() {
 						</div>
 					</>
 				)) ||
-					"Searching..."}
+					"Searching..." && (
+					<div>
+						{searchGames?.slice(0,20).map((game, index) => {
+							return (
+							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+							<div key={index}>
+								{game.id}{" "}
+								{game.name}
+							</div>)
+						})}
+					</div>
+					)}
 			</div>
 		</div>
 	);
