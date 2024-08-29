@@ -9,9 +9,11 @@ import { useState } from "react";
 export function Catalog() {
 	const games = useCatalogGames();
 	const images = useGamesImages(games[1]);
-	const isSearching = useState(false);
+	const [isSearching, setIsSearching] = useState<boolean>(false);
+	const [searchGames, setSearchGames] = useState();
 
-	function getGamesByName() {
+	function getGamesByName(event) {
+		setIsSearching(event.target.value);
 	}
 
 	return (
@@ -37,6 +39,8 @@ export function Catalog() {
 			</div>
 
 			<div className="ms-8 mt-[2rem] me-10 bg-[#171717] mb-10">
+				{ !isSearching && 
+				<>
 				<div
 					className="shadow-lg hover:drop-shadow-2xl
                 transition-colors shadow-black rounded-lg"
@@ -76,6 +80,8 @@ export function Catalog() {
 						Previous Page
 					</Button>
 				</div>
+				</>
+				|| "Searching..."}
 			</div>
 		</div>
 	);

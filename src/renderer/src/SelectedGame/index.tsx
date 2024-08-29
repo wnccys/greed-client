@@ -135,7 +135,7 @@ export function SelectedGame() {
 				className="flex justify-center transition delay-150 duration-300"
 			>
 				<div
-					className="absolute transform -translate-y-1/2 bg-[#1f1f1f] 
+					className="absolute transform -translate-y-1/2 bg-[#1f1f1f]
 			rounded-xl text-white w-[25em] flex justify-center shadow-md shadow-black"
 				>
 					<div className="p-3 w-full">
@@ -188,7 +188,7 @@ export function SelectedGame() {
 										/>
 									</div>
 								</DialogHeader>
-								<div className="">
+								<div>
 									<div className="flex flex-col gap-3 text-sm">
 										{gameInfos.map((downloadOption) => {
 											return (
@@ -252,7 +252,7 @@ export function SelectedGame() {
 					</DialogContent>
 				</Dialog>
 
-				<div className="ps-8 mt-[4rem] flex gap-12 bg-[#171717] pb-10">
+				<div className="ps-8 mt-[8rem] flex gap-12 bg-[#171717] pb-10">
 					<div className="max-w-[65%]">
 						<div
 							className="text-center flex flex-col items-center gap-5"
