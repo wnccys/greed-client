@@ -22,10 +22,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@renderer/ShadComponents/ui/carousel"
+import { divide } from "lodash-es";
 
 export function SelectedGame() {
 	const [gameId, gameName] = useLoaderData() as [number, string];
-	const [isLoading, setIsLoading] = useState(true);
+	const [isLoading, ] = useState(true);
 	const [gameImage, setGameImage] = useState<string>();
 	const [gameIcon, setGameIcon] = useState<string>();
 	const steamInfoBaseURL = `https://store.steampowered.com/api/appdetails?appids=${gameId}`;
@@ -127,7 +128,7 @@ export function SelectedGame() {
 					}
 				>
 					{(!isLoading && <img src={gameImage} alt="game-cover" />) || (
-						<Skeleton className="h-[20rem] w-full bg-zinc-900" />
+						<Skeleton className="h-[20rem] w-full bg-zinc-800" />
 					)}
 				</div>
 			</div>
@@ -261,7 +262,7 @@ export function SelectedGame() {
 				</Dialog>
 
 				<div className="ps-8 mt-[8rem] flex gap-12 bg-[#171717] pb-10">
-					<div className="max-w-[65%] flex flex-col items-center">
+					{!isLoading && (<div className="max-w-[65%] flex flex-col items-center">
 						<Carousel className="max-w-md pb-10">
 							<CarouselContent>
 								{steamDetails?.screenshots.map((thumbnail, index) => (
@@ -286,8 +287,19 @@ export function SelectedGame() {
 									steamDetails?.detailedDescription || "No Description Found.",
 							}}
 						/>
-					</div>
-					<div
+					</div>) || (
+						<div className="flex flex-col space-y-3">
+							<Skeleton className="h-[300px] w-[600px] rounded-xl" />
+							<div className="space-y-2">
+								<Skeleton className="h-4 w-[250px]" />
+								<Skeleton className="h-4 w-[200px]" />
+								<Skeleton className="h-4 w-[400px]" />
+								<Skeleton className="h-4 w-[400px]" />
+							</div>
+						</div>
+					)}
+
+					{(!isLoading && (<div
 						className="bg-[#1f1f1f] p-5 rounded-lg me-[1.5rem] h-fit shadow-black shadow-md 
 				hover:shadow-lg hover:shadow-black transition-all duration-200 text-sm"
 					>
@@ -303,6 +315,16 @@ export function SelectedGame() {
 							}}
 						/>
 					</div>
+					)) || 
+					(
+						<div className="ms-[13vw] gap-8 flex flex-col space-y-3 pe-10">
+							<Skeleton className="h-[18rem] w-[18rem] rounded-xl" />
+							<div className="space-y-2">
+								<Skeleton className="h-4 w-[250px]" />
+								<Skeleton className="h-4 w-[200px]" />
+							</div>
+						</div>
+					)}
 				</div>
 			</div>
 		</div>
