@@ -14,6 +14,14 @@ import {
 	DialogTrigger,
 } from "@renderer/ShadComponents/ui/dialog";
 import { Label } from "@renderer/ShadComponents/ui/label";
+import { Card, CardContent } from "@renderer/ShadComponents/ui/card"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@renderer/ShadComponents/ui/carousel"
 
 export function SelectedGame() {
 	const [gameId, gameName] = useLoaderData() as [number, string];
@@ -253,7 +261,23 @@ export function SelectedGame() {
 				</Dialog>
 
 				<div className="ps-8 mt-[8rem] flex gap-12 bg-[#171717] pb-10">
-					<div className="max-w-[65%]">
+					<div className="max-w-[65%] flex flex-col items-center">
+						<Carousel className="max-w-md pb-10">
+							<CarouselContent>
+								{steamDetails?.screenshots.map((thumbnail, index) => (
+									// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+									<CarouselItem key={index}>
+									<div className="p-1">
+									<Card>
+										<img src={thumbnail.path_thumbnail} alt="game_screenshots" className="rounded-lg border-white border" />
+									</Card>
+									</div>
+								</CarouselItem>
+								))}
+							</CarouselContent>
+							<CarouselPrevious className="bg-zinc-950 hover:bg-zinc-900 transition-all duration-200 scale-125" />
+							<CarouselNext className="bg-zinc-950 hover:bg-zinc-900 transition-all duration-200 scale-125" />
+						</Carousel>
 						<div
 							className="text-center flex flex-col items-center gap-5"
 							// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
