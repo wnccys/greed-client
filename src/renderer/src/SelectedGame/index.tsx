@@ -119,7 +119,7 @@ export function SelectedGame() {
 					}
 				>
 					{(!isLoading && <img src={gameImage} alt="game-cover" />) || (
-						<Skeleton className="h-[25rem] w-full" />
+						<Skeleton className="h-[20rem] w-full bg-zinc-900" />
 					)}
 				</div>
 			</div>
@@ -127,7 +127,7 @@ export function SelectedGame() {
 			<div className="ms-6 absolute -translate-y-[9rem]">
 				{(gameIcon && (
 					<img src={gameIcon} alt="game-icon" className="h-[6rem]" />
-				)) || <Skeleton className="h-[25rem] w-[40rem]" />}
+				)) || <Skeleton className="h-[5rem] w-[20rem] bg-zinc-950 rounded-xl" />}
 			</div>
 
 			<div
