@@ -3,6 +3,8 @@ import { GreedDataSource } from "./data-source";
 import { GreedSettings } from "./entity/Settings";
 import { Sources } from "./entity/Sources";
 import { Downloads } from "./entity/Downloads";
+import { SteamGames } from "./entity/SteamGames";
+import SteamJSONGames from "../steam-games/steam-games.json";
 import path from "node:path";
 import { ipcMain } from "electron";
 
@@ -32,6 +34,14 @@ export function testDBConn() {
 				await initializedGreedSource
 					.getRepository(GreedSettings)
 					.save(greedSettings);
+			}
+
+			const existingSteamGames = await initializedGreedSource
+				.getRepository(SteamGames)
+				.exists();
+
+			if (!existingSteamGames) {
+				setSteamGames();
 			}
 		})
 		.catch((error) => console.log("Failed to load contents: ", error));
@@ -104,8 +114,10 @@ export async function removeSourceFromDB(sourceName: string) {
 
 export async function changeDBDefaultPath(folderPath: string[]) {
 	try {
-		const currentPath = await GreedDataSource.getRepository(GreedSettings).findOneBy({
-			id: 1
+		const currentPath = await GreedDataSource.getRepository(
+			GreedSettings,
+		).findOneBy({
+			id: 1,
 		});
 
 		if (currentPath) {
@@ -118,16 +130,17 @@ export async function changeDBDefaultPath(folderPath: string[]) {
 		}
 
 		return ["Error", "Default Path not Found."];
-
 	} catch (e) {
 		return ["Error", "Could not update default path."];
 	}
 }
 
-export async function getDBCurrentPath () {
-	return await GreedDataSource.getRepository(GreedSettings).findOneBy({
-		id: 1
-	}).then((record) => record?.downloadPath || "No Path");
+export async function getDBCurrentPath() {
+	return await GreedDataSource.getRepository(GreedSettings)
+		.findOneBy({
+			id: 1,
+		})
+		.then((record) => record?.downloadPath || "No Path");
 }
 
 export async function getDBGameInfos(gameId: number) {
@@ -136,5 +149,33 @@ export async function getDBGameInfos(gameId: number) {
 	});
 }
 
-export async function getDBGamesByName(name: string) {
+export async function getDBGamesByName(name: string) {}
+
+interface SteamJSONGame {
+	id: number;
+	name: string;
+}
+
+async function setSteamGames() {
+	const steamGames = await GreedDataSource.manager.find(SteamGames);
+	const newSteamGames: SteamJSONGame[] = [];
+	console.log("steamGames: ", steamGames);
+
+	if (steamGames.length === 0) {
+		for (const steamGame of SteamJSONGames as SteamJSONGame[]) {
+			newSteamGames.push({
+				id: steamGame.id,
+				name: steamGame.name,
+			});
+		}
+
+		try {
+			console.log(
+				"Added Steam Games: ",
+				await GreedDataSource.getRepository(SteamGames).save(newSteamGames),
+			);
+		} catch (e) {
+			console.log("Error trying to save SteamGames: ", e);
+		}
+	}
 }
