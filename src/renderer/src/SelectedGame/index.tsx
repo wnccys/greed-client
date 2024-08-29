@@ -22,11 +22,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@renderer/ShadComponents/ui/carousel"
-import { divide } from "lodash-es";
 
 export function SelectedGame() {
 	const [gameId, gameName] = useLoaderData() as [number, string];
-	const [isLoading, ] = useState(true);
+	const [isLoading, setIsLoading] = useState(true);
 	const [gameImage, setGameImage] = useState<string>();
 	const [gameIcon, setGameIcon] = useState<string>();
 	const steamInfoBaseURL = `https://store.steampowered.com/api/appdetails?appids=${gameId}`;
