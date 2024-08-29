@@ -151,31 +151,29 @@ export async function getDBGameInfos(gameId: number) {
 
 export async function getDBGamesByName(name: string) {}
 
-interface SteamJSONGame {
+import createWorker from "./workerDB?nodeWorker";
+export type SteamJSONGame = {
 	id: number;
 	name: string;
 }
 
 async function setSteamGames() {
-	const steamGames = await GreedDataSource.manager.find(SteamGames);
-	const newSteamGames: SteamJSONGame[] = [];
-	console.log("steamGames: ", steamGames);
+	const steamGamesArr: SteamJSONGame[] = SteamJSONGames as SteamJSONGame[];
+	let alreadyDone = 0;
+	const worker = createWorker({});
 
-	if (steamGames.length === 0) {
-		for (const steamGame of SteamJSONGames as SteamJSONGame[]) {
-			newSteamGames.push({
-				id: steamGame.id,
-				name: steamGame.name,
-			});
-		}
+	worker.on("message", async (result: string[]) => {
+		alreadyDone++;
+		console.log(result);
+	});
 
-		try {
-			console.log(
-				"Added Steam Games: ",
-				await GreedDataSource.getRepository(SteamGames).save(newSteamGames),
-			);
-		} catch (e) {
-			console.log("Error trying to save SteamGames: ", e);
-		}
-	}
+	worker.on("error", (err) => {
+		console.error("Worker  Error: ", err);
+	});
+
+	worker.on("exit", (code) => {
+		console.log("Worker exited with code: ", code);
+	});
+
+	worker.postMessage(steamGamesArr);
 }
