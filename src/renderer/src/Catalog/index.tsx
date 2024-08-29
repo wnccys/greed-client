@@ -14,6 +14,10 @@ export function Catalog() {
 
 	function getGamesByName(event) {
 		setIsSearching(event.target.value);
+		if (!isSearching) {
+			const searchGames = window.api.getGamesByName(event.target.value);
+			console.log("searched games: ", searchGames);
+		}
 	}
 
 	return (
