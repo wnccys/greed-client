@@ -17,8 +17,10 @@ const url = 'https://fitgirl-repacks.site/popular-repacks/';
     $('.widget-grid-view-image').each((i, element) => {
       const link = $(element).find('a').attr('href');
       const imgSrc = $(element).find('img').attr('src');
+      const title = $(element).find('a').attr('title');
       console.log('Link:', link);
       console.log('Image Source:', imgSrc);
+      console.log('Title: ', title);
       console.log('---');
     });
   } catch (error) {
