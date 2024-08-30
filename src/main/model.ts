@@ -157,7 +157,7 @@ export const getDBGamesByName = throttle(async (name: string) => {
 		},
 		take: 20,
 	})
-}, 300);
+}, 100);
 
 import createWorker from "./workerDB?nodeWorker";
 import { Like } from "typeorm";
