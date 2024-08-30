@@ -101,7 +101,10 @@ export function Catalog() {
 						</div>
 						<div className="fixed right-1/2 left-1/4 z-20 top-full -translate-y-14 -translate-x-12 w-fit rounded">
 							<Button
-								onClick={() => games[0]((currentValue) => currentValue - 1)}
+								onClick={() => {
+									games[0]((currentValue) => currentValue - 1)
+									setIsImageLoading(true);
+								}}
 								{...(games[1][0].id < 30 && { disabled: true })}
 								className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
 							>
@@ -113,7 +116,7 @@ export function Catalog() {
 								{games[1].map((_, index) => {
 									return (
 										// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-										<Skeleton className="w-[16rem] p-2 h-40 shadow-lg shadow-black" key={index}/>
+										<Skeleton className="w-[16rem] mt-8 h-32 rounded-lg shadow-lg shadow-black bg-zinc-800" key={index}/>
 									)	
 								})}
 							</div>	

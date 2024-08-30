@@ -52,7 +52,8 @@ export function useCatalogGames(): [Dispatch<SetStateAction<number>>, Game[]] {
         fetchImages();
 
         return () => {
-            setTimeout(() => setIsImagesLoading(false), 180);
+            // REVIEW sets react proper image handling
+            setTimeout(() => setIsImagesLoading(false), 400);
         }
     }, [games[1], setIsImagesLoading]);
 
