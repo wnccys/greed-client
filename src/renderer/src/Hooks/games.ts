@@ -52,7 +52,7 @@ export function useCatalogGames(): [Dispatch<SetStateAction<number>>, Game[]] {
         fetchImages();
 
         return () => {
-            setIsImagesLoading(false);
+            setTimeout(() => setIsImagesLoading(false), 180);
         }
     }, [games[1], setIsImagesLoading]);
 
