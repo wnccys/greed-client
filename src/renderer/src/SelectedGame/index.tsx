@@ -116,7 +116,7 @@ export function SelectedGame() {
 				<div className="absolute text-lg translate-x-8 translate-y-6 mt-2">
 					<Link to="../catalog">
 						<DoubleArrowLeftIcon
-							className="size-5 delay-150 hover:-translate-y-1
+							className="size-6 delay-150 hover:-translate-y-1
 					transition hover:scale-105 duration-300 z-20"
 						/>
 					</Link>
@@ -288,7 +288,7 @@ export function SelectedGame() {
 						/>
 					</div>) || (
 						<div className="flex flex-col space-y-3">
-							<Skeleton className="h-[300px] w-[600px] rounded-xl" />
+							<Skeleton className="h-[300px] w-[600px] rounded-xl bg-zinc-800" />
 							<div className="space-y-2">
 								<Skeleton className="h-4 w-[250px]" />
 								<Skeleton className="h-4 w-[200px]" />
@@ -317,7 +317,7 @@ export function SelectedGame() {
 					)) || 
 					(
 						<div className="ms-[13vw] gap-8 flex flex-col space-y-3 pe-10">
-							<Skeleton className="h-[18rem] w-[18rem] rounded-xl" />
+							<Skeleton className="h-[18rem] w-[18rem] rounded-xl bg-zinc-800" />
 							<div className="space-y-2">
 								<Skeleton className="h-4 w-[250px]" />
 								<Skeleton className="h-4 w-[200px]" />
