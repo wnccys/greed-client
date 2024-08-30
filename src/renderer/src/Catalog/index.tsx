@@ -20,16 +20,21 @@ export function Catalog() {
 		 window.api.getGamesByName(search).then((games) => {
 			setSearchGames(games);
 		 })
-
-		//  const timer = setTimeout(() => {
-		// 	const cu = useGamesImages(searchGames, setIsImageLoading)
-		// 	setSearchImages(cu);
-		//  }, 400);
-
-		//  return () => {
-		// 	clearTimeout(timer);
-		//  }
+		setIsImageLoading(true);
 	}, [search])
+
+	const searchImagesArr = useGamesImages(searchGames, setIsImageLoading);
+
+	useEffect(() => {
+			const timer = setTimeout(() => {
+			console.log("heree!!");
+			setSearchImages(searchImagesArr);
+		 }, 1000);
+
+		 return () => {
+			clearTimeout(timer);
+		 }
+	}, [searchImagesArr]);
 
 	useEffect(() => {
 		console.log("search images: ", searchImages);
@@ -115,27 +120,37 @@ export function Catalog() {
 							<div className="mt-5 flex flex-wrap justify-between gap-4">
 								{games[1].map((_, index) => {
 									return (
-										// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-										<Skeleton className="w-[16rem] mt-8 h-32 rounded-lg shadow-lg shadow-black bg-zinc-800" key={index}/>
+									// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+									<Skeleton key={index} className="w-[16rem] mt-8 h-32 rounded-lg shadow-lg 
+										shadow-black bg-zinc-800" />
 									)	
 								})}
 							</div>	
 						)}
 					</>
 				)) ||
-					"Searching..." && (
+					("Searching..." && !isImagesLoading && (
 					<div>
-						{searchGames?.slice(0,20).map((game, index) => {
+						{searchGames?.map((game, index) => {
 							return (
 							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 							<div key={index}>
 								{game.id}{" "}
 								{game.name}
-								{searchImages[index] || " no image."}
+								<img src={searchImages[index]} alt="searched_images" />
 							</div>)
 						})}
 					</div>
-					)}
+					)) || searchGames?.map((game, index) => {
+						return (
+							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+							<div key={index}>
+								{game.name}
+								{"<GameData>"}
+								<Skeleton className="h-48 w-48" />
+							</div>
+						)
+					})}
 			</div>
 		</div>
 	);

@@ -96,7 +96,9 @@ export function SelectedGame() {
 					};
 					reader.readAsDataURL(blobImage);
 				});
-		} catch (e) {}
+		} catch (e) {
+			console.log("Error at getting game logo: ", e);
+		}
 	}, [gameId]);
 
 	useEffect(() => {
