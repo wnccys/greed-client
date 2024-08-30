@@ -47,8 +47,7 @@ export function Catalog() {
 					<h1 className="text-2xl font-bold">Catalog</h1>
 				</div>{" "}
 				<div
-					className="rounded-md bg-zinc-800 flex p-2 ps-4 
-			items-center hover:shadow-xl"
+					className="rounded-md bg-zinc-800 flex p-2 ps-4 items-center"
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 						setIsSearching(e.target.value !== (undefined || ""));
 						setSearch(e.target.value);
@@ -58,8 +57,7 @@ export function Catalog() {
 					<img src={SearchIcon} alt="search-icon" className="size-4" />
 					<Input
 						className="max-w-[12vw] max-h-8 border-none focus-visible:ring-0 focus:max-w-[14vw] 
-				focus-visible:ring-offset-0 transition-all focus-visible:duration-300
-				focus-visible:border-none"
+				focus-visible:ring-offset-0 transition-all"
 						type="text"
 						placeholder="Search Games"
 					/>
