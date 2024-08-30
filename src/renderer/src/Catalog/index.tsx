@@ -27,7 +27,6 @@ export function Catalog() {
 
 	useEffect(() => {
 		const timer = setTimeout(() => {
-			console.log("heree!!");
 			setSearchImages(searchImagesArr);
 		}, 1000);
 
@@ -48,10 +47,10 @@ export function Catalog() {
 				</div>{" "}
 				<div
 					className="rounded-md bg-zinc-800 flex p-2 ps-4 items-center"
+					// When something is typed, set isSearching to true and set the current search string
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 						setIsSearching(e.target.value !== (undefined || ""));
 						setSearch(e.target.value);
-						console.log(e.target.value);
 					}}
 				>
 					<img src={SearchIcon} alt="search-icon" className="size-4" />
