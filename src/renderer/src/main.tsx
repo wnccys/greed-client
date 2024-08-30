@@ -23,7 +23,10 @@ import { Downloads } from './Downloads';
         element: <Catalog />,
       },
       {
-        path: "selected-game",
+        path: "selected-game/:gameId/:gameName",
+        loader: async ({ params }): Promise<[string | undefined, string | undefined]> => {
+          return [params.gameId, params.gameName];
+        },
         element: <SelectedGame />
       },
       {
@@ -32,8 +35,6 @@ import { Downloads } from './Downloads';
       }, 
       { path: "downloads", 
         element: <Downloads />
-
-
       }
     ],
     errorElement: <ErrorElement />

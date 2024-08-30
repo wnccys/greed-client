@@ -8,8 +8,16 @@ import {
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
-import { addGameSource, changeDBDefaultPath, getDBCurrentPath, getSourcesList, removeSourceFromDB } from "./model";
-import steamGames from "../steam-games/steam-games.json";
+import {
+	addGameSource,
+	changeDBDefaultPath,
+	getDBCurrentPath,
+	getDBGameInfos,
+	getDBGamesByName,
+	getSourcesList,
+	removeSourceFromDB,
+} from "./model";
+import type { Worker } from "node:worker_threads";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
@@ -17,12 +25,15 @@ ipcMain.handle("sendTorrentPath", handleTorrentPath);
 ipcMain.handle("addSourceToDB", handleNewTorrentSource);
 ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("changeDefaultPath", handleChangeDefaultPath);
+ipcMain.handle("startGameDownload", handleStartGameDownload);
+ipcMain.handle("getGamesByName", handleGetGamesByName);
 ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
+ipcMain.handle("getSelectedGameInfo", handleGetCurrentGameInfo);
 ipcMain.handle("getCurrentDownloadPath", handleGetCurrentDownloadPath);
 ipcMain.on("updateDownloadPath", handleUpdateDownloadPath);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
-ipcMain.on("updateTorrentPauseStatus" , handleUpdateTorrentPausedStatus);
+ipcMain.on("updateTorrentPauseStatus", handleUpdateTorrentPausedStatus);
 
 // ---- Sources ----
 async function handleGetSourcesList() {
@@ -41,6 +52,11 @@ async function handleRemoveSourceFromDB(
 }
 
 // ----Torrent----
+async function handleStartGameDownload(_event: IpcMainInvokeEvent, uris: string[]) {
+	const downloadFolder = await handleGetCurrentDownloadPath();
+	initTorrentDownload(uris[0], downloadFolder);
+}
+
 export function handleUpdateTorrentProgress(
 	torrentProgress: IpcMainEvent,
 	game: string,
@@ -64,7 +80,7 @@ export function handleUpdateTorrentProgress(
 
 function handleUpdateTorrentPausedStatus(status: IpcMainEvent) {
 	for (const win of BrowserWindow.getAllWindows()) {
-		win.webContents.send("updateTorrentPauseStatus",  status);
+		win.webContents.send("updateTorrentPauseStatus", status);
 	}
 }
 
@@ -86,22 +102,15 @@ export async function handleTorrentPath(
 export async function handleNewTorrentSource(
 	_event: IpcMainInvokeEvent,
 	sourceLink: string,
-): Promise<string[]> {
-	console.log(`sourceLink: ${sourceLink}`);
-
+) {
 	try {
 		new URL(sourceLink);
 	} catch (error) {
 		console.error("Invalid URL:", error);
-		return Promise.resolve(["Error", "Provide a valid URL."]);
 	}
 
 	const result = await fetch(sourceLink);
-	const stringifiedBody = JSON.stringify(await result.json());
-	handleMerge(stringifiedBody);
-	const response = addGameSource(stringifiedBody);
-
-	return response;
+	handleMerge(await result.json());
 }
 
 function handleTorrentDownloadComplete() {
@@ -149,24 +158,69 @@ async function handleGetCurrentDownloadPath() {
 	return await getDBCurrentPath();
 }
 
-interface steamGame {
-	id: number;
+import createWorker from "./worker?nodeWorker";
+import type { JSONGame } from "./worker";
+import type { Downloads } from "./entity/Downloads";
+
+interface Source {
 	name: string;
-	clientIcon: string;
+	downloads: JSONGame[];
 }
 
-async function handleMerge(sourceData: string) {
-	const jsonifiedSource = JSON.parse(sourceData).downloads;
-	const gameData = (steamGames as steamGame[]);
+function handleMerge(Source: Source) {
+	const jsonifiedLinks = Source.downloads;
+	const linksLength = jsonifiedLinks.length;
+	const workers: Worker[] = [];
+	let newDownloads: JSONGame[] = [];
+	let alreadyDone = 0;
 
-	// let count = 0;
-	// gameData.map((steamGame) => {
-	// 	for (const jsonGame of jsonifiedSource) {
-	// 		if (normalizeTitle(jsonGame.title) === normalizeTitle(steamGame.name)) {
-	// 			console.log(`match!!! ${steamGame.name}, ${jsonGame.title}`);
-	// 			count++
-	// 			console.log("count: ", count);
-	// 		} 
-	// 	}
-	// });
+	const workerLimit = 12;
+	for (let i = 0; i < workerLimit; i++) {
+		const worker = createWorker({});
+
+		worker.on("message", async (result: JSONGame[]) => {
+			console.log(`Performance on Worker-${i}: `, performance.now());
+			newDownloads = newDownloads.concat(result);
+			alreadyDone++;
+
+			if (alreadyDone === workerLimit) {
+				Source.downloads = newDownloads;
+				console.log("Total: ", newDownloads.length);
+				const result = await addGameSource(JSON.stringify(Source));
+				for (const win of BrowserWindow.getAllWindows()) {
+					win.webContents.send("mergeResult", result);
+				}
+			}
+		});
+
+		worker.on("error", (err) => {
+			console.error(`Worker-${i} Error: `, err);
+
+			for (const win of BrowserWindow.getAllWindows()) {
+				win.webContents.send("mergeResult", ["Error", `Merge failed: ${err}`]);
+			}
+		});
+
+		worker.on("exit", (code) => {
+			console.log(`Worker-${i} exited with code: `, code);
+		});
+
+		const initialSlice = Math.round((i / workerLimit) * linksLength);
+		const finalSlice = Math.round(((i + 1) / workerLimit) * linksLength) - 1;
+
+		console.log(`from: ${initialSlice}, to: ${finalSlice}`);
+		worker.postMessage(jsonifiedLinks.slice(initialSlice, finalSlice));
+		workers.push(worker);
+	}
+}
+
+async function handleGetCurrentGameInfo(
+	_event: IpcMainInvokeEvent,
+	gameId: number,
+): Promise<Downloads[]> {
+	return await getDBGameInfos(gameId);
+}
+
+async function handleGetGamesByName(_event: IpcMainInvokeEvent, name: string) {
+	return await getDBGamesByName(name);
 }

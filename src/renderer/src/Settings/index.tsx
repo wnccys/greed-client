@@ -66,25 +66,25 @@ export function Settings() {
 	function addSourceToDB() {
 		if (sourceLinkRef.current) {
 			if (sourceLinkRef.current.value.length > 0) {
-				window.api.addSourceToDB(sourceLinkRef.current.value).then((result) => {
+				window.api.addSourceToDB(sourceLinkRef.current.value);
+				window.electron.ipcRenderer.on("mergeResult", (_event, result: string[]) => {
 					if (result[0] === "Success") {
-						toast.success(result[0], {
-							description: result[1],
-						});
-
 						window.electron.ipcRenderer
 							.invoke("getSourcesList")
 							.then((receivedSources) => {
 								setSources(receivedSources);
 							});
 
-						setIsDialogOpen(false);
+						toast.success(result[0], {
+							description: result[1],
+						})
+						
 						return;
 					}
 
 					toast.error(result[0], {
 						description: result[1],
-					});
+					})
 				});
 			}
 		}
@@ -130,8 +130,8 @@ export function Settings() {
 
 	return (
 		<div
-			className="flex flex-col items-center self-center mt-[10em] p-5 
-			cursor-default rounded h-screen"
+			className="flex flex-col justify-start self-center mt-20 p-5
+			cursor-default rounded h-screen shadow-lg shadow-black"
 		>
 			<Tabs.Root className="flex flex-col w-[50rem]" defaultValue="tab1">
 				<Tabs.List
@@ -150,10 +150,10 @@ export function Settings() {
 					</Tabs.Trigger>
 					<Tabs.Trigger
 						className="bg-zinc-[#09090b] px-5 h-[45px] flex-1 flex items-center justify-center 
-			text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md  
-			data-[state=active]:shadow-current data-[state=active]:focus:relative 
-			data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0]
-			 data-[state=active]:focus:shadow-white outline-none cursor-default transition-all duration-300"
+						text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md  
+						data-[state=active]:shadow-current data-[state=active]:focus:relative 
+						data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0]
+						data-[state=active]:focus:shadow-white outline-none cursor-default transition-all duration-300"
 						value="tab2"
 					>
 						Sources
@@ -174,7 +174,7 @@ export function Settings() {
 							<Input className="" disabled value={downloadPath} />
 							<Button
 								className="float-right bg-neutral-600 ms-8 hover:bg-zinc-600 
-					hover:-translate-y-1 hover:duration-500 transition-all"
+								hover:-translate-y-1 hover:duration-500 transition-all"
 								onClick={changeDefaultPath}
 							>
 								Change
@@ -184,7 +184,7 @@ export function Settings() {
 					<div className="flex justify-end mt-5">
 						<Button
 							className="float-right bg-zinc-800
-				hover:bg-zinc-700 hover:-translate-y-1 hover:duration-500 transition-all mt-10"
+							hover:bg-zinc-700 hover:-translate-y-1 hover:duration-500 transition-all mt-10"
 							onClick={() => setIsDialogOpen(true)}
 						>
 							Save
@@ -195,7 +195,7 @@ export function Settings() {
 					className="grow p-5 bg-zinc-[#09090b] rounded-b-md outline-none"
 					value="tab2"
 				>
-					<div className="max-h-full p-5 rounded">
+					<div className="p-5 rounded">
 						<div className="self-center">
 							<Table className="mt-5 mb-5">
 								<TableHeader className="hover:bg-zinc-900">
@@ -221,7 +221,7 @@ export function Settings() {
 												<TableCell className="text-right">
 													<Button
 														className="bg-zinc-800 hover:bg-red-500
-												hover:-translate-y-1 hover:duration-500 transition-all"
+														hover:-translate-y-1 hover:duration-500 transition-all"
 														onClick={() => removeSourceFromDB(source.name)}
 													>
 														Remove
@@ -237,7 +237,7 @@ export function Settings() {
 								<DialogTrigger asChild>
 									<Button
 										className="float-right bg-zinc-800
-								hover:bg-zinc-700 hover:-translate-y-1 hover:duration-500 transition-all mt-10"
+										hover:bg-zinc-700 hover:-translate-y-1 hover:duration-500 transition-all mt-10"
 										onClick={() => setIsDialogOpen(true)}
 									>
 										Add
@@ -261,11 +261,11 @@ export function Settings() {
 										</DialogDescription>
 										<div
 											className="absolute right-4 top-2 rounded-sm opacity-70 
-								ring-offset-background hover:bg-zinc-800 
-								hover:-translate-y-[2px] hover:duration-300 
-								transition-all hover:opacity-100 focus:outline-none focus:ring-2 
-								focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
-								data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+											ring-offset-background hover:bg-zinc-800 
+											hover:-translate-y-[2px] hover:duration-300 
+											transition-all hover:opacity-100 focus:outline-none focus:ring-2 
+											focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
+											data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
 										>
 											<Cross2Icon
 												className="size-4 cursor-pointer"

@@ -3,8 +3,11 @@ import { GreedDataSource } from "./data-source";
 import { GreedSettings } from "./entity/Settings";
 import { Sources } from "./entity/Sources";
 import { Downloads } from "./entity/Downloads";
+import { SteamGames } from "./entity/SteamGames";
+import SteamJSONGames from "../steam-games/steam-games.json";
 import path from "node:path";
 import { ipcMain } from "electron";
+import { throttle } from "lodash-es";
 
 export function testDBConn() {
 	GreedDataSource.initialize()
@@ -25,10 +28,7 @@ export function testDBConn() {
 				.getRepository(GreedSettings)
 				.exists();
 
-			if (existingSettings) {
-				console.log("exists!!");
-			} else {
-				console.log("doesn't exists!!");
+			if (!existingSettings) {
 				greedSettings.downloadPath = path.resolve("./src/downloads");
 				greedSettings.username = hostname();
 
@@ -36,11 +36,19 @@ export function testDBConn() {
 					.getRepository(GreedSettings)
 					.save(greedSettings);
 			}
+
+			const existingSteamGames = await initializedGreedSource
+				.getRepository(SteamGames)
+				.exists();
+
+			if (!existingSteamGames) {
+				setSteamGames();
+			}
 		})
 		.catch((error) => console.log("Failed to load contents: ", error));
 }
 
-export async function addGameSource(receivedSource: string) {
+export async function addGameSource(receivedSource: string): Promise<string[]> {
 	const newSource = new Sources();
 	const newDownloads: Partial<Downloads>[] = [];
 	const parsedSource = JSON.parse(receivedSource);
@@ -55,7 +63,6 @@ export async function addGameSource(receivedSource: string) {
 	try {
 		await GreedDataSource.manager.save(newSource);
 	} catch (e) {
-		console.log(e);
 		return ["Error", "Duplicated Sources are not allowed."];
 	}
 
@@ -65,8 +72,8 @@ export async function addGameSource(receivedSource: string) {
 			newDownloads.push({
 				sourceId: downloadsId,
 				title: downloads.title,
-				normalizedTitle: normalizeTitle(downloads.title),
 				uris: downloads.uris,
+				steamId: downloads.steamId,
 				uploadDate: downloads.uploadDate,
 				fileSize: downloads.fileSize,
 			});
@@ -75,7 +82,6 @@ export async function addGameSource(receivedSource: string) {
 
 		return ["Success", "Source Successfully Added."];
 	} catch (e) {
-		console.log(e);
 		return ["Error", "Error during Downloads assignment."];
 	}
 }
@@ -100,7 +106,7 @@ export async function removeSourceFromDB(sourceName: string) {
 			sourceId: toBeDeleted.id,
 		});
 		await source.remove(toBeDeleted);
-		
+
 		return ["Success", "Source Removed From Database."];
 	} catch (e) {
 		return ["Error", "Source not found in Database."];
@@ -109,8 +115,10 @@ export async function removeSourceFromDB(sourceName: string) {
 
 export async function changeDBDefaultPath(folderPath: string[]) {
 	try {
-		const currentPath = await GreedDataSource.getRepository(GreedSettings).findOneBy({
-			id: 1
+		const currentPath = await GreedDataSource.getRepository(
+			GreedSettings,
+		).findOneBy({
+			id: 1,
 		});
 
 		if (currentPath) {
@@ -123,36 +131,56 @@ export async function changeDBDefaultPath(folderPath: string[]) {
 		}
 
 		return ["Error", "Default Path not Found."];
-
 	} catch (e) {
 		return ["Error", "Could not update default path."];
 	}
 }
 
-export async function getDBCurrentPath () {
-	return await GreedDataSource.getRepository(GreedSettings).findOneBy({
-		id: 1
-	}).then((record) => record?.downloadPath || "No Path");
+export async function getDBCurrentPath() {
+	return await GreedDataSource.getRepository(GreedSettings)
+		.findOneBy({
+			id: 1,
+		})
+		.then((record) => record?.downloadPath || "No Path");
 }
 
-function normalizeTitle(title: string) {
-    // Convert to lowercase
-    let normalized = title.toLowerCase();
+export async function getDBGameInfos(gameId: number) {
+	return await GreedDataSource.getRepository(Downloads).findBy({
+		steamId: gameId,
+	});
+}
 
-    // Remove content within parentheses and brackets
-    normalized = normalized.replace(/\(.*?\)/g, '').replace(/\[.*?\]/g, '');
+export const getDBGamesByName = throttle(async (name: string) => {
+	return await GreedDataSource.getRepository(SteamGames).find({
+		where: {
+			name: Like(`${name}%`),
+		},
+		take: 20,
+	})
+}, 100);
 
-    // Replace dots and hyphens with spaces
-    normalized = normalized.replace(/[.\-]/g, ' ');
+import createWorker from "./workerDB?nodeWorker";
+import { Like } from "typeorm";
+export type SteamJSONGame = {
+	id: number;
+	name: string;
+}
 
-    // Remove '+' signs and other special characters
-    normalized = normalized.replace(/[+]/g, ' ');
+async function setSteamGames() {
+	const steamGamesArr: SteamJSONGame[] = SteamJSONGames as SteamJSONGame[];
+	const worker = createWorker({});
 
-    // Remove any remaining special characters
-    normalized = normalized.replace(/[^a-z0-9\s]/g, '');
+	worker.on("message", async (result: string[]) => {
+		console.log(result);
+	});
 
-    // Replace multiple spaces with a single space and trim
-    normalized = normalized.replace(/\s+/g, ' ').trim();
+	worker.on("error", (err) => {
+		console.error("Worker  Error: ", err);
+	});
 
-    return normalized;
+	worker.on("exit", (code) => {
+		console.log("Worker exited with code: ", code);
+	});
+
+	worker.postMessage(steamGamesArr);
 }

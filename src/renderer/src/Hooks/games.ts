@@ -4,7 +4,6 @@ import gameData from "../../../steam-games/steam-games.json";
 interface Game {
 	id: number;
 	name: string;
-	clientIcon: string;
 }
 
 const gamesData: Game[] = gameData as Game[];
@@ -19,7 +18,7 @@ export function useCatalogGames(): [Dispatch<SetStateAction<number>>, Game[]] {
 	return selectedGames;
 }
 
-	export function useGamesImages (games: Game[]) {
+	export function useGamesImages (games: Game[], setIsImagesLoading: React.Dispatch<React.SetStateAction<boolean>>) {
     const [images, setImages] = useState<string[]>([]);
 
     useEffect(() => {
@@ -51,7 +50,12 @@ export function useCatalogGames(): [Dispatch<SetStateAction<number>>, Game[]] {
       };
 
         fetchImages();
-    }, [games[1]]);
+
+        return () => {
+            // REVIEW sets react proper image handling
+            setTimeout(() => setIsImagesLoading(false), 400);
+        }
+    }, [games[1], setIsImagesLoading]);
 
     return images;
 }

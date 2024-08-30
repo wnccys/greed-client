@@ -105,7 +105,7 @@ export function Downloads() {
 	return (
 		<div className="flex flex-col container scale-90 content-center h-screen mb-10">
 			{torrentInfo.currentProgress > 0 && (
-				<Card className="bg-black scale-100 pb-10">
+				<Card className="bg-black scale-100 pb-10 shadow-xl shadow-black">
 					<CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
 						<div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
 							<CardTitle>
@@ -168,7 +168,7 @@ export function Downloads() {
 				<h1 className="text-2xl">Queue</h1>
 				<div
 					className="size-24 w-full h-full flex flex-col border 
-			border-white bg-zinc-950 rounded-xl gap-2 p-5 pb-10"
+			border-white bg-zinc-950 rounded-xl gap-2 p-5 pb-10 shadow-xl shadow-black"
 				>
 					{(torrentInfo.currentProgress >= 0 && torrentInfo.timeRemaining && (
 						<div className="flex h-1/2rem">
