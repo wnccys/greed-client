@@ -17,28 +17,28 @@ export function Catalog() {
 	const [searchGames, setSearchGames] = useState<GlobalDownloads[]>([]);
 
 	useEffect(() => {
-		 window.api.getGamesByName(search).then((games) => {
+		window.api.getGamesByName(search).then((games) => {
 			setSearchGames(games);
-		 })
+		});
 		setIsImageLoading(true);
-	}, [search])
+	}, [search]);
 
 	const searchImagesArr = useGamesImages(searchGames, setIsImageLoading);
 
 	useEffect(() => {
-			const timer = setTimeout(() => {
+		const timer = setTimeout(() => {
 			console.log("heree!!");
 			setSearchImages(searchImagesArr);
-		 }, 1000);
+		}, 1000);
 
-		 return () => {
+		return () => {
 			clearTimeout(timer);
-		 }
+		};
 	}, [searchImagesArr]);
 
 	useEffect(() => {
 		console.log("search images: ", searchImages);
-	}, [searchImages])
+	}, [searchImages]);
 
 	return (
 		<div className="bg-[#171717]">
@@ -48,18 +48,18 @@ export function Catalog() {
 				</div>{" "}
 				<div
 					className="rounded-md bg-zinc-800 flex p-2 ps-4 
-				items-center hover:shadow-xl"
+			items-center hover:shadow-xl"
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 						setIsSearching(e.target.value !== (undefined || ""));
-						setSearch(e.target.value) 
+						setSearch(e.target.value);
 						console.log(e.target.value);
 					}}
 				>
 					<img src={SearchIcon} alt="search-icon" className="size-4" />
 					<Input
 						className="max-w-[12vw] max-h-8 border-none focus-visible:ring-0 focus:max-w-[14vw] 
-					focus-visible:ring-offset-0 transition-all focus-visible:duration-300
-					focus-visible:border-none"
+				focus-visible:ring-offset-0 transition-all focus-visible:duration-300
+				focus-visible:border-none"
 						type="text"
 						placeholder="Search Games"
 					/>
@@ -75,73 +75,80 @@ export function Catalog() {
 						>
 							{games[1][14].id <= 340 ? <CustomCarousel /> : null}
 						</div>
-						{
-						!isImagesLoading && (<>
-						<div
-							id="games-section"
-							className="mt-5 flex flex-wrap justify-between gap-4"
-						>
-							{games[1].map((_, key) => {
-									return ((
-										<GameCard
-											// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-											key={key}
-											gameId={games[1][key].id}
-											gameName={games[1][key].name}
-											gameImage={images[key]}
-										/>
-									))
-							})}
-						</div>
-						<div className="fixed right-1/2 left-3/4 z-20 top-full -translate-y-14 translate-x-48">
-							<Button
-								onClick={() => {
-									games[0]((currentValue) => currentValue + 1) 
-									setIsImageLoading(true);
-								}}
-								className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
-							>
-								Next Page
-							</Button>
-						</div>
-						<div className="fixed right-1/2 left-1/4 z-20 top-full -translate-y-14 -translate-x-12 w-fit rounded">
-							<Button
-								onClick={() => {
-									games[0]((currentValue) => currentValue - 1)
-									setIsImageLoading(true);
-								}}
-								{...(games[1][0].id < 30 && { disabled: true })}
-								className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
-							>
-								Previous Page
-							</Button>
-						</div>
-						</>) || (
+						{(!isImagesLoading && (
+							<>
+								<div
+									id="games-section"
+									className="mt-5 flex flex-wrap justify-between gap-4"
+								>
+									{games[1].map((_, key) => {
+										return (
+											<GameCard
+												// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+												key={key}
+												gameId={games[1][key].id}
+												gameName={games[1][key].name}
+												gameImage={images[key]}
+											/>
+										);
+									})}
+								</div>
+								<div className="fixed right-1/2 left-3/4 z-20 top-full -translate-y-14 translate-x-48">
+									<Button
+										onClick={() => {
+											games[0]((currentValue) => currentValue + 1);
+											setIsImageLoading(true);
+										}}
+										className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
+									>
+										Next Page
+									</Button>
+								</div>
+								<div className="fixed right-1/2 left-1/4 z-20 top-full -translate-y-14 -translate-x-12 w-fit rounded">
+									<Button
+										onClick={() => {
+											games[0]((currentValue) => currentValue - 1);
+											setIsImageLoading(true);
+										}}
+										{...(games[1][0].id < 30 && { disabled: true })}
+										className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
+									>
+										Previous Page
+									</Button>
+								</div>
+							</>
+						)) || (
 							<div className="mt-5 flex flex-wrap justify-between gap-4">
 								{games[1].map((_, index) => {
 									return (
-									// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-									<Skeleton key={index} className="w-[16rem] mt-8 h-32 rounded-lg shadow-lg 
-										shadow-black bg-zinc-800" />
-									)	
+										<Skeleton
+											// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+											key={index}
+											className="w-[16rem] mt-8 h-32 rounded-lg shadow-lg 
+									shadow-black bg-zinc-800"
+										/>
+									);
 								})}
-							</div>	
+							</div>
 						)}
 					</>
 				)) ||
-					("Searching..." && !isImagesLoading && (
-					<div>
-						{searchGames?.map((game, index) => {
-							return (
-							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-							<div key={index}>
-								{game.id}{" "}
-								{game.name}
-								<img src={searchImages[index]} alt="searched_images" />
-							</div>)
-						})}
-					</div>
-					)) || searchGames?.map((game, index) => {
+					(!isImagesLoading && (
+						<div className="mt-5 flex flex-wrap justify-between gap-4">
+							{searchGames?.map((game, index) => {
+								return (
+									<GameCard
+										// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+										key={index}
+										gameId={game.id}
+										gameName={game.name}
+										gameImage={searchImages[index]}
+									/>
+								);
+							})}
+						</div>
+					)) ||
+					searchGames?.map((game, index) => {
 						return (
 							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 							<div key={index}>
@@ -149,7 +156,7 @@ export function Catalog() {
 								{"<GameData>"}
 								<Skeleton className="h-48 w-48" />
 							</div>
-						)
+						);
 					})}
 			</div>
 		</div>
