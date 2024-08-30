@@ -18,44 +18,48 @@ export function useCatalogGames(): [Dispatch<SetStateAction<number>>, Game[]] {
 	return selectedGames;
 }
 
-	export function useGamesImages (games: Game[], setIsImagesLoading: React.Dispatch<React.SetStateAction<boolean>>) {
-    const [images, setImages] = useState<string[]>([]);
+export function useGamesImages(
+	games: Game[],
+	setIsImagesLoading: React.Dispatch<React.SetStateAction<boolean>>,
+) {
+	const [images, setImages] = useState<string[]>([]);
 
-    useEffect(() => {
-      if (games.length === 0) return; // Early exit if no games
+	useEffect(() => {
+		if (games.length === 0) return;
 
-      const fetchImages = async () => {
-        const fetchedImages: string[] = new Array(games.length).fill(''); // Initialize with empty strings
+		const fetchImages = async () => {
+			const fetchedImages: string[] = new Array(games.length).fill("");
 
-        await Promise.all(games.map(async (game, index) => {
-          try {
-            const response = await fetch(
-              `https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${game.id}/header.jpg`
-            );
-            const blobImage = await response.blob();
-            const reader = new FileReader();
-            return new Promise<void>((resolve) => {
-              reader.onload = () => {
-                fetchedImages[index] = reader.result as string;
-                resolve();
-              };
-              reader.readAsDataURL(blobImage);
-            });
-          } catch (e) {
-            console.log("Error fetching image: ", e);
-          }
-        }));
+			await Promise.all(
+				games.map(async (game, index) => {
+					try {
+						const response = await fetch(
+							`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${game.id}/header.jpg`,
+						);
+						const blobImage = await response.blob();
+						const reader = new FileReader();
+						return new Promise<void>((resolve) => {
+							reader.onload = () => {
+								fetchedImages[index] = reader.result as string;
+								resolve();
+							};
+							reader.readAsDataURL(blobImage);
+						});
+					} catch (e) {
+						console.log("Error fetching image: ", e);
+					}
+				}),
+			);
 
-        setImages(fetchedImages); // Update state once all images are fetched
-      };
+			setImages(fetchedImages);
+		};
 
-        fetchImages();
+		fetchImages();
 
-        return () => {
-            // REVIEW sets react proper image handling
-            setTimeout(() => setIsImagesLoading(false), 400);
-        }
-    }, [games[1], setIsImagesLoading]);
+		return () => {
+			setTimeout(() => setIsImagesLoading(false), 400);
+		};
+	}, [games[1], setIsImagesLoading]);
 
-    return images;
+	return images;
 }
