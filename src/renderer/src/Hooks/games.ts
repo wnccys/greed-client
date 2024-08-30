@@ -19,7 +19,7 @@ export function useCatalogGames(): [Dispatch<SetStateAction<number>>, Game[]] {
 	return selectedGames;
 }
 
-	export function useGamesImages (games: Game[]) {
+	export function useGamesImages (games: Game[], setIsImagesLoading: React.Dispatch<React.SetStateAction<boolean>>) {
     const [images, setImages] = useState<string[]>([]);
 
     useEffect(() => {
@@ -51,7 +51,11 @@ export function useCatalogGames(): [Dispatch<SetStateAction<number>>, Game[]] {
       };
 
         fetchImages();
-    }, [games[1]]);
+
+        return () => {
+            setIsImagesLoading(false);
+        }
+    }, [games[1], setIsImagesLoading]);
 
     return images;
 }

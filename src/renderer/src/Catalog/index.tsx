@@ -9,7 +9,8 @@ import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
 
 export function Catalog() {
 	const games = useCatalogGames();
-	const images = useGamesImages(games[1]);
+	const [isImagesLoading, setIsImageLoading] = useState<boolean>(true);
+	const images = useGamesImages(games[1], setIsImageLoading);
 	const [isSearching, setIsSearching] = useState<boolean>(false);
 	const [search, setSearch] = useState<string>("");
 	const [searchGames, setSearchGames] = useState<GlobalDownloads[]>([]);
@@ -19,10 +20,6 @@ export function Catalog() {
 			setSearchGames(games);
 		});
 	}, [search])
-
-	useEffect(() => {
-		console.log("images: ", images.slice(2));
-	}, [images])
 
 	return (
 		<div className="bg-[#171717]">
@@ -59,6 +56,8 @@ export function Catalog() {
 						>
 							{games[1][14].id <= 340 ? <CustomCarousel /> : null}
 						</div>
+						{
+						!isImagesLoading && (<>
 						<div
 							id="games-section"
 							className="mt-5 flex flex-wrap justify-between gap-4"
@@ -77,7 +76,10 @@ export function Catalog() {
 						</div>
 						<div className="fixed right-1/2 left-3/4 z-20 top-full -translate-y-14 translate-x-48">
 							<Button
-								onClick={() => games[0]((currentValue) => currentValue + 1)}
+								onClick={() => {
+									games[0]((currentValue) => currentValue + 1) 
+									setIsImageLoading(true);
+								}}
 								className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
 							>
 								Next Page
@@ -92,6 +94,16 @@ export function Catalog() {
 								Previous Page
 							</Button>
 						</div>
+						</>) || (
+							<div className="mt-5 flex flex-wrap justify-between gap-4">
+								{games[1].map((_, index) => {
+									return (
+										// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+										<Skeleton className="w-[16rem] p-2 h-40 shadow-lg shadow-black" key={index}/>
+									)	
+								})}
+							</div>	
+						)}
 					</>
 				)) ||
 					"Searching..." && (
