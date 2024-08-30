@@ -4,7 +4,6 @@ import gameData from "../../../steam-games/steam-games.json";
 interface Game {
 	id: number;
 	name: string;
-	clientIcon: string;
 }
 
 const gamesData: Game[] = gameData as Game[];

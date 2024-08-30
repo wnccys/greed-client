@@ -12,14 +12,28 @@ export function Catalog() {
 	const [isImagesLoading, setIsImageLoading] = useState<boolean>(true);
 	const images = useGamesImages(games[1], setIsImageLoading);
 	const [isSearching, setIsSearching] = useState<boolean>(false);
+	const [searchImages, setSearchImages] = useState<string[]>([]);
 	const [search, setSearch] = useState<string>("");
 	const [searchGames, setSearchGames] = useState<GlobalDownloads[]>([]);
 
 	useEffect(() => {
-		window.api.getGamesByName(search).then((games) => {
+		 window.api.getGamesByName(search).then((games) => {
 			setSearchGames(games);
-		});
+		 })
+
+		//  const timer = setTimeout(() => {
+		// 	const cu = useGamesImages(searchGames, setIsImageLoading)
+		// 	setSearchImages(cu);
+		//  }, 400);
+
+		//  return () => {
+		// 	clearTimeout(timer);
+		//  }
 	}, [search])
+
+	useEffect(() => {
+		console.log("search images: ", searchImages);
+	}, [searchImages])
 
 	return (
 		<div className="bg-[#171717]">
@@ -114,6 +128,7 @@ export function Catalog() {
 							<div key={index}>
 								{game.id}{" "}
 								{game.name}
+								{searchImages[index] || " no image."}
 							</div>)
 						})}
 					</div>
