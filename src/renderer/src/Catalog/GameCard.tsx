@@ -22,7 +22,7 @@ export function GameCard({ gameName, gameImage, gameId }) {
                                     className="rounded-lg"
                                 />
                                 <div className={`text-white absolute z-20
-                                ${!(gameName.length > 25) ? 
+                                ${!(gameName.length > 22) ? 
                                     "-translate-y-[2.5rem] hover:-translate-y-[3.9rem]" :
                                      "-translate-y-[3.6rem] hover:-translate-y-[5.5rem]"} 
                                 bg-zinc-950/40 transition-all duration-300 w-full`}
