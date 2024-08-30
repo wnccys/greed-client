@@ -300,7 +300,7 @@ export function SelectedGame() {
 
 					{(!isLoading && (<div
 						className="bg-[#1f1f1f] p-5 rounded-lg me-[1.5rem] h-fit shadow-black shadow-md 
-				hover:shadow-lg hover:shadow-black transition-all duration-200 text-sm"
+				hover:shadow-lg hover:shadow-black transition-all duration-200 text-sm max-w-[30rem]"
 					>
 						<p className="text-lg font-bold">Requirements</p>
 						<br />
