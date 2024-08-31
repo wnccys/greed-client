@@ -41,7 +41,7 @@ export function useSearchImages(
 		return () => {
 			setTimeout(() => setIsImagesLoading(false), 300);
 		};
-	}, [games[1], ]);
+	}, [games[1], setIsImagesLoading]);
 
 	return searchImages;
 }
