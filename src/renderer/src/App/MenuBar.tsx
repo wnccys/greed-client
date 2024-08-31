@@ -1,8 +1,3 @@
-import { Button } from "@renderer/ShadComponents/ui/button";
-import {
-	Cross1Icon,
-	MinusIcon,
-} from "@radix-ui/react-icons";
 import { Progress } from "@renderer/ShadComponents/ui/progress"
 import { Link, useLocation } from "react-router-dom";
 import { useDownloads } from "@renderer/Hooks/downloads";
