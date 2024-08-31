@@ -251,7 +251,8 @@ export function Settings() {
 											to a source. Some community-trusted sources can be found
 											here: {""}
 												{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-												<u onClick={() => window.api.openHydraLinks()} className="cursor-pointer">
+												<u onClick={() => window.api.openHydraLinks()} 
+												className="cursor-pointer">
 													https://hydralinks.cloud/sources/
 												</u>
 											.
