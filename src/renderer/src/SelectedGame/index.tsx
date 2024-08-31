@@ -14,7 +14,7 @@ import {
 	DialogTrigger,
 } from "@renderer/ShadComponents/ui/dialog";
 import { Label } from "@renderer/ShadComponents/ui/label";
-import { Card, CardContent } from "@renderer/ShadComponents/ui/card"
+import { Card } from "@renderer/ShadComponents/ui/card"
 import {
   Carousel,
   CarouselContent,
