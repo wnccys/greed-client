@@ -136,7 +136,7 @@ export function Settings() {
 			<Tabs.Root className="flex flex-col w-[50rem]" defaultValue="tab1">
 				<Tabs.List
 					className="shrink-0 flex border-b border-mauve6"
-					aria-label="Manage your account"
+					aria-label="Manage your settings"
 				>
 					<Tabs.Trigger
 						className="bg-zinc-[#09090b] px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] 
@@ -250,13 +250,10 @@ export function Settings() {
 											To add new sources, set a path to a .json file or a link
 											to a source. Some community-trusted sources can be found
 											here: {""}
-											<a
-												href="https://hydralinks.cloud/sources/"
-												target="_blank"
-												rel="noreferrer"
-											>
-												https://hydralinks.cloud/sources/
-											</a>
+												{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+												<u onClick={() => window.api.openHydraLinks()} className="cursor-pointer">
+													https://hydralinks.cloud/sources/
+												</u>
 											.
 										</DialogDescription>
 										<div
