@@ -6,7 +6,7 @@ import { useCatalogGames, useGamesImages } from "@renderer/Hooks/games";
 import { Button } from "@renderer/ShadComponents/ui/button";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
-import {} from "color-thief-node"
+import { useSearchImages } from "@renderer/Hooks/search";
 
 export function Catalog() {
 	const games = useCatalogGames();
@@ -18,21 +18,22 @@ export function Catalog() {
 	const [searchGames, setSearchGames] = useState<GlobalDownloads[]>([]);
 
 	useEffect(() => {
+		setIsImageLoading(true);
 		window.api.getGamesByName(search).then((games) => {
 			setSearchGames(games);
 		});
-		setIsImageLoading(true);
 	}, [search]);
 
-	const searchImagesArr = useGamesImages(searchGames, setIsImageLoading);
+	const searchImagesArr = useSearchImages(searchGames, setIsImageLoading);
 
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			setSearchImages(searchImagesArr);
-		}, 1000);
+		}, 1200);
 
 		return () => {
 			clearTimeout(timer);
+			setSearchImages([]);
 		};
 	}, [searchImagesArr]);
 
@@ -131,7 +132,7 @@ export function Catalog() {
 						)}
 					</>
 				)) ||
-					(!isImagesLoading && (
+					(isImagesLoading && (
 						<div className="mt-5 flex flex-wrap justify-between gap-4">
 							{searchGames?.map((game, index) => {
 								return (
@@ -146,16 +147,18 @@ export function Catalog() {
 							})}
 						</div>
 					)) ||
-					searchGames?.map((game, index) => {
-						return (
-							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-							<div key={index}>
-								{game.name}
-								{"<GameData>"}
-								<Skeleton className="h-48 w-48" />
-							</div>
-						);
-					})}
+					(
+					<div className="mt-5 flex flex-wrap justify-between gap-4">
+						{searchGames?.map((_, index) => {
+							return (
+								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+								<div key={index}>
+									<Skeleton className="h-[8rem] w-[17.5vw] rounded-lg" />
+								</div>
+							);
+						})}
+					</div>
+					)}
 			</div>
 		</div>
 	);
