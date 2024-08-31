@@ -2,6 +2,9 @@ import { Entity, PrimaryColumn, Column } from "typeorm";
 
 @Entity()
 export class Queue {
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryColumn()
+    torrentId: number
+
+    @Column()
+    status: 'paused' | 'downloading'
 }
