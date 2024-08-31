@@ -135,26 +135,17 @@ export function SelectedGame() {
 					{
 						(
 							!isLoading && 
-							<div className="bg-fixed w-full h-full bg-cover bg-center"
-							      style={{
-									backgroundImage: `url(${gameImage})`,
-									// backgroundSize: 'cover', // Optional: Adjust the size of the background image
-									backgroundSize: '100%',
-									backgroundPosition: 'center', // Optional: Center the background image
-									backgroundRepeat: 'no-repeat',
-									width: '100%', // Optional: Set width
-									height: '100vh', // Optional: Set height
-								}}	
-							>
-							
-								{/* <img src={gameImage} alt="game-cover" 
+							<div className="relative">
+								<div className="bg-fixed"
 									style={{
-										boxShadow: `0px 0px 150px
+										backgroundImage: `url(${gameImage})`,
+										minHeight: '50vh',
+										boxShadow: `0px 60px 160px
 										rgba(${imageSpotlightColor?.[0]},
 										${imageSpotlightColor?.[1]},
 										${imageSpotlightColor?.[2]}, 0.2)`,
-									}}
-								/>	 */}
+									}}	
+									/>
 							</div>
 						) 
 					|| (
@@ -166,7 +157,7 @@ export function SelectedGame() {
 
 			<div className="ms-6 absolute -translate-y-[9rem]">
 				{(gameIcon && (
-					<img src={gameIcon} alt="game-icon" className="h-[6rem] shadow-[#242424] p-5" />
+					<img src={gameIcon} alt="game-icon" className="h-[6rem] shadow-[#242424] p-2" />
 				)) || <Skeleton className="h-[5rem] w-[20rem] bg-zinc-950 rounded-xl" />}
 			</div>
 

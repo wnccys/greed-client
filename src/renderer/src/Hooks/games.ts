@@ -1,11 +1,6 @@
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import gameData from "../../../steam-games/steam-games.json";
 
-interface Game {
-	id: number;
-	name: string;
-}
-
 const gamesData: Game[] = gameData as Game[];
 export function useCatalogGames(): [Dispatch<SetStateAction<number>>, Game[]] {
 	const [index, setIndex] = useState<number>(0);

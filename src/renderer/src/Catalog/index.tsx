@@ -37,10 +37,6 @@ export function Catalog() {
 		};
 	}, [searchImagesArr]);
 
-	useEffect(() => {
-		console.log("search images: ", searchImages);
-	}, [searchImages]);
-
 	return (
 		<div className="bg-[#171717]">
 			<div className="flex gap-2 justify-between mt-10 me-10">
@@ -58,7 +54,7 @@ export function Catalog() {
 					<img src={SearchIcon} alt="search-icon" className="size-4" />
 					<Input
 						className="max-w-[12vw] max-h-8 border-none focus-visible:ring-0 focus:max-w-[14vw] 
-			focus-visible:ring-offset-0 transition-all"
+			focus-visible:ring-offset-0"
 						type="text"
 						placeholder="Search Games"
 					/>
@@ -132,7 +128,7 @@ export function Catalog() {
 						)}
 					</>
 				)) ||
-					(isImagesLoading && (
+					(!isImagesLoading && (
 						<div className="mt-5 flex flex-wrap justify-between gap-4">
 							{searchGames?.map((game, index) => {
 								return (

@@ -39,7 +39,7 @@ export function useSearchImages(
 		fetchImages();
 
 		return () => {
-			setTimeout(() => setIsImagesLoading(false), 400);
+			setTimeout(() => setIsImagesLoading(false), 300);
 		};
 	}, [games[1], setIsImagesLoading]);
 
