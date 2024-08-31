@@ -25,10 +25,7 @@ export function testDBConn() {
 				.getRepository(GreedSettings)
 				.exists();
 
-			if (existingSettings) {
-				console.log("exists!!");
-			} else {
-				console.log("doesn't exists!!");
+			if (!existingSettings) {
 				greedSettings.downloadPath = path.resolve("./src/downloads");
 				greedSettings.username = hostname();
 
@@ -40,7 +37,7 @@ export function testDBConn() {
 		.catch((error) => console.log("Failed to load contents: ", error));
 }
 
-export async function addGameSource(receivedSource: string) {
+export async function addGameSource(receivedSource: string): Promise<string[]> {
 	const newSource = new Sources();
 	const newDownloads: Partial<Downloads>[] = [];
 	const parsedSource = JSON.parse(receivedSource);
@@ -55,7 +52,6 @@ export async function addGameSource(receivedSource: string) {
 	try {
 		await GreedDataSource.manager.save(newSource);
 	} catch (e) {
-		console.log(e);
 		return ["Error", "Duplicated Sources are not allowed."];
 	}
 
@@ -65,8 +61,8 @@ export async function addGameSource(receivedSource: string) {
 			newDownloads.push({
 				sourceId: downloadsId,
 				title: downloads.title,
-				normalizedTitle: normalizeTitle(downloads.title),
 				uris: downloads.uris,
+				steamId: downloads.steamId,
 				uploadDate: downloads.uploadDate,
 				fileSize: downloads.fileSize,
 			});
@@ -75,7 +71,6 @@ export async function addGameSource(receivedSource: string) {
 
 		return ["Success", "Source Successfully Added."];
 	} catch (e) {
-		console.log(e);
 		return ["Error", "Error during Downloads assignment."];
 	}
 }
@@ -100,7 +95,7 @@ export async function removeSourceFromDB(sourceName: string) {
 			sourceId: toBeDeleted.id,
 		});
 		await source.remove(toBeDeleted);
-		
+
 		return ["Success", "Source Removed From Database."];
 	} catch (e) {
 		return ["Error", "Source not found in Database."];
@@ -135,24 +130,11 @@ export async function getDBCurrentPath () {
 	}).then((record) => record?.downloadPath || "No Path");
 }
 
-function normalizeTitle(title: string) {
-    // Convert to lowercase
-    let normalized = title.toLowerCase();
+export async function getDBGameInfos(gameId: number) {
+	return await GreedDataSource.getRepository(Downloads).findBy({
+		steamId: gameId,
+	});
+}
 
-    // Remove content within parentheses and brackets
-    normalized = normalized.replace(/\(.*?\)/g, '').replace(/\[.*?\]/g, '');
-
-    // Replace dots and hyphens with spaces
-    normalized = normalized.replace(/[.\-]/g, ' ');
-
-    // Remove '+' signs and other special characters
-    normalized = normalized.replace(/[+]/g, ' ');
-
-    // Remove any remaining special characters
-    normalized = normalized.replace(/[^a-z0-9\s]/g, '');
-
-    // Replace multiple spaces with a single space and trim
-    normalized = normalized.replace(/\s+/g, ' ').trim();
-
-    return normalized;
+export async function getDBGamesByName(name: string) {
 }

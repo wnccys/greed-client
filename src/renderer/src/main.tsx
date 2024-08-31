@@ -11,6 +11,7 @@ import { Catalog } from './Catalog';
 import { ErrorElement } from './ErrorElement';
 import { Settings } from './Settings'; 
 import { Downloads } from './Downloads';
+import { Library } from './Library'
 
  const router = createBrowserRouter([
   {
@@ -23,16 +24,21 @@ import { Downloads } from './Downloads';
         element: <Catalog />,
       },
       {
-        path: "selected-game",
+        path: "selected-game/:gameId/:gameName",
+        loader: async ({ params }): Promise<[string | undefined, string | undefined]> => {
+          return [params.gameId, params.gameName];
+        },
         element: <SelectedGame />
       },
       {
         path: "settings",
         element: <Settings />
-      },
-      {
-        path: "downloads",
-        element: <Downloads />,
+      }, 
+      { path: "downloads", 
+        element: <Downloads />
+      }
+      , { path: "library", 
+        element: < Library/>
       }
     ],
     errorElement: <ErrorElement />
