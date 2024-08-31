@@ -207,3 +207,6 @@ export async function addNewGameRegisteredPath(
 		execPath: newPath,
 	});
 }
+
+
+export async function saveCurrentQueue() {}
