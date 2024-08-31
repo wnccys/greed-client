@@ -112,7 +112,7 @@ export function Catalog() {
 	}
 
 	function SearchGamesCard() {
-		if (!isImagesLoading) {
+		if (!isImagesLoading && searchImages.length > 0) {
 			return (
 				<div className="mt-5 flex flex-wrap justify-between gap-4">
 					{searchGames?.map((game, index) => {
