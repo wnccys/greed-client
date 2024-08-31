@@ -4,6 +4,7 @@ import { GreedSettings } from "./entity/Settings";
 import { Sources } from "./entity/Sources";
 import { Downloads } from "./entity/Downloads";
 import { SteamGames } from "./entity/SteamGames";
+import { GamePath } from "./entity/GamePath";
 import SteamJSONGames from "../steam-games/steam-games.json";
 import path from "node:path";
 import { ipcMain } from "electron";
@@ -156,7 +157,7 @@ export const getDBGamesByName = throttle(async (name: string) => {
 			name: Like(`${name}%`),
 		},
 		take: 20,
-	})
+	});
 }, 100);
 
 import createWorker from "./workerDB?nodeWorker";
@@ -164,7 +165,7 @@ import { Like } from "typeorm";
 export type SteamJSONGame = {
 	id: number;
 	name: string;
-}
+};
 
 async function setSteamGames() {
 	const steamGamesArr: SteamJSONGame[] = SteamJSONGames as SteamJSONGame[];
@@ -184,3 +185,28 @@ async function setSteamGames() {
 
 	worker.postMessage(steamGamesArr);
 }
+
+export async function getGameRegisteredPath(gameSteamId: number) {
+	return GreedDataSource.getRepository(GamePath).findOneBy({
+		steamId: gameSteamId,
+	});
+}
+
+export async function addNewGameRegisteredPath(
+	gameName: string,
+	gameSteamId: number,
+	gameIcon: string,
+	gameURIS: string[],
+	newPath: string,
+) {
+	await GreedDataSource.getRepository(GamePath).save({
+		gameName: gameName,
+		steamId: gameSteamId,
+		icon: gameIcon,
+		uris: gameURIS,
+		execPath: newPath,
+	});
+}
+
+
+export async function saveCurrentQueue() {}

@@ -14,7 +14,7 @@ import {
 	DialogTrigger,
 } from "@renderer/ShadComponents/ui/dialog";
 import { Label } from "@renderer/ShadComponents/ui/label";
-import { Card, CardContent } from "@renderer/ShadComponents/ui/card"
+import { Card } from "@renderer/ShadComponents/ui/card"
 import {
   Carousel,
   CarouselContent,
@@ -22,14 +22,14 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@renderer/ShadComponents/ui/carousel"
-import { getColor, getColorFromURL, type Palette } from "color-thief-node";
+import { getColorFromURL, type Palette } from "color-thief-node";
 
 export function SelectedGame() {
 	const [gameId, gameName] = useLoaderData() as [number, string];
 	const [isLoading, setIsLoading] = useState(true);
 	const [gameImage, setGameImage] = useState<string>("");
-	const [imageSpotlightColor, setImageSpotlightColor] = useState<Palette>();
-	const [gameIcon, setGameIcon] = useState<string>();
+	const [imageSpotlightColor, setImageSpotlightColor] = useState<Palette>([255,255,255]);
+	const [gameIcon, setGameIcon] = useState<string>("");
 	const steamInfoBaseURL = `https://store.steampowered.com/api/appdetails?appids=${gameId}`;
 	const [gameInfos, setGamesInfos] = useState<GlobalDownloads[]>([]);
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -112,8 +112,19 @@ export function SelectedGame() {
 		});
 	}, [gameId]);
 
+	function verifyGamePath() {
+		window.api.getGameRegisteredPath(gameName, gameId, gameIcon, gameInfos.map((downloadOption) => {
+			return downloadOption.uris
+		})).then((result) => {
+			if (result[0] === "Success") {
+				console.log(result[1]);
+				return;
+			}
+		});
+	}
+
 	function startGameDownload() {
-		window.api.startGameDownload(selectedDownload);	
+		window.api.startGameDownload(selectedDownload);
 	}
 
 	return (
@@ -181,7 +192,7 @@ export function SelectedGame() {
 								hover:text-white w-full 
 							h-full ps-10 pe-10 text-lg transition delay-75 duration-300 
 							hover:bg-black"
-							onClick={() => window.tests.startTorrentDownloadTest()}
+							onClick={verifyGamePath}
 						>
 							Play
 						</Button>

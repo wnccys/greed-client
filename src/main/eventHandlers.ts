@@ -4,20 +4,24 @@ import {
 	dialog,
 	BrowserWindow,
 	ipcMain,
+	shell,
 } from "electron";
 import path from "node:path";
 import { initTorrentDownload } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
 import {
 	addGameSource,
+	addNewGameRegisteredPath,
 	changeDBDefaultPath,
 	getDBCurrentPath,
 	getDBGameInfos,
 	getDBGamesByName,
+	getGameRegisteredPath,
 	getSourcesList,
 	removeSourceFromDB,
 } from "./model";
 import type { Worker } from "node:worker_threads";
+import { execFile } from "node:child_process";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
@@ -27,13 +31,19 @@ ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("changeDefaultPath", handleChangeDefaultPath);
 ipcMain.handle("startGameDownload", handleStartGameDownload);
 ipcMain.handle("getGamesByName", handleGetGamesByName);
+ipcMain.handle("openHydraLinks", handleOpenHydraLinks);
 ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 ipcMain.handle("getSelectedGameInfo", handleGetCurrentGameInfo);
 ipcMain.handle("getCurrentDownloadPath", handleGetCurrentDownloadPath);
+ipcMain.handle("verifyGameRegisteredPath", handleVerifyGameRegisteredPath);
 ipcMain.on("updateDownloadPath", handleUpdateDownloadPath);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
 ipcMain.on("updateTorrentPauseStatus", handleUpdateTorrentPausedStatus);
+
+async function handleOpenHydraLinks() {
+	shell.openExternal("https://hydralinks.cloud/sources/");
+}
 
 // ---- Sources ----
 async function handleGetSourcesList() {
@@ -52,7 +62,10 @@ async function handleRemoveSourceFromDB(
 }
 
 // ----Torrent----
-async function handleStartGameDownload(_event: IpcMainInvokeEvent, uris: string[]) {
+async function handleStartGameDownload(
+	_event: IpcMainInvokeEvent,
+	uris: string[],
+) {
 	const downloadFolder = await handleGetCurrentDownloadPath();
 	initTorrentDownload(uris[0], downloadFolder);
 }
@@ -223,4 +236,50 @@ async function handleGetCurrentGameInfo(
 
 async function handleGetGamesByName(_event: IpcMainInvokeEvent, name: string) {
 	return await getDBGamesByName(name);
+}
+
+async function handleVerifyGameRegisteredPath(
+	_event: IpcMainInvokeEvent,
+	gameName: string,
+	gameSteamId: number,
+	gameIcon: string,
+	gameURIS: string[],
+): Promise<string[]> {
+	const gamePathObj = await getGameRegisteredPath(gameSteamId);
+	if (gamePathObj) {
+		shell.openPath(gamePathObj.execPath).then((result) => {
+			if (result) {
+				console.error("Error executing as admin: ", result);
+			}
+
+			console.log("Success running file.");
+		});
+
+		return ["Success", "App Initiated"];
+	}
+
+	const { canceled, filePaths } = await dialog.showOpenDialog({
+		title: "Select Game Executable",
+		properties: ["openFile"],
+		filters: [{ name: "Executables", extensions: ["exe"] }],
+	});
+
+	const fileExtension = path.extname(filePaths[0]).toLowerCase();
+
+	if (fileExtension !== ".exe") {
+		return ["Error", "Only executables are allowed."];
+	}
+
+	if (canceled) {
+		return ["Warning", "No Path Selected."];
+	}
+
+	await addNewGameRegisteredPath(
+		gameName,
+		gameSteamId,
+		gameIcon,
+		gameURIS,
+		filePaths[0],
+	);
+	return ["Success", "Path added."];
 }

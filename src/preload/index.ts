@@ -17,6 +17,7 @@ const api = {
 	pauseTorrent: () => ipcRenderer.invoke("pauseTorrent"),
 	resumeTorrent: () => ipcRenderer.invoke("resumeTorrent"),
 	removeTorrent: () => ipcRenderer.invoke("removeTorrent"),
+	openHydraLinks: () => ipcRenderer.invoke("openHydraLinks"),
 	startGameDownload: (uris: string[]) =>
 		ipcRenderer.invoke("startGameDownload", uris),
 	getGamesByName: (name: string) => ipcRenderer.invoke("getGamesByName", name),
@@ -27,6 +28,19 @@ const api = {
 	removeSourceFromDB: (sourceName: string) =>
 		ipcRenderer.invoke("removeSourceFromDB", sourceName),
 	changeDefaultPath: () => ipcRenderer.invoke("changeDefaultPath"),
+	getGameRegisteredPath: (
+		gameName: string,
+		steamGameId: number,
+		gameIcon: string,
+		gameURIS: string[],
+	) =>
+		ipcRenderer.invoke(
+			"verifyGameRegisteredPath",
+			gameName,
+			steamGameId,
+			gameIcon,
+			gameURIS,
+		),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
