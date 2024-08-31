@@ -26,6 +26,11 @@ declare global {
     }[];
   }
 
+  interface Game {
+    id: number;
+    name: string;
+  }
+
   interface Api {
     sendTorrentPath: (path: string) => Promise<string | undefined>, 
     handleFileSelect: () => string,
