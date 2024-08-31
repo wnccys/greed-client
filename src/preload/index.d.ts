@@ -38,6 +38,7 @@ declare global {
 		pauseTorrent: () => null;
 		resumeTorrent: () => null;
 		removeTorrent: () => null;
+		openHydraLinks: () => null;
 		addSourceToDB: (sourceLink: string) => null;
 		startGameDownload: (uris: string[]) => null;
 		getGamesByName: (name: string) => Promise<GlobalDownloads[]>;
