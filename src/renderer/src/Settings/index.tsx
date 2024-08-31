@@ -202,7 +202,7 @@ export function Settings() {
 									<TableRow>
 										<TableHead className="w-[160px]">Source Name</TableHead>
 										<TableHead>Status</TableHead>
-										<TableHead className="text-right">Repacks</TableHead>
+										<TableHead>Repacks</TableHead>
 									</TableRow>
 								</TableHeader>
 								<TableBody>
@@ -215,7 +215,7 @@ export function Settings() {
 													{String(source.name).slice(1, -1)}
 												</TableCell>
 												<TableCell>Syncronized</TableCell>
-												<TableCell className="text-right">
+												<TableCell> 
 													{source.downloadsCount}
 												</TableCell>
 												<TableCell className="text-right">
