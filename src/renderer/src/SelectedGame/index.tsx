@@ -22,11 +22,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@renderer/ShadComponents/ui/carousel"
+import { getColor, getColorFromURL, type Palette } from "color-thief-node";
 
 export function SelectedGame() {
 	const [gameId, gameName] = useLoaderData() as [number, string];
 	const [isLoading, setIsLoading] = useState(true);
-	const [gameImage, setGameImage] = useState<string>();
+	const [gameImage, setGameImage] = useState<string>("");
+	const [imageSpotlightColor, setImageSpotlightColor] = useState<Palette>();
 	const [gameIcon, setGameIcon] = useState<string>();
 	const steamInfoBaseURL = `https://store.steampowered.com/api/appdetails?appids=${gameId}`;
 	const [gameInfos, setGamesInfos] = useState<GlobalDownloads[]>([]);
@@ -81,7 +83,7 @@ export function SelectedGame() {
 					reader.readAsDataURL(blobImage);
 				});
 		} catch (e) {
-			console.log("failed to get game image: ", e);
+			console.log("Failed to get game image: ", e);
 		}
 
 		try {
@@ -93,6 +95,9 @@ export function SelectedGame() {
 				.then((blobImage) => {
 					reader.onload = () => {
 						setGameIcon(reader.result as string);
+						getColorFromURL(reader.result as string).then((palette) => {
+							setImageSpotlightColor(palette);
+						});
 					};
 					reader.readAsDataURL(blobImage);
 				});
@@ -109,17 +114,16 @@ export function SelectedGame() {
 
 	function startGameDownload() {
 		window.api.startGameDownload(selectedDownload);	
-		console.log(selectedDownload);
 	}
 
 	return (
 		<div className="h-screen">
 			<div id="game-cover">
-				<div className="absolute text-lg translate-x-8 translate-y-6 mt-2">
-					<Link to="../catalog">
+				<div className="absolute text-lg translate-x-8 translate-y-6 mt-2 z-40">
+					<Link to="../catalog" className="absolute">
 						<DoubleArrowLeftIcon
 							className="size-6 delay-150 hover:-translate-y-1
-					transition hover:scale-105 duration-300 z-20"
+					transition hover:scale-105 duration-300 z-50"
 						/>
 					</Link>
 				</div>
@@ -128,9 +132,21 @@ export function SelectedGame() {
 						!gameImage?.startsWith("data:text") ? "" : "w-full h-[400px] border"
 					}
 				>
-					{(!isLoading && <img src={gameImage} alt="game-cover" />) || (
-						<Skeleton className="h-[20rem] w-full bg-zinc-800" />
-					)}
+					{
+						(
+							!isLoading && <img src={gameImage} alt="game-cover" 
+											style={{
+												boxShadow: `0px 0px 150px
+												rgba(${imageSpotlightColor?.[0]},
+												${imageSpotlightColor?.[1]},
+												${imageSpotlightColor?.[2]}, 0.2)`,
+											}}
+										/>
+						) 
+					|| (
+							<Skeleton className="h-[20rem] w-full bg-zinc-800" />
+						)
+					}
 				</div>
 			</div>
 
@@ -156,8 +172,10 @@ export function SelectedGame() {
 					</div>
 					<div>
 						<Button
-							className="p-6 bg-white text-zinc-900 hover:text-white w-full 
-					h-full ps-10 pe-10 text-lg transition delay-75 duration-300 hover:bg-zinc-950"
+							className="p-6 bg-white text-zinc-900 
+								hover:text-white w-full 
+							h-full ps-10 pe-10 text-lg transition delay-75 duration-300 
+							hover:bg-black"
 							onClick={() => window.tests.startTorrentDownloadTest()}
 						>
 							Play

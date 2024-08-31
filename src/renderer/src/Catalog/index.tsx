@@ -6,6 +6,7 @@ import { useCatalogGames, useGamesImages } from "@renderer/Hooks/games";
 import { Button } from "@renderer/ShadComponents/ui/button";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
+import {} from "color-thief-node"
 
 export function Catalog() {
 	const games = useCatalogGames();
@@ -56,7 +57,7 @@ export function Catalog() {
 					<img src={SearchIcon} alt="search-icon" className="size-4" />
 					<Input
 						className="max-w-[12vw] max-h-8 border-none focus-visible:ring-0 focus:max-w-[14vw] 
-				focus-visible:ring-offset-0 transition-all"
+			focus-visible:ring-offset-0 transition-all"
 						type="text"
 						placeholder="Search Games"
 					/>
@@ -122,7 +123,7 @@ export function Catalog() {
 											// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 											key={index}
 											className="w-[16rem] mt-8 h-32 rounded-lg shadow-lg 
-									shadow-black bg-zinc-800"
+								shadow-black bg-zinc-800"
 										/>
 									);
 								})}
