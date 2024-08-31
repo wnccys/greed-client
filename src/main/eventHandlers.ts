@@ -21,7 +21,7 @@ import {
 	removeSourceFromDB,
 } from "./model";
 import type { Worker } from "node:worker_threads";
-import { execFile } from "node:child_process" 
+import { execFile } from "node:child_process";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
@@ -31,6 +31,7 @@ ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("changeDefaultPath", handleChangeDefaultPath);
 ipcMain.handle("startGameDownload", handleStartGameDownload);
 ipcMain.handle("getGamesByName", handleGetGamesByName);
+ipcMain.handle("openHydraLinks", handleOpenHydraLinks);
 ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 ipcMain.handle("getSelectedGameInfo", handleGetCurrentGameInfo);
 ipcMain.handle("getCurrentDownloadPath", handleGetCurrentDownloadPath);
@@ -39,6 +40,10 @@ ipcMain.on("updateDownloadPath", handleUpdateDownloadPath);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
 ipcMain.on("updateTorrentPauseStatus", handleUpdateTorrentPausedStatus);
+
+async function handleOpenHydraLinks() {
+	shell.openExternal("https://hydralinks.cloud/sources/");
+}
 
 // ---- Sources ----
 async function handleGetSourcesList() {
@@ -238,7 +243,7 @@ async function handleVerifyGameRegisteredPath(
 	gameName: string,
 	gameSteamId: number,
 	gameIcon: string,
-	gameURIS: string[]
+	gameURIS: string[],
 ): Promise<string[]> {
 	const gamePathObj = await getGameRegisteredPath(gameSteamId);
 	if (gamePathObj) {
@@ -251,17 +256,17 @@ async function handleVerifyGameRegisteredPath(
 		});
 
 		return ["Success", "App Initiated"];
-	};
+	}
 
 	const { canceled, filePaths } = await dialog.showOpenDialog({
 		title: "Select Game Executable",
 		properties: ["openFile"],
-		filters: [{ name: 'Executables', extensions: ['exe'] }],
+		filters: [{ name: "Executables", extensions: ["exe"] }],
 	});
 
 	const fileExtension = path.extname(filePaths[0]).toLowerCase();
 
-	if (fileExtension !== '.exe') {
+	if (fileExtension !== ".exe") {
 		return ["Error", "Only executables are allowed."];
 	}
 
@@ -269,6 +274,12 @@ async function handleVerifyGameRegisteredPath(
 		return ["Warning", "No Path Selected."];
 	}
 
-	await addNewGameRegisteredPath(gameName, gameSteamId, gameIcon, gameURIS, filePaths[0]);
+	await addNewGameRegisteredPath(
+		gameName,
+		gameSteamId,
+		gameIcon,
+		gameURIS,
+		filePaths[0],
+	);
 	return ["Success", "Path added."];
 }
