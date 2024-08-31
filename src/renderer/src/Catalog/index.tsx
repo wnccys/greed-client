@@ -6,6 +6,7 @@ import { useCatalogGames, useGamesImages } from "@renderer/Hooks/games";
 import { Button } from "@renderer/ShadComponents/ui/button";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
+import { useSearchImages } from "@renderer/Hooks/search";
 
 export function Catalog() {
 	const games = useCatalogGames();
@@ -17,28 +18,24 @@ export function Catalog() {
 	const [searchGames, setSearchGames] = useState<GlobalDownloads[]>([]);
 
 	useEffect(() => {
+		setIsImageLoading(true);
 		window.api.getGamesByName(search).then((games) => {
 			setSearchGames(games);
 		});
-		setIsImageLoading(true);
 	}, [search]);
 
-	const searchImagesArr = useGamesImages(searchGames, setIsImageLoading);
+	const searchImagesArr = useSearchImages(searchGames, setIsImageLoading);
 
 	useEffect(() => {
 		const timer = setTimeout(() => {
-			console.log("heree!!");
 			setSearchImages(searchImagesArr);
-		}, 1000);
+		}, 1200);
 
 		return () => {
 			clearTimeout(timer);
+			setSearchImages([]);
 		};
 	}, [searchImagesArr]);
-
-	useEffect(() => {
-		console.log("search images: ", searchImages);
-	}, [searchImages]);
 
 	return (
 		<div className="bg-[#171717]">
@@ -48,16 +45,16 @@ export function Catalog() {
 				</div>{" "}
 				<div
 					className="rounded-md bg-zinc-800 flex p-2 ps-4 items-center"
+					// When something is typed, set isSearching to true and set the current search string
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 						setIsSearching(e.target.value !== (undefined || ""));
 						setSearch(e.target.value);
-						console.log(e.target.value);
 					}}
 				>
 					<img src={SearchIcon} alt="search-icon" className="size-4" />
 					<Input
 						className="max-w-[12vw] max-h-8 border-none focus-visible:ring-0 focus:max-w-[14vw] 
-				focus-visible:ring-offset-0 transition-all"
+			focus-visible:ring-offset-0"
 						type="text"
 						placeholder="Search Games"
 					/>
@@ -123,7 +120,7 @@ export function Catalog() {
 											// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 											key={index}
 											className="w-[16rem] mt-8 h-32 rounded-lg shadow-lg 
-									shadow-black bg-zinc-800"
+								shadow-black bg-zinc-800"
 										/>
 									);
 								})}
@@ -146,16 +143,18 @@ export function Catalog() {
 							})}
 						</div>
 					)) ||
-					searchGames?.map((game, index) => {
-						return (
-							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-							<div key={index}>
-								{game.name}
-								{"<GameData>"}
-								<Skeleton className="h-48 w-48" />
-							</div>
-						);
-					})}
+					(
+					<div className="mt-5 flex flex-wrap justify-between gap-4">
+						{searchGames?.map((_, index) => {
+							return (
+								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+								<div key={index}>
+									<Skeleton className="h-[8rem] w-[17.5vw] rounded-lg" />
+								</div>
+							);
+						})}
+					</div>
+					)}
 			</div>
 		</div>
 	);

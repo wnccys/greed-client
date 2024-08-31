@@ -14,7 +14,7 @@ import {
 	DialogTrigger,
 } from "@renderer/ShadComponents/ui/dialog";
 import { Label } from "@renderer/ShadComponents/ui/label";
-import { Card, CardContent } from "@renderer/ShadComponents/ui/card"
+import { Card } from "@renderer/ShadComponents/ui/card"
 import {
   Carousel,
   CarouselContent,
@@ -22,12 +22,14 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@renderer/ShadComponents/ui/carousel"
+import { getColorFromURL, type Palette } from "color-thief-node";
 
 export function SelectedGame() {
 	const [gameId, gameName] = useLoaderData() as [number, string];
 	const [isLoading, setIsLoading] = useState(true);
-	const [gameImage, setGameImage] = useState<string>();
-	const [gameIcon, setGameIcon] = useState<string>();
+	const [gameImage, setGameImage] = useState<string>("");
+	const [imageSpotlightColor, setImageSpotlightColor] = useState<Palette>([255,255,255]);
+	const [gameIcon, setGameIcon] = useState<string>("");
 	const steamInfoBaseURL = `https://store.steampowered.com/api/appdetails?appids=${gameId}`;
 	const [gameInfos, setGamesInfos] = useState<GlobalDownloads[]>([]);
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -81,7 +83,7 @@ export function SelectedGame() {
 					reader.readAsDataURL(blobImage);
 				});
 		} catch (e) {
-			console.log("failed to get game image: ", e);
+			console.log("Failed to get game image: ", e);
 		}
 
 		try {
@@ -93,6 +95,9 @@ export function SelectedGame() {
 				.then((blobImage) => {
 					reader.onload = () => {
 						setGameIcon(reader.result as string);
+						getColorFromURL(reader.result as string).then((palette) => {
+							setImageSpotlightColor(palette);
+						});
 					};
 					reader.readAsDataURL(blobImage);
 				});
@@ -107,19 +112,29 @@ export function SelectedGame() {
 		});
 	}, [gameId]);
 
+	function verifyGamePath() {
+		window.api.getGameRegisteredPath(gameName, gameId, gameIcon, gameInfos.map((downloadOption) => {
+			return downloadOption.uris
+		})).then((result) => {
+			if (result[0] === "Success") {
+				console.log(result[1]);
+				return;
+			}
+		});
+	}
+
 	function startGameDownload() {
 		window.api.startGameDownload(selectedDownload);	
-		console.log(selectedDownload);
 	}
 
 	return (
 		<div className="h-screen">
 			<div id="game-cover">
-				<div className="absolute text-lg translate-x-8 translate-y-6 mt-2">
-					<Link to="../catalog">
+				<div className="absolute text-lg translate-x-8 translate-y-6 mt-2 z-40">
+					<Link to="../catalog" className="absolute">
 						<DoubleArrowLeftIcon
 							className="size-6 delay-150 hover:-translate-y-1
-					transition hover:scale-105 duration-300 z-20"
+					transition hover:scale-105 duration-300 z-50"
 						/>
 					</Link>
 				</div>
@@ -128,15 +143,32 @@ export function SelectedGame() {
 						!gameImage?.startsWith("data:text") ? "" : "w-full h-[400px] border"
 					}
 				>
-					{(!isLoading && <img src={gameImage} alt="game-cover" />) || (
-						<Skeleton className="h-[20rem] w-full bg-zinc-800" />
-					)}
+					{
+						(
+							!isLoading && 
+							<div className="relative">
+								<div className="bg-fixed"
+									style={{
+										backgroundImage: `url(${gameImage})`,
+										minHeight: '50vh',
+										boxShadow: `0px 60px 160px
+										rgba(${imageSpotlightColor?.[0]},
+										${imageSpotlightColor?.[1]},
+										${imageSpotlightColor?.[2]}, 0.2)`,
+									}}	
+									/>
+							</div>
+						) 
+					|| (
+							<Skeleton className="h-[20rem] w-full bg-zinc-800" />
+						)
+					}
 				</div>
 			</div>
 
 			<div className="ms-6 absolute -translate-y-[9rem]">
 				{(gameIcon && (
-					<img src={gameIcon} alt="game-icon" className="h-[6rem] shadow-[#242424] p-5" />
+					<img src={gameIcon} alt="game-icon" className="h-[6rem] shadow-[#242424] p-2" />
 				)) || <Skeleton className="h-[5rem] w-[20rem] bg-zinc-950 rounded-xl" />}
 			</div>
 
@@ -156,9 +188,11 @@ export function SelectedGame() {
 					</div>
 					<div>
 						<Button
-							className="p-6 bg-white text-zinc-900 hover:text-white w-full 
-					h-full ps-10 pe-10 text-lg transition delay-75 duration-300 hover:bg-zinc-950"
-							onClick={() => window.tests.startTorrentDownloadTest()}
+							className="p-6 bg-white text-zinc-900 
+								hover:text-white w-full 
+							h-full ps-10 pe-10 text-lg transition delay-75 duration-300 
+							hover:bg-black"
+							onClick={verifyGamePath}
 						>
 							Play
 						</Button>

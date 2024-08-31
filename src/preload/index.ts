@@ -27,6 +27,19 @@ const api = {
 	removeSourceFromDB: (sourceName: string) =>
 		ipcRenderer.invoke("removeSourceFromDB", sourceName),
 	changeDefaultPath: () => ipcRenderer.invoke("changeDefaultPath"),
+	getGameRegisteredPath: (
+		gameName: string,
+		steamGameId: number,
+		gameIcon: string,
+		gameURIS: string[],
+	) =>
+		ipcRenderer.invoke(
+			"verifyGameRegisteredPath",
+			gameName,
+			steamGameId,
+			gameIcon,
+			gameURIS,
+		),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

@@ -131,7 +131,7 @@ export function Settings() {
 	return (
 		<div
 			className="flex flex-col justify-start self-center mt-20 p-5
-			cursor-default rounded h-screen shadow-lg shadow-black"
+			cursor-default rounded h-screen"
 		>
 			<Tabs.Root className="flex flex-col w-[50rem]" defaultValue="tab1">
 				<Tabs.List
@@ -166,7 +166,7 @@ export function Settings() {
 					<fieldset className="mb-[15px] flex flex-col justify-start pt-4">
 						<div className="flex">
 							<label
-								className="text-[13px] leading-none mt-1 text-white block "
+								className="text-[13px] leading-none mt-1 text-white"
 								htmlFor="name"
 							>
 								Default Download Path
