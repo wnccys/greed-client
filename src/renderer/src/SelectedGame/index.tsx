@@ -134,14 +134,28 @@ export function SelectedGame() {
 				>
 					{
 						(
-							!isLoading && <img src={gameImage} alt="game-cover" 
-											style={{
-												boxShadow: `0px 0px 150px
-												rgba(${imageSpotlightColor?.[0]},
-												${imageSpotlightColor?.[1]},
-												${imageSpotlightColor?.[2]}, 0.2)`,
-											}}
-										/>
+							!isLoading && 
+							<div className="bg-fixed w-full h-full bg-cover bg-center"
+							      style={{
+									backgroundImage: `url(${gameImage})`,
+									// backgroundSize: 'cover', // Optional: Adjust the size of the background image
+									backgroundSize: '100%',
+									backgroundPosition: 'center', // Optional: Center the background image
+									backgroundRepeat: 'no-repeat',
+									width: '100%', // Optional: Set width
+									height: '100vh', // Optional: Set height
+								}}	
+							>
+							
+								{/* <img src={gameImage} alt="game-cover" 
+									style={{
+										boxShadow: `0px 0px 150px
+										rgba(${imageSpotlightColor?.[0]},
+										${imageSpotlightColor?.[1]},
+										${imageSpotlightColor?.[2]}, 0.2)`,
+									}}
+								/>	 */}
+							</div>
 						) 
 					|| (
 							<Skeleton className="h-[20rem] w-full bg-zinc-800" />
