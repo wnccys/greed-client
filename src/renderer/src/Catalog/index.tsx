@@ -6,11 +6,7 @@ import { useCatalogGames, useGamesImages } from "@renderer/Hooks/games";
 import { Button } from "@renderer/ShadComponents/ui/button";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
-<<<<<<< HEAD
-
-=======
 import { useSearchImages } from "@renderer/Hooks/search";
->>>>>>> 63da1ba56bb8d6b86d8d267ef7ae96a1d7e86a87
 
 export function Catalog() {
 	const games = useCatalogGames();
