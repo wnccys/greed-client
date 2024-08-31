@@ -3,8 +3,11 @@ import { GreedDataSource } from "./data-source";
 import { GreedSettings } from "./entity/Settings";
 import { Sources } from "./entity/Sources";
 import { Downloads } from "./entity/Downloads";
+import { SteamGames } from "./entity/SteamGames";
+import SteamJSONGames from "../steam-games/steam-games.json";
 import path from "node:path";
 import { ipcMain } from "electron";
+import { throttle } from "lodash-es";
 
 export function testDBConn() {
 	GreedDataSource.initialize()
@@ -32,6 +35,14 @@ export function testDBConn() {
 				await initializedGreedSource
 					.getRepository(GreedSettings)
 					.save(greedSettings);
+			}
+
+			const existingSteamGames = await initializedGreedSource
+				.getRepository(SteamGames)
+				.exists();
+
+			if (!existingSteamGames) {
+				setSteamGames();
 			}
 		})
 		.catch((error) => console.log("Failed to load contents: ", error));
@@ -104,8 +115,10 @@ export async function removeSourceFromDB(sourceName: string) {
 
 export async function changeDBDefaultPath(folderPath: string[]) {
 	try {
-		const currentPath = await GreedDataSource.getRepository(GreedSettings).findOneBy({
-			id: 1
+		const currentPath = await GreedDataSource.getRepository(
+			GreedSettings,
+		).findOneBy({
+			id: 1,
 		});
 
 		if (currentPath) {
@@ -118,16 +131,17 @@ export async function changeDBDefaultPath(folderPath: string[]) {
 		}
 
 		return ["Error", "Default Path not Found."];
-
 	} catch (e) {
 		return ["Error", "Could not update default path."];
 	}
 }
 
-export async function getDBCurrentPath () {
-	return await GreedDataSource.getRepository(GreedSettings).findOneBy({
-		id: 1
-	}).then((record) => record?.downloadPath || "No Path");
+export async function getDBCurrentPath() {
+	return await GreedDataSource.getRepository(GreedSettings)
+		.findOneBy({
+			id: 1,
+		})
+		.then((record) => record?.downloadPath || "No Path");
 }
 
 export async function getDBGameInfos(gameId: number) {
@@ -136,5 +150,37 @@ export async function getDBGameInfos(gameId: number) {
 	});
 }
 
-export async function getDBGamesByName(name: string) {
+export const getDBGamesByName = throttle(async (name: string) => {
+	return await GreedDataSource.getRepository(SteamGames).find({
+		where: {
+			name: Like(`${name}%`),
+		},
+		take: 20,
+	})
+}, 100);
+
+import createWorker from "./workerDB?nodeWorker";
+import { Like } from "typeorm";
+export type SteamJSONGame = {
+	id: number;
+	name: string;
+}
+
+async function setSteamGames() {
+	const steamGamesArr: SteamJSONGame[] = SteamJSONGames as SteamJSONGame[];
+	const worker = createWorker({});
+
+	worker.on("message", async (result: string[]) => {
+		console.log(result);
+	});
+
+	worker.on("error", (err) => {
+		console.error("Worker  Error: ", err);
+	});
+
+	worker.on("exit", (code) => {
+		console.log("Worker exited with code: ", code);
+	});
+
+	worker.postMessage(steamGamesArr);
 }

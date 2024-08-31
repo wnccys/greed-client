@@ -130,7 +130,7 @@ export function Settings() {
 
 	return (
 		<div
-			className="flex flex-col items-center self-center mt-[10em] p-5 
+			className="flex flex-col justify-start self-center mt-20 p-5
 			cursor-default rounded h-screen"
 		>
 			<Tabs.Root className="flex flex-col w-[50rem]" defaultValue="tab1">
@@ -166,7 +166,7 @@ export function Settings() {
 					<fieldset className="mb-[15px] flex flex-col justify-start pt-4">
 						<div className="flex">
 							<label
-								className="text-[13px] leading-none mt-1 text-white block "
+								className="text-[13px] leading-none mt-1 text-white"
 								htmlFor="name"
 							>
 								Default Download Path
@@ -195,7 +195,7 @@ export function Settings() {
 					className="grow p-5 bg-zinc-[#09090b] rounded-b-md outline-none"
 					value="tab2"
 				>
-					<div className="max-h-full p-5 rounded">
+					<div className="p-5 rounded">
 						<div className="self-center">
 							<Table className="mt-5 mb-5">
 								<TableHeader className="hover:bg-zinc-900">

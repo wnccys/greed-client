@@ -1,23 +1,10 @@
-import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
-import gameData from "../../../steam-games/steam-games.json";
+import { useState, useEffect } from "react";
 
-const gamesData: Game[] = gameData as Game[];
-export function useCatalogGames(): [Dispatch<SetStateAction<number>>, Game[]] {
-	const [index, setIndex] = useState<number>(0);
-
-	const selectedGames: [Dispatch<SetStateAction<number>>, Game[]] = [
-		setIndex,
-		gamesData.slice(index * 20, index * 20 + 20),
-	];
-
-	return selectedGames;
-}
-
-export function useGamesImages(
+export function useSearchImages(
 	games: Game[],
 	setIsImagesLoading: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
-	const [images, setImages] = useState<string[]>([]);
+	const [searchImages, setSearchImages] = useState<string[]>([]);
 
 	useEffect(() => {
 		if (games.length === 0) return;
@@ -46,15 +33,15 @@ export function useGamesImages(
 				}),
 			);
 
-			setImages(fetchedImages);
+			setSearchImages(fetchedImages);
 		};
 
 		fetchImages();
 
 		return () => {
-			setTimeout(() => setIsImagesLoading(false), 400);
+			setTimeout(() => setIsImagesLoading(false), 300);
 		};
 	}, [games[1], setIsImagesLoading]);
 
-	return images;
+	return searchImages;
 }
