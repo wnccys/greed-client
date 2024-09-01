@@ -150,6 +150,7 @@ export function Catalog() {
 				<div className="ms-10 flex self-center">
 					<h1 className="text-2xl font-bold">Catalog</h1>
 				</div>{" "}
+				
 				<div
 					className="rounded-md bg-zinc-800 flex p-2 ps-4 items-center"
 					// When something is typed, set isSearching to true and set the current search string
