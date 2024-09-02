@@ -26,6 +26,13 @@ declare global {
 		}[];
 	}
 
+	interface QueueItem {
+		torrentId: string 
+		name: string
+		size: string 
+		status: 'paused' | 'downloading'
+	}
+
 	interface Game {
 		id: number;
 		name: string;
