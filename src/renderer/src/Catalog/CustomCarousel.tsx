@@ -10,6 +10,9 @@ import imagesData from "../../../steam-games/images.json"; // Importando o JSON 
 import image1  from "../assets/carousel/394511.jpg";
 import image2 from  "../assets/carousel/mdw3.jpg"
 import image3 from  "../assets/carousel/image.png"
+import image4 from  "../assets/carousel/red-dead-redemption-2-3840-x-2160-iwuzo4l3gjd8kclf.jpg"
+import image5 from  "../assets/carousel/wallpaperflare.com_wallpaper.jpg"
+import image6 from  "../assets/carousel/cyberpunk2077.jpg"
 
 
 {/*interface Image { //interface de atribuicao
@@ -26,7 +29,11 @@ export function CustomCarousel() {
          'https://cdn2.steamgriddb.com/hero/bb2df1ceec69185fc8559f9c41052e2f.webp',
          image1,
          image2,
-         image3
+         image3,
+         image4,
+         image5,
+         image6,
+        
 
     ]);
 
