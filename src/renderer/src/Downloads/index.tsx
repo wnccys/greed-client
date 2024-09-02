@@ -182,6 +182,7 @@ export function Downloads() {
 									<div className="flex gap-2 mt-2">
 										<ResumePauseTorrent
 											isPaused={isPaused}
+											torrentURI={torrentInfo.uri}
 											className="mt-1 hover:bg-zinc-800 hover:-translate-y-1
 											hover:duration-500 transition-all"
 										/>
@@ -213,10 +214,10 @@ function DownloadTimeRemaining({ timeRemaining }: timeRemainingProps) {
 		: `${(timeRemaining * 100).toFixed(0)} Seconds`;
 }
 
-function ResumePauseTorrent({ isPaused, className }): JSX.Element {
+function ResumePauseTorrent({ isPaused, torrentURI, className }): JSX.Element {
 	if (isPaused) {
 		return (
-			<Button className={className} onClick={() => window.api.resumeTorrent()}>
+			<Button className={className} onClick={() => window.api.resumeTorrent(torrentURI)}>
 				Resume
 			</Button>
 		);
