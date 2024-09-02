@@ -15,7 +15,7 @@ const api = {
 	setNewTorrentSource: (sourceLink: string) =>
 		ipcRenderer.invoke("setNewTorrentSource", sourceLink),
 	pauseTorrent: () => ipcRenderer.invoke("pauseTorrent"),
-	resumeTorrent: () => ipcRenderer.invoke("resumeTorrent"),
+	resumeTorrent: (magnetURI: string) => ipcRenderer.invoke("resumeTorrent", magnetURI),
 	removeTorrent: () => ipcRenderer.invoke("removeTorrent"),
 	openHydraLinks: () => ipcRenderer.invoke("openHydraLinks"),
 	startGameDownload: (uris: string[]) =>

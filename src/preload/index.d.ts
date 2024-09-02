@@ -36,7 +36,7 @@ declare global {
 		handleFileSelect: () => string;
 		setNewTorrentSource: (sourceLink: string) => string;
 		pauseTorrent: () => null;
-		resumeTorrent: () => null;
+		resumeTorrent: (magnetURI: string) => null;
 		removeTorrent: () => null;
 		openHydraLinks: () => null;
 		addSourceToDB: (sourceLink: string) => null;
