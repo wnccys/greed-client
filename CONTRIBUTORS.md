@@ -12,4 +12,4 @@ In this example the ipcMain object is expecting until an event is emitted at the
 Files that exposes functions from main to renderer throught an event-based architecture, where one listens and react's when other's data comes. The basic is that, a function exposed to front-end needs to be typed as we are using Typescript, these types are declared at index.d.ts in the preload folder like: <br/>  <div align="center">![functionExample](./doc/functionExample.doc.png)</div> It tells Typescript to make resumeTorrent() available to Front-End and makes it possible to be called there properly
 
 ### Front-End (@renderer)
-Rendered pages receives data from Back-End using React and updates it's data, for example: <div align="center">![receiveExample](./doc/frontExample.doc.png)</div>
+Rendered pages receives data from Back-End using React and updates it's data, for example: <div align="center">![receiveExample](./doc/frontExample.doc.png)</div> In this example, React's useEffect awaits for a message from the channel "updateTorrentProgress" that on change assigns to a component useState, causing the component to update it's data.
