@@ -3,7 +3,7 @@ import { Entity, PrimaryColumn, Column } from "typeorm";
 @Entity()
 export class Queue {
     @PrimaryColumn()
-    torrentId: number
+    torrentId: string 
 
     @Column()
     status: 'paused' | 'downloading'
