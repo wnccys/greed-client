@@ -217,14 +217,14 @@ function ResumePauseTorrent({ isPaused, className }): JSX.Element {
 	if (isPaused) {
 		return (
 			<Button className={className} onClick={() => window.api.resumeTorrent()}>
-				{"Resume"}
+				Resume
 			</Button>
 		);
 	}
 
 	return (
 		<Button className={className} onClick={() => window.api.pauseTorrent()}>
-			{"Pause"}
+			Pause
 		</Button>
 	);
 }

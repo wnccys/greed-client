@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 type downloadsInfo = {
 	game: string;
+	uri: string;
 	currentProgress: number;
 	timeRemaining: number;
 	downloadSpeed: number;
@@ -13,6 +14,7 @@ type downloadsInfo = {
 export function useDownloads(): downloadsInfo {
 	const [downloadsInfo, setDownloadsInfo] = useState<downloadsInfo>({
 		game: "",
+		uri: "",
 		currentProgress: 0,
 		timeRemaining: 0,
 		downloadSpeed: 0,
@@ -29,8 +31,6 @@ export function useDownloads(): downloadsInfo {
 		);
 
 		return () => {
-			// Clean up the listener when the component is unmounted
-			// FIXME remove listeners correctly (removeListeners);
 			window.electron.ipcRenderer.removeAllListeners("updateTorrentInfos");
 		};
 	}, []);
@@ -41,7 +41,6 @@ export function useDownloads(): downloadsInfo {
 export function useDownloadProgress(){
 	const [downloadProgress, setDownloadProgress] = useState<number>(0);
 
-	console.log("progress: ", downloadProgress);
 	useEffect(() => {
 		window.electron.ipcRenderer.on(
 			"updateTorrentProgress",
