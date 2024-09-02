@@ -2,7 +2,7 @@ import { app, BrowserWindow } from "electron";
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import "reflect-metadata";
-import { saveCurrentQueue, testDBConn } from "./model";
+import { saveCurrentQueue, syncronizeQueue, testDBConn } from "./model";
 import * as MainEventHandle from "./eventHandlers";
 
 MainEventHandle;
@@ -32,7 +32,8 @@ const createWindow = () => {
 	mainWindow.loadURL("http://localhost:5173/catalog").then(() => mainWindow.show());
 };
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+	syncronizeQueue();
 	createWindow();
   });
   

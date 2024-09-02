@@ -84,6 +84,7 @@ export function handleUpdateTorrentProgress(torrentProgress: IpcMainEvent) {
 export function handleUpdateTorrentInfos(
 	torrentProgress: IpcMainEvent,
 	game: string,
+	uri: string,
 	timeRemaining: number,
 	downloadSpeed: number,
 	downloaded: number,
@@ -93,6 +94,7 @@ export function handleUpdateTorrentInfos(
 		// Send data to all listeners registered in selected Window.
 		win.webContents.send("updateTorrentInfos", {
 			game,
+			uri,
 			timeRemaining,
 			currentProgress: (Number(torrentProgress) * 100).toFixed(2),
 			downloadSpeed: (downloadSpeed / 100000).toFixed(0),
