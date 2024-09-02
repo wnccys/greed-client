@@ -16,7 +16,6 @@ import { Toaster } from "@renderer/ShadComponents/ui/sonner";
 export function App(): JSX.Element {
 	useEffect(() => {
 		window.electron.ipcRenderer.on("torrentDownloadComplete", () => {
-			console.log("here");
 			toast.success("Done", {
 				description: "Torrent Download Complete.",
 			});

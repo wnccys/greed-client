@@ -7,6 +7,7 @@ type downloadsInfo = {
 	downloadSpeed: number;
 	downloaded: number;
 	totalSize: number;
+	peers: number;
 };
 
 export function useDownloads(): downloadsInfo {
@@ -17,10 +18,11 @@ export function useDownloads(): downloadsInfo {
 		downloadSpeed: 0,
 		downloaded: 0,
 		totalSize: 0,
+		peers: 0,
 	});
 	useEffect(() => {
 		window.electron.ipcRenderer.on(
-			"updateTorrentProgress",
+			"updateTorrentInfos",
 			(_event, torrentInfos: downloadsInfo) => {
 				setDownloadsInfo(torrentInfos);
 			},
@@ -29,9 +31,29 @@ export function useDownloads(): downloadsInfo {
 		return () => {
 			// Clean up the listener when the component is unmounted
 			// FIXME remove listeners correctly (removeListeners);
-			// window.electron.ipcRenderer.removeAllListeners("updateTorrentProgress");
+			window.electron.ipcRenderer.removeAllListeners("updateTorrentInfos");
 		};
 	}, []);
 
 	return downloadsInfo;
+}
+
+export function useDownloadProgress(){
+	const [downloadProgress, setDownloadProgress] = useState<number>(0);
+
+	console.log("progress: ", downloadProgress);
+	useEffect(() => {
+		window.electron.ipcRenderer.on(
+			"updateTorrentProgress",
+			(_event, torrentProgress: number) => {
+				setDownloadProgress(torrentProgress);
+			},
+		);
+		
+		return () => {
+			window.electron.ipcRenderer.removeAllListeners("updateTorrentProgress");
+		}
+	}, [])
+
+	return downloadProgress;
 }
