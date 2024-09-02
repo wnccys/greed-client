@@ -227,6 +227,7 @@ export async function pauseOnQueue(torrentId: string) {
 }
 
 export async function addToQueue({ name, size, torrentId }) {
+	console.log("Received in addToQueue: ", name, size, torrentId);
 	await GreedDataSource.getRepository(Queue).save({
 		torrentId,
 		name,

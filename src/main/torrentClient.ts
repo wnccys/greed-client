@@ -9,13 +9,14 @@ let currentTorrent: Torrent;
 registerClientEvents(client);
 ipcMain.handle("pauseTorrent", () => {
 	currentTorrent.pause();
+	pauseOnQueue(currentTorrent.magnetURI);
 	ipcMain.emit("updateTorrentPauseStatus", currentTorrent.paused);
 	client.remove(currentTorrent.magnetURI);
 });
 
 ipcMain.handle("resumeTorrent", async (_event: IpcMainInvokeEvent, magnetURI) => {
 	const downloadFolder = await getDBCurrentPath();
-	currentTorrent = setCurrentTorrent(magnetURI, downloadFolder);
+	currentTorrent = await setCurrentTorrent(magnetURI, downloadFolder);
 	ipcMain.emit("updateTorrentPauseStatus", currentTorrent.paused);
 });
 
@@ -37,23 +38,30 @@ export async function addTorrentToQueue(
 		return;
 	}
 
-	const downloadFolder = await getDBCurrentPath();
-	currentTorrent = setCurrentTorrent(magnetURI, downloadFolder);
+	if (currentTorrent) {
+		pauseOnQueue(currentTorrent.magnetURI);
+		currentTorrent.removeAllListeners("ready");
+	}
 
-	await addToQueue({ 
-		torrentId: currentTorrent.magnetURI, 
-		name: currentTorrent.name,
-		size: currentTorrent.length
+	const downloadFolder = await getDBCurrentPath();
+	currentTorrent = await setCurrentTorrent(magnetURI, downloadFolder);
+
+	currentTorrent.on("ready", async () => {
+		await addToQueue({ 
+			torrentId: currentTorrent.magnetURI, 
+			name: currentTorrent.name,
+			size: (currentTorrent.length / 1000000).toFixed(0)
+		});
 	});
 }
 
-function setCurrentTorrent(magnetURI: string, downloadFolder: string) {
+async function setCurrentTorrent(magnetURI: string, downloadFolder: string) {
 	for (const torrent of client.torrents) {
 		torrent.pause();
 		pauseOnQueue(torrent.magnetURI).then(() => client.remove(magnetURI));
 	};
 
-	const currentTorrent = client.add(
+	const currentTorrent = await client.add(
 		magnetURI,
 		{ path: downloadFolder },
 		(torrent) => {
