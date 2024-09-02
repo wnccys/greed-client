@@ -16,6 +16,7 @@ import { Progress } from "@renderer/ShadComponents/ui/progress";
 import { useDownloads } from "@renderer/Hooks/downloads";
 import { Button } from "@renderer/ShadComponents/ui/button";
 import { useEffect, useState } from "react";
+import { useQueue } from "@renderer/Hooks/queue";
 
 type chartData = {
 	downloaded: number;
@@ -42,6 +43,7 @@ export function Downloads() {
 		React.useState<keyof typeof chartConfig>("downloadSpeed");
 	const [chartData, setChartData] = useState<chartData[]>([]);
 	const torrentInfo = useDownloads();
+	const queue = useQueue();
 	const [isPaused, setIsPaused] = useState<boolean>();
 
 	const total = React.useMemo(
@@ -165,7 +167,7 @@ export function Downloads() {
 			)}
 
 			<div className="flex flex-col gap-4 mt-10">
-				<h1 className="text-2xl">Queue</h1>
+				<h1 className="text-2xl">Downloading</h1>
 				<div
 					className="size-24 w-full h-full flex flex-col border 
 			border-white bg-zinc-950 rounded-xl gap-2 p-5 pb-10 shadow-xl shadow-black"
@@ -200,6 +202,25 @@ export function Downloads() {
 					)) ||
 						"Downloads Will Appear Here."}
 				</div>
+				{queue.length > 0 && (
+				<>
+					<h1 className="text-2xl">Queue</h1>
+					<div
+						className="size-24 w-full h-full flex flex-col border 
+				border-white bg-zinc-950 rounded-xl gap-2 p-5 pb-10 shadow-xl shadow-black"
+					>
+					{queue.map((queueItem, index) => {
+						return (
+							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+							<div className="bg-white" key={index}>
+								{queueItem.name}
+								{queueItem.size}	
+							</div>
+						)
+					})}	
+					</div>
+				</>
+				)}
 			</div>
 		</div>
 	);
