@@ -6,5 +6,11 @@ export class Queue {
     torrentId: string 
 
     @Column()
+    name: string
+
+    @Column()
+    size: string 
+
+    @Column()
     status: 'paused' | 'downloading'
 }
