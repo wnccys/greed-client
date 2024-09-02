@@ -7,7 +7,7 @@ import {
 	shell,
 } from "electron";
 import path from "node:path";
-import { initTorrentDownload } from "./torrentClient";
+import { addTorrentToQueue } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
 import {
 	addGameSource,
@@ -21,11 +21,10 @@ import {
 	removeSourceFromDB,
 } from "./model";
 import type { Worker } from "node:worker_threads";
-import { execFile } from "node:child_process";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
-ipcMain.handle("sendTorrentPath", handleTorrentPath);
+// ipcMain.handle("sendTorrentPath", handleTorrentPath);
 ipcMain.handle("addSourceToDB", handleNewTorrentSource);
 ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("changeDefaultPath", handleChangeDefaultPath);
@@ -67,8 +66,7 @@ async function handleStartGameDownload(
 	_event: IpcMainInvokeEvent,
 	uris: string[],
 ) {
-	const downloadFolder = await handleGetCurrentDownloadPath();
-	initTorrentDownload(uris[0], downloadFolder);
+	addTorrentToQueue(uris[0]);
 }
 
 export function handleUpdateTorrentProgress(torrentProgress: IpcMainEvent) {
@@ -110,20 +108,20 @@ function handleUpdateTorrentPausedStatus(status: IpcMainEvent) {
 	}
 }
 
-export async function handleTorrentPath(
-	_event: IpcMainInvokeEvent,
-	path: string,
-) {
-	console.log("Path to torrent is: ", path);
-	const { canceled, filePaths } = await dialog.showOpenDialog({
-		title: "Select Folder",
-		properties: ["openDirectory", "createDirectory"],
-	});
+// export async function handleTorrentPath(
+// 	_event: IpcMainInvokeEvent,
+// 	path: string,
+// ) {
+// 	console.log("Path to torrent is: ", path);
+// 	const { canceled, filePaths } = await dialog.showOpenDialog({
+// 		title: "Select Folder",
+// 		properties: ["openDirectory", "createDirectory"],
+// 	});
 
-	if (!canceled) {
-		initTorrentDownload(path, filePaths[0]);
-	}
-}
+// 	if (!canceled) {
+// 		initTorrentDownload(path, filePaths[0]);
+// 	}
+// }
 
 export async function handleNewTorrentSource(
 	_event: IpcMainInvokeEvent,

@@ -215,6 +215,32 @@ export async function addNewGameRegisteredPath(
 
 export async function saveCurrentQueue() {}
 
+export async function pauseOnQueue(torrentId: string) {
+	const toBeChanged = await GreedDataSource.getRepository(Queue).findOneBy({
+		torrentId: torrentId
+	});
+
+	if (toBeChanged) {
+		toBeChanged.status = "paused";
+		GreedDataSource.getRepository(Queue).save(toBeChanged);
+	}
+}
+
+export async function addToQueue({ name, size, torrentId }) {
+	await GreedDataSource.getRepository(Queue).save({
+		torrentId,
+		name,
+		size,
+		status: 'downloading',
+	});
+}
+
+export async function removeFromQueue(magnetURI: string) {
+	await GreedDataSource.getRepository(Queue).delete({
+		torrentId: magnetURI,
+	});
+}
+
 export async function syncronizeQueue(): Promise<Queue[]> {
 	return await GreedDataSource.manager.find(Queue);
 }

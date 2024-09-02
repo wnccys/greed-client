@@ -1,51 +1,57 @@
 import WebTorrent, { type Torrent } from "webtorrent";
-import { ipcMain } from "electron";
+import { ipcMain, type IpcMainInvokeEvent } from "electron";
+import { addToQueue, getDBCurrentPath, pauseOnQueue, removeFromQueue } from "./model";
 // import { syncronizeQueue } from "./model";
 
 const client = new WebTorrent();
-registerClientEvents(client);
-// let currentTorrentInterval: ReturnType<typeof setInterval>;
+let currentTorrent: Torrent;
 
-export async function initTorrentDownload(
+registerClientEvents(client);
+ipcMain.handle("pauseTorrent", () => {
+	currentTorrent.pause();
+	ipcMain.emit("updateTorrentPauseStatus", currentTorrent.paused);
+	client.remove(currentTorrent.magnetURI);
+});
+
+ipcMain.handle("resumeTorrent", async (_event: IpcMainInvokeEvent, magnetURI) => {
+	const downloadFolder = await getDBCurrentPath();
+	currentTorrent = setCurrentTorrent(magnetURI, downloadFolder);
+	ipcMain.emit("updateTorrentPauseStatus", currentTorrent.paused);
+});
+
+ipcMain.handle("removeTorrent", () => {
+	removeFromQueue(currentTorrent.magnetURI).then(() => {
+		client.remove(currentTorrent.magnetURI, {
+			destroyStore: true,
+		});
+		ipcMain.emit("updateTorrentInfos", -1);
+		ipcMain.emit("updateTorrentProgress", -1);
+	});
+});
+
+export async function addTorrentToQueue(
 	magnetURI: string,
-	downloadFolder: string,
 ) {
 	if (await client.get(magnetURI)) {
 		console.log("Cannot duplicate torrent.");
 		return;
 	}
 
-	let currentTorrent = setCurrentTorrent(magnetURI, downloadFolder);
-	// currentTorrentInterval = registerTorrentEvents(currentTorrent);
+	const downloadFolder = await getDBCurrentPath();
+	currentTorrent = setCurrentTorrent(magnetURI, downloadFolder);
 
-	ipcMain.handle("pauseTorrent", () => {
-		currentTorrent.pause();
-		ipcMain.emit("updateTorrentPauseStatus", currentTorrent.paused);
-		// clearInterval(currentTorrentInterval);
-		client.remove(magnetURI);
-	});
-
-	ipcMain.handle("resumeTorrent", () => {
-		// clearInterval(currentTorrentInterval);
-		currentTorrent = setCurrentTorrent(magnetURI, downloadFolder);
-		// currentTorrentInterval = registerTorrentEvents(currentTorrent);
-		ipcMain.emit("updateTorrentPauseStatus", currentTorrent.paused);
-	});
-
-	ipcMain.handle("removeTorrent", () => {
-		// clearInterval(currentTorrentInterval);
-		client.remove(magnetURI, {
-			destroyStore: true,
-		});
-		ipcMain.emit("updateTorrentInfos", -1);
-		ipcMain.emit("updateTorrentProgress", -1);
+	await addToQueue({ 
+		torrentId: currentTorrent.magnetURI, 
+		name: currentTorrent.name,
+		size: currentTorrent.length
 	});
 }
 
 function setCurrentTorrent(magnetURI: string, downloadFolder: string) {
-	client.torrents.map((torrent) => {
+	for (const torrent of client.torrents) {
 		torrent.pause();
-	});
+		pauseOnQueue(torrent.magnetURI).then(() => client.remove(magnetURI));
+	};
 
 	const currentTorrent = client.add(
 		magnetURI,
