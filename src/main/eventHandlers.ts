@@ -71,7 +71,6 @@ async function handleStartGameDownload(
 
 export function handleUpdateTorrentProgress(torrentProgress: IpcMainEvent) {
 	for (const win of BrowserWindow.getAllWindows()) {
-		// Send data to all listeners registered in selected Window.
 		win.webContents.send(
 			"updateTorrentProgress",
 			(Number(torrentProgress) * 100).toFixed(2),
@@ -89,7 +88,6 @@ export function handleUpdateTorrentInfos(
 	size: number,
 ) {
 	for (const win of BrowserWindow.getAllWindows()) {
-		// Send data to all listeners registered in selected Window.
 		win.webContents.send("updateTorrentInfos", {
 			game,
 			uri,
