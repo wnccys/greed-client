@@ -5,10 +5,15 @@ import { Sources } from "./entity/Sources";
 import { Downloads } from "./entity/Downloads";
 import { SteamGames } from "./entity/SteamGames";
 import { GamePath } from "./entity/GamePath";
+import { Queue } from "./entity/Queue";
 import SteamJSONGames from "../steam-games/steam-games.json";
 import path from "node:path";
 import { ipcMain } from "electron";
 import { throttle } from "lodash-es";
+
+type HashQueues = Map<string, Queue>[];
+
+// export let appQueue: HashQueues[] = (await syncronizeQueue());
 
 export function testDBConn() {
 	GreedDataSource.initialize()
@@ -208,5 +213,8 @@ export async function addNewGameRegisteredPath(
 	});
 }
 
-
 export async function saveCurrentQueue() {}
+
+export async function syncronizeQueue(): Promise<Queue[]> {
+	return await GreedDataSource.manager.find(Queue);
+}

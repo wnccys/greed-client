@@ -38,6 +38,7 @@ ipcMain.handle("getCurrentDownloadPath", handleGetCurrentDownloadPath);
 ipcMain.handle("verifyGameRegisteredPath", handleVerifyGameRegisteredPath);
 ipcMain.on("updateDownloadPath", handleUpdateDownloadPath);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
+ipcMain.on("updateTorrentInfos", handleUpdateTorrentInfos);
 ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
 ipcMain.on("updateTorrentPauseStatus", handleUpdateTorrentPausedStatus);
 
@@ -70,9 +71,20 @@ async function handleStartGameDownload(
 	initTorrentDownload(uris[0], downloadFolder);
 }
 
-export function handleUpdateTorrentProgress(
+export function handleUpdateTorrentProgress(torrentProgress: IpcMainEvent) {
+	for (const win of BrowserWindow.getAllWindows()) {
+		// Send data to all listeners registered in selected Window.
+		win.webContents.send(
+			"updateTorrentProgress",
+			(Number(torrentProgress) * 100).toFixed(2),
+		);
+	}
+}
+
+export function handleUpdateTorrentInfos(
 	torrentProgress: IpcMainEvent,
 	game: string,
+	uri: string,
 	timeRemaining: number,
 	downloadSpeed: number,
 	downloaded: number,
@@ -80,8 +92,9 @@ export function handleUpdateTorrentProgress(
 ) {
 	for (const win of BrowserWindow.getAllWindows()) {
 		// Send data to all listeners registered in selected Window.
-		win.webContents.send("updateTorrentProgress", {
+		win.webContents.send("updateTorrentInfos", {
 			game,
+			uri,
 			timeRemaining,
 			currentProgress: (Number(torrentProgress) * 100).toFixed(2),
 			downloadSpeed: (downloadSpeed / 100000).toFixed(0),

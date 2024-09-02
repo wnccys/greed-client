@@ -1,9 +1,11 @@
 import WebTorrent, { type Torrent } from "webtorrent";
 import { ipcMain } from "electron";
+// import { syncronizeQueue } from "./model";
 
 
 const client = new WebTorrent();
-let currentTorrentInterval: ReturnType<typeof setInterval>;
+registerClientEvents(client);
+// let currentTorrentInterval: ReturnType<typeof setInterval>;
 
 
 export async function initTorrentDownload(
@@ -16,32 +18,37 @@ export async function initTorrentDownload(
 	}
 
 	let currentTorrent = setCurrentTorrent(magnetURI, downloadFolder);
-	currentTorrentInterval = registerTorrentEvents(currentTorrent);
+	// currentTorrentInterval = registerTorrentEvents(currentTorrent);
 
 	ipcMain.handle("pauseTorrent", () => {
 		currentTorrent.pause();
 		ipcMain.emit("updateTorrentPauseStatus", currentTorrent.paused);
-		clearInterval(currentTorrentInterval);
+		// clearInterval(currentTorrentInterval);
 		client.remove(magnetURI);
 	});
 
 	ipcMain.handle("resumeTorrent", () => {
-		clearInterval(currentTorrentInterval);
-		currentTorrent = setCurrentTorrent(magnetURI, downloadFolder) 
-		currentTorrentInterval = registerTorrentEvents(currentTorrent);
+		// clearInterval(currentTorrentInterval);
+		currentTorrent = setCurrentTorrent(magnetURI, downloadFolder);
+		// currentTorrentInterval = registerTorrentEvents(currentTorrent);
 		ipcMain.emit("updateTorrentPauseStatus", currentTorrent.paused);
 	});
 
 	ipcMain.handle("removeTorrent", () => {
-		clearInterval(currentTorrentInterval);
+		// clearInterval(currentTorrentInterval);
 		client.remove(magnetURI, {
 			destroyStore: true,
 		});
+		ipcMain.emit("updateTorrentInfos", -1);
 		ipcMain.emit("updateTorrentProgress", -1);
-	})
+	});
 }
 
 function setCurrentTorrent(magnetURI: string, downloadFolder: string) {
+	client.torrents.map((torrent) => {
+		torrent.pause();
+	});
+
 	const currentTorrent = client.add(
 		magnetURI,
 		{ path: downloadFolder },
@@ -59,20 +66,30 @@ function setCurrentTorrent(magnetURI: string, downloadFolder: string) {
 	return currentTorrent;
 }
 
+<<<<<<< HEAD
 export function registerTorrentEvents(torrent: Torrent) {
+=======
+function registerClientEvents(client: WebTorrent.Instance) {
+>>>>>>> 4c49df55530a6bf96e473d8293571668a9417005
 	return setInterval(() => {
-		if (torrent.progress < 1) {
-			console.log(`Torrent.progress: ${torrent.progress}`);
-			ipcMain.emit(
-				"updateTorrentProgress",
-				torrent.progress,
-				torrent.name,
-				torrent.timeRemaining / 1000 / 60,
-				torrent.downloadSpeed,
-				torrent.downloaded,
-				torrent.length,
-				torrent.paused,
-			);
+		for (const torrent of client.torrents) {
+			if (torrent.progress < 1 && !torrent.paused) {
+				console.log(`Torrent.progress: ${torrent.progress}`);
+				ipcMain.emit(
+					"updateTorrentInfos",
+					torrent.progress,
+					torrent.name,
+					torrent.magnetURI,
+					torrent.timeRemaining / 1000 / 60,
+					torrent.downloadSpeed,
+					torrent.downloaded,
+					torrent.length,
+					torrent.paused,
+					torrent.numPeers,
+				);
+
+				ipcMain.emit("updateTorrentProgress", torrent.progress);
+			}
 		}
 	}, 1000);
 }

@@ -83,8 +83,8 @@ export function Downloads() {
 			return (
 				<div className="flex items-center gap-5">
 					<img src="https://placehold.co/75" alt="game-image" />
-					<div className="text-sm pe-5">{game}</div>
-					<div className="w-[45rem]">
+					<div className="text-sm pe-2">{game}</div>
+					<div className="w-[26.5rem]">
 						<div className="pe-4 flex">
 							<div>{torrentInfo.currentProgress}%</div>
 							<div className="flex ps-10 w-full justify-end">
@@ -103,7 +103,7 @@ export function Downloads() {
 	}
 
 	return (
-		<div className="flex flex-col container scale-90 content-center h-screen mb-10">
+		<div className="flex flex-col container scale-90 content-center h-screen mb-10 max-w-[52rem]">
 			{torrentInfo.currentProgress > 0 && (
 				<Card className="bg-black scale-100 pb-10 shadow-xl shadow-black">
 					<CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
@@ -173,24 +173,26 @@ export function Downloads() {
 					{(torrentInfo.currentProgress >= 0 && torrentInfo.timeRemaining && (
 						<div className="flex h-1/2rem">
 							<DownloadCard game={torrentInfo.game} />
-							<div className="ms-6 flex flex-col w-full">
+							<div className="ms-6 flex flex-col w-full gap-2">
 								<DownloadTimeRemaining
 									timeRemaining={torrentInfo.timeRemaining}
 								/>
-								<div className="w-full">
+								<div>
 									<p>{(torrentInfo.downloadSpeed / 8).toFixed(1)} Mbps</p>
-									<ResumePauseTorrent
-										isPaused={isPaused}
-										className="mt-1 hover:bg-zinc-800 hover:-translate-y-1
+									<div className="flex gap-2 mt-2">
+										<ResumePauseTorrent
+											isPaused={isPaused}
+											className="mt-1 hover:bg-zinc-800 hover:-translate-y-1
+											hover:duration-500 transition-all"
+										/>
+										<Button
+											onClick={() => window.api.removeTorrent()}
+											className="mt-1 hover:bg-red-500 hover:-translate-y-1
 										hover:duration-500 transition-all"
-									/>
-									<Button
-										onClick={() => window.api.removeTorrent()}
-										className="mt-1 hover:bg-red-500 hover:-translate-y-1
-									hover:duration-500 transition-all ms-4"
-									>
-										Remove
-									</Button>
+										>
+											Remove
+										</Button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -215,14 +217,14 @@ function ResumePauseTorrent({ isPaused, className }): JSX.Element {
 	if (isPaused) {
 		return (
 			<Button className={className} onClick={() => window.api.resumeTorrent()}>
-				{"Resume"}
+				Resume
 			</Button>
 		);
 	}
 
 	return (
 		<Button className={className} onClick={() => window.api.pauseTorrent()}>
-			{"Pause"}
+			Pause
 		</Button>
 	);
 }

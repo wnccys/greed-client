@@ -10,8 +10,8 @@ export function GameCard({ gameName, gameImage, gameId }) {
                 <Link to={`../selected-game/${gameId}/${gameName}`}>
                     <Card
                         className="border shadow-lg 
-                        hover:drop-shadow-2xl shadow-black rounded-md max-w-[17.5vw] mt-8 
-                        cursor-pointer transition-all z-30
+                        hover:drop-shadow-2xl shadow-black rounded-md
+                        max-w-[17.5vw] mt-8 cursor-pointer transition-all z-30
                         hover:-translate-y-1 hover:scale-105 duration-300 overflow-hidden bg-black"
                     >
                         <div className="hover:z-10 z-30">
