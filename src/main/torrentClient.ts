@@ -25,7 +25,7 @@ export async function initTorrentDownload(
 
 	ipcMain.handle("resumeTorrent", () => {
 		clearInterval(currentTorrentInterval);
-		currentTorrent = setCurrentTorrent(magnetURI, downloadFolder) 
+		currentTorrent = setCurrentTorrent(magnetURI, downloadFolder);
 		currentTorrentInterval = registerTorrentEvents(currentTorrent);
 		ipcMain.emit("updateTorrentPauseStatus", currentTorrent.paused);
 	});
@@ -36,7 +36,7 @@ export async function initTorrentDownload(
 			destroyStore: true,
 		});
 		ipcMain.emit("updateTorrentProgress", -1);
-	})
+	});
 }
 
 function setCurrentTorrent(magnetURI: string, downloadFolder: string) {
@@ -62,7 +62,7 @@ function registerTorrentEvents(torrent: Torrent) {
 		if (torrent.progress < 1) {
 			console.log(`Torrent.progress: ${torrent.progress}`);
 			ipcMain.emit(
-				"updateTorrentProgress",
+				"updateTorrentInfos",
 				torrent.progress,
 				torrent.name,
 				torrent.timeRemaining / 1000 / 60,
@@ -70,7 +70,10 @@ function registerTorrentEvents(torrent: Torrent) {
 				torrent.downloaded,
 				torrent.length,
 				torrent.paused,
+				torrent.numPeers,
 			);
+
+			ipcMain.emit("updateTorrentProgress", torrent.progress);
 		}
 	}, 1000);
 }
