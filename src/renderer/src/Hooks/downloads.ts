@@ -9,7 +9,6 @@ type downloadsInfo = {
 	downloaded: number;
 	totalSize: number;
 	peers: number;
-	active: false;
 };
 
 export function useDownloads(): downloadsInfo {
@@ -22,7 +21,6 @@ export function useDownloads(): downloadsInfo {
 		downloaded: 0,
 		totalSize: 0,
 		peers: 0,
-		active: false,
 	});
 	useEffect(() => {
 		window.electron.ipcRenderer.on(
