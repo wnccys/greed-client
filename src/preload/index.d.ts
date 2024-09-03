@@ -26,6 +26,14 @@ declare global {
 		}[];
 	}
 
+	interface QueueItem {
+		torrentId: string 
+		name: string
+		size: string 
+		progress: number
+		status: 'paused' | 'downloading'
+	}
+
 	interface Game {
 		id: number;
 		name: string;
@@ -36,8 +44,8 @@ declare global {
 		handleFileSelect: () => string;
 		setNewTorrentSource: (sourceLink: string) => string;
 		pauseTorrent: () => null;
-		resumeTorrent: () => null;
-		removeTorrent: () => null;
+		resumeTorrent: (magnetURI: string) => null;
+		removeTorrent: (magnetURI: string) => null;
 		openHydraLinks: () => null;
 		addSourceToDB: (sourceLink: string) => null;
 		startGameDownload: (uris: string[]) => null;

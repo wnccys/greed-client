@@ -7,7 +7,7 @@ import {
 	shell,
 } from "electron";
 import path from "node:path";
-import { initTorrentDownload } from "./torrentClient";
+import { addTorrentToQueue } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
 import {
 	addGameSource,
@@ -19,13 +19,13 @@ import {
 	getGameRegisteredPath,
 	getSourcesList,
 	removeSourceFromDB,
+	syncronizeQueue,
 } from "./model";
 import type { Worker } from "node:worker_threads";
-import { execFile } from "node:child_process";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
-ipcMain.handle("sendTorrentPath", handleTorrentPath);
+// ipcMain.handle("sendTorrentPath", handleTorrentPath);
 ipcMain.handle("addSourceToDB", handleNewTorrentSource);
 ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("changeDefaultPath", handleChangeDefaultPath);
@@ -36,10 +36,14 @@ ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 ipcMain.handle("getSelectedGameInfo", handleGetCurrentGameInfo);
 ipcMain.handle("getCurrentDownloadPath", handleGetCurrentDownloadPath);
 ipcMain.handle("verifyGameRegisteredPath", handleVerifyGameRegisteredPath);
+ipcMain.handle("getCurrentQueueItems", handleGetCurrentQueueItems);
 ipcMain.on("updateDownloadPath", handleUpdateDownloadPath);
+ipcMain.on("isNoLongerLoading", handleIsNoLongerLoading);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
+ipcMain.on("updateTorrentInfos", handleUpdateTorrentInfos);
 ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
 ipcMain.on("updateTorrentPauseStatus", handleUpdateTorrentPausedStatus);
+ipcMain.on("updateQueueItems", handleUpdateQueueItems);
 
 async function handleOpenHydraLinks() {
 	shell.openExternal("https://hydralinks.cloud/sources/");
@@ -66,26 +70,37 @@ async function handleStartGameDownload(
 	_event: IpcMainInvokeEvent,
 	uris: string[],
 ) {
-	const downloadFolder = await handleGetCurrentDownloadPath();
-	initTorrentDownload(uris[0], downloadFolder);
+	addTorrentToQueue(uris[0]);
 }
 
-export function handleUpdateTorrentProgress(
+export function handleUpdateTorrentProgress(torrentProgress: IpcMainEvent) {
+	for (const win of BrowserWindow.getAllWindows()) {
+		win.webContents.send(
+			"updateTorrentProgress",
+			(Number(torrentProgress) * 100).toFixed(2),
+		);
+	}
+}
+
+export function handleUpdateTorrentInfos(
 	torrentProgress: IpcMainEvent,
 	game: string,
+	uri: string,
 	timeRemaining: number,
 	downloadSpeed: number,
 	downloaded: number,
+	peers: number,
 	size: number,
 ) {
 	for (const win of BrowserWindow.getAllWindows()) {
-		// Send data to all listeners registered in selected Window.
-		win.webContents.send("updateTorrentProgress", {
+		win.webContents.send("updateTorrentInfos", {
 			game,
+			uri,
 			timeRemaining,
 			currentProgress: (Number(torrentProgress) * 100).toFixed(2),
 			downloadSpeed: (downloadSpeed / 100000).toFixed(0),
 			downloaded: (downloaded / 1000000).toFixed(0),
+			peers,
 			totalSize: (size / 1000000).toFixed(0),
 		});
 	}
@@ -97,20 +112,20 @@ function handleUpdateTorrentPausedStatus(status: IpcMainEvent) {
 	}
 }
 
-export async function handleTorrentPath(
-	_event: IpcMainInvokeEvent,
-	path: string,
-) {
-	console.log("Path to torrent is: ", path);
-	const { canceled, filePaths } = await dialog.showOpenDialog({
-		title: "Select Folder",
-		properties: ["openDirectory", "createDirectory"],
-	});
+// export async function handleTorrentPath(
+// 	_event: IpcMainInvokeEvent,
+// 	path: string,
+// ) {
+// 	console.log("Path to torrent is: ", path);
+// 	const { canceled, filePaths } = await dialog.showOpenDialog({
+// 		title: "Select Folder",
+// 		properties: ["openDirectory", "createDirectory"],
+// 	});
 
-	if (!canceled) {
-		initTorrentDownload(path, filePaths[0]);
-	}
-}
+// 	if (!canceled) {
+// 		initTorrentDownload(path, filePaths[0]);
+// 	}
+// }
 
 export async function handleNewTorrentSource(
 	_event: IpcMainInvokeEvent,
@@ -282,4 +297,20 @@ async function handleVerifyGameRegisteredPath(
 		filePaths[0],
 	);
 	return ["Success", "Path added."];
+}
+
+async function handleUpdateQueueItems(queueItems: IpcMainEvent) {
+	for (const win of BrowserWindow.getAllWindows()) {
+		win.webContents.send("updateQueueItems", queueItems);
+	}	
+}
+
+async function handleGetCurrentQueueItems(_event: IpcMainInvokeEvent) {
+	return await syncronizeQueue();
+}
+
+function handleIsNoLongerLoading() {
+	for (const win of BrowserWindow.getAllWindows()) {
+		win.webContents.send("isNoLongerLoading");
+	}	
 }

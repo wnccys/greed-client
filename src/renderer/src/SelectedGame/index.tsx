@@ -124,7 +124,7 @@ export function SelectedGame() {
 	}
 
 	function startGameDownload() {
-		window.api.startGameDownload(selectedDownload);	
+		window.api.startGameDownload(selectedDownload);
 	}
 
 	return (

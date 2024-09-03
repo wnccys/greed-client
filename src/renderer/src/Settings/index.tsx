@@ -297,7 +297,6 @@ export function Settings() {
 									</DialogFooter>
 								</DialogContent>
 							</Dialog>
-							<Toaster className="bg-slate-950 drop-shadow-xl" />
 						</div>
 					</div>
 				</Tabs.Content>

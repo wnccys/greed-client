@@ -5,10 +5,15 @@ import { Sources } from "./entity/Sources";
 import { Downloads } from "./entity/Downloads";
 import { SteamGames } from "./entity/SteamGames";
 import { GamePath } from "./entity/GamePath";
+import { Queue } from "./entity/Queue";
 import SteamJSONGames from "../steam-games/steam-games.json";
 import path from "node:path";
 import { ipcMain } from "electron";
 import { throttle } from "lodash-es";
+
+type HashQueues = Map<string, Queue>[];
+
+// export let appQueue: HashQueues[] = (await syncronizeQueue());
 
 export function testDBConn() {
 	GreedDataSource.initialize()
@@ -205,5 +210,65 @@ export async function addNewGameRegisteredPath(
 		icon: gameIcon,
 		uris: gameURIS,
 		execPath: newPath,
+	});
+}
+
+export async function pauseOnQueue(torrentId: string) {
+	const toBeChanged = await GreedDataSource.getRepository(Queue).findOneBy({
+		torrentId: torrentId
+	});
+
+	if (toBeChanged) {
+		toBeChanged.status = "paused";
+		await GreedDataSource.getRepository(Queue).save(toBeChanged);
+	}
+}
+
+export async function addToQueue({ name, size, torrentId, progress }) {
+	console.log("Received in addToQueue: ", name, size, progress);
+	await GreedDataSource.getRepository(Queue).save({
+		torrentId,
+		name,
+		size,
+		progress,
+		status: 'downloading',
+	});
+}
+
+export async function resumeOnQueue(torrentId: string) {
+	const toBeChanged = await GreedDataSource.getRepository(Queue).findOneBy({
+		torrentId: torrentId
+	});
+
+	if (toBeChanged) {
+		toBeChanged.status = "downloading";
+		await GreedDataSource.getRepository(Queue).save(toBeChanged);
+	}
+}
+
+export async function verifyIfOnQueue(magnetURI: string): Promise<boolean> {
+	const isPresent = await GreedDataSource.getRepository(Queue).findOneBy({
+		torrentId: magnetURI,
+	});
+	console.log("VERIFIED AND ITS DUPLICATED!@!!: ", isPresent);
+
+	if (isPresent) {
+		return true;
+	}
+
+	return false;
+}
+
+export async function removeFromQueue(magnetURI: string) {
+	await GreedDataSource.getRepository(Queue).delete({
+		torrentId: magnetURI,
+	});
+}
+
+export async function syncronizeQueue(): Promise<Queue[]> {
+	return await GreedDataSource.getRepository(Queue).find({
+		where: {
+			status: "paused"
+		}
 	});
 }

@@ -32,11 +32,11 @@ const createWindow = () => {
 	mainWindow.loadURL("http://localhost:5173/catalog").then(() => mainWindow.show());
 };
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
 	createWindow();
   });
   
-  app.on("window-all-closed", () => {
+  app.on("window-all-closed", async () => {
 	if (process.platform !== "darwin") app.quit();
   });
   
