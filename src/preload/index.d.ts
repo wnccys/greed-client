@@ -30,6 +30,7 @@ declare global {
 		torrentId: string 
 		name: string
 		size: string 
+		progress: number
 		status: 'paused' | 'downloading'
 	}
 
@@ -44,7 +45,7 @@ declare global {
 		setNewTorrentSource: (sourceLink: string) => string;
 		pauseTorrent: () => null;
 		resumeTorrent: (magnetURI: string) => null;
-		removeTorrent: () => null;
+		removeTorrent: (magnetURI: string) => null;
 		openHydraLinks: () => null;
 		addSourceToDB: (sourceLink: string) => null;
 		startGameDownload: (uris: string[]) => null;
