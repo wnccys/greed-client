@@ -7,11 +7,8 @@ import Autoplay from "embla-carousel-autoplay";
 import React from "react";
 import { Card, CardContent } from "@renderer/ShadComponents/ui/card";
 import GameDummyImage from "@renderer/Assets/image.png";
-import { useFeatured } from "@renderer/Hooks/featured";
 
 export function CustomCarousel() {
-    const featuredGames = useFeatured();
-
 	const plugin = React.useRef(
 		Autoplay({
 			delay: 5000,

@@ -1,4 +1,4 @@
-import { CardTitle, CardDescription } from '@renderer/components/ui/card';
+import { CardTitle, CardDescription } from '@renderer/ShadComponents/ui/card';
 
 interface CardHeaderProps {
   title?: string;

@@ -6,16 +6,14 @@ import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
-  CardTitle,
-} from "@renderer/components/ui/card"
+} from "@renderer/ShadComponents/ui/card"
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@renderer/components/ui/chart"
+} from "@renderer/ShadComponents/ui/chart"
 const chartData = [
   { date: "2024-04-01", desktop: 222, mobile: 150  },
   { date: "2024-04-02", desktop: 97, mobile: 180 },
@@ -135,11 +133,10 @@ export function BarGrid() {
     <Card>
       <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-          <CardTitle></CardTitle>
-          <CardDescription></CardDescription>
         </div>
         <div className="flex">
           <button
+            type="button"
             key="desktop"
             data-active={activeChart === "desktop"}
             className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
