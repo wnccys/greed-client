@@ -170,7 +170,7 @@ export function Downloads() {
 													<p>{(Number(queueItem.size) / 1000).toFixed(1)} GB</p>
 												</div>
 											</div>
-											<Progress value={torrentInfo.currentProgress} />
+											<Progress value={queueItem.progress} />
 										</div>
 									</div>
 									<div className="ms-6 flex flex-col w-full gap-2">

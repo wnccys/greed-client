@@ -18,17 +18,16 @@ ipcMain.handle("pauseTorrent", async () => {
 });
 
 ipcMain.handle("resumeTorrent", async (_event: IpcMainInvokeEvent, magnetURI) => {
-	ipcMain.emit("updateTorrentPauseStatus", false);
-
-	removeFromQueue(currentTorrent.magnetURI).then(() => {
-		currentTorrent.removeAllListeners();
-		client.remove(currentTorrent.magnetURI, {
-			destroyStore: true,
-		});
+	if (currentTorrent?.magnetURI) {
+		ipcMain.emit("updateTorrentPauseStatus", true);
 		ipcMain.emit("updateTorrentInfos", -1);
 		ipcMain.emit("updateTorrentProgress", -1);
-	});
+		currentTorrent.pause();
+		await pauseOnQueue(currentTorrent.magnetURI);
+		client.remove(currentTorrent.magnetURI);
+	}
 
+	ipcMain.emit("updateTorrentPauseStatus", false);
 	const downloadFolder = await getDBCurrentPath();
 	currentTorrent = await setCurrentTorrent(magnetURI, downloadFolder);
 	await resumeOnQueue(currentTorrent.magnetURI);
