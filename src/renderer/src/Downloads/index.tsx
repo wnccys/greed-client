@@ -43,6 +43,7 @@ export function Downloads() {
 	const [chartData, setChartData] = useState<chartData[]>([]);
 	const torrentInfo = useDownloads();
 	const [isPaused, setIsPaused] = useState<boolean>();
+	// const [isDownloadBlocked, setIsDownloadBlocked] = useState<boolean>(false);
 	const [queue, setQueue] = useState<QueueItem[]>([]);
 	const total = React.useMemo(
 		() => ({
@@ -52,21 +53,32 @@ export function Downloads() {
 		[torrentInfo],
 	);
 
-    useEffect(() => {
-        window.electron.ipcRenderer.on("updateQueueItems", (_event, queueItems: QueueItem[])=> {
-            setQueue(queueItems);
-        });
-
-        return () => {
-            window.electron.ipcRenderer.removeAllListeners("updateQueueItems");
-        }
-    })
+	// useEffect(() => {
+	// 	window.electron.ipcRenderer.on("isNoLongerLoading" , () => {
+	// 		setIsDownloadBlocked(false);
+	// 	})
+	// }, []);
 
 	useEffect(() => {
-		window.electron.ipcRenderer.invoke("getCurrentQueueItems").then((queueItems: QueueItem[]) => {
-			setQueue(queueItems);
-		});
-	}, [])
+		window.electron.ipcRenderer.on(
+			"updateQueueItems",
+			(_event, queueItems: QueueItem[]) => {
+				setQueue(queueItems);
+			},
+		);
+
+		return () => {
+			window.electron.ipcRenderer.removeAllListeners("updateQueueItems");
+		};
+	});
+
+	useEffect(() => {
+		window.electron.ipcRenderer
+			.invoke("getCurrentQueueItems")
+			.then((queueItems: QueueItem[]) => {
+				setQueue(queueItems);
+			});
+	}, []);
 
 	useEffect(() => {
 		console.log("queue items: ", queue);
@@ -104,9 +116,9 @@ export function Downloads() {
 				<div className="flex h-1/2rem">
 					<DownloadCard game={torrentInfo.game} />
 					<div className="ms-6 flex flex-col w-full gap-2">
-						<DownloadTimeRemaining
-							timeRemaining={torrentInfo.timeRemaining}
-						/>
+						<DownloadTimeRemaining timeRemaining={torrentInfo.timeRemaining} />{" "}
+						<br />
+						Peers: {torrentInfo.peers}
 						<div>
 							<p>{(torrentInfo.downloadSpeed / 8).toFixed(1)} Mbps</p>
 							<div className="flex gap-2 mt-2">
@@ -114,12 +126,14 @@ export function Downloads() {
 									isPaused={isPaused}
 									torrentURI={torrentInfo.uri}
 									className="mt-1 hover:bg-zinc-800 hover:-translate-y-1
-									hover:duration-500 transition-all"
+							hover:duration-500 transition-all"
+									// setIsDownloadBlocked={setIsDownloadBlocked}
+									// isDownloadBlocked={isDownloadBlocked}
 								/>
 								<Button
 									onClick={() => window.api.removeTorrent(torrentInfo.uri)}
 									className="mt-1 hover:bg-red-500 hover:-translate-y-1
-								hover:duration-500 transition-all"
+						hover:duration-500 transition-all"
 								>
 									Remove
 								</Button>
@@ -127,12 +141,10 @@ export function Downloads() {
 						</div>
 					</div>
 				</div>
-			)
+			);
 		}
 
-		return (
-			"Downloads Will Appear Here."
-		)
+		return "Downloads Will Appear Here.";
 	}
 
 	function QueueGameContainer() {
@@ -142,56 +154,58 @@ export function Downloads() {
 					<h1 className="text-2xl mt-10">Queue</h1>
 					<div
 						className="size-24 w-full h-full flex flex-col border 
-				border-white bg-zinc-950 rounded-xl gap-2 p-5 pb-10 shadow-xl shadow-black"
+		border-white bg-zinc-950 rounded-xl gap-2 p-5 pb-10 shadow-xl shadow-black"
 					>
-					{queue.map((queueItem, index) => {
-						return (
-							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-							<div className="flex h-1/2rem" key={index}>
-							<div className="flex items-center gap-5">
-								<img src="https://placehold.co/75" alt="game-image" />
-								<div className="text-sm">{queueItem.name}</div>
-								<div className="w-[28.5vw]">
-									<div className="pe-4 flex">
-										<div>{queueItem.progress}%</div>
-										<div className="flex  w-full justify-end">
-											<p>
-												{(Number(queueItem.size) / 1000).toFixed(1)} GB
-											</p>
+						{queue.map((queueItem, index) => {
+							return (
+								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+								<div className="flex h-1/2rem" key={index}>
+									<div className="flex items-center gap-5">
+										<img src="https://placehold.co/75" alt="game-image" />
+										<div className="text-sm">{queueItem.name}</div>
+										<div className="w-[28.5vw]">
+											<div className="pe-4 flex">
+												<div>{queueItem.progress}%</div>
+												<div className="flex  w-full justify-end">
+													<p>{(Number(queueItem.size) / 1000).toFixed(1)} GB</p>
+												</div>
+											</div>
+											<Progress value={torrentInfo.currentProgress} />
 										</div>
 									</div>
-									<Progress value={torrentInfo.currentProgress} />
-								</div>
-							</div>
-							<div className="ms-6 flex flex-col w-full gap-2">
-								<div>
-									<div className="flex gap-2 mt-2">
-										<ResumePauseTorrent
-											isPaused={true}
-											torrentURI={queueItem.torrentId}
-											className="mt-1 hover:bg-zinc-800 hover:-translate-y-1
-											hover:duration-500 transition-all"
-										/>
-										<Button
-											onClick={() => window.api.removeTorrent(queueItem.torrentId)}
-											className="mt-1 hover:bg-red-500 hover:-translate-y-1
-										hover:duration-500 transition-all"
-										>
-											Remove
-										</Button>
+									<div className="ms-6 flex flex-col w-full gap-2">
+										<div>
+											<div className="flex gap-2 mt-2">
+												<ResumePauseTorrent
+													isPaused={true}
+													torrentURI={queueItem.torrentId}
+													className="mt-1 hover:bg-zinc-800 hover:-translate-y-1
+									hover:duration-500 transition-all"
+													// setIsDownloadBlocked={setIsDownloadBlocked}
+													// isDownloadBlocked={isDownloadBlocked}
+												/>
+												<Button
+													onClick={() =>
+														window.api.removeTorrent(queueItem.torrentId)
+													}
+													// {...(isDownloadBlocked ? { disabled: true } : null)}
+													className="mt-1 hover:bg-red-500 hover:-translate-y-1
+								hover:duration-500 transition-all"
+												>
+													Remove
+												</Button>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						)
-					})}	
+							);
+						})}
 					</div>
 				</>
-			)
-
+			);
 		}
 
-		return null; 
+		return null;
 	}
 
 	function DownloadCard({ game }) {
@@ -240,8 +254,8 @@ export function Downloads() {
 										key={chart}
 										data-active={activeChart === chart}
 										className="relative z-30 justify-center border-t px-6 py-4
-							text-left even:border-l data-[active=true]:bg-muted/15
-							sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+					text-left even:border-l data-[active=true]:bg-muted/15
+					sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
 										onClick={() => setActiveChart(chart)}
 									>
 										<div className="flex flex-col">
@@ -284,7 +298,7 @@ export function Downloads() {
 				<h1 className="text-2xl">Downloading</h1>
 				<div
 					className="size-24 w-full h-full flex flex-col border 
-			border-white bg-zinc-950 rounded-xl gap-2 p-5 pb-10 shadow-xl shadow-black"
+	border-white bg-zinc-950 rounded-xl gap-2 p-5 pb-10 shadow-xl shadow-black"
 				>
 					<GameContainer />
 				</div>
@@ -304,17 +318,37 @@ function DownloadTimeRemaining({ timeRemaining }: timeRemainingProps) {
 		: `${(timeRemaining * 100).toFixed(0)} Seconds`;
 }
 
-function ResumePauseTorrent({ isPaused, torrentURI, className }): JSX.Element {
+function ResumePauseTorrent({
+	isPaused,
+	torrentURI,
+	// setIsDownloadBlocked,
+	// isDownloadBlocked,
+	className,
+}): JSX.Element {
 	if (isPaused) {
 		return (
-			<Button className={className} onClick={() => window.api.resumeTorrent(torrentURI)}>
+			<Button
+				className={className}
+				onClick={() => {
+					window.api.resumeTorrent(torrentURI);
+					// setIsDownloadBlocked(true);
+				}}
+				// {...(isDownloadBlocked ? { disabled: true } : null )}
+			>
 				Resume
 			</Button>
 		);
 	}
 
 	return (
-		<Button className={className} onClick={() => window.api.pauseTorrent()}>
+		<Button
+			className={className}
+			onClick={() => {
+				window.api.pauseTorrent();
+				// setIsDownloadBlocked(true);
+			}}
+			// {...(isDownloadBlocked ? { disabled: true } : null )}
+		>
 			Pause
 		</Button>
 	);
