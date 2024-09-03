@@ -226,14 +226,26 @@ export async function pauseOnQueue(torrentId: string) {
 	}
 }
 
-export async function addToQueue({ name, size, torrentId }) {
-	console.log("Received in addToQueue: ", name, size, torrentId);
+export async function addToQueue({ name, size, torrentId, progress }) {
+	console.log("Received in addToQueue: ", name, size, progress);
 	await GreedDataSource.getRepository(Queue).save({
 		torrentId,
 		name,
 		size,
+		progress,
 		status: 'downloading',
 	});
+}
+
+export async function resumeOnQueue(torrentId: string) {
+	const toBeChanged = await GreedDataSource.getRepository(Queue).findOneBy({
+		torrentId: torrentId
+	});
+
+	if (toBeChanged) {
+		toBeChanged.status = "downloading";
+		await GreedDataSource.getRepository(Queue).save(toBeChanged);
+	}
 }
 
 export async function removeFromQueue(magnetURI: string) {
@@ -243,5 +255,9 @@ export async function removeFromQueue(magnetURI: string) {
 }
 
 export async function syncronizeQueue(): Promise<Queue[]> {
-	return await GreedDataSource.manager.find(Queue);
+	return await GreedDataSource.getRepository(Queue).find({
+		where: {
+			status: "paused"
+		}
+	});
 }

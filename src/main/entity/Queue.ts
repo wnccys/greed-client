@@ -9,6 +9,9 @@ export class Queue {
     name: string
 
     @Column()
+    progress: number 
+
+    @Column()
     size: string 
 
     @Column()

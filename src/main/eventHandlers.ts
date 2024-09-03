@@ -19,6 +19,7 @@ import {
 	getGameRegisteredPath,
 	getSourcesList,
 	removeSourceFromDB,
+	syncronizeQueue,
 } from "./model";
 import type { Worker } from "node:worker_threads";
 
@@ -35,11 +36,13 @@ ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 ipcMain.handle("getSelectedGameInfo", handleGetCurrentGameInfo);
 ipcMain.handle("getCurrentDownloadPath", handleGetCurrentDownloadPath);
 ipcMain.handle("verifyGameRegisteredPath", handleVerifyGameRegisteredPath);
+ipcMain.handle("getCurrentQueueItems", handleGetCurrentQueueItems);
 ipcMain.on("updateDownloadPath", handleUpdateDownloadPath);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 ipcMain.on("updateTorrentInfos", handleUpdateTorrentInfos);
 ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
 ipcMain.on("updateTorrentPauseStatus", handleUpdateTorrentPausedStatus);
+ipcMain.on("updateQueueItems", handleUpdateQueueItems);
 
 async function handleOpenHydraLinks() {
 	shell.openExternal("https://hydralinks.cloud/sources/");
@@ -85,6 +88,7 @@ export function handleUpdateTorrentInfos(
 	timeRemaining: number,
 	downloadSpeed: number,
 	downloaded: number,
+	peers: number,
 	size: number,
 ) {
 	for (const win of BrowserWindow.getAllWindows()) {
@@ -95,6 +99,7 @@ export function handleUpdateTorrentInfos(
 			currentProgress: (Number(torrentProgress) * 100).toFixed(2),
 			downloadSpeed: (downloadSpeed / 100000).toFixed(0),
 			downloaded: (downloaded / 1000000).toFixed(0),
+			peers,
 			totalSize: (size / 1000000).toFixed(0),
 		});
 	}
@@ -291,4 +296,14 @@ async function handleVerifyGameRegisteredPath(
 		filePaths[0],
 	);
 	return ["Success", "Path added."];
+}
+
+async function handleUpdateQueueItems(queueItems: IpcMainEvent) {
+	for (const win of BrowserWindow.getAllWindows()) {
+		win.webContents.send("updateQueueItems", queueItems);
+	}	
+}
+
+async function handleGetCurrentQueueItems(_event: IpcMainInvokeEvent) {
+	return await syncronizeQueue();
 }
