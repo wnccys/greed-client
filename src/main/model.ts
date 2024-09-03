@@ -11,9 +11,6 @@ import path from "node:path";
 import { ipcMain } from "electron";
 import { throttle } from "lodash-es";
 
-type HashQueues = Map<string, Queue>[];
-
-// export let appQueue: HashQueues[] = (await syncronizeQueue());
 
 export function testDBConn() {
 	GreedDataSource.initialize()
@@ -247,9 +244,12 @@ export async function resumeOnQueue(torrentId: string) {
 }
 
 export async function verifyIfOnQueue(magnetURI: string): Promise<boolean> {
-	const isPresent = await GreedDataSource.getRepository(Queue).findOneBy({
-		torrentId: magnetURI,
+	const isPresent = await GreedDataSource.getRepository(Queue).find({
+		where: {
+			torrentId: (`${magnetURI}`),
+		},
 	});
+
 	console.log("VERIFIED AND ITS DUPLICATED!@!!: ", isPresent);
 
 	if (isPresent) {
