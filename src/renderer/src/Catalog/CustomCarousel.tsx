@@ -10,9 +10,20 @@ import imagesData from "../../../steam-games/images.json"; // Importando o JSON 
 import image1  from "../assets/carousel/394511.jpg";
 import image2 from  "../assets/carousel/mdw3.jpg"
 import image3 from  "../assets/carousel/image.png"
-import image4 from  "../assets/carousel/red-dead-redemption-2-3840-x-2160-iwuzo4l3gjd8kclf.jpg"
-import image5 from  "../assets/carousel/wallpaperflare.com_wallpaper.jpg"
-import image6 from  "../assets/carousel/cyberpunk2077.jpg"
+import image4 from  "../assets/carousel/reddead.jpg"
+import image5 from  "../assets/carousel/palworld.png"
+import image6 from  "../assets/carousel/godofwar.jpg"
+import image7 from  "../assets/carousel/fifa23.jpg"
+import image8 from  "../assets/carousel/resident.jpg"
+import image9 from  "../assets/carousel/fallout.jpg"
+import image10 from  "../assets/carousel/cyberpunk2077.jpg"
+import image11 from  "../assets/carousel/blackops.jpg"
+import image12 from  "../assets/carousel/thewitcher.jpg"
+import image13 from  "../assets/carousel/batman.jpg"
+import image14 from  "../assets/carousel/assassins.jpg"
+
+
+
 
 
 {/*interface Image { //interface de atribuicao
@@ -26,13 +37,10 @@ import image6 from  "../assets/carousel/cyberpunk2077.jpg"
 export function CustomCarousel() {
     // Array de URLs de imagens
     const [images, setImages] = React.useState([
-         'https://cdn2.steamgriddb.com/hero/bb2df1ceec69185fc8559f9c41052e2f.webp',
-         image1,
-         image2,
-         image3,
-         image4,
-         image5,
-         image6,
+         'https://cdn2.steamgriddb.com/hero/bb2df1ceec69185fc8559f9c41052e2f.webp', image1, image2, image3, image4, image5,
+          image6, image7, image8, 
+         image9, image10, image11,
+         image12,image13, image14
         
 
     ]);

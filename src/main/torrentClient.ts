@@ -66,11 +66,7 @@ function setCurrentTorrent(magnetURI: string, downloadFolder: string) {
 	return currentTorrent;
 }
 
-<<<<<<< HEAD
-export function registerTorrentEvents(torrent: Torrent) {
-=======
 function registerClientEvents(client: WebTorrent.Instance) {
->>>>>>> 4c49df55530a6bf96e473d8293571668a9417005
 	return setInterval(() => {
 		for (const torrent of client.torrents) {
 			if (torrent.progress < 1 && !torrent.paused) {
