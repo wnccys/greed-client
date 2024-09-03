@@ -55,7 +55,7 @@ export function App(): JSX.Element {
 						className="ps-6 mt-[1.5em] flex flex-col gap-3 text-xs h-full max-w-sm"
 					>
 						<MenuLink itemName="Catalog" icon={CatalogIcon} route="catalog" />
-						<MenuLink itemName="Library" icon={LibraryIcon} route="cu" />
+						<MenuLink itemName="Library" icon={LibraryIcon} route="library" />
 						<MenuLink
 							itemName="Downloads"
 							icon={DownloadIcon}
