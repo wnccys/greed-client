@@ -251,7 +251,7 @@ async function handleGetGamesByName(_event: IpcMainInvokeEvent, name: string) {
 	return await getDBGamesByName(name);
 }
 
-async function handleVerifyGameRegisteredPath(
+export async function handleVerifyGameRegisteredPath(
 	_event: IpcMainInvokeEvent,
 	gameName: string,
 	gameSteamId: number,
@@ -294,5 +294,14 @@ async function handleVerifyGameRegisteredPath(
 		gameURIS,
 		filePaths[0],
 	);
+	console.log("aqui porra",filePaths)
+	console.log(gameName)
+
+
 	return ["Success", "Path added."];
+ 
+
+	
 }
+
+
