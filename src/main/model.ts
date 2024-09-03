@@ -213,8 +213,6 @@ export async function addNewGameRegisteredPath(
 	});
 }
 
-export async function saveCurrentQueue() {}
-
 export async function pauseOnQueue(torrentId: string) {
 	const toBeChanged = await GreedDataSource.getRepository(Queue).findOneBy({
 		torrentId: torrentId
@@ -222,7 +220,7 @@ export async function pauseOnQueue(torrentId: string) {
 
 	if (toBeChanged) {
 		toBeChanged.status = "paused";
-		GreedDataSource.getRepository(Queue).save(toBeChanged);
+		await GreedDataSource.getRepository(Queue).save(toBeChanged);
 	}
 }
 
@@ -246,6 +244,19 @@ export async function resumeOnQueue(torrentId: string) {
 		toBeChanged.status = "downloading";
 		await GreedDataSource.getRepository(Queue).save(toBeChanged);
 	}
+}
+
+export async function verifyIfOnQueue(magnetURI: string): Promise<boolean> {
+	const isPresent = await GreedDataSource.getRepository(Queue).findOneBy({
+		torrentId: magnetURI,
+	});
+	console.log("VERIFIED AND ITS DUPLICATED!@!!: ", isPresent);
+
+	if (isPresent) {
+		return true;
+	}
+
+	return false;
 }
 
 export async function removeFromQueue(magnetURI: string) {

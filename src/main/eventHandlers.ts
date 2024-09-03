@@ -38,6 +38,7 @@ ipcMain.handle("getCurrentDownloadPath", handleGetCurrentDownloadPath);
 ipcMain.handle("verifyGameRegisteredPath", handleVerifyGameRegisteredPath);
 ipcMain.handle("getCurrentQueueItems", handleGetCurrentQueueItems);
 ipcMain.on("updateDownloadPath", handleUpdateDownloadPath);
+ipcMain.on("isNoLongerLoading", handleIsNoLongerLoading);
 ipcMain.on("updateTorrentProgress", handleUpdateTorrentProgress);
 ipcMain.on("updateTorrentInfos", handleUpdateTorrentInfos);
 ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
@@ -306,4 +307,10 @@ async function handleUpdateQueueItems(queueItems: IpcMainEvent) {
 
 async function handleGetCurrentQueueItems(_event: IpcMainInvokeEvent) {
 	return await syncronizeQueue();
+}
+
+function handleIsNoLongerLoading() {
+	for (const win of BrowserWindow.getAllWindows()) {
+		win.webContents.send("isNoLongerLoading");
+	}	
 }

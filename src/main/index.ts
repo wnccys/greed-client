@@ -2,7 +2,7 @@ import { app, BrowserWindow } from "electron";
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import "reflect-metadata";
-import { saveCurrentQueue, syncronizeQueue, testDBConn } from "./model";
+import { testDBConn } from "./model";
 import * as MainEventHandle from "./eventHandlers";
 
 MainEventHandle;
@@ -33,12 +33,10 @@ const createWindow = () => {
 };
 
 app.whenReady().then(async () => {
-	syncronizeQueue();
 	createWindow();
   });
   
   app.on("window-all-closed", async () => {
-	await saveCurrentQueue();
 	if (process.platform !== "darwin") app.quit();
   });
   
