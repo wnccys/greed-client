@@ -114,32 +114,36 @@ export function Catalog() {
 	function SearchGamesCard() {
 		if (!isImagesLoading && searchImages.length > 0) {
 			return (
-				<div className="mt-5 flex flex-wrap justify-between gap-4">
-					{searchGames?.map((game, index) => {
-						return (
-							<GameCard
-								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-								key={index}
-								gameId={game.id}
-								gameName={game.name}
-								gameImage={searchImages[index]}
-							/>
-						);
-					})}
+				<div className="h-screen">
+					<div className="mt-5 flex flex-wrap justify-between gap-4">
+						{searchGames?.map((game, index) => {
+							return (
+								<GameCard
+									// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+									key={index}
+									gameId={game.id}
+									gameName={game.name}
+									gameImage={searchImages[index]}
+								/>
+							);
+						})}
+					</div>
 				</div>
 			)
 		} 
 
 		return (
-			<div className="mt-5 flex flex-wrap justify-between gap-4">
-				{searchGames?.map((_, index) => {
-					return (
-						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-						<div key={index}>
-							<Skeleton className="h-[8rem] w-[17.5vw] rounded-lg" />
-						</div>
-					);
-				})}
+			<div className="h-screen">
+				<div className="mt-5 flex flex-wrap justify-between gap-4">
+					{searchGames?.map((_, index) => {
+						return (
+							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+							<div key={index}>
+								<Skeleton className="h-[8rem] w-[17.5vw] rounded-lg" />
+							</div>
+						);
+					})}
+				</div>
 			</div>
 		)
 	}
