@@ -3,6 +3,7 @@ import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import "reflect-metadata";
 import { testDBConn } from "./model";
+import { format } from "node:url";
 import * as MainEventHandle from "./eventHandlers";
 
 MainEventHandle;
@@ -29,7 +30,21 @@ const createWindow = () => {
 		show: false,
 	});
 	mainWindow.maximize();
-	mainWindow.loadURL("http://localhost:5173/catalog").then(() => mainWindow.show());
+
+	const urlToLoad = app.isPackaged 
+	? `${format({
+            pathname: path.join(__dirname, "../renderer/index.html"),
+            protocol: "file:",
+            slashes: true,
+        })}#/catalog` : "http://localhost:5173/#/catalog";
+
+		console.log("IF BUILDED: ", `${format({
+            pathname: path.join(__dirname, "../renderer/index.html"),
+            protocol: "file:",
+            slashes: true,
+        })}#/catalog`);
+
+	mainWindow.loadURL(urlToLoad).then(() => mainWindow.show());
 };
 
 app.whenReady().then(async () => {
