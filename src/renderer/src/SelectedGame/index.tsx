@@ -22,13 +22,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@renderer/ShadComponents/ui/carousel"
-// import { getColorFromURL, type Palette } from "color-thief-node";
+import { getColorFromURL, type Palette } from "color-thief-node";
 
 export function SelectedGame() {
 	const [gameId, gameName] = useLoaderData() as [number, string];
 	const [isLoading, setIsLoading] = useState(true);
 	const [gameImage, setGameImage] = useState<string>("");
-	// const [imageSpotlightColor, setImageSpotlightColor] = useState<Palette>([255,255,255]);
+	const [imageSpotlightColor, setImageSpotlightColor] = useState<Palette>([255,255,255]);
 	const [gameIcon, setGameIcon] = useState<string>("");
 	const steamInfoBaseURL = `https://store.steampowered.com/api/appdetails?appids=${gameId}`;
 	const [gameInfos, setGamesInfos] = useState<GlobalDownloads[]>([]);
@@ -95,9 +95,9 @@ export function SelectedGame() {
 				.then((blobImage) => {
 					reader.onload = () => {
 						setGameIcon(reader.result as string);
-						// getColorFromURL(reader.result as string).then((palette) => {
-						// 	setImageSpotlightColor(palette);
-						// });
+						getColorFromURL(reader.result as string).then((palette) => {
+							setImageSpotlightColor(palette);
+						});
 					};
 					reader.readAsDataURL(blobImage);
 				});
@@ -151,10 +151,10 @@ export function SelectedGame() {
 									style={{
 										backgroundImage: `url(${gameImage})`,
 										minHeight: '50vh',
-										// boxShadow: `0px 60px 160px
-										// rgba(${imageSpotlightColor?.[0]},
-										// ${imageSpotlightColor?.[1]},
-										// ${imageSpotlightColor?.[2]}, 0.2)`,
+										boxShadow: `0px 60px 160px
+										rgba(${imageSpotlightColor?.[0]},
+										${imageSpotlightColor?.[1]},
+										${imageSpotlightColor?.[2]}, 0.2)`,
 									}}	
 									/>
 							</div>
