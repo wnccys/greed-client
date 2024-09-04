@@ -6,10 +6,10 @@ interface RecentsLinkProps {
 export function RecentsLink({text, src}: RecentsLinkProps) {
     return (
         <div 
-            className="flex bg-[#171717] h-11 rounded-2xl pe-1 
+            className="flex bg-[#171717] pe-1 gap-1 h-fit self-center rounded-sm
             hover:bg-zinc-800 mb-3 cursor-pointer transition-colors delay-75"
         >
-            <img src={src} alt="game-cover" className="ms-2 p-1 rounded-full" />
+            <img src={src} alt="game-cover" className="ms-2 size-8 m-1 self-center" />
             <p className="p-2 text-xs text-wrap truncate mb-1">
                 {text} 
             </p>
