@@ -36,6 +36,7 @@ ipcMain.handle("getGamesByName", handleGetGamesByName);
 ipcMain.handle("getLibraryGames", handleGetLibraryGames);
 ipcMain.handle("openHydraLinks", handleOpenHydraLinks);
 ipcMain.handle("execGamePath", handleExecGamePath);
+ipcMain.handle("updateLibraryGames", handleUpdateLibrary);
 ipcMain.handle("removeGamePath", handleRemoveGamePath);
 ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 ipcMain.handle("getSelectedGameInfo", handleGetCurrentGameInfo);
@@ -335,4 +336,11 @@ async function handleRemoveGamePath(_event, pathId: number) {
 			win.webContents.send("updateLibrary", newLibrary);
 		}
 	})
+}
+
+async function handleUpdateLibrary() {
+	for (const win of BrowserWindow.getAllWindows()) {
+		const newLibrary = await handleGetLibraryGames();
+		win.webContents.send("updateLibrary", newLibrary);
+	}
 }
