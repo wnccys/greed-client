@@ -9,8 +9,8 @@ import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
 import { useSearchImages } from "@renderer/Hooks/search";
 
 export function Catalog() {
+	const [isImagesLoading, setIsImageLoading] = useState<boolean>(false);
 	const games = useCatalogGames();
-	const [isImagesLoading, setIsImageLoading] = useState<boolean>(true);
 	const images = useGamesImages(games[1], setIsImageLoading);
 	const [isSearching, setIsSearching] = useState<boolean>(false);
 	const [searchImages, setSearchImages] = useState<string[]>([]);
@@ -18,7 +18,6 @@ export function Catalog() {
 	const [searchGames, setSearchGames] = useState<GlobalDownloads[]>([]);
 
 	useEffect(() => {
-		setIsImageLoading(true);
 		window.api.getGamesByName(search).then((games) => {
 			setSearchGames(games);
 		});
