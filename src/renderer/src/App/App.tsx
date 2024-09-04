@@ -42,7 +42,7 @@ export function App(): JSX.Element {
 							src={BaldIcon}
 						/>
 						<RecentsLink
-							text="Baldur's Gate II THE RETURN OF GATE"
+							text="Baldur's Gate II: The Return Of Bald"
 							src={BaldIcon}
 						/>
 						<RecentsLink
