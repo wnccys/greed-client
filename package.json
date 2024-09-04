@@ -28,6 +28,7 @@
     "@radix-ui/react-progress": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.1.2",
     "@swc/core": "^1.7.6",
     "@types/lodash-es": "^4.17.12",
     "class-variance-authority": "^0.7.0",
