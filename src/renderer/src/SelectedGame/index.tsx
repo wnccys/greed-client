@@ -210,7 +210,7 @@ export function SelectedGame() {
 							<p className="text-sm">Download Options</p>
 						</Button>
 					</DialogTrigger>
-					<DialogContent className="sm:max-w-[525px] bg-zinc-950">
+					<DialogContent className="sm:max-w-[525px] bg-zinc-950 max-h-screen">
 						{(gameInfos?.length > 0 && (
 							<>
 								<DialogHeader>
@@ -232,8 +232,8 @@ export function SelectedGame() {
 										/>
 									</div>
 								</DialogHeader>
-								<div>
-									<div className="flex flex-col gap-3 text-sm">
+								<div className="h-full">
+									<div className="flex flex-col text-sm h-full">
 										{gameInfos.map((downloadOption) => {
 											return (
 												// biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
