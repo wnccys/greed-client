@@ -12,6 +12,7 @@ import { MenuBar } from "@renderer/App/MenuBar";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { Toaster } from "@renderer/ShadComponents/ui/sonner";
+import BaldIcon from "@renderer/Assets/bald.ico";
 
 export function App(): JSX.Element {
 	useEffect(() => {
@@ -38,15 +39,15 @@ export function App(): JSX.Element {
 					<div className="pt-3 ps-4">
 						<RecentsLink
 							text="Baldur's Gate III"
-							src="https://placehold.co/30"
+							src={BaldIcon}
 						/>
 						<RecentsLink
-							text="Baldur's Gate III THE RETURN OF GATE OF BALDUR"
-							src="https://placehold.co/30"
+							text="Baldur's Gate II: The Return Of Bald"
+							src={BaldIcon}
 						/>
 						<RecentsLink
-							text="Baldur's Gate III"
-							src="https://placehold.co/30"
+							text="Baldur's Gate I"
+							src={BaldIcon}
 						/>
 					</div>
 
