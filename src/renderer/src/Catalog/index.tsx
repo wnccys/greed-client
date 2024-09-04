@@ -9,8 +9,8 @@ import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
 import { useSearchImages } from "@renderer/Hooks/search";
 
 export function Catalog() {
+	const [isImagesLoading, setIsImageLoading] = useState<boolean>(false);
 	const games = useCatalogGames();
-	const [isImagesLoading, setIsImageLoading] = useState<boolean>(true);
 	const images = useGamesImages(games[1], setIsImageLoading);
 	const [isSearching, setIsSearching] = useState<boolean>(false);
 	const [searchImages, setSearchImages] = useState<string[]>([]);
@@ -18,7 +18,6 @@ export function Catalog() {
 	const [searchGames, setSearchGames] = useState<GlobalDownloads[]>([]);
 
 	useEffect(() => {
-		setIsImageLoading(true);
 		window.api.getGamesByName(search).then((games) => {
 			setSearchGames(games);
 		});
@@ -114,32 +113,36 @@ export function Catalog() {
 	function SearchGamesCard() {
 		if (!isImagesLoading && searchImages.length > 0) {
 			return (
-				<div className="mt-5 flex flex-wrap justify-between gap-4">
-					{searchGames?.map((game, index) => {
-						return (
-							<GameCard
-								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-								key={index}
-								gameId={game.id}
-								gameName={game.name}
-								gameImage={searchImages[index]}
-							/>
-						);
-					})}
+				<div className="h-screen">
+					<div className="mt-5 flex flex-wrap justify-between gap-4">
+						{searchGames?.map((game, index) => {
+							return (
+								<GameCard
+									// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+									key={index}
+									gameId={game.id}
+									gameName={game.name}
+									gameImage={searchImages[index]}
+								/>
+							);
+						})}
+					</div>
 				</div>
 			)
 		} 
 
 		return (
-			<div className="mt-5 flex flex-wrap justify-between gap-4">
-				{searchGames?.map((_, index) => {
-					return (
-						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-						<div key={index}>
-							<Skeleton className="h-[8rem] w-[17.5vw] rounded-lg" />
-						</div>
-					);
-				})}
+			<div className="h-screen">
+				<div className="mt-5 flex flex-wrap justify-between gap-4">
+					{searchGames?.map((_, index) => {
+						return (
+							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+							<div key={index}>
+								<Skeleton className="h-[8rem] w-[17.5vw] rounded-lg" />
+							</div>
+						);
+					})}
+				</div>
 			</div>
 		)
 	}

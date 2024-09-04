@@ -1,7 +1,6 @@
 import { Button } from "@renderer/ShadComponents/ui/button";
 import { Input } from "@renderer/ShadComponents/ui/input";
 import { Label } from "@renderer/ShadComponents/ui/label";
-import { Toaster } from "@renderer/ShadComponents/ui/sonner";
 import { toast } from "sonner";
 import * as Tabs from "@radix-ui/react-tabs";
 import {

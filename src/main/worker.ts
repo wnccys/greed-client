@@ -31,24 +31,24 @@ parentPort?.on("message", (data: JSONGame[]) => {
     parentPort?.postMessage(data);
 });
 
-function normalizeTitle(title: string) {
-    // Convert to lowercase
-    let normalized = title.toLowerCase();
+// function normalizeTitle(title: string) {
+//     // Convert to lowercase
+//     let normalized = title.toLowerCase();
 
-    // Remove content within parentheses and brackets
-    normalized = normalized.replace(/\(.*?\)/g, '').replace(/\[.*?\]/g, '');
+//     // Remove content within parentheses and brackets
+//     normalized = normalized.replace(/\(.*?\)/g, '').replace(/\[.*?\]/g, '');
 
-    // Replace dots and hyphens with spaces
-    normalized = normalized.replace(/[.\-]/g, ' ');
+//     // Replace dots and hyphens with spaces
+//     normalized = normalized.replace(/[.\-]/g, ' ');
 
-    // Remove '+' signs and other special characters
-    normalized = normalized.replace(/[+]/g, ' ');
+//     // Remove '+' signs and other special characters
+//     normalized = normalized.replace(/[+]/g, ' ');
 
-    // Remove any remaining special characters
-    normalized = normalized.replace(/[^a-z0-9\s]/g, '');
+//     // Remove any remaining special characters
+//     normalized = normalized.replace(/[^a-z0-9\s]/g, '');
 
-    // Replace multiple spaces with a single space and trim
-    normalized = normalized.replace(/\s+/g, ' ').trim();
+//     // Replace multiple spaces with a single space and trim
+//     normalized = normalized.replace(/\s+/g, ' ').trim();
 
-    return normalized;
-}
+//     return normalized;
+// }

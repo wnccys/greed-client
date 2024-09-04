@@ -1,9 +1,8 @@
 import './Assets/main.css'
 import './Assets/global.css'
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { App } from './App/App'
-import { createBrowserRouter,
+import { createHashRouter,
   RouterProvider,
  } from 'react-router-dom';
 import { SelectedGame } from './SelectedGame';
@@ -11,8 +10,9 @@ import { Catalog } from './Catalog';
 import { ErrorElement } from './ErrorElement';
 import { Settings } from './Settings';
 import { Downloads } from './Downloads';
+import { Library } from './Library';
 
- const router = createBrowserRouter([
+ const router = createHashRouter([
   {
     path: '/',
     element: <App />,
@@ -35,6 +35,10 @@ import { Downloads } from './Downloads';
       }, 
       { path: "downloads", 
         element: <Downloads />
+      },
+      {
+        path: "library",
+        element: <Library />
       }
     ],
     errorElement: <ErrorElement />
@@ -42,7 +46,5 @@ import { Downloads } from './Downloads';
  ])
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <RouterProvider router={router}/>
-  </React.StrictMode>
+    <RouterProvider router={router} />
 )

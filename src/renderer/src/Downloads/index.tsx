@@ -233,7 +233,7 @@ export function Downloads() {
 	}
 
 	return (
-		<div className="flex flex-col container scale-90 content-center h-screen mb-10 max-w-[52rem]">
+		<div className="flex flex-col container scale-90 content-center min-h-screen mb-10 max-w-[52rem]">
 			{torrentInfo.currentProgress > 0 && (
 				<Card className="bg-black scale-100 pb-10 shadow-xl shadow-black">
 					<CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
