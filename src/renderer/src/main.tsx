@@ -11,7 +11,7 @@ import { Catalog } from './Catalog';
 import { ErrorElement } from './ErrorElement';
 import { Settings } from './Settings';
 import { Downloads } from './Downloads';
-import { Library } from './Library'
+import { Library } from './Library';
 
  const router = createBrowserRouter([
   {

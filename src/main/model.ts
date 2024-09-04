@@ -272,3 +272,17 @@ export async function syncronizeQueue(): Promise<Queue[]> {
 		}
 	});
 }
+
+export async function getDBLibraryItems() {
+	const libraryItems = await GreedDataSource.manager.find(GamePath);
+
+	return libraryItems;
+}
+
+export async function removeGameFromLibrary(id: number) {
+	const deleted = await GreedDataSource.getRepository(GamePath).delete({
+		id: id,
+	})
+
+	console.log("deleted: ", deleted);
+}

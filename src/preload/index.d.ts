@@ -1,8 +1,10 @@
 import type ElectronAPI from "@electron-toolkit/preload";
 import type { Downloads } from "@main/entity/Downloads";
+import type { GamePath } from "@main/entity/GamePAth";
 
 declare global {
 	type GlobalDownloads = Downloads;
+	type LibraryItem = GamePath;
 
 	interface Window {
 		electron: ElectronAPI;
@@ -53,6 +55,9 @@ declare global {
 		getSelectedGameInfo: (gameId: number) => Promise<Downloads[]>;
 		removeSourceFromDB: (sourceLink: string) => Promise<string[]>;
 		changeDefaultPath: () => Promise<string[]>;
+		getLibraryGames: () => Promise<LibraryItem[]>;
+		execGamePath: (execPath: string) => null,
+		removeGamePath: (pathId: number) => null;
 		getGameRegisteredPath: (
 			gameName: string,
 			gameSteamId: number,

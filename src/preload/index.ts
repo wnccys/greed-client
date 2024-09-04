@@ -28,6 +28,9 @@ const api = {
 	removeSourceFromDB: (sourceName: string) =>
 		ipcRenderer.invoke("removeSourceFromDB", sourceName),
 	changeDefaultPath: () => ipcRenderer.invoke("changeDefaultPath"),
+	getLibraryGames: () => ipcRenderer.invoke("getLibraryGames"),
+	execGamePath: (execPath: string) => ipcRenderer.invoke("execGamePath", execPath),
+	removeGamePath: (pathId: number) => ipcRenderer.invoke("removeGamePath", pathId),	
 	getGameRegisteredPath: (
 		gameName: string,
 		steamGameId: number,

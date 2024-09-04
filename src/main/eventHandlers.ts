@@ -16,8 +16,10 @@ import {
 	getDBCurrentPath,
 	getDBGameInfos,
 	getDBGamesByName,
+	getDBLibraryItems,
 	getGameRegisteredPath,
 	getSourcesList,
+	removeGameFromLibrary,
 	removeSourceFromDB,
 	syncronizeQueue,
 } from "./model";
@@ -31,7 +33,10 @@ ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("changeDefaultPath", handleChangeDefaultPath);
 ipcMain.handle("startGameDownload", handleStartGameDownload);
 ipcMain.handle("getGamesByName", handleGetGamesByName);
+ipcMain.handle("getLibraryGames", handleGetLibraryGames);
 ipcMain.handle("openHydraLinks", handleOpenHydraLinks);
+ipcMain.handle("execGamePath", handleExecGamePath);
+ipcMain.handle("removeGamePath", handleRemoveGamePath);
 ipcMain.handle("removeSourceFromDB", handleRemoveSourceFromDB);
 ipcMain.handle("getSelectedGameInfo", handleGetCurrentGameInfo);
 ipcMain.handle("getCurrentDownloadPath", handleGetCurrentDownloadPath);
@@ -313,4 +318,21 @@ function handleIsNoLongerLoading() {
 	for (const win of BrowserWindow.getAllWindows()) {
 		win.webContents.send("isNoLongerLoading");
 	}	
+}
+
+async function handleGetLibraryGames() {
+	return await getDBLibraryItems();
+}
+
+async function handleExecGamePath(_event, execPath: string) {
+	shell.openPath(execPath);
+}
+
+async function handleRemoveGamePath(_event, pathId: number) {
+	removeGameFromLibrary(pathId).then(async () => {
+		for (const win of BrowserWindow.getAllWindows()) {
+				const newLibrary = await handleGetLibraryGames();
+			win.webContents.send("updateLibrary", newLibrary);
+		}
+	})
 }
