@@ -8,7 +8,7 @@ See [How to Contribute](./CONTRIBUTORS.md)
 
 ## Project Setup
 
-### Install
+### Install Dependencies
 
 ```bash
 $ npm install
@@ -20,7 +20,7 @@ $ npm install
 $ npm run dev
 ```
 
-### Build
+### Build (C++ Build Tools and node-gypi required)
 
 ```bash
 # For windows
