@@ -39,6 +39,6 @@ Greed is under the MIT License, which grants the right to copy, modify, and dist
 
 ## Honorable Mentions
 
+[Hydra Launcher](https://github.com/hydralauncher/hydra) </br>
 [Hydra Links](https://hydralinks.cloud/sources/fitgirl.json) </br>
 [Steam DB Info](https://steamdb.info/) </br>
-[Hydra Launcher](https://github.com/hydralauncher/hydra) </br>
