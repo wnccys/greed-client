@@ -27,8 +27,6 @@ jobs:
     - name: Install build tools
       run: |
         choco install visualstudio2019buildtools
-        choco install microsoft-build-tools
-        choco install nuget
       shell: bash
 
     - name: Install dependencies
