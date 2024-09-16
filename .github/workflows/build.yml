@@ -24,6 +24,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
+    - name: Rebuild sqlite3 for current Node.js version
+      run: npm rebuild sqlite3 --build-from-source
+
     - name: Install dependencies
       run: npm install
 
