@@ -24,6 +24,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
+    - name: Install Windows build tools
+      run: npm install --global --production windows-build-tools
+
     - name: Rebuild sqlite3 for current Node.js version
       run: npm rebuild sqlite3 --build-from-source
 
