@@ -146,12 +146,13 @@ export function SelectedGame() {
 					{
 						(
 							!isLoading && 
-							<div className="relative">
-								<div className="bg-fixed"
+							<div className="w-full">
+								<div className="bg-fixed w-full"
 									style={{
 										backgroundImage: `url(${gameImage})`,
+										backgroundSize: 'contain',
 										minHeight: '50vh',
-										boxShadow: `0px 60px 160px
+										boxShadow: `0px 60px 130px
 										rgba(${imageSpotlightColor?.[0]},
 										${imageSpotlightColor?.[1]},
 										${imageSpotlightColor?.[2]}, 0.2)`,
@@ -296,7 +297,7 @@ export function SelectedGame() {
 					</DialogContent>
 				</Dialog>
 
-				<div className="ps-8 mt-[8rem] flex gap-12 bg-[#171717] pb-10">
+				<div className="ps-8 mt-[12rem] flex gap-12 bg-[#171717]">
 					{!isLoading && (<div className="max-w-[65%] flex flex-col items-center">
 						<Carousel className="max-w-md pb-10">
 							<CarouselContent>
@@ -336,7 +337,7 @@ export function SelectedGame() {
 
 					{(!isLoading && (<div
 						className="bg-[#1f1f1f] p-5 rounded-lg me-[1.5rem] h-fit shadow-black shadow-md 
-				hover:shadow-lg hover:shadow-black transition-all duration-200 text-sm max-w-[30rem]"
+				hover:shadow-lg hover:shadow-black transition-all duration-200 text-sm max-w-[30rem] mt-10"
 					>
 						<p className="text-lg font-bold">Requirements</p>
 						<br />

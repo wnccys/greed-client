@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    branches: 
+      - main
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: windows-latest
+    strategy: 
+      matrix:
+        node-version: [20.x]
+
+    steps:
+    - name: Checkout Node  
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build:win
+
+    - name: List dist directory contents
+      run: ls -la ./dist/
+
+    - name: Create Release
+      uses: ncipollo/release-action@v1
+      id: create_release
+      env: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Windows Build To Release 
+      uses: actions/upload-release-asset@v1
+      env: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/greed-electron-1.0.0-setup.exe
+        asset_name: greed-electron.exe
+        asset_content_type: application/octet-stream
