@@ -26,11 +26,9 @@ jobs:
 
     - name: Install build tools
       run: |
-        choco install python --version=3.9.7
         choco install visualstudio2019buildtools --version=16.11.4
         choco install microsoft-build-tools --version=14.0
         choco install nuget
-        npm config set python python3.9
       shell: bash
 
     - name: Install dependencies
