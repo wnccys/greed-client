@@ -24,14 +24,16 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    - name: Install Windows build tools
-      run: npm install --global --production windows-build-tools
+    - name: Install Python (if needed)
+      run: |
+        py -m ensurepip --upgrade
+        py -m pip install --upgrade pip
 
     - name: Rebuild sqlite3 for current Node.js version
       run: npm rebuild sqlite3 --build-from-source
 
     - name: Install dependencies
-      run: npm install
+      run: npm install --build-from-source sqlite3
 
     - name: Build
       run: npm run build:win
