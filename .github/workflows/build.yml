@@ -24,16 +24,17 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    - name: Install Python (if needed)
+    - name: Install build tools
       run: |
-        py -m ensurepip --upgrade
-        py -m pip install --upgrade pip
-
-    - name: Rebuild sqlite3 for current Node.js version
-      run: npm rebuild sqlite3 --build-from-source
+        choco install python --version=3.9.7
+        choco install visualstudio2019buildtools --version=16.11.4
+        choco install microsoft-build-tools --version=14.0
+        choco install nuget
+        npm config set python python3.9
+      shell: bash
 
     - name: Install dependencies
-      run: npm install --build-from-source sqlite3
+      run: npm install
 
     - name: Build
       run: npm run build:win
