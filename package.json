@@ -1,11 +1,10 @@
 {
-  "name": "greed-electron",
-  "version": "1.0.0",
+  "name": "greed-client",
+  "version": "1.0.1",
   "description": "An Electron application with React and TypeScript",
   "main": "./out/main/index.js",
   "type": "module",
-  "author": "example.com",
-  "homepage": "https://electron-vite.org",
+  "author": "https://github.com/wnccys/greed-client/",
   "scripts": {
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
