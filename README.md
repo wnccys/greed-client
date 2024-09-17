@@ -1,4 +1,4 @@
-# <div align="center">Greed-Client
+# <div align="center">Greed-Client <img src="./build/icon.png" width="75" alt="greedIcon" style="justify-center">
 
 ## What Is It?
 Greed is a game launcher that features it's own embedded BitTorrent client and a dynamic torrent source scrapper, It's written in Typescript built over Electron, allowing users to use the launcher locally without any external central server.
@@ -8,7 +8,7 @@ See [How to Contribute](./CONTRIBUTORS.md)
 
 ## Project Setup
 
-### Install
+### Install Dependencies
 
 ```bash
 $ npm install
@@ -20,7 +20,7 @@ $ npm install
 $ npm run dev
 ```
 
-### Build
+### Build (C++ Build Tools and node-gypi required)
 
 ```bash
 # For windows
@@ -33,37 +33,12 @@ $ npm run build:mac
 $ npm run build:linux
 ```
 
-### Others
-https://blog.jse.li/posts/torrent/<br>
-https://www.seanjoflynn.com/research/bittorrent.html#bittorrent<br>
-https://wiki.theory.org/BitTorrentSpecification<br>
-http://www.bittorrent.org/beps/bep_0015.html<br>
-https://typestrong.org/ts-node/docs/options/#esm<br>
-https://typestrong.org/ts-node/docs/imports/<br>
-https://docs.joshuatz.com/cheatsheets/node-and-npm/node-esm/<br>
-https://github.com/TypeStrong/ts-node/issues/1007<br>
+## License
+Greed is under the MIT License, which grants the right to copy, modify, and distribute the software, as long as the original copyright notice and this permission notice are included in all copies or substantial portions of the software.
 
-### Visual Doc
-https://www.morehawes.ca/uk/old-guides/the-bittorrent-protocol<br>
-https://www.npmjs.com/package/webtorrent/v/0.71.4<br>
 
-### Trackers Info
-https://ngosang.github.io/trackerslist/
+## Honorable Mentions
 
-### TSX
-https://tsx.is/<br>
-
-### BiomeJS
-https://biomejs.dev/pt-br/
-
-### ScrapperLib 
-https://github.com/cheeriojs/cheerio<br>
-
-### Scalar Doc Generator
-https://blog.rocketseat.com.br/scalar-uma-ferramenta-poderosa-para-documentacao-de-apis/
-
-### Aria2 Download Package
-https://github.com/sonnyp/aria2.js/
-
-https://hydralinks.cloud/sources/fitgirl.json
-https://www.steamgriddb.com/
+[Hydra Launcher](https://github.com/hydralauncher/hydra) </br>
+[Hydra Links](https://hydralinks.cloud/sources/fitgirl.json) </br>
+[Steam DB Info](https://steamdb.info/) </br>
