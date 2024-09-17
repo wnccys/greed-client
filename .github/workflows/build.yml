@@ -29,7 +29,7 @@ jobs:
       id: set_path
       shell: pwsh
       run: |
-        $path = "${{ github.workspace }}/dist/greed-electron-1.0.0-setup.exe"
+        $path = "${{ github.workspace }}../dist/greed-electron-1.0.0-setup.exe"
         $normalizedPath = $path -replace '\\','/'
         echo "::set-output name=path::$normalizedPath"
 
