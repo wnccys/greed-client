@@ -39,11 +39,13 @@ jobs:
 
     - name: Debugs path
       shell: pwsh
-      run: echo ${{ steps.set_path.outputs.path }}
+      run: |
+        echo ${{ steps.set_path.outputs.path }}
+        echo "/dist/greed-electron-1.0.0-setup.exe"
 
     - name: Create Release
       uses: softprops/action-gh-release@v2
       with:
-        files: ${{ steps.set_path.outputs.path }}
+        files: "/dist/greed-electron-1.0.0-setup.exe"
       env:
           GITHUB_TOKEN: ${{ github.token }}
