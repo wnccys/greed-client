@@ -25,23 +25,23 @@ jobs:
     - name: List dist directory contents
       run: ls ./dist/
 
-    - name: Normalize path slashes
-      shell: pwsh
-      run: |
-        $path = "${{ github.workspace }}/dist/greed-electron-1.0.0-setup.exe"
-        $normalizedPath = $path -replace '\\','/'
-        echo "::set-output name=path::$normalizedPath"
+    # - name: Normalize path slashes
+    #   shell: pwsh
+    #   run: |
+    #     $path = "${{ github.workspace }}/dist/greed-electron-1.0.0-setup.exe"
+    #     $normalizedPath = $path -replace '\\','/'
+    #     echo "::set-output name=path::$normalizedPath"
 
     - name: Checkout
       uses: actions/checkout@v4
 
     - name: Debugs path
       shell: pwsh
-      run: echo ${{ steps.normalize-path-slashes.outputs.path }}
+      run: echo "${{ github.workspace }}/dist/greed-electron-1.0.0-setup.exe"
 
     - name: Create Release
       uses: softprops/action-gh-release@v2
       with:
-        files: ${{ steps.normalize-path-slashes.outputs.path }}
+        files: "${{ github.workspace }}/dist/greed-electron-1.0.0-setup.exe"
       env:
           GITHUB_TOKEN: ${{ github.token }}
