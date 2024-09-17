@@ -34,8 +34,8 @@ jobs:
     #     echo "::set-output name=path::$normalizedPath"
 
 
-    - name: Checkout
-      uses: actions/checkout@v4
+    # - name: Checkout
+    #   uses: actions/checkout@v4
 
     # - name: Debugs path
     #   shell: pwsh
