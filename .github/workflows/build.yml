@@ -25,6 +25,13 @@ jobs:
     - name: List dist directory contents
       run: ls ./dist/
 
+    - name: Normalize path slashes
+      shell: pwsh
+      run: |
+        $path = "dist\\greed-electron-1.0.0-setup.exe"
+        $normalizedPath = $path -replace '\\','/'
+        echo "::set-output name=path::$normalizedPath"
+
     - name: Checkout
       uses: actions/checkout@v4
 
@@ -32,6 +39,5 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: dist/greed-electron-1.0.0-setup.exe
-
       env:
           GITHUB_TOKEN: ${{ github.token }}
