@@ -28,16 +28,20 @@ jobs:
     - name: Normalize path slashes
       shell: pwsh
       run: |
-        $path = "dist\\greed-electron-1.0.0-setup.exe"
+        $path = "${{ github.workspace }}/dist/greed-electron-1.0.0-setup.exe"
         $normalizedPath = $path -replace '\\','/'
         echo "::set-output name=path::$normalizedPath"
 
     - name: Checkout
       uses: actions/checkout@v4
 
+    - name: Debugs path
+      shell: pwsh
+      run: echo ${{ steps.normalize-path-slashes.outputs.path }}
+
     - name: Create Release
       uses: softprops/action-gh-release@v2
       with:
-        files: dist/greed-electron-1.0.0-setup.exe
+        files: ${{ steps.normalize-path-slashes.outputs.path }}
       env:
           GITHUB_TOKEN: ${{ github.token }}
