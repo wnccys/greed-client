@@ -25,27 +25,35 @@ jobs:
     - name: List dist directory contents
       run: ls ./dist/
 
-    - name: Normalize path slashes
-      id: set_path
-      shell: pwsh
-      run: |
-        $path = "${{ github.workspace }}/../dist/greed-electron-1.0.0-setup.exe"
-        $normalizedPath = $path -replace '\\','/'
-        echo "::set-output name=path::$normalizedPath"
+    # - name: Normalize path slashes
+    #   id: set_path
+    #   shell: pwsh
+    #   run: |
+    #     $path = "${{ github.workspace }}/../dist/greed-electron-1.0.0-setup.exe"
+    #     $normalizedPath = $path -replace '\\','/'
+    #     echo "::set-output name=path::$normalizedPath"
 
 
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Debugs path
-      shell: pwsh
+    # - name: Debugs path
+    #   shell: pwsh
+    #   run: |
+    #     echo ${{ steps.set_path.outputs.path }}
+    #     echo "/dist/greed-electron-1.0.0-setup.exe"
+
+    - name: Verify path existence
       run: |
-        echo ${{ steps.set_path.outputs.path }}
-        echo "/dist/greed-electron-1.0.0-setup.exe"
+        if (Test-Path -Path "./dist/greed-electron-1.0.0-setup.exe") {
+          Write-Host "File Exists."
+        } else {
+          Write-Host "File Does Not Exists."
+        }
 
     - name: Create Release
       uses: softprops/action-gh-release@v2
       with:
-        files: "/dist/greed-electron-1.0.0-setup.exe"
+        files: "$(echo ./dist/greed-electron-1.0.0-setup.exe | sed 's/\\/\//g')"
       env:
           GITHUB_TOKEN: ${{ github.token }}
