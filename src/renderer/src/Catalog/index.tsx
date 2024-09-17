@@ -157,7 +157,7 @@ export function Catalog() {
 					className="rounded-md bg-zinc-800 flex p-2 ps-4 items-center"
 					// When something is typed, set isSearching to true and set the current search string
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-						setIsSearching(e.target.value !== (undefined || ""));
+						setIsSearching(e.target.value !== (""));
 						setSearch(e.target.value);
 					}}
 				>
