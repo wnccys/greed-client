@@ -95,9 +95,9 @@ export function SelectedGame() {
 				.then((blobImage) => {
 					reader.onload = () => {
 						setGameIcon(reader.result as string);
-						getColorFromURL(reader.result as string).then((palette) => {
-							setImageSpotlightColor(palette);
-						});
+						// getColorFromURL(reader.result as string).then((palette) => {
+						// 	setImageSpotlightColor(palette);
+						// });
 					};
 					reader.readAsDataURL(blobImage);
 				});
