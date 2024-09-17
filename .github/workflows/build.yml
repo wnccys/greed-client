@@ -30,7 +30,7 @@ jobs:
       run: npm run build:win
 
     - name: List dist directory contents
-      run: ls -la ./dist/
+      run: ls ./dist/
 
     - name: Create Release
       uses: ncipollo/release-action@v1
