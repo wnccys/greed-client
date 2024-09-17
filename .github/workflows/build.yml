@@ -44,6 +44,7 @@ jobs:
     #     echo "/dist/greed-electron-1.0.0-setup.exe"
 
     - name: Verify path existence
+      shell: pwsh
       run: |
         if (Test-Path -Path "./dist/greed-electron-1.0.0-setup.exe") {
           Write-Host "File Exists."
