@@ -1,11 +1,11 @@
-name: CI
+# name: CI
 
-on:
-  push: 
-    branches: 
-      - main
+# on:
+#   push: 
+#     branches: 
+#       - main
 
-jobs:
-  tests-and-build: 
-    - name Print
-      run: echo "print"
+# jobs:
+#   tests-and-build: 
+#     - name Print
+#       run: echo "print"
