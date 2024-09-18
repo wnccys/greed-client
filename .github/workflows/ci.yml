@@ -1,0 +1,11 @@
+name: CI
+
+on:
+  push: 
+    branches: 
+      - main
+
+jobs:
+  tests-and-build: 
+    - name Print
+      run: echo "print"
