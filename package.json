@@ -5,6 +5,11 @@
   "main": "./out/main/index.js",
   "type": "module",
   "author": "https://github.com/wnccys/greed-client/",
+  "overrides": {
+  "typeorm": {
+    "better-sqlite3": "^11.2.1"
+  }
+},
   "scripts": {
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
