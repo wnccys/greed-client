@@ -1,7 +1,20 @@
-function sum(a,b) {
-    return a + b
-}
+import type { DataSource } from 'typeorm';
+import { GreedDataSource } from '../src/main/data-source';
 
-test("sqlite3 db connection", () => {
-    expect(sum(1, 4)).toBe(5);
+describe("SQLite3 Connection", () => {
+    let dataSource: DataSource;
+
+    beforeAll(async () => {
+        dataSource = await GreedDataSource.initialize();
+    });
+
+    afterAll(async () => {
+        if (dataSource?.isInitialized) {
+            await dataSource.destroy();
+        }
+    })
+
+    it('should connect to Database', async () => {
+        expect(dataSource.isInitialized).toBe(true);
+    });
 });

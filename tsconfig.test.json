@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "composite": true,
+        "types": ["electron-vite/node"],
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "strictPropertyInitialization": false,
+        "baseUrl": ".",
+        "paths": {
+            "@main/*": [
+                "src/main/*"
+            ],
+            "@preload/*": [
+                "src/preload/*"
+            ],
+        }
+    }
+}
