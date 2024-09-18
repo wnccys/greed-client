@@ -8,7 +8,7 @@ import { GamePath } from "./entity/GamePath"
 import { Queue } from "./entity/Queue"
 
 export const GreedDataSource = new DataSource({
-    type: "sqlite",
+    type: "better-sqlite3",
     database: "./src/db/settings.sqlite",
     synchronize: true,
     logging: false,
