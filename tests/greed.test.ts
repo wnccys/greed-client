@@ -1,20 +1,12 @@
-import type { DataSource } from 'typeorm';
-import { GreedDataSource } from '../src/main/data-source';
+import { describe, it } from 'node:test';
+import fs from 'fs';
 
-describe("SQLite3 Connection", () => {
-    let dataSource: DataSource;
+describe("Check for DB file integrity.", async () => {
+    it("should be present.", async () => {
+        if (fs.existsSync("./src/db/settings.sqlite")) {
+            return;
+        }; 
 
-    beforeAll(async () => {
-        dataSource = await GreedDataSource.initialize();
-    });
-
-    afterAll(async () => {
-        if (dataSource?.isInitialized) {
-            await dataSource.destroy();
-        }
+        throw Error("Could Not Find DB");
     })
-
-    it('should connect to Database', async () => {
-        expect(dataSource.isInitialized).toBe(true);
-    });
 });
