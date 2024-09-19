@@ -15,6 +15,9 @@ jobs:
       - name: Debug package.json path
         run: ls ./
 
+      - name: Debug DB path
+        run: ls ./src/db
+
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
