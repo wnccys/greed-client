@@ -10,6 +10,7 @@ jobs:
 
     steps:
       - name: Debug package.json path
+        shell: pwsh
         run: ls
 
       - name: Tests for valid Database connection
