@@ -1,11 +1,13 @@
-# name: CI
+name: CI
+on: 
+  push:
+    branches: 
+      - main
 
-# on:
-#   push: 
-#     branches: 
-#       - main
+jobs:
+  test:
+    runs-on: windows-latest
 
-# jobs:
-#   tests-and-build: 
-#     - name Print
-#       run: echo "print"
+    steps:
+      - name: Tests for valid Database connection
+        run: npm test 
