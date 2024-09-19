@@ -20,8 +20,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Tests for valid Database connection
-        run: npm i tsx 
+      - name: Sets tsx for test exec
+        run: npm i --no-package-lock --no-save tsx
 
       - name: Tests for valid Database connection
         run: npm test 
