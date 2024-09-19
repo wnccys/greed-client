@@ -9,5 +9,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Debug package.json path
+        run: ls
       - name: Tests for valid Database connection
         run: npm test 
