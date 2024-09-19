@@ -1,5 +1,4 @@
 [![tests](https://github.com/wnccys/greed-client/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/wnccys/greed-client/actions/workflows/ci.yml)
-[![Release](https://github.com/wnccys/greed-client/actions/workflows/build.yml/badge.svg?event=release)](https://github.com/wnccys/greed-client/actions/workflows/build.yml)
 # <div align="center">Greed-Client <img src="./build/icon.png" width="75" alt="greedIcon" style="justify-center">
 
 ## What Is It?
