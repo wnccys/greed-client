@@ -9,6 +9,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Debug package.json path
         shell: pwsh
         run: Get-ChildItem -Recurse
