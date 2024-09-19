@@ -11,7 +11,12 @@ jobs:
     steps:
       - name: Debug package.json path
         shell: pwsh
-        run: ls .
+        run: Get-ChildItem -Recurse
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
 
       - name: Tests for valid Database connection
         run: npm test 
