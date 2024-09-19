@@ -7,7 +7,6 @@ describe("Check for DB file integrity.", async () => {
         if (fs.existsSync(path.resolve("./src/db/settings.sqlite"))) {
             return;
         }; 
-        console.error("resolved path: ", path.resolve("./src/db/settings.sqlite"));
         throw Error("Could Not Find Database File at " + path.resolve("./src/db/settings.sqlite"));
     })
 });
