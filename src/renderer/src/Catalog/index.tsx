@@ -39,7 +39,7 @@ export function Catalog() {
 	function FeaturedCarousel() {
 		return (
 			<div
-				className="shadow-lg transition-colors shadow-black border-2 border-white p-0"
+				className="shadow-lg transition-colors shadow-black border border-white"
 			>
 				{/* // Verifies if user is at first page on catalog */}
 				{games[1][14].id <= 340 && <CustomCarousel />}
