@@ -11,7 +11,6 @@ import path from "node:path";
 import { ipcMain } from "electron";
 import { throttle } from "lodash-es";
 
-
 export function testDBConn() {
 	GreedDataSource.initialize()
 		.then(async (initializedGreedSource) => {
@@ -212,7 +211,7 @@ export async function addNewGameRegisteredPath(
 
 export async function pauseOnQueue(torrentId: string) {
 	const toBeChanged = await GreedDataSource.getRepository(Queue).findOneBy({
-		torrentId: torrentId
+		torrentId: torrentId,
 	});
 
 	if (toBeChanged) {
@@ -228,13 +227,13 @@ export async function addToQueue({ name, size, torrentId, progress }) {
 		name,
 		size,
 		progress,
-		status: 'downloading',
+		status: "downloading",
 	});
 }
 
 export async function resumeOnQueue(torrentId: string) {
 	const toBeChanged = await GreedDataSource.getRepository(Queue).findOneBy({
-		torrentId: torrentId
+		torrentId: torrentId,
 	});
 
 	if (toBeChanged) {
@@ -246,7 +245,7 @@ export async function resumeOnQueue(torrentId: string) {
 export async function verifyIfOnQueue(magnetURI: string): Promise<boolean> {
 	const isPresent = await GreedDataSource.getRepository(Queue).find({
 		where: {
-			torrentId: (`${magnetURI}`),
+			torrentId: `${magnetURI}`,
 		},
 	});
 
@@ -268,8 +267,8 @@ export async function removeFromQueue(magnetURI: string) {
 export async function syncronizeQueue(): Promise<Queue[]> {
 	return await GreedDataSource.getRepository(Queue).find({
 		where: {
-			status: "paused"
-		}
+			status: "paused",
+		},
 	});
 }
 
@@ -282,7 +281,7 @@ export async function getDBLibraryItems() {
 export async function removeGameFromLibrary(id: number) {
 	const deleted = await GreedDataSource.getRepository(GamePath).delete({
 		id: id,
-	})
+	});
 
 	console.log("deleted: ", deleted);
 }

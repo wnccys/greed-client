@@ -1,5 +1,5 @@
 import { describe, it } from 'node:test';
-import fs from 'fs';
+import fs from 'node:fs';
 import path from 'node:path';
 
 describe("Check for DB file integrity.", async () => {
@@ -7,6 +7,6 @@ describe("Check for DB file integrity.", async () => {
         if (fs.existsSync(path.resolve("./src/db/settings.sqlite"))) {
             return;
         }; 
-        throw Error("Could Not Find Database File at " + path.resolve("./src/db/settings.sqlite"));
+        throw Error(`Could Not Find Database File at ${path.resolve('./src/db/settings.sqlite')}`);
     })
 });
