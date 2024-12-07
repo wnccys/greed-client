@@ -39,10 +39,10 @@ export function Catalog() {
 	function FeaturedCarousel() {
 		return (
 			<div
-				className="shadow-lg hover:drop-shadow-2xl
-		transition-colors shadow-black rounded-lg"
+				className="shadow-lg transition-colors shadow-black border-2 border-white p-0"
 			>
-				{games[1][14].id <= 340 ? <CustomCarousel /> : null}
+				{/* // Verifies if user is at first page on catalog */}
+				{games[1][14].id <= 340 && <CustomCarousel />}
 			</div>
 		);
 	}
@@ -53,7 +53,7 @@ export function Catalog() {
 				<>
 					<div
 						id="games-section"
-						className="mt-5 flex flex-wrap justify-between gap-4"
+						className="flex flex-wrap justify-between gap-4"
 					>
 						{games[1].map((_, key) => {
 							return (
@@ -102,7 +102,7 @@ export function Catalog() {
 							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 							key={index}
 							className="w-[16rem] mt-8 h-32 rounded-lg shadow-lg 
-			shadow-black bg-zinc-800"
+							shadow-black bg-zinc-800"
 						/>
 					);
 				})}
@@ -164,7 +164,7 @@ export function Catalog() {
 					<img src={SearchIcon} alt="search-icon" className="size-4" />
 					<Input
 						className="max-w-[12vw] max-h-8 border-none focus-visible:ring-0 focus:max-w-[14vw] 
-		focus-visible:ring-offset-0"
+						focus-visible:ring-offset-0"
 						type="text"
 						placeholder="Search Games"
 					/>

@@ -25,7 +25,6 @@ export function CustomCarousel() {
 	return (
 		<Carousel
 			plugins={[plugin.current]}
-			className="w-full hover:-translate-y-1 transition-all"
 			onMouseLeave={plugin.current.reset}
 		>
 			<CarouselContent>
@@ -35,29 +34,26 @@ export function CustomCarousel() {
 						<Link
 							to={`../selected-game/${imagesArrId[index]}/${imagesArrName[index]}`}
 						>
-							<div className="p-1">
-								<Card className="border-2 bg-zinc-950 cursor-pointer embla__container">
+							<div className="">
+								<Card 
+									className="bg-zinc-950 cursor-pointer embla__container rounded-none border-none"
+								>
 									<CardContent className="flex items-center justify-center p-0">
 										<img
 											src={imagesArr[index]}
 											alt="game-image"
-											className="rounded-lg embla__slide embla__class-names"
+											className="rounded-none embla__slide embla__class-names hover:scale-105 
+											transition-all duration-300"
 										/>
 										<div
-											className="ms-8 translate-y-[11.5rem] h-300 absolute 
-									z-30 bg-zinc-300 w-full"
+											className="translate-y-[10.5rem] h-12 absolute w-full"
 										>
 											<div
-												className={`text-white absolute z-20
-											${
-												!(imagesArrName[index].length > 24)
-													? "-translate-y-[2.5rem] hover:-translate-y-[4.2rem]"
-													: "-translate-y-[3.6rem] hover:-translate-y-[5.7rem]"
-											} 
-											bg-zinc-950/40 transition-all duration-300 w-full`}
+												className="text-white hover:-translate-y-5 bg-zinc-950/40
+												transition-all duration-300 w-full pb-[2rem] p-2 ps-5"
 											>
-												<p className="p-2 z-10">{imagesArrName[index]}</p>
-												<p className="text-xs p-3 pt-0 ps-2">{"<GameData>"}</p>
+												<p className="">{imagesArrName[index]}</p>
+												<p className="text-xs">{"<GameData>"}</p>
 											</div>
 										</div>
 									</CardContent>
