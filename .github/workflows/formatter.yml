@@ -1,4 +1,4 @@
-name: Linter
+name: Formatter 
 on: 
   push:
     branches: 
@@ -22,9 +22,6 @@ jobs:
 
       - name: Install Biome
         run: npm install --save-dev --save-exact @biomejs/biome
-
-      - name: Init Biome
-        run: npx @biomejs/biome init
 
       - name: Autofix using Biome 
         run: npx @biomejs/biome format --write
