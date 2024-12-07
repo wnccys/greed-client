@@ -1,6 +1,14 @@
 import WebTorrent, { type Torrent } from "webtorrent";
 import { ipcMain, type IpcMainInvokeEvent } from "electron";
-import { addToQueue, getDBCurrentPath, pauseOnQueue, removeFromQueue, resumeOnQueue, syncronizeQueue, verifyIfOnQueue } from "./model";
+import {
+	addToQueue,
+	getDBCurrentPath,
+	pauseOnQueue,
+	removeFromQueue,
+	resumeOnQueue,
+	syncronizeQueue,
+	verifyIfOnQueue,
+} from "./model";
 
 const client = new WebTorrent();
 let currentTorrent: Torrent;
@@ -17,24 +25,27 @@ ipcMain.handle("pauseTorrent", async () => {
 	await sendCurrentQueue();
 });
 
-ipcMain.handle("resumeTorrent", async (_event: IpcMainInvokeEvent, magnetURI) => {
-	if (currentTorrent?.magnetURI) {
-		ipcMain.emit("updateTorrentPauseStatus", true);
-		ipcMain.emit("updateTorrentInfos", -1);
-		ipcMain.emit("updateTorrentProgress", -1);
-		currentTorrent.pause();
-		await pauseOnQueue(currentTorrent.magnetURI);
-		client.remove(currentTorrent.magnetURI);
-	}
+ipcMain.handle(
+	"resumeTorrent",
+	async (_event: IpcMainInvokeEvent, magnetURI) => {
+		if (currentTorrent?.magnetURI) {
+			ipcMain.emit("updateTorrentPauseStatus", true);
+			ipcMain.emit("updateTorrentInfos", -1);
+			ipcMain.emit("updateTorrentProgress", -1);
+			currentTorrent.pause();
+			await pauseOnQueue(currentTorrent.magnetURI);
+			client.remove(currentTorrent.magnetURI);
+		}
 
-	ipcMain.emit("updateTorrentPauseStatus", false);
-	const downloadFolder = await getDBCurrentPath();
-	currentTorrent = await setCurrentTorrent(magnetURI, downloadFolder);
-	await resumeOnQueue(currentTorrent.magnetURI);
-	ipcMain.emit("isNoLongerLoading");
+		ipcMain.emit("updateTorrentPauseStatus", false);
+		const downloadFolder = await getDBCurrentPath();
+		currentTorrent = await setCurrentTorrent(magnetURI, downloadFolder);
+		await resumeOnQueue(currentTorrent.magnetURI);
+		ipcMain.emit("isNoLongerLoading");
 
-	await sendCurrentQueue();
-});
+		await sendCurrentQueue();
+	},
+);
 
 ipcMain.handle("removeTorrent", async (_event, magnetURI: string) => {
 	removeFromQueue(magnetURI).then(() => {
@@ -49,9 +60,7 @@ ipcMain.handle("removeTorrent", async (_event, magnetURI: string) => {
 	await sendCurrentQueue();
 });
 
-export async function addTorrentToQueue(
-	magnetURI: string,
-) {
+export async function addTorrentToQueue(magnetURI: string) {
 	if (await client.get(magnetURI)) {
 		console.log("Cannot duplicate torrent.");
 		return;
@@ -79,11 +88,11 @@ export async function addTorrentToQueue(
 	currentTorrent = await setCurrentTorrent(magnetURI, downloadFolder);
 
 	currentTorrent.on("metadata", async () => {
-		await addToQueue({ 
-			torrentId: currentTorrent.magnetURI, 
+		await addToQueue({
+			torrentId: currentTorrent.magnetURI,
 			name: currentTorrent.name,
 			progress: (currentTorrent.progress * 100).toFixed(1),
-			size: (currentTorrent.length / 1000000).toFixed(0)
+			size: (currentTorrent.length / 1000000).toFixed(0),
 		});
 	});
 
@@ -94,7 +103,7 @@ async function setCurrentTorrent(magnetURI: string, downloadFolder: string) {
 	for (const torrent of client.torrents) {
 		torrent.pause();
 		pauseOnQueue(torrent.magnetURI).then(() => client.remove(magnetURI));
-	};
+	}
 
 	const currentTorrent = await client.add(
 		magnetURI,

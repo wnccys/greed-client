@@ -1,14 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity()
 export class GreedSettings {
+	@PrimaryGeneratedColumn()
+	id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number
+	@Column({ type: "varchar", nullable: true })
+	username: string | null;
 
-    @Column({ type: 'varchar', nullable: true })
-    username: string | null 
-
-    @Column()
-    downloadPath: string
+	@Column()
+	downloadPath: string;
 }

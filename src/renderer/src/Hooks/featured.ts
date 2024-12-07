@@ -1,3 +1,1 @@
-export function useFeatured() {
-
-}
+export function useFeatured() {}

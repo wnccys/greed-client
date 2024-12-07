@@ -38,7 +38,7 @@ export function useDownloads(): downloadsInfo {
 	return downloadsInfo;
 }
 
-export function useDownloadProgress(){
+export function useDownloadProgress() {
 	const [downloadProgress, setDownloadProgress] = useState<number>(0);
 
 	useEffect(() => {
@@ -48,11 +48,11 @@ export function useDownloadProgress(){
 				setDownloadProgress(torrentProgress);
 			},
 		);
-		
+
 		return () => {
 			window.electron.ipcRenderer.removeAllListeners("updateTorrentProgress");
-		}
-	}, [])
+		};
+	}, []);
 
 	return downloadProgress;
 }

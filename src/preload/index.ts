@@ -15,8 +15,10 @@ const api = {
 	setNewTorrentSource: (sourceLink: string) =>
 		ipcRenderer.invoke("setNewTorrentSource", sourceLink),
 	pauseTorrent: () => ipcRenderer.invoke("pauseTorrent"),
-	resumeTorrent: (magnetURI: string) => ipcRenderer.invoke("resumeTorrent", magnetURI),
-	removeTorrent: (magnetURI: string) => ipcRenderer.invoke("removeTorrent", magnetURI),
+	resumeTorrent: (magnetURI: string) =>
+		ipcRenderer.invoke("resumeTorrent", magnetURI),
+	removeTorrent: (magnetURI: string) =>
+		ipcRenderer.invoke("removeTorrent", magnetURI),
 	openHydraLinks: () => ipcRenderer.invoke("openHydraLinks"),
 	startGameDownload: (uris: string[]) =>
 		ipcRenderer.invoke("startGameDownload", uris),
@@ -29,8 +31,10 @@ const api = {
 		ipcRenderer.invoke("removeSourceFromDB", sourceName),
 	changeDefaultPath: () => ipcRenderer.invoke("changeDefaultPath"),
 	getLibraryGames: () => ipcRenderer.invoke("getLibraryGames"),
-	execGamePath: (execPath: string) => ipcRenderer.invoke("execGamePath", execPath),
-	removeGamePath: (pathId: number) => ipcRenderer.invoke("removeGamePath", pathId),	
+	execGamePath: (execPath: string) =>
+		ipcRenderer.invoke("execGamePath", execPath),
+	removeGamePath: (pathId: number) =>
+		ipcRenderer.invoke("removeGamePath", pathId),
 	getGameRegisteredPath: (
 		gameName: string,
 		steamGameId: number,

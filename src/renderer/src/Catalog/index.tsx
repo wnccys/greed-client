@@ -40,15 +40,15 @@ export function Catalog() {
 		return (
 			<div
 				className="shadow-lg hover:drop-shadow-2xl
-			transition-colors shadow-black rounded-lg"
+		transition-colors shadow-black rounded-lg"
 			>
 				{games[1][14].id <= 340 ? <CustomCarousel /> : null}
 			</div>
-		)
+		);
 	}
 
 	function RegularGamesCard() {
-		if (!isImagesLoading){
+		if (!isImagesLoading) {
 			return (
 				<>
 					<div
@@ -91,7 +91,7 @@ export function Catalog() {
 						</Button>
 					</div>
 				</>
-			)
+			);
 		}
 
 		return (
@@ -102,12 +102,12 @@ export function Catalog() {
 							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 							key={index}
 							className="w-[16rem] mt-8 h-32 rounded-lg shadow-lg 
-				shadow-black bg-zinc-800"
+			shadow-black bg-zinc-800"
 						/>
 					);
 				})}
 			</div>
-		)
+		);
 	}
 
 	function SearchGamesCard() {
@@ -128,8 +128,8 @@ export function Catalog() {
 						})}
 					</div>
 				</div>
-			)
-		} 
+			);
+		}
 
 		return (
 			<div className="h-screen">
@@ -144,7 +144,7 @@ export function Catalog() {
 					})}
 				</div>
 			</div>
-		)
+		);
 	}
 
 	return (
@@ -157,14 +157,14 @@ export function Catalog() {
 					className="rounded-md bg-zinc-800 flex p-2 ps-4 items-center"
 					// When something is typed, set isSearching to true and set the current search string
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-						setIsSearching(e.target.value !== (""));
+						setIsSearching(e.target.value !== "");
 						setSearch(e.target.value);
 					}}
 				>
 					<img src={SearchIcon} alt="search-icon" className="size-4" />
 					<Input
 						className="max-w-[12vw] max-h-8 border-none focus-visible:ring-0 focus:max-w-[14vw] 
-			focus-visible:ring-offset-0"
+		focus-visible:ring-offset-0"
 						type="text"
 						placeholder="Search Games"
 					/>
@@ -172,16 +172,12 @@ export function Catalog() {
 			</div>
 
 			<div className="ms-8 mt-[2rem] me-10 bg-[#171717] mb-10">
-				{
-					(!isSearching && (
-						<>
-							<FeaturedCarousel />
-							<RegularGamesCard />
-						</>
-					)) || (
-						<SearchGamesCard/>
-					)
-				}
+				{(!isSearching && (
+					<>
+						<FeaturedCarousel />
+						<RegularGamesCard />
+					</>
+				)) || <SearchGamesCard />}
 			</div>
 		</div>
 	);

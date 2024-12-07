@@ -8,27 +8,31 @@ interface steamGame {
 }
 
 export interface JSONGame {
-    title: string,
-    uris: string[],
-    steamId: number | null,
-    uploadDate: string,
-    fileSize: string,
+	title: string;
+	uris: string[];
+	steamId: number | null;
+	uploadDate: string;
+	fileSize: string;
 }
 
-const gameData = (steamGames as steamGame[]);
+const gameData = steamGames as steamGame[];
 parentPort?.on("message", (data: JSONGame[]) => {
-    console.log("work received!");
+	console.log("work received!");
 
-    for (const game of gameData) {
-        // biome-ignore lint/style/useConst: <explanation>
-        for (let jsonGames of data) {
-            if (game.name && jsonGames.title.startsWith(game.name) && jsonGames.title.includes(game.name)) {
-                jsonGames.steamId = game.id;
-            }
-        }
-    };
+	for (const game of gameData) {
+		// biome-ignore lint/style/useConst: <explanation>
+		for (let jsonGames of data) {
+			if (
+				game.name &&
+				jsonGames.title.startsWith(game.name) &&
+				jsonGames.title.includes(game.name)
+			) {
+				jsonGames.steamId = game.id;
+			}
+		}
+	}
 
-    parentPort?.postMessage(data);
+	parentPort?.postMessage(data);
 });
 
 // function normalizeTitle(title: string) {

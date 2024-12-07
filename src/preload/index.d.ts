@@ -29,11 +29,11 @@ declare global {
 	}
 
 	interface QueueItem {
-		torrentId: string 
-		name: string
-		size: string 
-		progress: number
-		status: 'paused' | 'downloading'
+		torrentId: string;
+		name: string;
+		size: string;
+		progress: number;
+		status: "paused" | "downloading";
 	}
 
 	interface Game {
@@ -56,7 +56,7 @@ declare global {
 		removeSourceFromDB: (sourceLink: string) => Promise<string[]>;
 		changeDefaultPath: () => Promise<string[]>;
 		getLibraryGames: () => Promise<LibraryItem[]>;
-		execGamePath: (execPath: string) => null,
+		execGamePath: (execPath: string) => null;
 		removeGamePath: (pathId: number) => null;
 		getGameRegisteredPath: (
 			gameName: string,

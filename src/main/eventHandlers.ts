@@ -308,7 +308,7 @@ async function handleVerifyGameRegisteredPath(
 async function handleUpdateQueueItems(queueItems: IpcMainEvent) {
 	for (const win of BrowserWindow.getAllWindows()) {
 		win.webContents.send("updateQueueItems", queueItems);
-	}	
+	}
 }
 
 async function handleGetCurrentQueueItems(_event: IpcMainInvokeEvent) {
@@ -318,7 +318,7 @@ async function handleGetCurrentQueueItems(_event: IpcMainInvokeEvent) {
 function handleIsNoLongerLoading() {
 	for (const win of BrowserWindow.getAllWindows()) {
 		win.webContents.send("isNoLongerLoading");
-	}	
+	}
 }
 
 async function handleGetLibraryGames() {
@@ -332,10 +332,10 @@ async function handleExecGamePath(_event, execPath: string) {
 async function handleRemoveGamePath(_event, pathId: number) {
 	removeGameFromLibrary(pathId).then(async () => {
 		for (const win of BrowserWindow.getAllWindows()) {
-				const newLibrary = await handleGetLibraryGames();
+			const newLibrary = await handleGetLibraryGames();
 			win.webContents.send("updateLibrary", newLibrary);
 		}
-	})
+	});
 }
 
 async function handleUpdateLibrary() {

@@ -13,7 +13,7 @@ export function useLibrary() {
 		window.electron.ipcRenderer.on(
 			"updateLibrary",
 			(_event, libraryGames: LibraryItem[]) => {
-                console.log("received library: ", libraryGames);
+				console.log("received library: ", libraryGames);
 				setLibrary(libraryGames);
 			},
 		);

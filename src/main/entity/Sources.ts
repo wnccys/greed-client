@@ -1,14 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity()
 export class Sources {
+	@PrimaryGeneratedColumn()
+	id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number
+	@Column({ unique: true })
+	name: string;
 
-    @Column({ unique: true })
-    name: string;
-
-    @Column()
-    downloadsCount: number;
+	@Column()
+	downloadsCount: number;
 }

@@ -126,14 +126,14 @@ export function Downloads() {
 									isPaused={isPaused}
 									torrentURI={torrentInfo.uri}
 									className="mt-1 hover:bg-zinc-800 hover:-translate-y-1
-							hover:duration-500 transition-all"
+						hover:duration-500 transition-all"
 									// setIsDownloadBlocked={setIsDownloadBlocked}
 									// isDownloadBlocked={isDownloadBlocked}
 								/>
 								<Button
 									onClick={() => window.api.removeTorrent(torrentInfo.uri)}
 									className="mt-1 hover:bg-red-500 hover:-translate-y-1
-						hover:duration-500 transition-all"
+					hover:duration-500 transition-all"
 								>
 									Remove
 								</Button>
@@ -154,7 +154,7 @@ export function Downloads() {
 					<h1 className="text-2xl mt-10">Queue</h1>
 					<div
 						className="size-24 w-full h-full flex flex-col border 
-		border-white bg-zinc-950 rounded-xl gap-2 p-5 pb-10 shadow-xl shadow-black"
+	border-white bg-zinc-950 rounded-xl gap-2 p-5 pb-10 shadow-xl shadow-black"
 					>
 						{queue.map((queueItem, index) => {
 							return (
@@ -180,7 +180,7 @@ export function Downloads() {
 													isPaused={true}
 													torrentURI={queueItem.torrentId}
 													className="mt-1 hover:bg-zinc-800 hover:-translate-y-1
-									hover:duration-500 transition-all"
+								hover:duration-500 transition-all"
 													// setIsDownloadBlocked={setIsDownloadBlocked}
 													// isDownloadBlocked={isDownloadBlocked}
 												/>
@@ -190,7 +190,7 @@ export function Downloads() {
 													}
 													// {...(isDownloadBlocked ? { disabled: true } : null)}
 													className="mt-1 hover:bg-red-500 hover:-translate-y-1
-								hover:duration-500 transition-all"
+							hover:duration-500 transition-all"
 												>
 													Remove
 												</Button>
@@ -254,8 +254,8 @@ export function Downloads() {
 										key={chart}
 										data-active={activeChart === chart}
 										className="relative z-30 justify-center border-t px-6 py-4
-					text-left even:border-l data-[active=true]:bg-muted/15
-					sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+				text-left even:border-l data-[active=true]:bg-muted/15
+				sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
 										onClick={() => setActiveChart(chart)}
 									>
 										<div className="flex flex-col">
@@ -298,7 +298,7 @@ export function Downloads() {
 				<h1 className="text-2xl">Downloading</h1>
 				<div
 					className="size-24 w-full h-full flex flex-col border 
-	border-white bg-zinc-950 rounded-xl gap-2 p-5 pb-10 shadow-xl shadow-black"
+border-white bg-zinc-950 rounded-xl gap-2 p-5 pb-10 shadow-xl shadow-black"
 				>
 					<GameContainer />
 				</div>

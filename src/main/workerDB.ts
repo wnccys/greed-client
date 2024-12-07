@@ -4,7 +4,9 @@ import { SteamGames } from "./entity/SteamGames";
 import type { SteamJSONGame } from "./model";
 
 parentPort?.on("message", async (steamGamesArr: SteamJSONGame[]) => {
-    GreedDataSource.initialize().then(() => {
-        GreedDataSource.getRepository(SteamGames).save(steamGamesArr);
-    }).then(() => parentPort?.postMessage("DONEE!!!! from worker."));
+	GreedDataSource.initialize()
+		.then(() => {
+			GreedDataSource.getRepository(SteamGames).save(steamGamesArr);
+		})
+		.then(() => parentPort?.postMessage("DONEE!!!! from worker."));
 });

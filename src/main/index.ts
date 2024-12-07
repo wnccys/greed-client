@@ -21,41 +21,45 @@ const createWindow = () => {
 			sandbox: false,
 			webSecurity: false,
 		},
-		  titleBarOverlay: {
-			color: '#171717',
-			symbolColor: '#F5F5F5',
-			height: 30
+		titleBarOverlay: {
+			color: "#171717",
+			symbolColor: "#F5F5F5",
+			height: 30,
 		},
 		titleBarStyle: "hidden",
 		show: false,
 	});
 	mainWindow.maximize();
 
-	const urlToLoad = app.isPackaged 
-	? `${format({
-            pathname: path.join(__dirname, "../renderer/index.html"),
-            protocol: "file:",
-            slashes: true,
-        })}#/catalog` : "http://localhost:5173/#/catalog";
+	const urlToLoad = app.isPackaged
+		? `${format({
+				pathname: path.join(__dirname, "../renderer/index.html"),
+				protocol: "file:",
+				slashes: true,
+			})}#/catalog`
+		: "http://localhost:5173/#/catalog";
 
-		console.log("IF BUILDED: ", `${format({
-            pathname: path.join(__dirname, "../renderer/index.html"),
-            protocol: "file:",
-            slashes: true,
-        })}#/catalog`);
+	console.log(
+		"IF BUILDED: ",
+		`${format({
+			pathname: path.join(__dirname, "../renderer/index.html"),
+			protocol: "file:",
+			slashes: true,
+		})}#/catalog`,
+	);
 
 	mainWindow.loadURL(urlToLoad).then(() => mainWindow.show());
 };
 
 app.whenReady().then(async () => {
 	createWindow();
-  });
-  
-  app.on("window-all-closed", async () => {
+});
+
+app.on("window-all-closed", async () => {
 	if (process.platform !== "darwin") app.quit();
-  });
-  
-  app.on("browser-window-created", (_, window) => {
+});
+
+app.on("browser-window-created", (_, window) => {
 	optimizer.watchWindowShortcuts(window);
 });
 

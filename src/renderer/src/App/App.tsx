@@ -31,24 +31,18 @@ export function App(): JSX.Element {
 				<div
 					id="menu"
 					className="container flex flex-col h-screen w-[25%]
-					max-lg:min-w-56 max-w-64 ps-0 fixed z-50"
+				max-lg:min-w-56 max-w-64 ps-0 fixed z-50"
 				>
 					<MenuHeader />
 
 					<h2 className="mt-[5em] text-sm font-bold ps-6">Recents</h2>
 					<div className="pt-3 ps-4">
-						<RecentsLink
-							text="Baldur's Gate III"
-							src={BaldIcon}
-						/>
+						<RecentsLink text="Baldur's Gate III" src={BaldIcon} />
 						<RecentsLink
 							text="Baldur's Gate II: The Return Of Bald"
 							src={BaldIcon}
 						/>
-						<RecentsLink
-							text="Baldur's Gate I"
-							src={BaldIcon}
-						/>
+						<RecentsLink text="Baldur's Gate I" src={BaldIcon} />
 					</div>
 
 					<div
