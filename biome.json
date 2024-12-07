@@ -1,4 +1,7 @@
 {
+	"files": {
+		"ignore": ["out/"]
+	},
 	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
 	"organizeImports": {
 		"enabled": false
