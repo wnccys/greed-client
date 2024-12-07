@@ -1,4 +1,4 @@
-name: CI
+name: General Tests 
 on: 
   push:
     branches: 
