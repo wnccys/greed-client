@@ -1,0 +1,30 @@
+name: Linter
+on: 
+  push:
+    branches: 
+      - "*"
+
+jobs: 
+  format:
+    runs-on: windows-latest
+
+    steps: 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Debug checkout 
+        run: ls ./
+
+      - name: Install NodeJs
+        uses: actions/setup-node@v4
+        with: 
+          node-version: '20'
+
+      - name: Install Biome
+        run: npm install --save-dev --save-exact @biomejs/biome
+
+      - name: Init Biome
+        run: npx @biomejs/biome init
+
+      - name: Autofix using Biome 
+        run: npx @biomejs/biome format --write
