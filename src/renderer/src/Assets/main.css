@@ -1,35 +1,35 @@
-@import './base.css';
+@import "./base.css";
 
 * {
-    color: #F5F5F5;
-    font-family: 'Jetbrains Mono';
-    src: url('../assets/jetbrains-ttf/JetBrainsMono-Regular.ttf');
+	color: #f5f5f5;
+	font-family: "Jetbrains Mono";
+	src: url("../assets/jetbrains-ttf/JetBrainsMono-Regular.ttf");
 }
 
 * {
-    -webkit-user-select: none;
-    user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
 	-webkit-user-drag: none;
 	-webkit-app-region: no-drag;
 }
 
- *::-webkit-scrollbar {
-    display: none;
- }
+*::-webkit-scrollbar {
+	display: none;
+}
 
 body {
-    background-color: #171717;
-    height: 100%;
+	background-color: #171717;
+	height: 100%;
 }
 
 #menu-bar {
-    -webkit-app-region: drag;
+	-webkit-app-region: drag;
 }
 
 #app {
-    background-color: #171717;
+	background-color: #171717;
 }
 
 #menu {
-    background-color: #09090B;
+	background-color: #09090b;
 }
