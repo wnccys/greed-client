@@ -141,7 +141,7 @@ export function SelectedGame() {
 					<Link to="../catalog" className="absolute">
 						<DoubleArrowLeftIcon
 							className="size-6 delay-150 hover:-translate-y-1
-				transition hover:scale-105 duration-300 z-50"
+							transition hover:scale-105 duration-300 z-50"
 						/>
 					</Link>
 				</div>
@@ -187,7 +187,7 @@ export function SelectedGame() {
 			>
 				<div
 					className="absolute transform -translate-y-1/2 bg-[#1f1f1f]
-		rounded-xl text-white w-[25em] flex justify-center shadow-md shadow-black"
+					rounded-xl text-white w-[25em] flex justify-center shadow-md shadow-black"
 				>
 					<div className="p-3 w-full">
 						<h1>{gameName}</h1>
@@ -197,10 +197,8 @@ export function SelectedGame() {
 					</div>
 					<div>
 						<Button
-							className="p-6 bg-white text-zinc-900 
-							hover:text-white w-full 
-						h-full ps-10 pe-10 text-lg transition delay-75 duration-300 
-						hover:bg-black"
+							className="p-6 bg-white text-zinc-900 hover:text-white w-full 
+							h-full ps-10 pe-10 text-lg transition delay-75 duration-300 hover:bg-black"
 							onClick={verifyGamePath}
 						>
 							Play
@@ -211,8 +209,8 @@ export function SelectedGame() {
 					<DialogTrigger asChild>
 						<Button
 							className="absolute -translate-y-1/2 translate-x-[22.5rem] bg-[#1f1f1f] w-fit rounded-md
-			 shadow-black shadow-md text-white cursor-pointer p-6 hover:shadow-lg 
-			 hover:shadow-black transition-all duration-200 flex items-center hover:bg-opacity-100"
+							shadow-black shadow-md text-white cursor-pointer p-6 hover:shadow-lg 
+							hover:shadow-black transition-all duration-200 flex items-center hover:bg-opacity-100"
 							onClick={() => setIsDialogOpen(true)}
 						>
 							<DownloadIcon className="size-6 me-2" />
@@ -229,11 +227,11 @@ export function SelectedGame() {
 									</DialogDescription>
 									<div
 										className="absolute right-4 top-2 rounded-sm opacity-70 
-					ring-offset-background hover:bg-zinc-800 
-					hover:-translate-y-[2px] hover:duration-300 
-					transition-all hover:opacity-100 focus:outline-none focus:ring-2 
-					focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
-					data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+										ring-offset-background hover:bg-zinc-800 
+										hover:-translate-y-[2px] hover:duration-300 
+										transition-all hover:opacity-100 focus:outline-none focus:ring-2 
+										focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
+										data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
 									>
 										<Cross2Icon
 											className="size-4 cursor-pointer"
@@ -269,7 +267,7 @@ export function SelectedGame() {
 										type="submit"
 										// onClick={addSourceToDB}
 										className="hover:bg-zinc-800 hover:-translate-y-1
-					hover:duration-500 transition-all"
+										hover:duration-500 transition-all"
 										onClick={() => {
 											setIsDialogOpen(false);
 											startGameDownload();
@@ -284,11 +282,11 @@ export function SelectedGame() {
 								<DialogHeader>
 									<div
 										className="absolute right-4 top-2 rounded-sm opacity-70 
-						ring-offset-background hover:bg-zinc-800 p-1
-						hover:-translate-y-[2px] hover:duration-300 
-						transition-all hover:opacity-100 focus:outline-none focus:ring-2 
-						focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
-						data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+										ring-offset-background hover:bg-zinc-800 p-1
+										hover:-translate-y-[2px] hover:duration-300 
+										transition-all hover:opacity-100 focus:outline-none focus:ring-2 
+										focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none 
+										data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
 									>
 										<Cross2Icon
 											className="size-4 cursor-pointer"
@@ -354,7 +352,7 @@ export function SelectedGame() {
 					{(!isLoading && (
 						<div
 							className="bg-[#1f1f1f] p-5 rounded-lg me-[1.5rem] h-fit shadow-black shadow-md 
-			hover:shadow-lg hover:shadow-black transition-all duration-200 text-sm max-w-[30rem] mt-10"
+							hover:shadow-lg hover:shadow-black transition-all duration-200 text-sm max-w-[30rem] mt-10"
 						>
 							<p className="text-lg font-bold">Requirements</p>
 							<br />
