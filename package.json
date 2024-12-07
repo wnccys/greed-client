@@ -17,6 +17,7 @@
 		"test": "node --import tsx tests/greed.test.ts",
 		"start": "electron-vite preview",
 		"format": "npx @biomejs/biome format --write",
+		"check": "npx @biomejs/biome check --write",
 		"dev": "electron-vite dev -w",
 		"build": "npm run typecheck && electron-vite build",
 		"postinstall": "electron-builder install-app-deps",
