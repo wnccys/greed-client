@@ -50,10 +50,10 @@ export function Catalog() {
 	function RegularGamesCard() {
 		if (!isImagesLoading) {
 			return (
-				<>
+				<div className="h-full">
 					<div
 						id="games-section"
-						className="flex flex-wrap justify-between gap-4"
+						className="grid grid-cols-4 justify-between gap-4"
 					>
 						{games[1].map((_, key) => {
 							return (
@@ -90,7 +90,7 @@ export function Catalog() {
 							Previous Page
 						</Button>
 					</div>
-				</>
+				</div>
 			);
 		}
 
