@@ -10,7 +10,6 @@ In this example the ipcMain object is expecting until an event is emitted at the
 
 ### Database
 * Greed uses SQLite3 Database managed by TypeORM, entities can be found in src/entity.
-* 
 * There are a huge open issue to remove completly steam-games.json (src/steam-games.json) file dependency from the project; It is huge to pack (~12MB) making even Vite's Hot Module Reloader to reload changes slower, the idea is to be completly independent from it, using only database loaded games (remove it from workers files, once it is where it is needed for package, what increases the package/HMR load).
 
 **NOTE** Scrapping new games is still an to-be-added feature, See: [Open Issue](https://github.com/wnccys/greed-client/issues/38).
