@@ -2,7 +2,7 @@
 # <div align="center">Greed-Client <img src="./build/icon.png" width="75" alt="greedIcon" style="justify-center">
 
 ## What Is It?
-Greed is a game launcher that features it's own embedded BitTorrent client and a dynamic torrent source scrapper, It's written in Typescript built over Electron, allowing users to use the launcher locally without any external central server.
+Greed is a game launcher that features it's own embedded BitTorrent client and a dynamic torrent source scrapper; The main project's goal is to be the most *decentralized*, *transparent*, *distributed* and *cheap* as possible. It's written in Typescript built over Electron, allowing users to use the launcher locally without any external central server.
 
 ## Contributor's Guide
 See [How to Contribute](./CONTRIBUTORS.md)
