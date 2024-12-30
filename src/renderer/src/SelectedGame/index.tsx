@@ -22,8 +22,6 @@ import {
 	CarouselNext,
 	CarouselPrevious,
 } from "@renderer/ShadComponents/ui/carousel";
-// import { getColorFromURL, type Palette } from "color-thief-node";
-console.log("env: ", import.meta.env.VITE_API_STEAM_GAMES_DETAILS);
 
 export function SelectedGame() {
 	const [gameId, gameName] = useLoaderData() as [number, string];
@@ -31,7 +29,7 @@ export function SelectedGame() {
 	const [gameImage, setGameImage] = useState<string>("");
 	const [imageSpotlightColor] = useState<number[]>([255, 255, 255]);
 	const [gameIcon, setGameIcon] = useState<string>("");
-	const steamInfoBaseURL = import.meta.env.VITE_API_STEAM_GAMES_DETAILS + gameId// `https://store.steampowered.com/api/appdetails?appids=${gameId}`;
+	const steamInfoBaseURL = import.meta.env.VITE_API_STEAM_GAMES_DETAILS + gameId;
 	console.log("env: ", import.meta.env.VITE_API_STEAM_GAMES_DETAILS);
 	const [gameInfos, setGamesInfos] = useState<GlobalDownloads[]>([]);
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
