@@ -38,6 +38,7 @@
 		"@radix-ui/react-tooltip": "^1.1.2",
 		"@swc-node/register": "^1.10.9",
 		"@swc/core": "^1.7.6",
+		"@tanstack/react-query": "^5.62.11",
 		"@types/better-sqlite3": "^7.6.11",
 		"@types/color-thief-node": "^1.0.4",
 		"@types/lodash-es": "^4.17.12",
