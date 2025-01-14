@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Cross2Icon, DoubleArrowLeftIcon } from "@radix-ui/react-icons";
 import { Button } from "@renderer/ShadComponents/ui/button";
 import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
@@ -22,117 +22,88 @@ import {
 	CarouselNext,
 	CarouselPrevious,
 } from "@renderer/ShadComponents/ui/carousel";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+
+const getGameInfo = async (gameId: string) => {
+	const response = (
+		await axios.get<SteamDetailsT>(
+			`${import.meta.env.VITE_API_STEAM_GAMES_DETAILS}${gameId}`,
+		)
+	).data;
+
+	return response?.[gameId].data;
+};
+
+const getGameImage = async (gameId: string) => {
+	try {
+		const res = (
+			await axios.get(
+				`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${gameId}/library_hero.jpg`,
+				{ responseType: "blob" },
+			)
+		).data;
+
+		return URL.createObjectURL(res);
+	} catch (e) {
+		console.log("ERRORZAO NA IMAGEM: ", e);
+
+		return undefined;
+	}
+};
+
+const getGameIcon = async (gameId: string) => {
+	const res = (
+		await axios.get(
+			`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${gameId}/logo.png`,
+			{ responseType: "blob" },
+		)
+	).data;
+
+	return URL.createObjectURL(res);
+};
 
 export function SelectedGame() {
-	const [gameId, gameName] = useLoaderData() as [number, string];
-	const [isLoading, setIsLoading] = useState(true);
-	const [gameImage, setGameImage] = useState<string>("");
-	const [imageSpotlightColor] = useState<number[]>([255, 255, 255]);
-	const [gameIcon, setGameIcon] = useState<string>("");
-	const steamInfoBaseURL = import.meta.env.VITE_API_STEAM_GAMES_DETAILS + gameId;
-	console.log("env: ", import.meta.env.VITE_API_STEAM_GAMES_DETAILS);
-	const [gameInfos, setGamesInfos] = useState<GlobalDownloads[]>([]);
+	const [gameId, gameName] = [
+		useParams().gameId || "None",
+		useParams().gameName || "None",
+	];
+
+	const [gameInfos, setGamesInfo] = useState<GlobalDownloads[]>([]);
+
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 	const [selectedDownload, setSelectedDownload] = useState<string[]>([]);
-	const [steamDetails, setSteamDetails] = useState<SteamDetailsT>();
 
-	useEffect(() => {
-		fetch(steamInfoBaseURL)
-			.then((response) => response.json())
-			.then((steamJSON) => {
-				const {
-					detailed_description,
-					pc_requirements,
-					metacritic,
-					developers,
-					screenshots,
-				} = steamJSON[gameId].data;
+	const { data: steamDetails, isLoading } = useQuery({
+		queryKey: ["gameInfoQuery", gameName],
+		queryFn: () => getGameInfo(gameId),
+		refetchOnWindowFocus: false,
+	});
 
-				setSteamDetails({
-					detailedDescription: detailed_description || "",
-					pc_requirements: {
-						minimum: pc_requirements?.minimum || "",
-						recommended: pc_requirements?.recommended || "",
-					},
-					metacritic: {
-						score: metacritic?.score || 0,
-						url: metacritic?.url || "",
-					},
-					developers: developers || [],
-					screenshots:
-						// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-						screenshots?.map((s: any) => ({
-							path_thumbnail: s.path_thumbnail || null,
-						})) || [],
-				});
-			});
-	}, [gameId, steamInfoBaseURL]);
+	const { data: gameImage } = useQuery({
+		queryKey: ["gameImageQuery", gameName],
+		queryFn: () => getGameImage(gameId),
+		refetchOnWindowFocus: false,
+	});
 
-	useEffect(() => {
-		try {
-			const reader = new FileReader();
-			fetch(
-				`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${gameId}/library_hero.jpg`,
-			)
-				.then((response) => response.blob())
-				.then((blobImage) => {
-					reader.onload = () => {
-						setGameImage(reader.result as string);
-						setIsLoading(false);
-					};
-					reader.readAsDataURL(blobImage);
-				});
-		} catch (e) {
-			console.log("Failed to get game image: ", e);
-		}
-
-		try {
-			const reader = new FileReader();
-			fetch(
-				`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${gameId}/logo.png`,
-			)
-				.then((response) => response.blob())
-				.then((blobImage) => {
-					reader.onload = () => {
-						setGameIcon(reader.result as string);
-						// getColorFromURL(reader.result as string).then((palette) => {
-						// 	setImageSpotlightColor(palette);
-						// });
-					};
-					reader.readAsDataURL(blobImage);
-				});
-		} catch (e) {
-			console.log("Error at getting game logo: ", e);
-		}
-	}, [gameId]);
+	const { data: gameIcon } = useQuery({
+		queryKey: ["gameIconQuery", gameName],
+		queryFn: () => getGameIcon(gameId),
+		refetchOnWindowFocus: false,
+	});
 
 	useEffect(() => {
 		window.api.getSelectedGameInfo(gameId).then((games: GlobalDownloads[]) => {
-			setGamesInfos(games);
+			setGamesInfo(games);
 		});
 	}, [gameId]);
 
-	function verifyGamePath() {
-		window.api
-			.getGameRegisteredPath(
-				gameName,
-				gameId,
-				gameIcon,
-				gameInfos.map((downloadOption) => {
-					return downloadOption.uris;
-				}),
-			)
-			.then((result) => {
-				if (result[0] === "Success") {
-					console.log(result[1]);
-					return;
-				}
-			});
-	}
+	useEffect(() => console.log("gameImage: ", gameImage), [gameImage]);
 
-	function startGameDownload() {
-		window.api.startGameDownload(selectedDownload);
-	}
+	if (!gameImage) return <div>Could not get game Image.</div>;
+	if (!gameIcon) return <div>Could not get game Icon.</div>;
+	if (isLoading) return <div>Loading...</div>;
+	if (!gameId) return <div>Error: Cannot find game with id: {gameId}</div>;
 
 	return (
 		<div className="h-screen">
@@ -158,10 +129,6 @@ export function SelectedGame() {
 									backgroundImage: `url(${gameImage})`,
 									backgroundSize: "contain",
 									minHeight: "50vh",
-									boxShadow: `0px 60px 130px,
-										rgba(${imageSpotlightColor?.[0]},
-										${imageSpotlightColor?.[1]},
-										${imageSpotlightColor?.[2]}, 0.2)`,
 								}}
 							/>
 						</div>
@@ -199,7 +166,9 @@ export function SelectedGame() {
 						<Button
 							className="p-6 bg-white text-zinc-900 hover:text-white w-full 
 							h-full ps-10 pe-10 text-lg transition delay-75 duration-300 hover:bg-black"
-							onClick={verifyGamePath}
+							onClick={() =>
+								verifyGamePath(gameName, gameId, gameIcon, gameInfos)
+							}
 						>
 							Play
 						</Button>
@@ -270,7 +239,7 @@ export function SelectedGame() {
 										hover:duration-500 transition-all"
 										onClick={() => {
 											setIsDialogOpen(false);
-											startGameDownload();
+											startGameDownload(gameInfos);
 										}}
 									>
 										Download
@@ -309,7 +278,7 @@ export function SelectedGame() {
 						<div className="max-w-[65%] flex flex-col items-center">
 							<Carousel className="max-w-md pb-10">
 								<CarouselContent>
-									{steamDetails?.screenshots.map((thumbnail, index) => (
+									{steamDetails.screenshots.map((thumbnail, index) => (
 										// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 										<CarouselItem key={index}>
 											<div className="p-1">
@@ -332,8 +301,7 @@ export function SelectedGame() {
 								// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 								dangerouslySetInnerHTML={{
 									__html:
-										steamDetails?.detailedDescription ||
-										"No Description Found.",
+										steamDetails.detailedDescription || "No Description Found.",
 								}}
 							/>
 						</div>
@@ -379,4 +347,31 @@ export function SelectedGame() {
 			</div>
 		</div>
 	);
+}
+
+function startGameDownload(selectedDownload: string[]) {
+	window.api.startGameDownload(selectedDownload);
+}
+
+function verifyGamePath(
+	gameName: string,
+	gameId: string,
+	gameIcon: string,
+	gameInfos: GlobalDownloads[],
+) {
+	window.api
+		.getGameRegisteredPath(
+			gameName,
+			gameId,
+			gameIcon,
+			gameInfos.map((downloadOption) => {
+				return downloadOption.uris;
+			}),
+		)
+		.then((result) => {
+			if (result[0] === "Success") {
+				console.log(result[1]);
+				return;
+			}
+		});
 }
