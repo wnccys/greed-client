@@ -52,7 +52,7 @@ declare global {
 		addSourceToDB: (sourceLink: string) => null;
 		startGameDownload: (uris: string[]) => null;
 		getGamesByName: (name: string) => Promise<GlobalDownloads[]>;
-		getSelectedGameInfo: (gameId: number) => Promise<Downloads[]>;
+		getSelectedGameInfo: (gameId: string) => Promise<Downloads[]>;
 		removeSourceFromDB: (sourceLink: string) => Promise<string[]>;
 		changeDefaultPath: () => Promise<string[]>;
 		getLibraryGames: () => Promise<LibraryItem[]>;
@@ -60,7 +60,7 @@ declare global {
 		removeGamePath: (pathId: number) => null;
 		getGameRegisteredPath: (
 			gameName: string,
-			gameSteamId: number,
+			gameSteamId: string,
 			gameIcon: string,
 			gameURIS: string[],
 		) => Promise<string[]>;
