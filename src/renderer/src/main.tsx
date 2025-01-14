@@ -9,6 +9,8 @@ import { ErrorElement } from "./ErrorElement";
 import { Settings } from "./Settings";
 import { Downloads } from "./Downloads";
 import { Library } from "./Library";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./queryClient";
 
 const router = createHashRouter([
 	{
@@ -22,11 +24,6 @@ const router = createHashRouter([
 			},
 			{
 				path: "selected-game/:gameId/:gameName",
-				loader: async ({
-					params,
-				}): Promise<[string | undefined, string | undefined]> => {
-					return [params.gameId, params.gameName];
-				},
 				element: <SelectedGame />,
 			},
 			{
@@ -44,5 +41,7 @@ const router = createHashRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-	<RouterProvider router={router} />,
+	<QueryClientProvider client={queryClient}>
+		<RouterProvider router={router} />
+	</QueryClientProvider>
 );
