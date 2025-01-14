@@ -24,46 +24,57 @@ import {
 } from "@renderer/ShadComponents/ui/carousel";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { EntityNotFoundError } from "typeorm";
 
 const getGameInfo = async (gameId: string) => {
-	const response = (
-		await axios.get<SteamDetailsT>(
-			`${import.meta.env.VITE_API_STEAM_GAMES_DETAILS}${gameId}`,
-		)
-	).data;
+	try {
+		const response = (
+			await axios.get<SteamDetailsT>(
+				`${import.meta.env.VITE_API_STEAM_GAMES_DETAILS}${gameId}`,
+			)
+		).data;
 
-	return response?.[gameId].data;
+		return response?.[gameId].data;
+	} catch (e) {
+		console.log("error on game details fetch: ", e);
+		return "";
+	}
 };
 
 const getGameImage = async (gameId: string) => {
 	try {
 		const res = (
 			await axios.get(
-				`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${gameId}/library_hero.jpg`,
+				`${import.meta.env.VITE_API_GAME_IMAGE}/${gameId}/library_hero.jpg`,
 				{ responseType: "blob" },
 			)
 		).data;
 
 		return URL.createObjectURL(res);
 	} catch (e) {
-		console.log("ERRORZAO NA IMAGEM: ", e);
-
-		return undefined;
+		console.log("error on image fetch: ", e);
+		return "";
 	}
 };
 
 const getGameIcon = async (gameId: string) => {
-	const res = (
-		await axios.get(
-			`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${gameId}/logo.png`,
-			{ responseType: "blob" },
-		)
-	).data;
+	try {
+		const res = (
+			await axios.get(
+				`${import.meta.env.VITE_API_GAME_ICON}/${gameId}/logo.png`,
+				{ responseType: "blob" },
+			)
+		).data;
 
-	return URL.createObjectURL(res);
+		return URL.createObjectURL(res);
+	} catch (e) {
+		console.log("error on icon fetch: ", e);
+		return "";
+	}
 };
 
 export function SelectedGame() {
+	// TODO None causes the API fetch to fail (handle this)
 	const [gameId, gameName] = [
 		useParams().gameId || "None",
 		useParams().gameName || "None",
@@ -100,9 +111,6 @@ export function SelectedGame() {
 
 	useEffect(() => console.log("gameImage: ", gameImage), [gameImage]);
 
-	if (!gameImage) return <div>Could not get game Image.</div>;
-	if (!gameIcon) return <div>Could not get game Icon.</div>;
-	if (isLoading) return <div>Loading...</div>;
 	if (!gameId) return <div>Error: Cannot find game with id: {gameId}</div>;
 
 	return (
@@ -167,7 +175,7 @@ export function SelectedGame() {
 							className="p-6 bg-white text-zinc-900 hover:text-white w-full 
 							h-full ps-10 pe-10 text-lg transition delay-75 duration-300 hover:bg-black"
 							onClick={() =>
-								verifyGamePath(gameName, gameId, gameIcon, gameInfos)
+								verifyGamePath(gameName, gameId, gameIcon || "", gameInfos)
 							}
 						>
 							Play
