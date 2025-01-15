@@ -16,7 +16,6 @@ const router = createHashRouter([
 	{
 		path: "/",
 		element: <App />,
-		loader: () => null,
 		children: [
 			{
 				path: "catalog",
@@ -43,5 +42,5 @@ const router = createHashRouter([
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<QueryClientProvider client={queryClient}>
 		<RouterProvider router={router} />
-	</QueryClientProvider>
+	</QueryClientProvider>,
 );
