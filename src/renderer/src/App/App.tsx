@@ -70,9 +70,9 @@ export function App(): JSX.Element {
 					</div>
 				</div>
 				<div id="main-section" className="flex flex-col p-0 w-screen">
-					<ScrollArea className="h-screen">
+					<div className="h-screen overflow-y-scroll">
 						<Outlet />
-					</ScrollArea>
+					</div>
 				</div>
 			</div>
 		</>
