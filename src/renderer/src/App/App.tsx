@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { Toaster } from "@renderer/ShadComponents/ui/sonner";
 import BaldIcon from "@renderer/Assets/bald.ico";
+import { ScrollArea } from "@renderer/ShadComponents/ui/scroll-area";
 
 export function App(): JSX.Element {
 	useEffect(() => {
@@ -27,50 +28,51 @@ export function App(): JSX.Element {
 		<>
 			<Toaster className="bg-slate-950 drop-shadow-xl" />
 			<div id="app" className="flex select-none">
-				<MenuBar />
-				<div
-					id="menu"
-					className="container flex flex-col h-screen w-[25%]
-				max-lg:min-w-56 max-w-64 ps-0 fixed z-50"
-				>
-					<MenuHeader />
-
-					<h2 className="mt-[5em] text-sm font-bold ps-6">Recents</h2>
-					<div className="pt-3 ps-4">
-						<RecentsLink text="Baldur's Gate III" src={BaldIcon} />
-						<RecentsLink
-							text="Baldur's Gate II: The Return Of Bald"
-							src={BaldIcon}
-						/>
-						<RecentsLink text="Baldur's Gate I" src={BaldIcon} />
-					</div>
-
+				<div className="flex">
+					<MenuBar />
 					<div
-						id="links-section"
-						className="ps-6 mt-[1.5em] flex flex-col gap-3 text-xs h-full max-w-sm"
+						id="menu"
+						className="container flex flex-col h-screen
+						max-lg:min-w-56 max-w-64 ps-0 z-50"
 					>
-						<MenuLink itemName="Catalog" icon={CatalogIcon} route="catalog" />
-						<MenuLink itemName="Library" icon={LibraryIcon} route="library" />
-						<MenuLink
-							itemName="Downloads"
-							icon={DownloadIcon}
-							route="downloads"
-						/>
-					</div>
+						<MenuHeader />
 
-					<div className="text-xs ps-6 p-4 no-drag">
-						<MenuLink
-							itemName="Settings"
-							icon={SettingsIcon}
-							route="settings"
-						/>
+						<h2 className="mt-[5em] text-sm font-bold ps-6">Recents</h2>
+						<div className="pt-3 ps-4">
+							<RecentsLink text="Baldur's Gate III" src={BaldIcon} />
+							<RecentsLink
+								text="Baldur's Gate II: The Return Of Bald"
+								src={BaldIcon}
+							/>
+							<RecentsLink text="Baldur's Gate I" src={BaldIcon} />
+						</div>
+
+						<div
+							id="links-section"
+							className="ps-6 mt-[1.5em] flex flex-col gap-3 text-xs h-full max-w-sm"
+						>
+							<MenuLink itemName="Catalog" icon={CatalogIcon} route="catalog" />
+							<MenuLink itemName="Library" icon={LibraryIcon} route="library" />
+							<MenuLink
+								itemName="Downloads"
+								icon={DownloadIcon}
+								route="downloads"
+							/>
+						</div>
+
+						<div className="text-xs ps-6 p-4 no-drag">
+							<MenuLink
+								itemName="Settings"
+								icon={SettingsIcon}
+								route="settings"
+							/>
+						</div>
 					</div>
 				</div>
-				<div
-					id="main-section"
-					className="flex flex-col p-0 w-screen ms-[16rem] mt-[1.8rem]"
-				>
-					<Outlet />
+				<div id="main-section" className="flex flex-col p-0 w-screen">
+					<ScrollArea className="h-screen">
+						<Outlet />
+					</ScrollArea>
 				</div>
 			</div>
 		</>
