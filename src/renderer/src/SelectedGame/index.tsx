@@ -24,7 +24,6 @@ import {
 } from "@renderer/ShadComponents/ui/carousel";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { EntityNotFoundError } from "typeorm";
 
 const getGameInfo = async (gameId: string) => {
 	try {
@@ -109,8 +108,6 @@ export function SelectedGame() {
 		});
 	}, [gameId]);
 
-	useEffect(() => console.log("gameImage: ", gameImage), [gameImage]);
-
 	if (!gameId) return <div>Error: Cannot find game with id: {gameId}</div>;
 
 	return (
@@ -129,7 +126,7 @@ export function SelectedGame() {
 						!gameImage?.startsWith("data:text") ? "" : "w-full h-[400px] border"
 					}
 				>
-					{(!isLoading && (
+					{!isLoading ? (
 						<div className="w-full">
 							<div
 								className="bg-fixed w-full"
@@ -140,18 +137,20 @@ export function SelectedGame() {
 								}}
 							/>
 						</div>
-					)) || <Skeleton className="h-[20rem] w-full bg-zinc-800" />}
+					) : (
+						<Skeleton className="h-[20rem] w-full bg-zinc-800" />
+					)}
 				</div>
 			</div>
 
 			<div className="ms-6 absolute -translate-y-[9rem]">
-				{(gameIcon && (
+				{gameIcon ? (
 					<img
 						src={gameIcon}
 						alt="game-icon"
 						className="max-h-[8rem] shadow-[#242424] p-2"
 					/>
-				)) || (
+				) : (
 					<Skeleton className="h-[5rem] w-[20rem] bg-zinc-950 rounded-xl" />
 				)}
 			</div>
@@ -309,7 +308,7 @@ export function SelectedGame() {
 								// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 								dangerouslySetInnerHTML={{
 									__html:
-										steamDetails.detailedDescription || "No Description Found.",
+										steamDetails.detailed_descriptio || "No Description Found.",
 								}}
 							/>
 						</div>
@@ -325,7 +324,7 @@ export function SelectedGame() {
 						</div>
 					)}
 
-					{(!isLoading && (
+					{!isLoading ? (
 						<div
 							className="bg-[#1f1f1f] p-5 rounded-lg me-[1.5rem] h-fit shadow-black shadow-md 
 							hover:shadow-lg hover:shadow-black transition-all duration-200 text-sm max-w-[30rem] mt-10"
@@ -334,6 +333,7 @@ export function SelectedGame() {
 							<br />
 							<div
 								className="flex flex-col"
+								// TODO set correct layout when description is not available
 								// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 								dangerouslySetInnerHTML={{
 									__html:
@@ -342,7 +342,7 @@ export function SelectedGame() {
 								}}
 							/>
 						</div>
-					)) || (
+					) : (
 						<div className="ms-[13vw] gap-8 flex flex-col space-y-3 pe-10">
 							<Skeleton className="h-[18rem] w-[18rem] rounded-xl bg-zinc-800" />
 							<div className="space-y-2">
