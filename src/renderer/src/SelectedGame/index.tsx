@@ -111,9 +111,9 @@ export function SelectedGame() {
 	if (!gameId) return <div>Error: Cannot find game with id: {gameId}</div>;
 
 	return (
-		<div className="h-screen">
+		<div className="h-screen mt-9">
 			<div id="game-cover">
-				<div className="absolute text-lg translate-x-8 translate-y-6 mt-2 z-40">
+				<div className="fixed text-lg translate-x-8 translate-y-6 mt-2 z-40">
 					<Link to="../catalog" className="absolute">
 						<DoubleArrowLeftIcon
 							className="size-6 delay-150 hover:-translate-y-1
@@ -143,7 +143,7 @@ export function SelectedGame() {
 				</div>
 			</div>
 
-			<div className="ms-6 absolute -translate-y-[9rem]">
+			<div className="ms-6 -translate-y-[9rem]">
 				{gameIcon ? (
 					<img
 						src={gameIcon}
@@ -155,38 +155,36 @@ export function SelectedGame() {
 				)}
 			</div>
 
-			<div
-				id="play-menu"
-				className="flex justify-center transition delay-150 duration-300"
-			>
+			<div id="play-menu" className="flex justify-center">
 				<div
-					className="absolute transform -translate-y-1/2 bg-[#1f1f1f]
-					rounded-xl text-white w-[25em] flex justify-center shadow-md shadow-black"
+					className="-translate-y-[11.5rem] translate-x-[25rem] bg-[#1f1f1f] rounded-xl text-white 
+					w-[35em] max-h-[6rem] flex justify-center shadow-md shadow-black"
 				>
-					<div className="p-3 w-full">
-						<h1>{gameName}</h1>
-						<p className="text-xs text-zinc-700 font-bold mt-[1em]">
-							Play Time: 1540hrs
-						</p>
-					</div>
-					<div>
-						<Button
-							className="p-6 bg-white text-zinc-900 hover:text-white w-full 
-							h-full ps-10 pe-10 text-lg transition delay-75 duration-300 hover:bg-black"
-							onClick={() =>
-								verifyGamePath(gameName, gameId, gameIcon || "", gameInfos)
-							}
-						>
-							Play
-						</Button>
+					<div className="flex w-full">
+						<div className="p-3 w-full">
+							<h1>{gameName}</h1>
+							<p className="text-xs text-zinc-700 font-bold mt-2">
+								Play Time: 1540hrs
+							</p>
+						</div>
+						<div>
+							<Button
+								className="p-6 bg-white text-zinc-900 hover:text-white w-full 
+								h-full ps-10 pe-10 text-lg hover:bg-black/50"
+								onClick={() =>
+									verifyGamePath(gameName, gameId, gameIcon || "", gameInfos)
+								}
+							>
+								Play
+							</Button>
+						</div>
 					</div>
 				</div>
 				<Dialog open={isDialogOpen}>
 					<DialogTrigger asChild>
 						<Button
-							className="absolute -translate-y-1/2 translate-x-[22.5rem] bg-[#1f1f1f] w-fit rounded-md
-							shadow-black shadow-md text-white cursor-pointer p-6 hover:shadow-lg 
-							hover:shadow-black transition-all duration-200 flex items-center hover:bg-opacity-100"
+							className="-translate-y-[9.7rem] translate-x-[30rem] bg-[#1f1f1f] rounded-md
+							text-white hover:bg-zinc-800 cursor-pointer p-6 flex items-center"
 							onClick={() => setIsDialogOpen(true)}
 						>
 							<DownloadIcon className="size-6 me-2" />
