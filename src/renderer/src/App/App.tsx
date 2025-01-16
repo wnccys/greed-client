@@ -13,7 +13,6 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { Toaster } from "@renderer/ShadComponents/ui/sonner";
 import BaldIcon from "@renderer/Assets/bald.ico";
-import { ScrollArea } from "@renderer/ShadComponents/ui/scroll-area";
 
 export function App(): JSX.Element {
 	useEffect(() => {
@@ -32,8 +31,7 @@ export function App(): JSX.Element {
 					<MenuBar />
 					<div
 						id="menu"
-						className="container flex flex-col h-screen
-						max-lg:min-w-56 max-w-64 ps-0 z-50"
+						className="container flex flex-col h-screen w-[16.5rem] ps-0 z-50"
 					>
 						<MenuHeader />
 
