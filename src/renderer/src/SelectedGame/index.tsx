@@ -24,6 +24,7 @@ import {
 } from "@renderer/ShadComponents/ui/carousel";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { ScrollArea } from "@renderer/ShadComponents/ui/scroll-area";
 
 const getGameInfo = async (gameId: string) => {
 	try {
@@ -157,8 +158,8 @@ export function SelectedGame() {
 
 			<div id="play-menu" className="flex justify-center">
 				<div
-					className="-translate-y-[11.5rem] translate-x-[25rem] bg-[#1f1f1f] rounded-xl text-white 
-					w-[35em] max-h-[6rem] flex justify-center shadow-md shadow-black"
+					className="-translate-y-[11.5rem] translate-x-[5rem] bg-[#1f1f1f] rounded-xl text-white 
+					w-[25em] max-h-[6rem] flex justify-center shadow-md shadow-black p-0 m-0"
 				>
 					<div className="flex w-full">
 						<div className="p-3 w-full">
@@ -183,7 +184,7 @@ export function SelectedGame() {
 				<Dialog open={isDialogOpen}>
 					<DialogTrigger asChild>
 						<Button
-							className="-translate-y-[9.7rem] translate-x-[30rem] bg-[#1f1f1f] rounded-md
+							className="-translate-y-[9.7rem] translate-x-[10rem] bg-[#1f1f1f] rounded-md
 							text-white hover:bg-zinc-800 cursor-pointer p-6 flex items-center"
 							onClick={() => setIsDialogOpen(true)}
 						>
@@ -240,8 +241,7 @@ export function SelectedGame() {
 									<Button
 										type="submit"
 										// onClick={addSourceToDB}
-										className="hover:bg-zinc-800 hover:-translate-y-1
-										hover:duration-500 transition-all"
+										className="hover:bg-zinc-800"
 										onClick={() => {
 											setIsDialogOpen(false);
 											startGameDownload(gameInfos);
@@ -277,11 +277,13 @@ export function SelectedGame() {
 						)}
 					</DialogContent>
 				</Dialog>
+			</div>
 
-				<div className="ps-8 mt-[12rem] flex gap-12 bg-[#171717]">
+			<div>
+				<div className="ps-8 flex gap-12 bg-[#171717]">
 					{(!isLoading && (
-						<div className="max-w-[65%] flex flex-col items-center">
-							<Carousel className="max-w-md pb-10">
+						<div className="flex flex-col items-center">
+							<Carousel className="max-w-lg pb-10">
 								<CarouselContent>
 									{steamDetails.screenshots.map((thumbnail, index) => (
 										// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
@@ -301,14 +303,17 @@ export function SelectedGame() {
 								<CarouselPrevious className="bg-zinc-950 hover:bg-zinc-900 transition-all duration-200 scale-125" />
 								<CarouselNext className="bg-zinc-950 hover:bg-zinc-900 transition-all duration-200 scale-125" />
 							</Carousel>
-							<div
-								className="text-center flex flex-col items-center gap-5"
-								// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-								dangerouslySetInnerHTML={{
-									__html:
-										steamDetails.detailed_descriptio || "No Description Found.",
-								}}
-							/>
+							<ScrollArea className="h-[40rem] mb-10">
+								<div
+									className="text-center flex flex-col items-center gap-5 max-w-[50rem]"
+									// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+									dangerouslySetInnerHTML={{
+										__html:
+											steamDetails.detailed_description ||
+											"No Description Found.",
+									}}
+								/>
+							</ScrollArea>
 						</div>
 					)) || (
 						<div className="flex flex-col space-y-3">
@@ -325,7 +330,7 @@ export function SelectedGame() {
 					{!isLoading ? (
 						<div
 							className="bg-[#1f1f1f] p-5 rounded-lg me-[1.5rem] h-fit shadow-black shadow-md 
-							hover:shadow-lg hover:shadow-black transition-all duration-200 text-sm max-w-[30rem] mt-10"
+							hover:shadow-lg hover:shadow-black transition-all duration-200 text-sm w-[30rem] mt-10"
 						>
 							<p className="text-lg font-bold">Requirements</p>
 							<br />
