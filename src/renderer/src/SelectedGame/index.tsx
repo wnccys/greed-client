@@ -23,55 +23,8 @@ import {
 	CarouselPrevious,
 } from "@renderer/ShadComponents/ui/carousel";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { ScrollArea } from "@renderer/ShadComponents/ui/scroll-area";
-
-const getGameInfo = async (gameId: string) => {
-	try {
-		const response = (
-			await axios.get<SteamDetailsT>(
-				`${import.meta.env.VITE_API_STEAM_GAMES_DETAILS}${gameId}`,
-			)
-		).data;
-
-		return response?.[gameId].data;
-	} catch (e) {
-		console.log("error on game details fetch: ", e);
-		return "";
-	}
-};
-
-const getGameImage = async (gameId: string) => {
-	try {
-		const res = (
-			await axios.get(
-				`${import.meta.env.VITE_API_GAME_IMAGE}/${gameId}/library_hero.jpg`,
-				{ responseType: "blob" },
-			)
-		).data;
-
-		return URL.createObjectURL(res);
-	} catch (e) {
-		console.log("error on image fetch: ", e);
-		return "";
-	}
-};
-
-const getGameIcon = async (gameId: string) => {
-	try {
-		const res = (
-			await axios.get(
-				`${import.meta.env.VITE_API_GAME_ICON}/${gameId}/logo.png`,
-				{ responseType: "blob" },
-			)
-		).data;
-
-		return URL.createObjectURL(res);
-	} catch (e) {
-		console.log("error on icon fetch: ", e);
-		return "";
-	}
-};
+import { getGameIcon, getGameImage, getGameInfo } from "@renderer/SelectedGame/requests";
 
 export function SelectedGame() {
 	// TODO None causes the API fetch to fail (handle this)
@@ -124,20 +77,18 @@ export function SelectedGame() {
 				</div>
 				<div
 					className={
-						!gameImage?.startsWith("data:text") ? "" : "w-full h-[400px] border"
+						!gameImage?.startsWith("data:text") ? "" : "w-full h-[350px] border"
 					}
 				>
 					{!isLoading ? (
-						<div className="w-full">
-							<div
-								className="bg-fixed w-full"
-								style={{
-									backgroundImage: `url(${gameImage})`,
-									backgroundSize: "contain",
-									minHeight: "50vh",
-								}}
-							/>
-						</div>
+						<div
+							className="bg-fixed h-[350px]"
+							style={{
+								backgroundImage: `url(${gameImage})`,
+								backgroundSize: "100%",
+								minHeight: "43vh",
+							}}
+						/>
 					) : (
 						<Skeleton className="h-[20rem] w-full bg-zinc-800" />
 					)}
