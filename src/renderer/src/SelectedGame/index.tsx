@@ -234,7 +234,7 @@ export function SelectedGame() {
 				<div className="ps-8 flex gap-12 bg-[#171717]">
 					{(!isLoading && (
 						<div className="flex flex-col items-center">
-							<Carousel className="max-w-lg pb-10">
+							<Carousel className="max-w-md pb-10">
 								<CarouselContent>
 									{steamDetails.screenshots.map((thumbnail, index) => (
 										// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
@@ -244,7 +244,7 @@ export function SelectedGame() {
 													<img
 														src={thumbnail.path_thumbnail}
 														alt="game_screenshots"
-														className="rounded-lg border-white border"
+														className="rounded-lg border-white border w-fit"
 													/>
 												</Card>
 											</div>
