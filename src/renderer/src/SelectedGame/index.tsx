@@ -95,7 +95,7 @@ export function SelectedGame() {
 				</div>
 			</div>
 
-			<div className="ms-6 -translate-y-[9rem]">
+			<div className="ms-6 -translate-y-[12rem]">
 				{gameIcon ? (
 					<img
 						src={gameIcon}
