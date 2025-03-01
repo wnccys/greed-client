@@ -37,7 +37,7 @@ export function Catalog() {
 	}, [searchImagesArr]);
 
 	return (
-		<div className="bg-[#171717]">
+		games.length > 0 ? (<div className="bg-[#171717]">
 			<div className="flex gap-2 justify-between mt-10 me-10">
 				<div className="ms-10 flex self-center">
 					<h1 className="text-2xl font-bold">Catalog</h1>
@@ -80,7 +80,7 @@ export function Catalog() {
 					/>
 				)}
 			</div>
-		</div>
+		</div> ) : (<div>Loading...</div>)
 	);
 }
 
@@ -88,7 +88,7 @@ function FeaturedCarousel({ games }: { games: Game[] }) {
 	return (
 		<div className="shadow-lg transition-colors shadow-black border border-white">
 			{/* // Verifies if user is at first page on catalog */}
-			{games[14].id <= 340 && <CustomCarousel />}
+			{games[14]?.id <= 340 && <CustomCarousel />}
 		</div>
 	);
 }
@@ -118,8 +118,8 @@ function RegularGamesCard({
 							<GameCard
 								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 								key={key}
-								gameId={games[1][key].id}
-								gameName={games[1][key].name}
+								gameId={games[key].id}
+								gameName={games[key].name}
 								gameImage={images[key]}
 							/>
 						);
@@ -142,7 +142,7 @@ function RegularGamesCard({
 							setIndex((index) => index - 1);
 							setIsImageLoading(true);
 						}}
-						{...(games[1][0].id < 30 && { disabled: true })}
+						{...(games[0]?.id < 30 && { disabled: true })}
 						className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
 					>
 						Previous Page
