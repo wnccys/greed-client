@@ -4,7 +4,7 @@ import path from "node:path";
 import "reflect-metadata";
 import { testDBConn } from "./model/model";
 import { format } from "node:url";
-import * as MainEventHandle from "./eventHandlers";
+import * as MainEventHandle from "./events/eventHandlers";
 
 MainEventHandle;
 

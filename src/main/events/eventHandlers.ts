@@ -7,8 +7,8 @@ import {
 	shell,
 } from "electron";
 import path from "node:path";
-import { addTorrentToQueue } from "./torrentClient";
-import { handleStartTorrentDownload } from "./tests";
+import { addTorrentToQueue } from "../torrentClient";
+import { handleStartTorrentDownload } from "../tests";
 import type { Worker } from "node:worker_threads";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
@@ -168,27 +168,27 @@ async function handleGetCurrentDownloadPath() {
 	return await getDBCurrentPath();
 }
 
-import createWorker from "./worker?nodeWorker";
-import type { JSONGame } from "./worker";
-import type { Downloads } from "./model/entity/Downloads";
+import createWorker from "../worker?nodeWorker";
+import type { JSONGame } from "../worker";
+import type { Downloads } from "../model/entity/Downloads";
 import {
 	addGameSource,
 	getSourcesList,
 	removeSourceFromDB,
-} from "./model/gameSource";
-import { changeDBDefaultPath, getDBCurrentPath } from "./model/configs";
+} from "../model/gameSource";
+import { changeDBDefaultPath, getDBCurrentPath } from "../model/configs";
 import {
 	getDBGameInfos,
 	getDBGamesByName,
 	getGamesRange,
-} from "./model/gameInfos";
+} from "../model/gameInfos";
 import {
 	addNewGameRegisteredPath,
 	getDBLibraryItems,
 	getGameRegisteredPath,
 	removeGameFromLibrary,
-} from "./model/library";
-import { syncronizeQueue } from "./model/queue";
+} from "../model/library";
+import { syncronizeQueue } from "../model/queue";
 
 interface Source {
 	name: string;
