@@ -23,7 +23,6 @@ import {
 	CarouselPrevious,
 } from "@renderer/ShadComponents/ui/carousel";
 import { useQuery } from "@tanstack/react-query";
-import { ScrollArea } from "@renderer/ShadComponents/ui/scroll-area";
 import {
 	getGameIcon,
 	getGameImage,
@@ -90,7 +89,7 @@ export function SelectedGame() {
 							style={{
 								backgroundImage: `url(${gameImage})`,
 								backgroundSize: "100%",
-								minHeight: "43vh",
+								height: "40vh",
 							}}
 						/>
 					) : (
@@ -99,22 +98,27 @@ export function SelectedGame() {
 				</div>
 			</div>
 
-			<div className="ms-6 -translate-y-[12rem]">
+			<div className="ms-6">
 				{gameIcon ? (
-					<img
-						src={gameIcon}
-						alt="game-icon"
-						className="max-h-[8rem] shadow-[#242424] p-2"
-					/>
+					<div className="relative">
+						 <div className="absolute -translate-y-[20vh]">
+							<img
+								src={gameIcon}
+								alt="game-icon"
+								className="max-h-36 shadow-[#242424]"
+							/>
+						</div>
+					</div>
 				) : (
 					<Skeleton className="h-[5rem] w-[20rem] bg-zinc-950 rounded-xl" />
 				)}
 			</div>
 
+			<div className="relative mb-5">
 			<div id="play-menu" className="flex justify-center">
 				<div
-					className="-translate-y-[11.5rem] translate-x-[5rem] bg-[#1f1f1f] rounded-xl text-white 
-					w-[25em] max-h-[6rem] flex justify-center shadow-md shadow-black p-0 m-0"
+					className="-translate-y-[2.5rem] -translate-x-[3rem] bg-[#1f1f1f] rounded-xl text-white 
+					w-[400px] h-fit flex justify-center shadow-md shadow-black p-0 m-0 absolute"
 				>
 					<div className="flex w-full">
 						<div className="p-3 w-full">
@@ -139,7 +143,7 @@ export function SelectedGame() {
 				<Dialog open={isDialogOpen}>
 					<DialogTrigger asChild>
 						<Button
-							className="-translate-y-[9.7rem] translate-x-[10rem] bg-[#1f1f1f] rounded-md
+							className="-translate-y-[1.5rem] translate-x-[20rem] bg-[#1f1f1f] rounded-md
 							text-white hover:bg-zinc-800 cursor-pointer p-6 flex items-center"
 							onClick={() => setIsDialogOpen(true)}
 						>
@@ -147,7 +151,7 @@ export function SelectedGame() {
 							<p className="text-sm">Download Options</p>
 						</Button>
 					</DialogTrigger>
-					<DialogContent className="sm:max-w-[525px] bg-zinc-950 max-h-screen">
+					<DialogContent className="sm:max-w-[525px] bg-zinc-950 max-h-screen absolute">
 						{(gameInfos?.length > 0 && (
 							<>
 								<DialogHeader>
@@ -232,6 +236,7 @@ export function SelectedGame() {
 						)}
 					</DialogContent>
 				</Dialog>
+			</div>
 			</div>
 
 			<div>
