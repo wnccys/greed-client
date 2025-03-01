@@ -11,7 +11,8 @@ import { useSearchImages } from "@renderer/Hooks/search";
 export function Catalog() {
 	const [isImagesLoading, setIsImageLoading] = useState<boolean>(false);
 	const [games, setIndex] = useCatalogGames();
-	const images = useGamesImages(games, setIsImageLoading);
+	const images = useGamesImages(games);
+
 	const [isSearching, setIsSearching] = useState<boolean>(false);
 	const [searchImages, setSearchImages] = useState<string[]>([]);
 	const [search, setSearch] = useState<string>("");
@@ -36,8 +37,8 @@ export function Catalog() {
 		};
 	}, [searchImagesArr]);
 
-	return (
-		games.length > 0 ? (<div className="bg-[#171717]">
+	return games.length > 0 ? (
+		<div className="bg-[#171717]">
 			<div className="flex gap-2 justify-between mt-10 me-10">
 				<div className="ms-10 flex self-center">
 					<h1 className="text-2xl font-bold">Catalog</h1>
@@ -64,12 +65,10 @@ export function Catalog() {
 				{(!isSearching && (
 					<>
 						<FeaturedCarousel games={games} />
-						<RegularGamesCard
+						<RegularGamesCardSection
 							games={games}
 							images={images}
-							isImagesLoading={isImagesLoading}
 							setIndex={setIndex}
-							setIsImageLoading={setIsImageLoading}
 						/>
 					</>
 				)) || (
@@ -80,8 +79,12 @@ export function Catalog() {
 					/>
 				)}
 			</div>
-		</div> ) : (<div>Loading...</div>)
-	);
+		</div> 
+		) : (
+			<div className="text-2xl">
+				Could not get games from Database.
+			</div>
+		)
 }
 
 function FeaturedCarousel({ games }: { games: Game[] }) {
@@ -93,77 +96,70 @@ function FeaturedCarousel({ games }: { games: Game[] }) {
 	);
 }
 
-function RegularGamesCard({
-	isImagesLoading,
+function RegularGamesCardSection({
 	games,
 	images,
-	setIsImageLoading,
 	setIndex,
 }: {
-	isImagesLoading: boolean;
 	games: Game[];
-	images: string[];
-	setIndex: React.Dispatch<React.SetStateAction<number>>;
-	setIsImageLoading: React.Dispatch<React.SetStateAction<boolean>>;
+	images: {
+		data: (string | undefined)[];
+		pending: boolean[];
+	};
+	setIndex: React.Dispatch<React.SetStateAction<number>>
 }) {
-	if (!isImagesLoading) {
-		return (
-			<div className="h-full">
-				<div
-					id="games-section"
-					className="grid grid-cols-4 justify-between gap-4"
-				>
-					{games.map((_, key) => {
+	return (
+		<div className="h-full">
+			<div
+				id="games-section"
+				className="grid grid-cols-4 justify-between gap-4"
+			>
+				{games.map((_, key) => {
+					if (!images.pending[key]) {
 						return (
 							<GameCard
 								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 								key={key}
 								gameId={games[key].id}
 								gameName={games[key].name}
-								gameImage={images[key]}
+								gameImage={images.data[key]}
 							/>
 						);
-					})}
-				</div>
-				<div className="fixed right-1/2 left-3/4 z-20 top-full -translate-y-14 translate-x-48">
-					<Button
-						onClick={() => {
-							setIndex((oldIndex) => oldIndex + 1);
-							setIsImageLoading(true);
-						}}
-						className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
-					>
-						Next Page
-					</Button>
-				</div>
-				<div className="fixed right-1/2 left-1/4 z-20 top-full -translate-y-14 -translate-x-12 w-fit rounded">
-					<Button
-						onClick={() => {
-							setIndex((index) => index - 1);
-							setIsImageLoading(true);
-						}}
-						{...(games[0]?.id < 30 && { disabled: true })}
-						className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
-					>
-						Previous Page
-					</Button>
-				</div>
-			</div>
-		);
-	}
+					}
 
-	return (
-		<div className="mt-5 flex flex-wrap justify-between gap-4">
-			{games.map((_, index) => {
-				return (
-					<Skeleton
+					return <Skeleton
 						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-						key={index}
+						key={key}
 						className="w-[16rem] mt-8 h-32 rounded-lg shadow-lg 
 						shadow-black bg-zinc-800"
 					/>
-				);
-			})}
+				})}
+			</div>
+			<div className="fixed right-1/2 left-3/4 z-20 top-full -translate-y-14 translate-x-48">
+				<Button
+					onClick={() => {
+						setIndex((oldIndex) => oldIndex + 1);
+						// TODO
+						// setIsImageLoading(true);
+					}}
+					className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
+				>
+					Next Page
+				</Button>
+			</div>
+			<div className="fixed right-1/2 left-1/4 z-20 top-full -translate-y-14 -translate-x-12 w-fit rounded">
+				<Button
+					onClick={() => {
+						setIndex((index) => index - 1);
+						//TODO
+						// setIsImageLoading(true);
+					}}
+					{...(games[0]?.id < 30 && { disabled: true })}
+					className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
+				>
+					Previous Page
+				</Button>
+			</div>
 		</div>
 	);
 }
