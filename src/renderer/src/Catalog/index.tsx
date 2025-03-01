@@ -139,8 +139,6 @@ function RegularGamesCardSection({
 				<Button
 					onClick={() => {
 						setIndex((oldIndex) => oldIndex + 1);
-						// TODO
-						// setIsImageLoading(true);
 					}}
 					className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
 				>
@@ -151,8 +149,6 @@ function RegularGamesCardSection({
 				<Button
 					onClick={() => {
 						setIndex((index) => index - 1);
-						//TODO
-						// setIsImageLoading(true);
 					}}
 					{...(games[0]?.id < 30 && { disabled: true })}
 					className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
