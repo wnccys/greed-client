@@ -89,10 +89,11 @@ export function Catalog() {
 
 function FeaturedCarousel({ games }: { games: Game[] }) {
 	return (
-		<div className="shadow-lg transition-colors shadow-black border border-white">
-			{/* // Verifies if user is at first page on catalog */}
-			{games[14]?.id <= 340 && <CustomCarousel />}
-		</div>
+		// Verifies if user is at first page on catalog
+		games[14]?.id <= 340 && (
+			<div className="shadow-lg transition-colors shadow-black border border-white">
+				<CustomCarousel />
+		</div>)
 	);
 }
 
