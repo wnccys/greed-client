@@ -258,17 +258,15 @@ export function SelectedGame() {
 								<CarouselPrevious className="bg-zinc-950 hover:bg-zinc-900 transition-all duration-200 scale-125" />
 								<CarouselNext className="bg-zinc-950 hover:bg-zinc-900 transition-all duration-200 scale-125" />
 							</Carousel>
-							<ScrollArea className="h-[40rem] mb-10">
-								<div
-									className="text-center flex flex-col items-center gap-5 max-w-[50rem]"
-									// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-									dangerouslySetInnerHTML={{
-										__html:
-											steamDetails.detailed_description ||
-											"No Description Found.",
-									}}
-								/>
-							</ScrollArea>
+							<div
+								className="text-center flex flex-col items-center gap-5 max-w-[50rem] mb-32"
+								// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+								dangerouslySetInnerHTML={{
+									__html:
+										steamDetails.detailed_description ||
+										"No Description Found.",
+								}}
+							/>
 						</div>
 					)) || (
 						<div className="flex flex-col space-y-3">
