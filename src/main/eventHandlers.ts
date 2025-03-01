@@ -9,20 +9,6 @@ import {
 import path from "node:path";
 import { addTorrentToQueue } from "./torrentClient";
 import { handleStartTorrentDownload } from "./tests";
-import {
-	addGameSource,
-	addNewGameRegisteredPath,
-	changeDBDefaultPath,
-	getDBCurrentPath,
-	getDBGameInfos,
-	getDBGamesByName,
-	getDBLibraryItems,
-	getGameRegisteredPath,
-	getSourcesList,
-	removeGameFromLibrary,
-	removeSourceFromDB,
-	syncronizeQueue,
-} from "./model";
 import type { Worker } from "node:worker_threads";
 
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
@@ -33,6 +19,7 @@ ipcMain.handle("getSourcesList", handleGetSourcesList);
 ipcMain.handle("changeDefaultPath", handleChangeDefaultPath);
 ipcMain.handle("startGameDownload", handleStartGameDownload);
 ipcMain.handle("getGamesByName", handleGetGamesByName);
+ipcMain.handle("getGamesRange", handleGetGamesRange);
 ipcMain.handle("getLibraryGames", handleGetLibraryGames);
 ipcMain.handle("openHydraLinks", handleOpenHydraLinks);
 ipcMain.handle("execGamePath", handleExecGamePath);
@@ -50,6 +37,10 @@ ipcMain.on("updateTorrentInfos", handleUpdateTorrentInfos);
 ipcMain.on("torrentDownloadComplete", handleTorrentDownloadComplete);
 ipcMain.on("updateTorrentPauseStatus", handleUpdateTorrentPausedStatus);
 ipcMain.on("updateQueueItems", handleUpdateQueueItems);
+
+async function handleGetGamesRange(_event: IpcMainInvokeEvent, index: number) {
+	return await getGamesRange(index);
+}
 
 async function handleOpenHydraLinks() {
 	shell.openExternal("https://hydralinks.cloud/sources/");
@@ -118,21 +109,6 @@ function handleUpdateTorrentPausedStatus(status: IpcMainEvent) {
 	}
 }
 
-// export async function handleTorrentPath(
-// 	_event: IpcMainInvokeEvent,
-// 	path: string,
-// ) {
-// 	console.log("Path to torrent is: ", path);
-// 	const { canceled, filePaths } = await dialog.showOpenDialog({
-// 		title: "Select Folder",
-// 		properties: ["openDirectory", "createDirectory"],
-// 	});
-
-// 	if (!canceled) {
-// 		initTorrentDownload(path, filePaths[0]);
-// 	}
-// }
-
 export async function handleNewTorrentSource(
 	_event: IpcMainInvokeEvent,
 	sourceLink: string,
@@ -194,7 +170,25 @@ async function handleGetCurrentDownloadPath() {
 
 import createWorker from "./worker?nodeWorker";
 import type { JSONGame } from "./worker";
-import type { Downloads } from "./entity/Downloads";
+import type { Downloads } from "./model/entity/Downloads";
+import {
+	addGameSource,
+	getSourcesList,
+	removeSourceFromDB,
+} from "./model/gameSource";
+import { changeDBDefaultPath, getDBCurrentPath } from "./model/configs";
+import {
+	getDBGameInfos,
+	getDBGamesByName,
+	getGamesRange,
+} from "./model/gameInfos";
+import {
+	addNewGameRegisteredPath,
+	getDBLibraryItems,
+	getGameRegisteredPath,
+	removeGameFromLibrary,
+} from "./model/library";
+import { syncronizeQueue } from "./model/queue";
 
 interface Source {
 	name: string;

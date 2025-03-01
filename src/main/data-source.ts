@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { GreedSettings } from "./entity/Settings";
-import { Sources } from "./entity/Sources";
-import { Downloads } from "./entity/Downloads";
-import { SteamGames } from "./entity/SteamGames";
-import { GamePath } from "./entity/GamePath";
-import { Queue } from "./entity/Queue";
+import { GreedSettings } from "./model/entity/Settings";
+import { Sources } from "./model/entity/Sources";
+import { Downloads } from "./model/entity/Downloads";
+import { SteamGames } from "./model/entity/SteamGames";
+import { GamePath } from "./model/entity/GamePath";
+import { Queue } from "./model/entity/Queue";
 
 export const GreedDataSource = new DataSource({
 	type: "better-sqlite3",

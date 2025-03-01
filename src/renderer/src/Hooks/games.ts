@@ -1,16 +1,18 @@
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
-import gameData from "../../../steam-games/steam-games.json";
 
-const gamesData: Game[] = gameData as Game[];
-export function useCatalogGames(): [Dispatch<SetStateAction<number>>, Game[]] {
+/** Get available games from DB dinamically */
+export function useCatalogGames(): [Game[], Dispatch<SetStateAction<number>>] {
 	const [index, setIndex] = useState<number>(0);
+	const [catalogGames, setCatalogGames] = useState<Game[]>([]);
 
-	const selectedGames: [Dispatch<SetStateAction<number>>, Game[]] = [
-		setIndex,
-		gamesData.slice(index * 20, index * 20 + 20),
-	];
+	useEffect(() => {
+		window.api.getGamesRange(index).then((games) => {
+			console.log("games: ", games);
+			setCatalogGames(games);
+		});
+	}, [index]);
 
-	return selectedGames;
+	return [catalogGames, setIndex];
 }
 
 export function useGamesImages(

@@ -2,13 +2,13 @@ import WebTorrent, { type Torrent } from "webtorrent";
 import { ipcMain, type IpcMainInvokeEvent } from "electron";
 import {
 	addToQueue,
-	getDBCurrentPath,
 	pauseOnQueue,
 	removeFromQueue,
 	resumeOnQueue,
 	syncronizeQueue,
 	verifyIfOnQueue,
-} from "./model";
+} from "./model/queue";
+import { getDBCurrentPath } from "./model/configs";
 
 const client = new WebTorrent();
 let currentTorrent: Torrent;

@@ -10,8 +10,8 @@ import { useSearchImages } from "@renderer/Hooks/search";
 
 export function Catalog() {
 	const [isImagesLoading, setIsImageLoading] = useState<boolean>(false);
-	const games = useCatalogGames();
-	const images = useGamesImages(games[1], setIsImageLoading);
+	const [games, setIndex] = useCatalogGames();
+	const images = useGamesImages(games, setIsImageLoading);
 	const [isSearching, setIsSearching] = useState<boolean>(false);
 	const [searchImages, setSearchImages] = useState<string[]>([]);
 	const [search, setSearch] = useState<string>("");
@@ -35,117 +35,6 @@ export function Catalog() {
 			setSearchImages([]);
 		};
 	}, [searchImagesArr]);
-
-	function FeaturedCarousel() {
-		return (
-			<div
-				className="shadow-lg transition-colors shadow-black border border-white"
-			>
-				{/* // Verifies if user is at first page on catalog */}
-				{games[1][14].id <= 340 && <CustomCarousel />}
-			</div>
-		);
-	}
-
-	function RegularGamesCard() {
-		if (!isImagesLoading) {
-			return (
-				<div className="h-full">
-					<div
-						id="games-section"
-						className="grid grid-cols-4 justify-between gap-4"
-					>
-						{games[1].map((_, key) => {
-							return (
-								<GameCard
-									// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-									key={key}
-									gameId={games[1][key].id}
-									gameName={games[1][key].name}
-									gameImage={images[key]}
-								/>
-							);
-						})}
-					</div>
-					<div className="fixed right-1/2 left-3/4 z-20 top-full -translate-y-14 translate-x-48">
-						<Button
-							onClick={() => {
-								games[0]((currentValue) => currentValue + 1);
-								setIsImageLoading(true);
-							}}
-							className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
-						>
-							Next Page
-						</Button>
-					</div>
-					<div className="fixed right-1/2 left-1/4 z-20 top-full -translate-y-14 -translate-x-12 w-fit rounded">
-						<Button
-							onClick={() => {
-								games[0]((currentValue) => currentValue - 1);
-								setIsImageLoading(true);
-							}}
-							{...(games[1][0].id < 30 && { disabled: true })}
-							className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
-						>
-							Previous Page
-						</Button>
-					</div>
-				</div>
-			);
-		}
-
-		return (
-			<div className="mt-5 flex flex-wrap justify-between gap-4">
-				{games[1].map((_, index) => {
-					return (
-						<Skeleton
-							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-							key={index}
-							className="w-[16rem] mt-8 h-32 rounded-lg shadow-lg 
-							shadow-black bg-zinc-800"
-						/>
-					);
-				})}
-			</div>
-		);
-	}
-
-	function SearchGamesCard() {
-		if (!isImagesLoading && searchImages.length > 0) {
-			return (
-				<div className="h-screen">
-					<div className="mt-5 flex flex-wrap justify-between gap-4">
-						{searchGames?.map((game, index) => {
-							return (
-								<GameCard
-									// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-									key={index}
-									gameId={game.id}
-									gameName={game.name}
-									gameImage={searchImages[index]}
-								/>
-							);
-						})}
-					</div>
-				</div>
-			);
-		}
-
-		return (
-			<div className="h-screen">
-				<div className="mt-5 flex flex-wrap justify-between gap-4">
-					{searchGames?.map((_, index) => {
-						return (
-							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-							<div key={index}>
-								<Skeleton className="h-[8rem] w-[17.5vw] rounded-lg" />
-							</div>
-						);
-					})}
-				</div>
-			</div>
-		);
-	}
 
 	return (
 		<div className="bg-[#171717]">
@@ -174,10 +63,151 @@ export function Catalog() {
 			<div className="ms-8 mt-[2rem] me-10 bg-[#171717] mb-10">
 				{(!isSearching && (
 					<>
-						<FeaturedCarousel />
-						<RegularGamesCard />
+						<FeaturedCarousel games={games} />
+						<RegularGamesCard
+							games={games}
+							images={images}
+							isImagesLoading={isImagesLoading}
+							setIndex={setIndex}
+							setIsImageLoading={setIsImageLoading}
+						/>
 					</>
-				)) || <SearchGamesCard />}
+				)) || (
+					<SearchGamesCard
+						isImagesLoading={isImagesLoading}
+						searchGames={searchGames}
+						searchImages={searchImages}
+					/>
+				)}
+			</div>
+		</div>
+	);
+}
+
+function FeaturedCarousel({ games }: { games: Game[] }) {
+	return (
+		<div className="shadow-lg transition-colors shadow-black border border-white">
+			{/* // Verifies if user is at first page on catalog */}
+			{games[14].id <= 340 && <CustomCarousel />}
+		</div>
+	);
+}
+
+function RegularGamesCard({
+	isImagesLoading,
+	games,
+	images,
+	setIsImageLoading,
+	setIndex,
+}: {
+	isImagesLoading: boolean;
+	games: Game[];
+	images: string[];
+	setIndex: React.Dispatch<React.SetStateAction<number>>;
+	setIsImageLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+	if (!isImagesLoading) {
+		return (
+			<div className="h-full">
+				<div
+					id="games-section"
+					className="grid grid-cols-4 justify-between gap-4"
+				>
+					{games.map((_, key) => {
+						return (
+							<GameCard
+								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+								key={key}
+								gameId={games[1][key].id}
+								gameName={games[1][key].name}
+								gameImage={images[key]}
+							/>
+						);
+					})}
+				</div>
+				<div className="fixed right-1/2 left-3/4 z-20 top-full -translate-y-14 translate-x-48">
+					<Button
+						onClick={() => {
+							setIndex((oldIndex) => oldIndex + 1);
+							setIsImageLoading(true);
+						}}
+						className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
+					>
+						Next Page
+					</Button>
+				</div>
+				<div className="fixed right-1/2 left-1/4 z-20 top-full -translate-y-14 -translate-x-12 w-fit rounded">
+					<Button
+						onClick={() => {
+							setIndex((index) => index - 1);
+							setIsImageLoading(true);
+						}}
+						{...(games[1][0].id < 30 && { disabled: true })}
+						className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
+					>
+						Previous Page
+					</Button>
+				</div>
+			</div>
+		);
+	}
+
+	return (
+		<div className="mt-5 flex flex-wrap justify-between gap-4">
+			{games.map((_, index) => {
+				return (
+					<Skeleton
+						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+						key={index}
+						className="w-[16rem] mt-8 h-32 rounded-lg shadow-lg 
+						shadow-black bg-zinc-800"
+					/>
+				);
+			})}
+		</div>
+	);
+}
+
+function SearchGamesCard({
+	isImagesLoading,
+	searchImages,
+	searchGames,
+}: {
+	isImagesLoading: boolean;
+	searchImages: string[];
+	searchGames: Game[];
+}) {
+	if (!isImagesLoading && searchImages.length > 0) {
+		return (
+			<div className="h-screen">
+				<div className="mt-5 flex flex-wrap justify-between gap-4">
+					{searchGames?.map((game, index) => {
+						return (
+							<GameCard
+								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+								key={index}
+								gameId={game.id}
+								gameName={game.name}
+								gameImage={searchImages[index]}
+							/>
+						);
+					})}
+				</div>
+			</div>
+		);
+	}
+
+	return (
+		<div className="h-screen">
+			<div className="mt-5 flex flex-wrap justify-between gap-4">
+				{searchGames?.map((_, index) => {
+					return (
+						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+						<div key={index}>
+							<Skeleton className="h-[8rem] w-[17.5vw] rounded-lg" />
+						</div>
+					);
+				})}
 			</div>
 		</div>
 	);

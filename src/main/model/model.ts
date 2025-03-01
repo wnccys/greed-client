@@ -6,11 +6,11 @@ import { SteamGames } from "@main/model/entity/SteamGames";
 import SteamJSONGames from "../../steam-games/steam-games.json";
 import path from "node:path";
 
-/** 
+/**
  * Initialize database and seeds it with steam games.
- * 
+ *
  * (// TODO make it entirelly requested this way there's no need for steam-games.json //)
-* */
+ * */
 export function testDBConn() {
 	GreedDataSource.initialize()
 		.then(async (initializedGreedSource) => {
@@ -20,7 +20,9 @@ export function testDBConn() {
 
 			console.log("Loaded Sources: ");
 			for (const source of sourceData) {
-				console.log(`Name: ${source.name} Links Count: ${source.downloadsCount}`);
+				console.log(
+					`Name: ${source.name} Links Count: ${source.downloadsCount}`,
+				);
 			}
 
 			const greedSettings = new GreedSettings();
@@ -48,7 +50,7 @@ export function testDBConn() {
 		.catch((error) => console.log("Failed to load contents: ", error));
 }
 
-import createWorker from "./workerDB?nodeWorker";
+import createWorker from "../workerDB?nodeWorker";
 export type SteamJSONGame = {
 	id: number;
 	name: string;

@@ -21,8 +21,8 @@ export const getDBGamesByName = throttle(async (name: string) => {
 
 export const getGamesRange = async (index: number) => {
 	return GreedDataSource.getRepository(SteamGames)
-	.createQueryBuilder()
-	.offset(index)
-	.take(index+20)
-	.getMany();
-}
+		.createQueryBuilder()
+		.offset(index)
+		.take(index + 20)
+		.getMany();
+};

@@ -1,7 +1,7 @@
 import { parentPort } from "node:worker_threads";
 import { GreedDataSource } from "./data-source";
-import { SteamGames } from "./entity/SteamGames";
-import type { SteamJSONGame } from "./model";
+import { SteamGames } from "./model/entity/SteamGames";
+import type { SteamJSONGame } from "./model/model";
 
 parentPort?.on("message", async (steamGamesArr: SteamJSONGame[]) => {
 	GreedDataSource.initialize()

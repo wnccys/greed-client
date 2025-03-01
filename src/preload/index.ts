@@ -23,6 +23,7 @@ const api = {
 	startGameDownload: (uris: string[]) =>
 		ipcRenderer.invoke("startGameDownload", uris),
 	getGamesByName: (name: string) => ipcRenderer.invoke("getGamesByName", name),
+	getGamesRange: (index: number) => ipcRenderer.invoke("getGamesRange", index),
 	addSourceToDB: (sourceLink: string) =>
 		ipcRenderer.invoke("addSourceToDB", sourceLink),
 	getSelectedGameInfo: (gameId: number) =>

@@ -24,7 +24,11 @@ import {
 } from "@renderer/ShadComponents/ui/carousel";
 import { useQuery } from "@tanstack/react-query";
 import { ScrollArea } from "@renderer/ShadComponents/ui/scroll-area";
-import { getGameIcon, getGameImage, getGameInfo } from "@renderer/SelectedGame/requests";
+import {
+	getGameIcon,
+	getGameImage,
+	getGameInfo,
+} from "@renderer/SelectedGame/requests";
 
 export function SelectedGame() {
 	// TODO None causes the API fetch to fail (handle this)

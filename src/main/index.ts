@@ -2,13 +2,13 @@ import { app, BrowserWindow } from "electron";
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import "reflect-metadata";
-import { testDBConn } from "./model";
+import { testDBConn } from "./model/model";
 import { format } from "node:url";
 import * as MainEventHandle from "./eventHandlers";
 
 MainEventHandle;
 
-const createWindow = () => {
+const createWindow = async () => {
 	const mainWindow = new BrowserWindow({
 		roundedCorners: true,
 		icon: "./build/icon.png",
@@ -30,6 +30,8 @@ const createWindow = () => {
 		show: false,
 	});
 	mainWindow.maximize();
+
+	await testDBConn();
 
 	const urlToLoad = app.isPackaged
 		? `${format({
@@ -62,5 +64,3 @@ app.on("window-all-closed", async () => {
 app.on("browser-window-created", (_, window) => {
 	optimizer.watchWindowShortcuts(window);
 });
-
-testDBConn();
