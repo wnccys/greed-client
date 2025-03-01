@@ -80,7 +80,7 @@ export function SelectedGame() {
 				</div>
 				<div
 					className={
-						!gameImage?.startsWith("data:text") ? "" : "w-full h-[350px] border"
+						!gameImage?.startsWith("data:text") ? "" : "w-full h-[350px] border border-white"
 					}
 				>
 					{!isLoading ? (
@@ -110,7 +110,11 @@ export function SelectedGame() {
 						</div>
 					</div>
 				) : (
-					<Skeleton className="h-[5rem] w-[20rem] bg-zinc-950 rounded-xl" />
+					<Skeleton className="relative">
+						<Skeleton
+							className="absolute h-16 shadow-[#242424] w-[15rem] -translate-y-[15vh] rounded-md"
+						/>
+					</Skeleton>
 				)}
 			</div>
 
