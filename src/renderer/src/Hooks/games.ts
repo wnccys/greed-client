@@ -1,13 +1,15 @@
-import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
+import { useQueries } from "@tanstack/react-query";
+import { type Dispatch, type SetStateAction, useEffect, useMemo, useState } from "react";
 
-/** Get available games from DB dinamically */
+/** 
+ * Get available games from Database index-based.
+*/
 export function useCatalogGames(): [Game[], Dispatch<SetStateAction<number>>] {
 	const [index, setIndex] = useState<number>(0);
 	const [catalogGames, setCatalogGames] = useState<Game[]>([]);
 
 	useEffect(() => {
 		window.api.getGamesRange(index).then((games) => {
-			console.log("games: ", games);
 			setCatalogGames(games);
 		});
 	}, [index]);
@@ -15,48 +17,48 @@ export function useCatalogGames(): [Game[], Dispatch<SetStateAction<number>>] {
 	return [catalogGames, setIndex];
 }
 
-export function useGamesImages(
-	games: Game[],
-	setIsImagesLoading: React.Dispatch<React.SetStateAction<boolean>>,
-) {
-	const [images, setImages] = useState<string[]>([]);
+/**
+ * Extract id from games
+ * 
+ * @param Array Database games
+ * @returns Object representing image data and it's respective pending status.
+ */
+export function useGamesImages(games: Game[]) {
+	const ids = useMemo(() => games.map((game) => game.id), [games]);
 
-	useEffect(() => {
-		if (games.length === 0) return;
+	const results = useQueries({
+		queries: ids.map((id) => ({
+			queryKey: ['gameImage', id],
+			queryFn: () => getImages(id),
+		})),
+		combine: (results) => {
+			return {
+				data: results.map((result) => result.data),
+				pending: results.map((result) => result.isPending)
+			}
+		}
+	});
 
-		const fetchImages = async () => {
-			const fetchedImages: string[] = new Array(games.length).fill("");
+	return results;
+}
 
-			await Promise.all(
-				games.map(async (game, index) => {
-					try {
-						const response = await fetch(
-							`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${game.id}/header.jpg`,
-						);
-						const blobImage = await response.blob();
-						const reader = new FileReader();
-						return new Promise<void>((resolve) => {
-							reader.onload = () => {
-								fetchedImages[index] = reader.result as string;
-								resolve();
-							};
-							reader.readAsDataURL(blobImage);
-						});
-					} catch (e) {
-						console.log("Error fetching image: ", e);
-					}
-				}),
-			);
+/**
+ * Request image blob from steam public API.
+ * 
+ * @returns Promise which resolves when data is correctly read as data URL
+ */
+async function getImages(gameId: number): Promise<string> {
+	const response = await fetch(
+		`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${gameId}/header.jpg`,
+	);
+	const blobImage = await response.blob();
+	const reader = new FileReader();
 
-			setImages(fetchedImages);
+	return new Promise<string>((resolve) => {
+		reader.onload = () => {
+			resolve(reader.result as string);
 		};
 
-		fetchImages();
-
-		return () => {
-			setTimeout(() => setIsImagesLoading(false), 400);
-		};
-	}, [games[1], setIsImagesLoading]);
-
-	return images;
+		reader.readAsDataURL(blobImage);
+	});
 }
