@@ -4,7 +4,7 @@ import { type Dispatch, type SetStateAction, useEffect, useMemo, useState } from
 /** 
  * Get available games from Database index-based.
 */
-export function useCatalogGames(): [Game[], Dispatch<SetStateAction<number>>] {
+export function useCatalogGames(): [Game[], Dispatch<SetStateAction<Game[]>>, Dispatch<SetStateAction<number>>] {
 	const [index, setIndex] = useState<number>(0);
 	const [catalogGames, setCatalogGames] = useState<Game[]>([]);
 
@@ -14,7 +14,7 @@ export function useCatalogGames(): [Game[], Dispatch<SetStateAction<number>>] {
 		});
 	}, [index]);
 
-	return [catalogGames, setIndex];
+	return [catalogGames, setCatalogGames, setIndex];
 }
 
 /**
