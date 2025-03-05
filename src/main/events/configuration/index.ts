@@ -1,6 +1,6 @@
 import { changeDBDefaultPath, getDBCurrentPath } from "@main/model/configs";
 import { addNewGameRegisteredPath, getGameRegisteredPath, removeGameFromLibrary } from "@main/model/library";
-import { BrowserWindow, dialog, IpcMainEvent, IpcMainInvokeEvent, shell } from "electron";
+import { BrowserWindow, dialog, type IpcMainEvent, type IpcMainInvokeEvent, shell } from "electron";
 import path from "node:path";
 import { handleGetLibraryGames } from "@main/events/library";
 

@@ -1,6 +1,6 @@
 import { addTorrentToQueue } from "@main/torrentClient";
 import type { JSONGame } from "@main/worker";
-import { Source } from "@main/events/torrent/types";
+import type { Source } from "@main/events/torrent/types";
 import { BrowserWindow, dialog, type IpcMainEvent, type IpcMainInvokeEvent } from "electron";
 import path from "node:path";
 
