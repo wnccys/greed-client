@@ -6,10 +6,8 @@ import { useCatalogGames, useGamesImages } from "@renderer/Hooks/games";
 import { Button } from "@renderer/ShadComponents/ui/button";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
-import { useSearchImages } from "@renderer/Hooks/search";
 
 export function Catalog() {
-	// const [isImagesLoading, setIsImageLoading] = useState<boolean>(false);
 	const [games, setCatalogGames, setIndex] = useCatalogGames();
 	const images = useGamesImages(games);
 
@@ -29,7 +27,6 @@ export function Catalog() {
 		};
 
 		window.api.getGamesByName(search).then((games) => {
-			// setSearchGames(games);
 			setCatalogGames(games);
 		});
 	}, [search, setCatalogGames]);
@@ -44,7 +41,6 @@ export function Catalog() {
 					className="rounded-md bg-zinc-800 flex p-2 ps-4 items-center"
 					// When something is typed, set isSearching to true and set the current search string
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-						// setIsSearching(e.target.value !== "");
 						setSearch(e.target.value);
 					}}
 				>
@@ -59,7 +55,6 @@ export function Catalog() {
 			</div>
 
 			<div className="ms-8 mt-[2rem] me-10 bg-[#171717] mb-10">
-				{/* {(!isSearching && ( */}
 					<>
 						<FeaturedCarousel games={games} />
 						<RegularGamesCardSection
@@ -68,13 +63,6 @@ export function Catalog() {
 							setIndex={setIndex}
 						/>
 					</>
-				{/* )) || (
-					<SearchGamesCard
-						isImagesLoading={isImagesLoading}
-						searchGames={searchGames}
-						searchImages={searchImages}
-					/>
-				)} */}
 			</div>
 		</div> 
 		)
@@ -153,48 +141,3 @@ function RegularGamesCardSection({
 		</div>
 	);
 }
-
-// function SearchGamesCard({
-// 	isImagesLoading,
-// 	searchImages,
-// 	searchGames,
-// }: {
-// 	isImagesLoading: boolean;
-// 	searchImages: string[];
-// 	searchGames: Game[];
-// }) {
-// 	if (!isImagesLoading && searchImages.length > 0) {
-// 		return (
-// 			<div className="h-screen">
-// 				<div className="mt-5 flex flex-wrap justify-between gap-4">
-// 					{searchGames?.map((game, index) => {
-// 						return (
-// 							<GameCard
-// 								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-// 								key={index}
-// 								gameId={game.id}
-// 								gameName={game.name}
-// 								gameImage={searchImages[index]}
-// 							/>
-// 						);
-// 					})}
-// 				</div>
-// 			</div>
-// 		);
-// 	}
-
-// 	return (
-// 		<div className="h-screen">
-// 			<div className="mt-5 flex flex-wrap justify-between gap-4">
-// 				{searchGames?.map((_, index) => {
-// 					return (
-// 						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-// 						<div key={index}>
-// 							<Skeleton className="h-[8rem] w-[17.5vw] rounded-lg" />
-// 						</div>
-// 					);
-// 				})}
-// 			</div>
-// 		</div>
-// 	);
-// }
