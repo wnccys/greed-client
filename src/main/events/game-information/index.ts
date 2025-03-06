@@ -1,6 +1,6 @@
-import { Downloads } from "@main/model/entity/Downloads";
+import type { Downloads } from "@main/model/entity/Downloads";
 import { getDBGameInfos, getDBGamesByName, getGamesRange } from "@main/model/gameInfos";
-import { IpcMainInvokeEvent } from "electron";
+import type { IpcMainInvokeEvent } from "electron";
 
 export async function handleGetCurrentGameInfo(
 	_event: IpcMainInvokeEvent,
