@@ -1,5 +1,4 @@
 import { addTorrentToQueue } from "@main/torrentClient";
-import type { JSONGame } from "@main/worker";
 import type { Source } from "@main/events/torrent/types";
 import { BrowserWindow, dialog, type IpcMainEvent, type IpcMainInvokeEvent } from "electron";
 import path from "node:path";
@@ -72,6 +71,9 @@ export function handleTorrentDownloadComplete() {
 }
 
 // ----Torrent Select File Handling----
+/**
+ * Waits user select file then returns its path
+ */
 export async function handleFileOpen(): Promise<Array<string>> {
 	const { canceled, filePaths } = await dialog.showOpenDialog({
 		title: "Select File",
@@ -86,11 +88,17 @@ export async function handleFileOpen(): Promise<Array<string>> {
 	return ["", "Please, Select a Valid Torrent File"];
 }
 
-// REVIEW path for worker
+/** SECTION */
 import createWorker from "@main/worker?nodeWorker"
 import type { Worker } from "node:worker_threads";
 import { addGameSource } from "@main/model/gameSource";
+import type { JSONGame } from "@main/worker";
 
+/**
+ * Gets source from Hydralinks in JSON format and merges it with steamgames.json.
+ * This worker
+ * In order to do this, Vite workers are use
+ */
 function handleMerge(Source: Source) {
 	const jsonifiedLinks = Source.downloads;
 	const linksLength = jsonifiedLinks.length;
@@ -98,6 +106,7 @@ function handleMerge(Source: Source) {
 	let newDownloads: JSONGame[] = [];
 	let alreadyDone = 0;
 
+	// Worker limit basically represents the process threads, 12 is a convention number 
 	const workerLimit = 12;
 	for (let i = 0; i < workerLimit; i++) {
 		const worker = createWorker({});

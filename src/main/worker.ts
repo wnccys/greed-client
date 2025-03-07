@@ -15,11 +15,15 @@ export interface JSONGame {
 	fileSize: string;
 }
 
-const gameData = steamGames as steamGame[];
+/**
+ * This is the Greed merge-algorithm itself, it checks iterates over steamGames
+ * checking if it has name, if true it checks if the jsonGames titles starts or includes the steam game, 
+ * returning the final mapped array
+ */
 parentPort?.on("message", (data: JSONGame[]) => {
 	console.log("work received!");
 
-	for (const game of gameData) {
+	for (const game of steamGames as steamGame[]) {
 		// biome-ignore lint/style/useConst: <explanation>
 		for (let jsonGames of data) {
 			if (
