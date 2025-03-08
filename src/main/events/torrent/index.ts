@@ -50,6 +50,10 @@ export function handleUpdateTorrentPausedStatus(status: IpcMainEvent) {
 	}
 }
 
+/**
+ * Run mergeAlgorithm after get sources from HydraLinks.
+ * @note The result of the algorithm is sent by a different listener "mergeResult" in Front-End.
+ */
 export async function handleNewTorrentSource(
 	_event: IpcMainInvokeEvent,
 	sourceLink: string,
@@ -95,9 +99,8 @@ import { addGameSource } from "@main/model/gameSource";
 import type { JSONGame } from "@main/worker";
 
 /**
- * Gets source from Hydralinks in JSON format and merges it with steamgames.json.
- * This worker
- * In order to do this, Vite workers are use
+ * Receive source from Hydralinks in JSON format and merges it with steamgames.json.
+ * In order to do this, Vite workers are used and set in files inside @main, finally, this is a convention from Vite.
  */
 function handleMerge(Source: Source) {
 	const jsonifiedLinks = Source.downloads;
@@ -106,19 +109,29 @@ function handleMerge(Source: Source) {
 	let newDownloads: JSONGame[] = [];
 	let alreadyDone = 0;
 
-	// Worker limit basically represents the process threads, 12 is a convention number 
+	// Worker limit basically represents the process threads, 12 is a convention number, a convention.
+	// This can be improved by dynamically get user's available thread count.
 	const workerLimit = 12;
 	for (let i = 0; i < workerLimit; i++) {
+		// Init Vite worker
 		const worker = createWorker({});
 
+		// Get worker result
 		worker.on("message", async (result: JSONGame[]) => {
 			console.log(`Performance on Worker-${i}: `, performance.now());
+			// Add new merged results to newDownloads[] increasing the total already resolved workers
 			newDownloads = newDownloads.concat(result);
 			alreadyDone++;
 
+			/**
+			 * The last worker is responsible for this; when this condition is true, all work has been done,
+			 * so the last worker print the total games merged (compatibility between steamGames and the external source games)
+			 * sending a feedback (tuple with ["type", "message"]) to Front-End.
+			 */
 			if (alreadyDone === workerLimit) {
 				Source.downloads = newDownloads;
 				console.log("Total: ", newDownloads.length);
+
 				const result = await addGameSource(JSON.stringify(Source));
 				for (const win of BrowserWindow.getAllWindows()) {
 					win.webContents.send("mergeResult", result);
@@ -134,10 +147,28 @@ function handleMerge(Source: Source) {
 			}
 		});
 
+		// This generally represents an error state which wasn't caught.
 		worker.on("exit", (code) => {
 			console.log(`Worker-${i} exited with code: `, code);
 		});
 
+		/**
+		 * Slice json games into 2 parts (initial and final) getting (i / workerLimit) part of links on each loop
+		 * posting it to worker, which executes the comparison algorithm itself
+		 * 
+		 * Algorithm first loop example visualization
+		 * 								JSON games
+		 * [     |      |      |      |      |      |      |      |      |      ]
+		 * 
+		 * The section count are our workerLimit number, where each one represents the computer threads basically,
+		 * on the first loop the slices are get as follow:
+		 * 
+		 *  init final				JSON games
+		 * 	|	 |
+		 * [     |      |      |      |      |      |      |      |      |      ]
+		 * 
+		 * repeting it for each games section.
+		 */
 		const initialSlice = Math.round((i / workerLimit) * linksLength);
 		const finalSlice = Math.round(((i + 1) / workerLimit) * linksLength) - 1;
 

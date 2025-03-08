@@ -2,6 +2,10 @@ import { GreedDataSource } from "@main/data-source";
 import { Sources } from "@main/model/entity/Sources";
 import { Downloads } from "@main/model/entity/Downloads";
 
+/**
+ * Register new Source to database, specially used in mergeAlgorithm
+ * @returns Front-End feedback to "mergeResult" listener
+ */
 export async function addGameSource(receivedSource: string): Promise<string[]> {
 	const newSource = new Sources();
 	const newDownloads: Partial<Downloads>[] = [];
