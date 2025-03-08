@@ -1,6 +1,6 @@
 import { hostname } from "node:os";
-import { GreedDataSource } from "../data-source";
-import { GreedSettings } from "./entity/Settings";
+import { GreedDataSource } from "@main/data-source";
+import { GreedSettings } from "@main/model/entity/Settings";
 import { Sources } from "@main/model/entity/Sources";
 import { SteamGames } from "@main/model/entity/SteamGames";
 import SteamJSONGames from "../../steam-games/steam-games.json";
@@ -11,7 +11,7 @@ import path from "node:path";
  *
  * (// TODO make it entirelly requested this way there's no need for steam-games.json //)
  * */
-export function testDBConn() {
+export function initDatabase() {
 	GreedDataSource.initialize()
 		.then(async (initializedGreedSource) => {
 			const settingsData = await GreedDataSource.manager.find(GreedSettings);

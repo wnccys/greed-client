@@ -2,10 +2,11 @@ import { app, BrowserWindow } from "electron";
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import "reflect-metadata";
-import { testDBConn } from "./model/model";
+import { initDatabase } from "@main/model/model";
 import { format } from "node:url";
-import * as MainEventHandle from "./events/eventHandlers";
+import * as MainEventHandle from "@main/events/eventHandlers";
 
+// Load and register events
 MainEventHandle;
 
 const createWindow = async () => {
@@ -31,7 +32,7 @@ const createWindow = async () => {
 	});
 	mainWindow.maximize();
 
-	await testDBConn();
+	await initDatabase();
 
 	const urlToLoad = app.isPackaged
 		? `${format({
