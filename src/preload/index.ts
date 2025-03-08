@@ -1,6 +1,10 @@
 import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
 
+/**
+ * This is a basic test exposure bridge between main and renderer,
+ * test objects shall be invoked here.
+ */
 const tests = {
 	startTorrentDownloadTest: () =>
 		ipcRenderer.invoke("startTorrentDownloadTest"),
