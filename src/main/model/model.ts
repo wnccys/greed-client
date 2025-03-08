@@ -39,6 +39,7 @@ export function initDatabase() {
 					.save(greedSettings);
 			}
 
+			// If steam-games does not exist, set it once.
 			const existingSteamGames = await initializedGreedSource
 				.getRepository(SteamGames)
 				.exists();
@@ -50,12 +51,16 @@ export function initDatabase() {
 		.catch((error) => console.log("Failed to load contents: ", error));
 }
 
-import createWorker from "../workerDB?nodeWorker";
+import createWorker from "@main/workerDB?nodeWorker";
 export type SteamJSONGame = {
 	id: number;
 	name: string;
 };
 
+
+/**
+ * Set games for the first time into Database
+ */
 function setSteamGames() {
 	const steamGamesArr: SteamJSONGame[] = SteamJSONGames as SteamJSONGame[];
 	const worker = createWorker({});
