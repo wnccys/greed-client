@@ -12,7 +12,7 @@ import { handleGetCurrentQueueItems, handleUpdateQueueItems } from "@main/events
 
 
 /**
- * This file register all events from ./events, separed by directory.
+ * This file register all events from @main/events, separed by directory.
  */
 ipcMain.handle("startTorrentDownloadTest", handleStartTorrentDownload);
 ipcMain.handle("handleFileSelect", handleFileOpen);
