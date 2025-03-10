@@ -59,7 +59,7 @@ export type SteamJSONGame = {
 
 
 /**
- * Set games for the first time into Database
+ * Set games for the first time user opens launcher into Database.
  */
 function setSteamGames() {
 	const steamGamesArr: SteamJSONGame[] = SteamJSONGames as SteamJSONGame[];
