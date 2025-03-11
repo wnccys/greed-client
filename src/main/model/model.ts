@@ -2,8 +2,6 @@ import { hostname } from "node:os";
 import { GreedDataSource } from "@main/data-source";
 import { GreedSettings } from "@main/model/entity/Settings";
 import { Sources } from "@main/model/entity/Sources";
-import { SteamGames } from "@main/model/entity/SteamGames";
-import SteamJSONGames from "../../steam-games/steam-games.json";
 import path from "node:path";
 
 /**
@@ -39,30 +37,20 @@ export function initDatabase() {
 					.save(greedSettings);
 			}
 
-			// If steam-games does not exist, set it once.
-			const existingSteamGames = await initializedGreedSource
-				.getRepository(SteamGames)
-				.exists();
-
-			if (!existingSteamGames) {
-				setSteamGames();
-			}
+			syncSteamGames();
 		})
 		.catch((error) => console.log("Failed to load contents: ", error));
 }
 
+/* SECTION **/
+
 import createWorker from "@main/workerDB?nodeWorker";
-export type SteamJSONGame = {
-	id: number;
-	name: string;
-};
-
-
+import type { SteamGames } from "@main/model/entity/SteamGames";
 /**
- * Set games for the first time user opens launcher into Database.
+ * Uses Hydra Launcher steam games file as anchor for all files syncronizing them each time user enters the app.
  */
-function setSteamGames() {
-	const steamGamesArr: SteamJSONGame[] = SteamJSONGames as SteamJSONGame[];
+async function syncSteamGames() {
+	const steamGames: SteamGames[] = await ((await fetch("https://raw.githubusercontent.com/hydralauncher/hydra/refs/heads/main/seeds/steam-games.json")).json());
 	const worker = createWorker({});
 
 	worker.on("message", async (result: string[]) => {
@@ -77,5 +65,5 @@ function setSteamGames() {
 		console.log("Worker exited with code: ", code);
 	});
 
-	worker.postMessage(steamGamesArr);
+	worker.postMessage(steamGames);
 }
