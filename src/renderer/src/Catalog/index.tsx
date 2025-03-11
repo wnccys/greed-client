@@ -59,8 +59,29 @@ export function Catalog() {
 						<CardSection
 							games={games}
 							images={images}
-							setIndex={setIndex}
 						/>
+						<div className="relative w-full mt-6">
+							<div className="fixed z-20 top-full -translate-y-10 -translate-x-[2rem] bg-zinc-900 h-10 flex w-[81.7vw] 
+							justify-between border-zinc-700 border-2 border-primary-foreground items-center ps-5 pe-5">
+									<Button
+										onClick={() => {
+											setIndex((index) => index - 1);
+										}}
+										{...(games[0]?.id < 30 && { disabled: true })}
+										className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
+									>
+										Previous Page
+									</Button>
+									<Button
+										onClick={() => {
+											setIndex((oldIndex) => oldIndex + 1);
+										}}
+										className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
+									>
+										Next Page
+									</Button>
+							</div>
+						</div>
 					</>
 			</div>
 		</div> 
@@ -80,14 +101,12 @@ function FeaturedCarousel({ games }: { games: Game[] }) {
 function CardSection({
 	games,
 	images,
-	setIndex,
 }: {
 	games: Game[];
 	images: {
 		data: (string | undefined)[];
 		pending: boolean[];
 	};
-	setIndex: React.Dispatch<React.SetStateAction<number>>
 }) {
 	return (
 		<div className="h-full">
@@ -115,27 +134,6 @@ function CardSection({
 						shadow-black bg-zinc-800"
 					/>
 				})}
-			</div>
-			<div className="relative w-[30vw]]">
-				<div className="fixed z-20 top-full -translate-y-12 -translate-x-[1.2rem] bg-blue-300 w-full h-12 flex justify-between">
-						<Button
-							onClick={() => {
-								setIndex((index) => index - 1);
-							}}
-							{...(games[0]?.id < 30 && { disabled: true })}
-							className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
-						>
-							Previous Page
-						</Button>
-						<Button
-							onClick={() => {
-								setIndex((oldIndex) => oldIndex + 1);
-							}}
-							className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
-						>
-							Next Page
-						</Button>
-				</div>
 			</div>
 		</div>
 	);
