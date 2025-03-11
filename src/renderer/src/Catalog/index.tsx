@@ -33,21 +33,20 @@ export function Catalog() {
 
 	return (
 		<div className="bg-[#171717]">
-			<div className="flex gap-2 justify-between mt-10 me-10">
+			<div className="flex justify-between mt-10 me-10">
 				<div className="ms-10 flex self-center">
 					<h1 className="text-2xl font-bold">Catalog</h1>
 				</div>{" "}
 				<div
 					className="rounded-md bg-zinc-800 flex p-2 ps-4 items-center"
-					// When something is typed, set isSearching to true and set the current search string
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 						setSearch(e.target.value);
 					}}
 				>
 					<img src={SearchIcon} alt="search-icon" className="size-4" />
 					<Input
-						className="max-w-[12vw] max-h-8 border-none focus-visible:ring-0 focus:max-w-[14vw] 
-						focus-visible:ring-offset-0"
+						className="max-w-[12vw] max-h-8 border-none focus:border-none focus:ring-0 focus:ring-offset-0 focus-visible:shadow-none transition-[max-width]
+						focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none focus:max-w-[14vw] ease-[cubic-bezier(0.4,0,0.2,1)] duration-200"
 						type="text"
 						placeholder="Search Games"
 					/>
@@ -57,7 +56,7 @@ export function Catalog() {
 			<div className="ms-8 mt-[2rem] me-10 bg-[#171717] mb-10">
 					<>
 						<FeaturedCarousel games={games} />
-						<RegularGamesCardSection
+						<CardSection
 							games={games}
 							images={images}
 							setIndex={setIndex}
@@ -78,7 +77,7 @@ function FeaturedCarousel({ games }: { games: Game[] }) {
 	);
 }
 
-function RegularGamesCardSection({
+function CardSection({
 	games,
 	images,
 	setIndex,
@@ -117,26 +116,26 @@ function RegularGamesCardSection({
 					/>
 				})}
 			</div>
-			<div className="fixed right-1/2 left-3/4 z-20 top-full -translate-y-14 translate-x-48">
-				<Button
-					onClick={() => {
-						setIndex((oldIndex) => oldIndex + 1);
-					}}
-					className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
-				>
-					Next Page
-				</Button>
-			</div>
-			<div className="fixed right-1/2 left-1/4 z-20 top-full -translate-y-14 -translate-x-12 w-fit rounded">
-				<Button
-					onClick={() => {
-						setIndex((index) => index - 1);
-					}}
-					{...(games[0]?.id < 30 && { disabled: true })}
-					className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
-				>
-					Previous Page
-				</Button>
+			<div className="relative w-[30vw]]">
+				<div className="fixed z-20 top-full -translate-y-12 -translate-x-[1.2rem] bg-blue-300 w-full h-12 flex justify-between">
+						<Button
+							onClick={() => {
+								setIndex((index) => index - 1);
+							}}
+							{...(games[0]?.id < 30 && { disabled: true })}
+							className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
+						>
+							Previous Page
+						</Button>
+						<Button
+							onClick={() => {
+								setIndex((oldIndex) => oldIndex + 1);
+							}}
+							className="bg-zinc-900/50 duration-300 transition-all hover:bg-zinc-900"
+						>
+							Next Page
+						</Button>
+				</div>
 			</div>
 		</div>
 	);
