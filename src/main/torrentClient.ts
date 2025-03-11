@@ -7,8 +7,8 @@ import {
 	resumeOnQueue,
 	syncronizeQueue,
 	verifyIfOnQueue,
-} from "./model/queue";
-import { getDBCurrentPath } from "./model/configs";
+} from "@main/model/queue";
+import { getDBCurrentPath } from "@main/model/configs";
 
 const client = new WebTorrent();
 let currentTorrent: Torrent;
