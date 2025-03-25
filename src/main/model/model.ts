@@ -6,6 +6,8 @@ import path from "node:path";
 
 /**
  * Initialize database and seeds it with steam games.
+ * 
+ * Every time application in entered, it get new steam games dynamically throught syncSteamGames().
  *
  * (// TODO make it entirelly requested this way there's no need for steam-games.json //)
  * */
@@ -23,12 +25,12 @@ export function initDatabase() {
 				);
 			}
 
-			const greedSettings = new GreedSettings();
 			const existingSettings = await initializedGreedSource
 				.getRepository(GreedSettings)
 				.exists();
 
 			if (!existingSettings) {
+				const greedSettings = new GreedSettings();
 				greedSettings.downloadPath = path.resolve("./src/downloads");
 				greedSettings.username = hostname();
 
@@ -41,8 +43,6 @@ export function initDatabase() {
 		})
 		.catch((error) => console.log("Failed to load contents: ", error));
 }
-
-/* SECTION **/
 
 import createWorker from "@main/workerDB?nodeWorker";
 import type { SteamGames } from "@main/model/entity/SteamGames";
