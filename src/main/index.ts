@@ -32,7 +32,7 @@ const createWindow = async () => {
 	});
 	mainWindow.maximize();
 
-	await initDatabase();
+	initDatabase();
 
 	const urlToLoad = app.isPackaged
 		? `${format({
