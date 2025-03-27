@@ -28,6 +28,7 @@ export function Settings() {
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 	const [sources, setSources] = useState([]);
 	const [downloadPath, setDownloadPath] = useState<string>();
+	const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
 	useEffect(() => {
 		window.electron.ipcRenderer
@@ -286,13 +287,19 @@ export function Settings() {
 											/>
 										</div>
 									</div>
-
 									<DialogFooter>
 										<Button
 											type="submit"
-											onClick={addSourceToDB}
+											onClick={() => {
+											addSourceToDB();
+											setIsButtonDisabled(true); 
+											setTimeout(() => {
+												setIsDialogOpen(false);
+											}, 6000);
+											}}
+											disabled={isButtonDisabled} 
 											className="hover:bg-zinc-800 hover:-translate-y-1
-										hover:duration-500 transition-all"
+											hover:duration-500 transition-all"
 										>
 											Save
 										</Button>
