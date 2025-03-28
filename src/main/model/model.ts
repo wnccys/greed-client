@@ -4,6 +4,9 @@ import { GreedSettings } from "@main/model/entity/Settings";
 import { Sources } from "@main/model/entity/Sources";
 import path from "node:path";
 
+/* Globally enable steamGames so no other piece of code need to recreate or copy it */
+// export const staticSteamGames: SteamGames[] = [];
+
 /**
  * Initialize database and seeds it with steam games.
  * 
@@ -11,37 +14,48 @@ import path from "node:path";
  *
  * (// TODO make it entirelly requested this way there's no need for steam-games.json //)
  * */
-export function initDatabase() {
-	GreedDataSource.initialize()
-		.then(async (initializedGreedSource) => {
-			const settingsData = await GreedDataSource.manager.find(GreedSettings);
-			console.log("Loaded settings: ", settingsData);
-			const sourceData = await GreedDataSource.manager.find(Sources);
+export async function initDatabase() {
+	try {
+		const initializedGreedSource = await GreedDataSource.initialize();
 
-			console.log("Loaded Sources: ");
-			for (const source of sourceData) {
-				console.log(
-					`Name: ${source.name} Links Count: ${source.downloadsCount}`,
-				);
-			}
+		/* Get and log settings */
+		const settingsData = await GreedDataSource.manager.find(GreedSettings);
+		console.log("Loaded settings: ", settingsData);
 
-			const existingSettings = await initializedGreedSource
+		/* Get and Log found sources */
+		const sourceData = await GreedDataSource.manager.find(Sources);
+		console.log("Loaded Sources: ");
+		for (const source of sourceData) {
+			console.log(
+				`Name: ${source.name} Links Count: ${source.downloadsCount}`,
+			);
+		}
+
+		const existingSettings = await initializedGreedSource
+			.getRepository(GreedSettings)
+			.exists();
+
+		/* If settings doesn't exists, set default */
+		if (!existingSettings) {
+			const greedSettings = new GreedSettings();
+			greedSettings.downloadPath = path.resolve("./src/downloads");
+			greedSettings.username = hostname();
+
+			await initializedGreedSource
 				.getRepository(GreedSettings)
-				.exists();
+				.save(greedSettings);
+		}
 
-			if (!existingSettings) {
-				const greedSettings = new GreedSettings();
-				greedSettings.downloadPath = path.resolve("./src/downloads");
-				greedSettings.username = hostname();
+		await syncSteamGames();
 
-				await initializedGreedSource
-					.getRepository(GreedSettings)
-					.save(greedSettings);
-			}
+		/* After Database is set, return steamgames to be used globally */
+		// const steamGames = await GreedDataSource.getRepository(SteamGames).find();
 
-			syncSteamGames();
-		})
-		.catch((error) => console.log("Failed to load contents: ", error));
+	} catch (error) {
+		console.log("Failed to load configurations: ", error)
+
+		throw error;
+	}
 }
 
 import createWorker from "@main/workerDB?nodeWorker";
@@ -54,6 +68,7 @@ async function syncSteamGames() {
 	const worker = createWorker({});
 
 	worker.on("message", async (result: string[]) => {
+		/* Success message */
 		console.log(result);
 	});
 
