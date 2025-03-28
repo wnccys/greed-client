@@ -10,5 +10,5 @@ parentPort?.on("message", async (steamGamesArr: SteamGames[]) => {
 		.then(() => {
 			GreedDataSource.getRepository(SteamGames).save(steamGamesArr);
 		})
-		.then(() => parentPort?.postMessage("DONEE!!!! from worker."));
+		.then(() => parentPort?.postMessage("Steam Games successfully initialized from worker."));
 });
