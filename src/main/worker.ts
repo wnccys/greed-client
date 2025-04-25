@@ -1,11 +1,5 @@
-import steamGames from "../steam-games/steam-games.json";
 import { parentPort } from "node:worker_threads";
-
-interface steamGame {
-	id: number;
-	name: string;
-	clientIcon: string;
-}
+import type { SteamGames } from "@main/model/entity/SteamGames";
 
 export interface JSONGame {
 	title: string;
@@ -20,10 +14,9 @@ export interface JSONGame {
  * checking if it has name, if true it checks if the jsonGames titles starts or includes the steam game, 
  * returning the final mapped array
  */
-parentPort?.on("message", (data: JSONGame[]) => {
-	console.log("work received!");
-
-	for (const game of steamGames as steamGame[]) {
+parentPort?.on("message", async (data: JSONGame[]) => {
+	const staticSteamGames: SteamGames[] = [];
+	for (const game of staticSteamGames) {
 		// biome-ignore lint/style/useConst: <explanation>
 		for (let jsonGames of data) {
 			if (

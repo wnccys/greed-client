@@ -1,6 +1,6 @@
 import { parentPort } from "node:worker_threads";
-import { GreedDataSource } from "./data-source";
-import { SteamGames } from "./model/entity/SteamGames";
+import { GreedDataSource } from "@main/data-source";
+import { SteamGames } from "@main/model/entity/SteamGames";
 
 /** 
  * This worker are responsible for asyncronously set the first-time SteamJSONGames

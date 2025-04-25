@@ -5,6 +5,7 @@ import "reflect-metadata";
 import { initDatabase } from "@main/model/model";
 import { format } from "node:url";
 import * as MainEventHandle from "@main/events/eventHandlers";
+import type { SteamGames } from "@main/model/entity/SteamGames";
 
 // Load and register events
 MainEventHandle;
@@ -32,8 +33,10 @@ const createWindow = async () => {
 	});
 	mainWindow.maximize();
 
-	initDatabase();
-
+	/* 
+		If on production mode, use # path system file specifier 
+		(required as electron works in a file-based manner on build) 
+	*/
 	const urlToLoad = app.isPackaged
 		? `${format({
 				pathname: path.join(__dirname, "../renderer/index.html"),
@@ -54,7 +57,8 @@ const createWindow = async () => {
 	mainWindow.loadURL(urlToLoad).then(() => mainWindow.show());
 };
 
-app.whenReady().then(async () => {
+app.whenReady().then(() => {
+	initDatabase();
 	createWindow();
 });
 
