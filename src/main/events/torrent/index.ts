@@ -99,21 +99,22 @@ import { addGameSource } from "@main/model/gameSource";
 import type { JSONGame } from "@main/worker";
 
 /**
- * Receive source from Hydralinks in JSON format and merges it with steamgames.json.
+ * Receive source from Hydralinks in JSON format and merges it with steam games in the DB, as it is dynamic already (get everytime user enters the app).
  * In order to do this, Vite workers are used and set in files inside @main, finally, this is a convention from Vite.
  */
-function handleMerge(Source: Source) {
+async function handleMerge(Source: Source) {
 	const jsonifiedLinks = Source.downloads;
 	const linksLength = jsonifiedLinks.length;
 	const workers: Worker[] = [];
 	let newDownloads: JSONGame[] = [];
+	/* Threads whose has already completed it's work */
 	let alreadyDone = 0;
 
 	// Worker limit basically represents the process threads, 12 is a convention number, a convention.
 	// This can be improved by dynamically get user's available thread count.
 	const workerLimit = 12;
 	for (let i = 0; i < workerLimit; i++) {
-		// Init Vite worker
+		/* Init Vite worker */
 		const worker = createWorker({});
 
 		// Get worker result
@@ -147,7 +148,7 @@ function handleMerge(Source: Source) {
 			}
 		});
 
-		// This generally represents an error state which wasn't caught.
+		// This generally represents an error state which wasn't caught. (Like race-conditions on Database access xd)
 		worker.on("exit", (code) => {
 			console.log(`Worker-${i} exited with code: `, code);
 		});
@@ -167,7 +168,7 @@ function handleMerge(Source: Source) {
 		 * 	|	 |
 		 * [     |      |      |      |      |      |      |      |      |      ]
 		 * 
-		 * repeting it for each games section.
+		 * repeting it for each games section advancing the slices on each loop.
 		 */
 		const initialSlice = Math.round((i / workerLimit) * linksLength);
 		const finalSlice = Math.round(((i + 1) / workerLimit) * linksLength) - 1;
