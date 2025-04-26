@@ -18,7 +18,7 @@
 		"start": "electron-vite preview",
 		"format": "npx @biomejs/biome format --write",
 		"check": "npx @biomejs/biome check",
-		"dev": "electron-vite dev -w --debug",
+		"dev": "electron-vite dev -w",
 		"build": "npm run typecheck && electron-vite build",
 		"postinstall": "electron-builder install-app-deps",
 		"build:unpack": "npm run build && electron-builder --dir",
