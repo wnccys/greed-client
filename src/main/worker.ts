@@ -1,5 +1,5 @@
 import { parentPort } from "node:worker_threads";
-import type { SteamGames } from "@main/model/entity/SteamGames";
+import type { SteamGames } from "./model/entity/SteamGames";
 
 export interface JSONGame {
 	title: string;
@@ -14,11 +14,13 @@ export interface JSONGame {
  * checking if it has name, if true it checks if the jsonGames titles starts or includes the steam game, 
  * returning the final mapped array
  */
-parentPort?.on("message", async (data: JSONGame[]) => {
-	const staticSteamGames: SteamGames[] = [];
-	for (const game of staticSteamGames) {
+parentPort?.on("message", async (data: [JSONGame[], SteamGames[]]) => {
+    const incomingGames = data[0];
+    const steamGames = data[1];
+
+	for (const game of steamGames) {
 		// biome-ignore lint/style/useConst: <explanation>
-		for (let jsonGames of data) {
+		for (let jsonGames of incomingGames) {
 			if (
 				game.name &&
 				jsonGames.title.startsWith(game.name) &&
@@ -29,7 +31,7 @@ parentPort?.on("message", async (data: JSONGame[]) => {
 		}
 	}
 
-	parentPort?.postMessage(data);
+	parentPort?.postMessage(incomingGames);
 });
 
 // function normalizeTitle(title: string) {
