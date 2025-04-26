@@ -21,7 +21,7 @@ $ npm install
 $ npm run dev
 ```
 
-### Build (C++ Build Tools and node-gypi required)
+### Build
 
 ```bash
 # For windows

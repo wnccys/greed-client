@@ -2,6 +2,7 @@
 
 ## O que é?
 Greed é um launcher de jogos que conta com seu próprio cliente BitTorrent embutido e um scraper dinâmico de fontes de torrent. Ele é escrito em Typescript e construído sobre Electron, permitindo que os usuários utilizem o launcher localmente, sem a necessidade de um servidor central externo.
+
 ## Guia do Contribuidor
 Veja [Como contribuir](./CONTRIBUTORS.md)
 
@@ -19,7 +20,7 @@ $ npm install
 $ npm run dev
 ```
 
-### Construção
+### Build
 
 ```bash
 # Para windows
