@@ -7,7 +7,7 @@ import {
 import { RecentsLink } from "@renderer/App/RecentsLink";
 import { MenuLink } from "@renderer/App/MenuLink";
 import { MenuHeader } from "@renderer/App/MenuHeader";
-import { Outlet } from "react-router-dom";
+import { Outlet, ScrollRestoration } from "react-router-dom";
 import { MenuBar } from "@renderer/App/MenuBar";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -68,6 +68,7 @@ export function App(): JSX.Element {
 					</div>
 				</div>
 				<div id="main-section" className="flex flex-col p-0 w-screen">
+                    <ScrollRestoration />
 					<div className="h-screen overflow-y-scroll">
 						<Outlet />
 					</div>
