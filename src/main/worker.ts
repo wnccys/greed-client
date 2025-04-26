@@ -1,11 +1,5 @@
-import steamGames from "../steam-games/steam-games.json";
 import { parentPort } from "node:worker_threads";
-
-interface steamGame {
-	id: number;
-	name: string;
-	clientIcon: string;
-}
+import type { SteamGames } from "./model/entity/SteamGames";
 
 export interface JSONGame {
 	title: string;
@@ -15,13 +9,18 @@ export interface JSONGame {
 	fileSize: string;
 }
 
-const gameData = steamGames as steamGame[];
-parentPort?.on("message", (data: JSONGame[]) => {
-	console.log("work received!");
+/**
+ * This is the Greed merge-algorithm itself, it checks iterates over steamGames
+ * checking if it has name, if true it checks if the jsonGames titles starts or includes the steam game, 
+ * returning the final mapped array
+ */
+parentPort?.on("message", async (data: [JSONGame[], SteamGames[]]) => {
+    const incomingGames = data[0];
+    const steamGames = data[1];
 
-	for (const game of gameData) {
+	for (const game of steamGames) {
 		// biome-ignore lint/style/useConst: <explanation>
-		for (let jsonGames of data) {
+		for (let jsonGames of incomingGames) {
 			if (
 				game.name &&
 				jsonGames.title.startsWith(game.name) &&
@@ -32,7 +31,7 @@ parentPort?.on("message", (data: JSONGame[]) => {
 		}
 	}
 
-	parentPort?.postMessage(data);
+	parentPort?.postMessage(incomingGames);
 });
 
 // function normalizeTitle(title: string) {

@@ -1,4 +1,4 @@
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Cross2Icon, DoubleArrowLeftIcon } from "@radix-ui/react-icons";
 import { Button } from "@renderer/ShadComponents/ui/button";
 import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
@@ -22,124 +22,55 @@ import {
 	CarouselNext,
 	CarouselPrevious,
 } from "@renderer/ShadComponents/ui/carousel";
-// import { getColorFromURL, type Palette } from "color-thief-node";
-console.log("env: ", import.meta.env.VITE_API_STEAM_GAMES_DETAILS);
+import { useQuery } from "@tanstack/react-query";
+import {
+	getGameIcon,
+	getGameImage,
+	getGameInfo,
+} from "@renderer/SelectedGame/requests";
 
 export function SelectedGame() {
-	const [gameId, gameName] = useLoaderData() as [number, string];
-	const [isLoading, setIsLoading] = useState(true);
-	const [gameImage, setGameImage] = useState<string>("");
-	const [imageSpotlightColor] = useState<number[]>([255, 255, 255]);
-	const [gameIcon, setGameIcon] = useState<string>("");
-	const steamInfoBaseURL = import.meta.env.VITE_API_STEAM_GAMES_DETAILS + gameId// `https://store.steampowered.com/api/appdetails?appids=${gameId}`;
-	console.log("env: ", import.meta.env.VITE_API_STEAM_GAMES_DETAILS);
-	const [gameInfos, setGamesInfos] = useState<GlobalDownloads[]>([]);
+	// TODO None causes the API fetch to fail (handle this)
+	const [gameId, gameName] = [
+		useParams().gameId || "None",
+		useParams().gameName || "None",
+	];
+
+	const [gameInfos, setGamesInfo] = useState<GlobalDownloads[]>([]);
+
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 	const [selectedDownload, setSelectedDownload] = useState<string[]>([]);
-	const [steamDetails, setSteamDetails] = useState<SteamDetailsT>();
 
-	useEffect(() => {
-		fetch(steamInfoBaseURL)
-			.then((response) => response.json())
-			.then((steamJSON) => {
-				const {
-					detailed_description,
-					pc_requirements,
-					metacritic,
-					developers,
-					screenshots,
-				} = steamJSON[gameId].data;
+	const { data: steamDetails, isLoading } = useQuery({
+		queryKey: ["gameInfoQuery", gameName],
+		queryFn: () => getGameInfo(gameId),
+		refetchOnWindowFocus: false,
+	});
 
-				setSteamDetails({
-					detailedDescription: detailed_description || "",
-					pc_requirements: {
-						minimum: pc_requirements?.minimum || "",
-						recommended: pc_requirements?.recommended || "",
-					},
-					metacritic: {
-						score: metacritic?.score || 0,
-						url: metacritic?.url || "",
-					},
-					developers: developers || [],
-					screenshots:
-						// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-						screenshots?.map((s: any) => ({
-							path_thumbnail: s.path_thumbnail || null,
-						})) || [],
-				});
-			});
-	}, [gameId, steamInfoBaseURL]);
+	const { data: gameImage } = useQuery({
+		queryKey: ["gameImageQuery", gameName],
+		queryFn: () => getGameImage(gameId),
+		refetchOnWindowFocus: false,
+	});
 
-	useEffect(() => {
-		try {
-			const reader = new FileReader();
-			fetch(
-				`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${gameId}/library_hero.jpg`,
-			)
-				.then((response) => response.blob())
-				.then((blobImage) => {
-					reader.onload = () => {
-						setGameImage(reader.result as string);
-						setIsLoading(false);
-					};
-					reader.readAsDataURL(blobImage);
-				});
-		} catch (e) {
-			console.log("Failed to get game image: ", e);
-		}
-
-		try {
-			const reader = new FileReader();
-			fetch(
-				`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${gameId}/logo.png`,
-			)
-				.then((response) => response.blob())
-				.then((blobImage) => {
-					reader.onload = () => {
-						setGameIcon(reader.result as string);
-						// getColorFromURL(reader.result as string).then((palette) => {
-						// 	setImageSpotlightColor(palette);
-						// });
-					};
-					reader.readAsDataURL(blobImage);
-				});
-		} catch (e) {
-			console.log("Error at getting game logo: ", e);
-		}
-	}, [gameId]);
+	const { data: gameIcon } = useQuery({
+		queryKey: ["gameIconQuery", gameName],
+		queryFn: () => getGameIcon(gameId),
+		refetchOnWindowFocus: false,
+	});
 
 	useEffect(() => {
 		window.api.getSelectedGameInfo(gameId).then((games: GlobalDownloads[]) => {
-			setGamesInfos(games);
+			setGamesInfo(games);
 		});
 	}, [gameId]);
 
-	function verifyGamePath() {
-		window.api
-			.getGameRegisteredPath(
-				gameName,
-				gameId,
-				gameIcon,
-				gameInfos.map((downloadOption) => {
-					return downloadOption.uris;
-				}),
-			)
-			.then((result) => {
-				if (result[0] === "Success") {
-					console.log(result[1]);
-					return;
-				}
-			});
-	}
-
-	function startGameDownload() {
-		window.api.startGameDownload(selectedDownload);
-	}
+	if (!gameId) return <div>Error: Cannot find game with id: {gameId}</div>;
 
 	return (
-		<div className="h-screen">
+		<div className="h-screen mt-9">
 			<div id="game-cover">
-				<div className="absolute text-lg translate-x-8 translate-y-6 mt-2 z-40">
+				<div className="fixed text-lg translate-x-8 translate-y-6 mt-2 z-40">
 					<Link to="../catalog" className="absolute">
 						<DoubleArrowLeftIcon
 							className="size-6 delay-150 hover:-translate-y-1
@@ -149,77 +80,82 @@ export function SelectedGame() {
 				</div>
 				<div
 					className={
-						!gameImage?.startsWith("data:text") ? "" : "w-full h-[400px] border"
+						!gameImage?.startsWith("data:text") ? "" : "w-full h-[350px] border border-white"
 					}
 				>
-					{(!isLoading && (
-						<div className="w-full">
-							<div
-								className="bg-fixed w-full"
-								style={{
-									backgroundImage: `url(${gameImage})`,
-									backgroundSize: "contain",
-									minHeight: "50vh",
-									boxShadow: `0px 60px 130px,
-										rgba(${imageSpotlightColor?.[0]},
-										${imageSpotlightColor?.[1]},
-										${imageSpotlightColor?.[2]}, 0.2)`,
-								}}
-							/>
-						</div>
-					)) || <Skeleton className="h-[20rem] w-full bg-zinc-800" />}
+					{!isLoading ? (
+						<div
+							className="bg-fixed h-[350px]"
+							style={{
+								backgroundImage: `url(${gameImage})`,
+								backgroundSize: "100%",
+								height: "40vh",
+							}}
+						/>
+					) : (
+						<Skeleton className="h-[20rem] w-full bg-zinc-800" />
+					)}
 				</div>
 			</div>
 
-			<div className="ms-6 absolute -translate-y-[9rem]">
-				{(gameIcon && (
-					<img
-						src={gameIcon}
-						alt="game-icon"
-						className="max-h-[8rem] shadow-[#242424] p-2"
-					/>
-				)) || (
-					<Skeleton className="h-[5rem] w-[20rem] bg-zinc-950 rounded-xl" />
+			<div className="ms-6">
+				{gameIcon ? (
+					<div className="relative">
+						 <div className="absolute -translate-y-[20vh]">
+							<img
+								src={gameIcon}
+								alt="game-icon"
+								className="max-h-36 shadow-[#242424]"
+							/>
+						</div>
+					</div>
+				) : (
+					<Skeleton className="relative">
+						<Skeleton
+							className="absolute h-16 shadow-[#242424] w-[15rem] -translate-y-[15vh] rounded-md"
+						/>
+					</Skeleton>
 				)}
 			</div>
 
-			<div
-				id="play-menu"
-				className="flex justify-center transition delay-150 duration-300"
-			>
+			<div className="relative mb-5">
+			<div id="play-menu" className="flex justify-center">
 				<div
-					className="absolute transform -translate-y-1/2 bg-[#1f1f1f]
-					rounded-xl text-white w-[25em] flex justify-center shadow-md shadow-black"
+					className="-translate-y-[2.5rem] -translate-x-[3rem] bg-[#1f1f1f] rounded-xl text-white 
+					w-[400px] h-fit flex justify-center shadow-md shadow-black p-0 m-0 absolute"
 				>
-					<div className="p-3 w-full">
-						<h1>{gameName}</h1>
-						<p className="text-xs text-zinc-700 font-bold mt-[1em]">
-							Play Time: 1540hrs
-						</p>
-					</div>
-					<div>
-						<Button
-							className="p-6 bg-white text-zinc-900 hover:text-white w-full 
-							h-full ps-10 pe-10 text-lg transition delay-75 duration-300 hover:bg-black"
-							onClick={verifyGamePath}
-						>
-							Play
-						</Button>
+					<div className="flex w-full">
+						<div className="p-3 w-full">
+							<h1>{gameName}</h1>
+							<p className="text-xs text-zinc-700 font-bold mt-2">
+								Play Time: 1540hrs
+							</p>
+						</div>
+						<div>
+							<Button
+								className="p-6 bg-white text-zinc-900 hover:text-white w-full 
+								h-full ps-10 pe-10 text-lg hover:bg-black/50"
+								onClick={() =>
+									verifyGamePath(gameName, gameId, gameIcon || "", gameInfos)
+								}
+							>
+								Play
+							</Button>
+						</div>
 					</div>
 				</div>
 				<Dialog open={isDialogOpen}>
 					<DialogTrigger asChild>
 						<Button
-							className="absolute -translate-y-1/2 translate-x-[22.5rem] bg-[#1f1f1f] w-fit rounded-md
-							shadow-black shadow-md text-white cursor-pointer p-6 hover:shadow-lg 
-							hover:shadow-black transition-all duration-200 flex items-center hover:bg-opacity-100"
+							className="-translate-y-[1.5rem] translate-x-[20rem] bg-[#1f1f1f] rounded-md
+							text-white hover:bg-zinc-800 cursor-pointer p-6 flex items-center"
 							onClick={() => setIsDialogOpen(true)}
 						>
 							<DownloadIcon className="size-6 me-2" />
 							<p className="text-sm">Download Options</p>
 						</Button>
 					</DialogTrigger>
-					<DialogContent className="sm:max-w-[525px] bg-zinc-950 max-h-screen">
+					<DialogContent className="sm:max-w-[525px] bg-zinc-950 max-h-screen absolute">
 						{(gameInfos?.length > 0 && (
 							<>
 								<DialogHeader>
@@ -268,11 +204,10 @@ export function SelectedGame() {
 									<Button
 										type="submit"
 										// onClick={addSourceToDB}
-										className="hover:bg-zinc-800 hover:-translate-y-1
-										hover:duration-500 transition-all"
+										className="hover:bg-zinc-800"
 										onClick={() => {
 											setIsDialogOpen(false);
-											startGameDownload();
+											startGameDownload(selectedDownload);
 										}}
 									>
 										Download
@@ -305,13 +240,16 @@ export function SelectedGame() {
 						)}
 					</DialogContent>
 				</Dialog>
+			</div>
+			</div>
 
-				<div className="ps-8 mt-[12rem] flex gap-12 bg-[#171717]">
+			<div>
+				<div className="ps-8 flex gap-12 bg-[#171717]">
 					{(!isLoading && (
-						<div className="max-w-[65%] flex flex-col items-center">
+						<div className="flex flex-col items-center">
 							<Carousel className="max-w-md pb-10">
 								<CarouselContent>
-									{steamDetails?.screenshots.map((thumbnail, index) => (
+									{steamDetails.screenshots.map((thumbnail, index) => (
 										// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 										<CarouselItem key={index}>
 											<div className="p-1">
@@ -319,7 +257,7 @@ export function SelectedGame() {
 													<img
 														src={thumbnail.path_thumbnail}
 														alt="game_screenshots"
-														className="rounded-lg border-white border"
+														className="rounded-lg border-white border w-fit"
 													/>
 												</Card>
 											</div>
@@ -330,11 +268,11 @@ export function SelectedGame() {
 								<CarouselNext className="bg-zinc-950 hover:bg-zinc-900 transition-all duration-200 scale-125" />
 							</Carousel>
 							<div
-								className="text-center flex flex-col items-center gap-5"
+								className="text-center flex flex-col items-center gap-5 max-w-[50rem] mb-32"
 								// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 								dangerouslySetInnerHTML={{
 									__html:
-										steamDetails?.detailedDescription ||
+										steamDetails.detailed_description ||
 										"No Description Found.",
 								}}
 							/>
@@ -351,15 +289,16 @@ export function SelectedGame() {
 						</div>
 					)}
 
-					{(!isLoading && (
+					{!isLoading ? (
 						<div
 							className="bg-[#1f1f1f] p-5 rounded-lg me-[1.5rem] h-fit shadow-black shadow-md 
-							hover:shadow-lg hover:shadow-black transition-all duration-200 text-sm max-w-[30rem] mt-10"
+							hover:shadow-lg hover:shadow-black transition-all duration-200 text-sm w-[30rem] mt-10"
 						>
 							<p className="text-lg font-bold">Requirements</p>
 							<br />
 							<div
 								className="flex flex-col"
+								// TODO set correct layout when description is not available
 								// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
 								dangerouslySetInnerHTML={{
 									__html:
@@ -368,7 +307,7 @@ export function SelectedGame() {
 								}}
 							/>
 						</div>
-					)) || (
+					) : (
 						<div className="ms-[13vw] gap-8 flex flex-col space-y-3 pe-10">
 							<Skeleton className="h-[18rem] w-[18rem] rounded-xl bg-zinc-800" />
 							<div className="space-y-2">
@@ -381,4 +320,32 @@ export function SelectedGame() {
 			</div>
 		</div>
 	);
+}
+
+function startGameDownload(selectedDownload: string[]) {
+    console.log("selected on download start: ", selectedDownload);
+	window.api.startGameDownload(selectedDownload);
+}
+
+function verifyGamePath(
+	gameName: string,
+	gameId: string,
+	gameIcon: string,
+	gameInfos: GlobalDownloads[],
+) {
+	window.api
+		.getGameRegisteredPath(
+			gameName,
+			gameId,
+			gameIcon,
+			gameInfos.map((downloadOption) => {
+				return downloadOption.uris;
+			}),
+		)
+		.then((result) => {
+			if (result[0] === "Success") {
+				console.log(result[1]);
+				return;
+			}
+		});
 }

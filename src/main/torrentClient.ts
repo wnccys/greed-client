@@ -2,13 +2,13 @@ import WebTorrent, { type Torrent } from "webtorrent";
 import { ipcMain, type IpcMainInvokeEvent } from "electron";
 import {
 	addToQueue,
-	getDBCurrentPath,
 	pauseOnQueue,
 	removeFromQueue,
 	resumeOnQueue,
 	syncronizeQueue,
 	verifyIfOnQueue,
-} from "./model";
+} from "@main/model/queue";
+import { getDBCurrentPath } from "@main/model/configs";
 
 const client = new WebTorrent();
 let currentTorrent: Torrent;
@@ -61,10 +61,11 @@ ipcMain.handle("removeTorrent", async (_event, magnetURI: string) => {
 });
 
 export async function addTorrentToQueue(magnetURI: string) {
-	if (await client.get(magnetURI)) {
-		console.log("Cannot duplicate torrent.");
-		return;
-	}
+    /* FIXME */
+	// if (client.get(magnetURI)) {
+	// 	console.log("Cannot duplicate torrent.");
+	// 	return;
+	// }
 
 	if (await verifyIfOnQueue(magnetURI)) {
 		console.log("duplicated by verify");
@@ -105,7 +106,7 @@ async function setCurrentTorrent(magnetURI: string, downloadFolder: string) {
 		pauseOnQueue(torrent.magnetURI).then(() => client.remove(magnetURI));
 	}
 
-	const currentTorrent = await client.add(
+	const currentTorrent = client.add(
 		magnetURI,
 		{ path: downloadFolder },
 		(torrent) => {

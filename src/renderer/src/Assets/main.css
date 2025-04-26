@@ -1,9 +1,16 @@
 @import "./base.css";
 
+@font-face {
+	font-family: "JetBrains Mono";
+	src: url('./jetbrains-ttf/JetBrainsMono-Regular.ttf/') format('opentype');
+	font-weight: normal;
+	font-style: normal;
+}
+
 * {
 	color: #f5f5f5;
-	font-family: "Jetbrains Mono";
-	src: url("../assets/jetbrains-ttf/JetBrainsMono-Regular.ttf");
+	font-family: "JetBrains Mono", sans-serif;
+	/* src: url("/src/renderer/src/Assets/jetbrains-ttf/JetBrainsMono-Regular.ttf"); */
 }
 
 * {

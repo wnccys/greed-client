@@ -1,6 +1,10 @@
 import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
 
+/**
+ * This is a basic test exposure bridge between main and renderer,
+ * test objects shall be invoked here.
+ */
 const tests = {
 	startTorrentDownloadTest: () =>
 		ipcRenderer.invoke("startTorrentDownloadTest"),
@@ -23,6 +27,7 @@ const api = {
 	startGameDownload: (uris: string[]) =>
 		ipcRenderer.invoke("startGameDownload", uris),
 	getGamesByName: (name: string) => ipcRenderer.invoke("getGamesByName", name),
+	getGamesRange: (index: number) => ipcRenderer.invoke("getGamesRange", index),
 	addSourceToDB: (sourceLink: string) =>
 		ipcRenderer.invoke("addSourceToDB", sourceLink),
 	getSelectedGameInfo: (gameId: number) =>

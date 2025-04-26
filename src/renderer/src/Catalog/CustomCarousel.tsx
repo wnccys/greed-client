@@ -23,10 +23,7 @@ export function CustomCarousel() {
 	);
 
 	return (
-		<Carousel
-			plugins={[plugin.current]}
-			onMouseLeave={plugin.current.reset}
-		>
+		<Carousel plugins={[plugin.current]} onMouseLeave={plugin.current.reset}>
 			<CarouselContent>
 				{imagesArr.map((_, index) => (
 					// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
@@ -35,9 +32,7 @@ export function CustomCarousel() {
 							to={`../selected-game/${imagesArrId[index]}/${imagesArrName[index]}`}
 						>
 							<div className="">
-								<Card 
-									className="bg-zinc-950 cursor-pointer embla__container rounded-none border-none"
-								>
+								<Card className="bg-zinc-950 cursor-pointer embla__container rounded-none border-none">
 									<CardContent className="flex items-center justify-center p-0">
 										<img
 											src={imagesArr[index]}
@@ -45,9 +40,7 @@ export function CustomCarousel() {
 											className="rounded-none embla__slide embla__class-names hover:scale-105 
 											transition-all duration-300"
 										/>
-										<div
-											className="translate-y-[10.5rem] h-12 absolute w-full"
-										>
+										<div className="translate-y-[10.5rem] h-12 absolute w-full">
 											<div
 												className="text-white hover:-translate-y-5 bg-zinc-950/40
 												transition-all duration-300 w-full pb-[2rem] p-2 ps-5"

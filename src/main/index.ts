@@ -2,13 +2,14 @@ import { app, BrowserWindow } from "electron";
 import { optimizer } from "@electron-toolkit/utils";
 import path from "node:path";
 import "reflect-metadata";
-import { testDBConn } from "./model";
+import { initDatabase } from "@main/model/model";
 import { format } from "node:url";
-import * as MainEventHandle from "./eventHandlers";
+import * as MainEventHandle from "@main/events/eventHandlers";
 
+// Load and register events
 MainEventHandle;
 
-const createWindow = () => {
+const createWindow = async () => {
 	const mainWindow = new BrowserWindow({
 		roundedCorners: true,
 		icon: "./build/icon.png",
@@ -31,6 +32,10 @@ const createWindow = () => {
 	});
 	mainWindow.maximize();
 
+	/* 
+		If on production mode, use # path system file specifier 
+		(required as electron works in a file-based manner on build) 
+	*/
 	const urlToLoad = app.isPackaged
 		? `${format({
 				pathname: path.join(__dirname, "../renderer/index.html"),
@@ -39,19 +44,11 @@ const createWindow = () => {
 			})}#/catalog`
 		: "http://localhost:5173/#/catalog";
 
-	console.log(
-		"IF BUILDED: ",
-		`${format({
-			pathname: path.join(__dirname, "../renderer/index.html"),
-			protocol: "file:",
-			slashes: true,
-		})}#/catalog`,
-	);
-
 	mainWindow.loadURL(urlToLoad).then(() => mainWindow.show());
 };
 
 app.whenReady().then(async () => {
+	await initDatabase();
 	createWindow();
 });
 
@@ -62,5 +59,3 @@ app.on("window-all-closed", async () => {
 app.on("browser-window-created", (_, window) => {
 	optimizer.watchWindowShortcuts(window);
 });
-
-testDBConn();
