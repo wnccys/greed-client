@@ -28,7 +28,6 @@ export function Settings() {
 	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 	const [sources, setSources] = useState([]);
 	const [downloadPath, setDownloadPath] = useState<string>();
-	const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
 	useEffect(() => {
 		window.electron.ipcRenderer
