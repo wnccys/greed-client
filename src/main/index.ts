@@ -5,7 +5,6 @@ import "reflect-metadata";
 import { initDatabase } from "@main/model/model";
 import { format } from "node:url";
 import * as MainEventHandle from "@main/events/eventHandlers";
-import type { SteamGames } from "@main/model/entity/SteamGames";
 
 // Load and register events
 MainEventHandle;
@@ -44,15 +43,6 @@ const createWindow = async () => {
 				slashes: true,
 			})}#/catalog`
 		: "http://localhost:5173/#/catalog";
-
-	console.log(
-		"IF BUILDED: ",
-		`${format({
-			pathname: path.join(__dirname, "../renderer/index.html"),
-			protocol: "file:",
-			slashes: true,
-		})}#/catalog`,
-	);
 
 	mainWindow.loadURL(urlToLoad).then(() => mainWindow.show());
 };
