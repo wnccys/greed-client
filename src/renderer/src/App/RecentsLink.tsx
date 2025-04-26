@@ -1,9 +1,9 @@
-interface RecentsLinkProps {
+interface RecentLinkProps {
 	text: string;
 	src: string;
 }
 
-export function RecentsLink({ text, src }: RecentsLinkProps) {
+export function RecentsLink({ text, src }: RecentLinkProps) {
 	return (
 		<div
 			className="flex bg-[#171717] pe-1 gap-1 h-fit self-center rounded-sm
