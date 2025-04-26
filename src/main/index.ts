@@ -57,8 +57,8 @@ const createWindow = async () => {
 	mainWindow.loadURL(urlToLoad).then(() => mainWindow.show());
 };
 
-app.whenReady().then(() => {
-	initDatabase();
+app.whenReady().then(async () => {
+	await initDatabase();
 	createWindow();
 });
 
