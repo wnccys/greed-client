@@ -207,7 +207,7 @@ export function SelectedGame() {
 										className="hover:bg-zinc-800"
 										onClick={() => {
 											setIsDialogOpen(false);
-											startGameDownload(gameInfos);
+											startGameDownload(selectedDownload);
 										}}
 									>
 										Download
@@ -323,6 +323,7 @@ export function SelectedGame() {
 }
 
 function startGameDownload(selectedDownload: string[]) {
+    console.log("selected on download start: ", selectedDownload);
 	window.api.startGameDownload(selectedDownload);
 }
 
