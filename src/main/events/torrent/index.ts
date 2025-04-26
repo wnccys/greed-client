@@ -97,6 +97,8 @@ import createWorker from "@main/worker?nodeWorker"
 import type { Worker } from "node:worker_threads";
 import { addGameSource } from "@main/model/gameSource";
 import type { JSONGame } from "@main/worker";
+import { GreedDataSource } from "@main/data-source";
+import { SteamGames } from "@main/model/entity/SteamGames";
 
 /**
  * Receive source from Hydralinks in JSON format and merges it with steam games in the DB, as it is dynamic already (get everytime user enters the app).
@@ -109,6 +111,8 @@ async function handleMerge(Source: Source) {
 	let newDownloads: JSONGame[] = [];
 	/* Threads whose has already completed it's work */
 	let alreadyDone = 0;
+
+    const STEAM_GAMES = await GreedDataSource.getRepository(SteamGames).find();
 
 	// Worker limit basically represents the process threads, 12 is a convention number, a convention.
 	// This can be improved by dynamically get user's available thread count.
@@ -174,7 +178,7 @@ async function handleMerge(Source: Source) {
 		const finalSlice = Math.round(((i + 1) / workerLimit) * linksLength) - 1;
 
 		console.log(`from: ${initialSlice}, to: ${finalSlice}`);
-		worker.postMessage(jsonifiedLinks.slice(initialSlice, finalSlice));
+		worker.postMessage([jsonifiedLinks.slice(initialSlice, finalSlice), STEAM_GAMES]);
 		workers.push(worker);
 	}
 }
