@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout Node  
+    - name: Checkout Node
       uses: actions/checkout@v3
 
     - name: Set up Node.js
@@ -25,7 +25,7 @@ jobs:
     - name: Verify path existence
       shell: pwsh
       run: |
-        if (Test-Path -Path "./dist/greed-client-1.0.1-setup.exe") {
+        if (Test-Path -Path "./dist/greed-client-setup.exe") {
           Write-Host "File Exists."
         } else {
           Write-Host "File Does Not Exists."
@@ -34,6 +34,6 @@ jobs:
     - name: Create Release
       uses: softprops/action-gh-release@v2
       with:
-        files: "./dist/greed-client-1.0.1-setup.exe"
+        files: "./dist/greed-client-setup.exe"
       env:
           GITHUB_TOKEN: ${{ github.token }}
