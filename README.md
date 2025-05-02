@@ -40,6 +40,31 @@ Greed is under the MIT License, which grants the right to copy, modify, and dist
 
 ## Honorable Mentions
 
+<<<<<<< HEAD
 [Hydra Launcher](https://github.com/hydralauncher/hydra) </br>
 [Hydra Links](https://hydralinks.cloud/sources/fitgirl.json) </br>
 [Steam DB Info](https://steamdb.info/) </br>
+=======
+### TSX
+https://tsx.is/<br>
+
+### BiomeJS
+https://biomejs.dev/pt-br/
+
+### ScrapperLib 
+https://github.com/cheeriojs/cheerio<br>
+
+### Scalar Doc Generator
+https://blog.rocketseat.com.br/scalar-uma-ferramenta-poderosa-para-documentacao-de-apis/
+
+### Aria2 Download Package
+https://github.com/sonnyp/aria2.js/
+
+https://hydralinks.cloud/sources/fitgirl.json
+https://www.steamgriddb.com/
+
+## Links Json Games 
+https://raw.githubusercontent.com/hydralauncher/hydra/main/seeds/steam-games.json
+https://hydralinks.cloud/sources/dodi.json
+https://steamdb.info/app/1663640/info/#assets
+>>>>>>> d9f8664dafb3c6181e14192abd0ca8cacbab91c9

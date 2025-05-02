@@ -3,7 +3,7 @@ import {
 	LibraryIcon,
 	DownloadIcon,
 	SettingsIcon,
-} from "@renderer/Assets/icons";
+} from "@renderer/assets/icons";
 import { RecentsLink } from "@renderer/App/RecentsLink";
 import { MenuLink } from "@renderer/App/MenuLink";
 import { MenuHeader } from "@renderer/App/MenuHeader";
@@ -33,7 +33,18 @@ export function App(): JSX.Element {
 						id="menu"
 						className="container flex flex-col h-screen w-[16.5rem] ps-0 z-50"
 					>
+<<<<<<< HEAD
 						<MenuHeader />
+=======
+						<MenuLink itemName="Catalog" icon={CatalogIcon} route="catalog" />
+						<MenuLink itemName="Library" icon={LibraryIcon} route="library" />
+						<MenuLink
+							itemName="Downloads"
+							icon={DownloadIcon}
+							route="downloads"
+						/>
+					</div>
+>>>>>>> d9f8664dafb3c6181e14192abd0ca8cacbab91c9
 
 						<h2 className="mt-[5em] text-sm font-bold ps-6">Recents</h2>
 						<div className="pt-3 ps-4">

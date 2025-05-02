@@ -1,5 +1,5 @@
 import { Input } from "@renderer/ShadComponents/ui/input";
-import { SearchIcon } from "@renderer/Assets/icons";
+import { SearchIcon } from "@renderer/assets/icons";
 import { CustomCarousel } from "./CustomCarousel";
 import { GameCard } from "./GameCard";
 import { useCatalogGames, useGamesImages } from "@renderer/Hooks/games";
@@ -37,6 +37,7 @@ export function Catalog() {
 				<div className="ms-10 flex self-center">
 					<h1 className="text-2xl font-bold">Catalog</h1>
 				</div>{" "}
+				
 				<div
 					className="rounded-md bg-zinc-800 flex p-2 ps-4 items-center"
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

@@ -10,6 +10,7 @@ import {
 } from "@main/model/queue";
 import { getDBCurrentPath } from "@main/model/configs";
 
+
 const client = new WebTorrent();
 let currentTorrent: Torrent;
 
@@ -22,8 +23,20 @@ ipcMain.handle("pauseTorrent", async () => {
 	await pauseOnQueue(currentTorrent.magnetURI);
 	client.remove(currentTorrent.magnetURI);
 
+<<<<<<< HEAD
 	await sendCurrentQueue();
 });
+=======
+
+export async function initTorrentDownload(
+	magnetURI: string,
+	downloadFolder: string,
+) {
+	if (await client.get(magnetURI)) {
+		console.log("Cannot duplicate torrent.");
+		return;
+	}
+>>>>>>> d9f8664dafb3c6181e14192abd0ca8cacbab91c9
 
 ipcMain.handle(
 	"resumeTorrent",
@@ -148,6 +161,11 @@ function registerClientEvents(client: WebTorrent.Instance) {
 	}, 1000);
 }
 
+<<<<<<< HEAD
 export async function sendCurrentQueue() {
 	ipcMain.emit("updateQueueItems", await syncronizeQueue());
 }
+=======
+
+  
+>>>>>>> d9f8664dafb3c6181e14192abd0ca8cacbab91c9

@@ -4,6 +4,7 @@ import * as React from "react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 import {
+<<<<<<< HEAD
 	Card,
 	CardContent,
 	CardHeader,
@@ -14,6 +15,20 @@ import {
 	ChartTooltip,
 	ChartTooltipContent,
 } from "@renderer/ShadComponents/ui/chart";
+=======
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@renderer/ShadComponents/ui/card"
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@renderer/ShadComponents/ui/chart"
+>>>>>>> d9f8664dafb3c6181e14192abd0ca8cacbab91c9
 const chartData = [
 	{ date: "2024-04-01", desktop: 222, mobile: 150 },
 	{ date: "2024-04-02", desktop: 97, mobile: 180 },
