@@ -105,7 +105,7 @@ export function SelectedGame() {
 							<img
 								src={gameIcon}
 								alt="game-icon"
-								className="max-h-36 shadow-[#242424]"
+								className="max-h-36 shadow-[#242424]"//att
 							/>
 						</div>
 					</div>
