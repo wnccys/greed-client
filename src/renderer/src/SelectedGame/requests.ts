@@ -1,4 +1,6 @@
+
 import axios from "axios";
+import {NotFoundException, BadRequestException} from "@renderer/exceptions/globalHandlerExceptions";
 
 export const getGameInfo = async (gameId: string) => {
 	try {
@@ -10,7 +12,12 @@ export const getGameInfo = async (gameId: string) => {
 
 		return response?.[gameId].data;
 	} catch (e) {
-		console.log("error on game details fetch: ", e);
+		if (axios.isAxiosError(e)) {
+			if (e.response?.status === 404) {
+				throw new NotFoundException("Game not found");
+			}
+		}
+		console.error("error on game details fetch: ", e);
 		return "";
 	}
 };
@@ -25,11 +32,18 @@ export const getGameImage = async (gameId: string) => {
 		).data;
 
 		return URL.createObjectURL(res);
-	} catch (e) {
-		console.log("error on image fetch: ", e);
-		return "";
+	} catch (error) { 
+
+		if (axios.isAxiosError(error)) {
+			if (error.response?.status === 404) {
+				throw new NotFoundException("Image not found");
+		}
+
+		console.error("error on image fetch: ", error);
+		return ""; 
 	}
 };
+}
 
 export const getGameIcon = async (gameId: string) => {
 	try {
@@ -42,7 +56,19 @@ export const getGameIcon = async (gameId: string) => {
 
 		return URL.createObjectURL(res);
 	} catch (e) {
-		console.log("error on icon fetch: ", e);
+		if (axios.isAxiosError(e)) {
+			if (e.response?.status === 403) {
+				throw new BadRequestException("Icon not found");
+			}
+		}
+		if (axios.isAxiosError(e)) {
+			if (e.response?.status === 404) {
+				throw new NotFoundException("Icon not found");
+			}
+		}
+		if (axios.isAxiosError(e)) {	
+		console.error("error on icon fetch: ", e);
 		return "";
 	}
+}
 };
