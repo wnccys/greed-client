@@ -13,7 +13,7 @@ export function GameCard({ gameName, gameImage, gameId }) {
 					<img src={gameImage} alt="game-cover" className="rounded-none z-10" />
 					<div
 						className={`text-white absolute -translate-y-[62%] hover:-translate-y-[100%]
-						bg-zinc-950/40 transition-all duration-300 w-[15.6rem] z-20`}
+						bg-zinc-950/40 transition-all duration-300 w-full z-20`}
 					>
 						<p className="p-2">{gameName}</p>
 						<p className="text-xs p-3 pt-0 ps-2">{"<GameData>"}</p>

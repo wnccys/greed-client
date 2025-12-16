@@ -40,10 +40,10 @@ export function CustomCarousel() {
 											className="rounded-none embla__slide embla__class-names hover:scale-105 
 											transition-all duration-300"
 										/>
-										<div className="translate-y-[10.5rem] h-12 absolute w-full">
+										<div className="bottom-0 h-[35px] absolute w-full">
 											<div
 												className="text-white hover:-translate-y-5 bg-zinc-950/40
-												transition-all duration-300 w-full pb-[2rem] p-2 ps-5"
+												transition-all duration-300 w-full pb- p-2 ps-5"
 											>
 												<p className="">{imagesArrName[index]}</p>
 												<p className="text-xs">{"<GameData>"}</p>
