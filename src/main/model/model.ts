@@ -12,7 +12,6 @@ import path from "node:path";
  * 
  * Every time application in entered, it get new steam games dynamically throught syncSteamGames().
  *
- * (// TODO make it entirelly requested this way there's no need for steam-games.json //)
  * */
 export async function initDatabase() {
 	try {
@@ -61,10 +60,12 @@ export async function initDatabase() {
 import createWorker from "@main/workerDB?nodeWorker";
 import type { SteamGames } from "@main/model/entity/SteamGames";
 /**
- * Uses Hydra Launcher steam games file as anchor for all files syncronizing them each time user enters the app.
+ * Uses SteamSpy API as anchor for all files syncronizing them each time user enters the app.
  */
 async function syncSteamGames() {
-	const steamGames: SteamGames[] = await ((await fetch("https://raw.githubusercontent.com/hydralauncher/hydra/refs/heads/main/seeds/steam-games.json")).json());
+	const steamGames: SteamGames[] = Object.values((await ((await fetch("https://steamspy.com/api.php?request=all")).json())));
+
+    // Set worker to save games on db 
 	const worker = createWorker({});
 
 	worker.on("message", async (result: string[]) => {

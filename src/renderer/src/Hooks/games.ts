@@ -24,7 +24,7 @@ export function useCatalogGames(): [Game[], Dispatch<SetStateAction<Game[]>>, Di
  * @returns Object representing image data and it's respective pending status.
  */
 export function useGamesImages(games: Game[]) {
-	const ids = useMemo(() => games.map((game) => game.id), [games]);
+	const ids = useMemo(() => games.map((game) => game.appid), [games]);
 
 	const results = useQueries({
 		queries: ids.map((id) => ({

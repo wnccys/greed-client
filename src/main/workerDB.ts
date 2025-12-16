@@ -8,7 +8,8 @@ import { SteamGames } from "@main/model/entity/SteamGames";
 parentPort?.on("message", async (steamGamesArr: SteamGames[]) => {
 	GreedDataSource.initialize()
 		.then(() => {
-			GreedDataSource.getRepository(SteamGames).save(steamGamesArr);
+			return GreedDataSource.getRepository(SteamGames).save(steamGamesArr)
 		})
-		.then(() => parentPort?.postMessage("Steam Games successfully initialized from worker."));
+		.then(() => parentPort?.postMessage("Steam Games successfully initialized from worker."))
+        .catch((err) => console.error("Steam games initialization failed: ", err));
 });

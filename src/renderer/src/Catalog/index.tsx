@@ -14,10 +14,6 @@ export function Catalog() {
 	const [search, setSearch] = useState<string>("");
 
 	useEffect(() => {
-		console.log("games: ", games);
-	}, [games]);
-
-	useEffect(() => {
 		if (!search) {
 			window.api.getGamesRange(0).then((games) => {
 				setCatalogGames(games);
@@ -67,7 +63,7 @@ export function Catalog() {
 										onClick={() => {
 											setIndex((index) => index - 1);
 										}}
-										{...(games[0]?.id < 30 && { disabled: true })}
+										{...(games[0]?.appid < 30 && { disabled: true })}
 										className="bg-transparent duration-300 transition-all hover:bg-zinc-900"
 									>
 										Previous Page
@@ -91,7 +87,7 @@ export function Catalog() {
 function FeaturedCarousel({ games }: { games: Game[] }) {
 	return (
 		// Verifies if user is at first page on catalog
-		games[14]?.id <= 340 && (
+		games[14]?.appid <= 340 && (
 			<div className="shadow-lg transition-colors shadow-black border border-white">
 				<CustomCarousel />
 		</div>)
@@ -120,7 +116,7 @@ function CardSection({
 							<GameCard
 								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 								key={key}
-								gameId={games[key].id}
+								gameId={games[key].appid}
 								gameName={games[key].name}
 								gameImage={images.data[key]}
 							/>

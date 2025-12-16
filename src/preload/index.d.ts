@@ -37,7 +37,7 @@ declare global {
 	}
 
 	interface Game {
-		id: number;
+		appid: number;
 		name: string;
 	}
 
