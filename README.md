@@ -1,5 +1,18 @@
 [![Tests](https://github.com/wnccys/greed-client/actions/workflows/general_tests.yml/badge.svg?branch=main)](https://github.com/wnccys/greed-client/actions/workflows/general_tests.yml)
-# <div align="center">Greed-Client <img src="./build/icon.png" width="75" alt="greedIcon" style="justify-center">
+
+<div align="center">
+
+  <h1>
+    Greed-Client
+    <img src="./build/icon.png" width="65" style="vertical-align: middle; margin-bottom: 10px;" alt="greedIcon">
+  </h1>
+
+  <img src="./doc/catalog.png" 
+       alt="Catalog Screenshot"
+       width="1000"
+       style="border-radius: 15px; box-shadow: 0px 5px 15px rgba(0,0,0,0.5);">
+
+</div>
 
 ## What Is It?
 Greed is a game launcher that features it's own embedded BitTorrent client and a dynamic torrent source scrapper; The main project's goal is to be the most *decentralized*, *transparent*, *distributed* and *cheap* as possible. It's written in Typescript built over Electron, allowing users to use the launcher locally without any external central server.
