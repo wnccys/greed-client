@@ -26,7 +26,7 @@ parentPort?.on("message", async (data: [JSONGame[], SteamGames[]]) => {
 				jsonGames.title.startsWith(game.name) &&
 				jsonGames.title.includes(game.name)
 			) {
-				jsonGames.steamId = game.id;
+				jsonGames.steamId = game.appid;
 			}
 		}
 	}
