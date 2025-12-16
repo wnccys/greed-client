@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
 
 export function Catalog() {
-	const [games, setCatalogGames, setIndex] = useCatalogGames();
+	const [games, setCatalogGames, index, setIndex] = useCatalogGames();
 	const images = useGamesImages(games);
 
 	const [search, setSearch] = useState<string>("");
@@ -51,7 +51,7 @@ export function Catalog() {
 
 			<div className="ms-8 mt-[2rem] me-10 bg-[#171717] mb-16">
 					<>
-						<FeaturedCarousel games={games} />
+						{ !search && index === 0 && <FeaturedCarousel /> }
 						<CardSection
 							games={games}
 							images={images}
@@ -84,14 +84,13 @@ export function Catalog() {
 		)
 }
 
-function FeaturedCarousel({ games }: { games: Game[] }) {
+function FeaturedCarousel() {
 	return (
 		// Verifies if user is at first page on catalog
-		games[14]?.appid <= 340 && (
-			<div className="shadow-lg transition-colors shadow-black border border-white">
-				<CustomCarousel />
-		</div>)
-	);
+        <div className="shadow-lg transition-colors shadow-black border border-white">
+            <CustomCarousel />
+		</div>
+    )
 }
 
 function CardSection({

@@ -4,7 +4,7 @@ import { type Dispatch, type SetStateAction, useEffect, useMemo, useState } from
 /** 
  * Get available games from Database index-based.
 */
-export function useCatalogGames(): [Game[], Dispatch<SetStateAction<Game[]>>, Dispatch<SetStateAction<number>>] {
+export function useCatalogGames(): [Game[], Dispatch<SetStateAction<Game[]>>, number, Dispatch<SetStateAction<number>>] {
 	const [index, setIndex] = useState<number>(0);
 	const [catalogGames, setCatalogGames] = useState<Game[]>([]);
 
@@ -14,7 +14,7 @@ export function useCatalogGames(): [Game[], Dispatch<SetStateAction<Game[]>>, Di
 		});
 	}, [index]);
 
-	return [catalogGames, setCatalogGames, setIndex];
+	return [catalogGames, setCatalogGames, index, setIndex];
 }
 
 /**
@@ -49,8 +49,9 @@ export function useGamesImages(games: Game[]) {
  */
 async function getImages(gameId: number): Promise<string> {
 	const response = await fetch(
-		`https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${gameId}/header.jpg`,
+		`https://cdn.akamai.steamstatic.com/steam/apps/${gameId}/header.jpg`,
 	);
+
 	const blobImage = await response.blob();
 	const reader = new FileReader();
 
