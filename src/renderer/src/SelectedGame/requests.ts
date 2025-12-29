@@ -32,17 +32,17 @@ export const getGameImage = async (gameId: string) => {
 		).data;
 
 		return URL.createObjectURL(res);
-	} catch (error) { 
+	} catch (error) {
 
 		if (axios.isAxiosError(error)) {
 			if (error.response?.status === 404) {
 				throw new NotFoundException("Image not found");
+            }
 		}
 
 		console.error("error on image fetch: ", error);
-		return ""; 
-	}
-};
+		throw error; 
+    }
 }
 
 export const getGameIcon = async (gameId: string) => {
@@ -66,9 +66,8 @@ export const getGameIcon = async (gameId: string) => {
 				throw new NotFoundException("Icon not found");
 			}
 		}
-		if (axios.isAxiosError(e)) {	
-		console.error("error on icon fetch: ", e);
-		return "";
-	}
-}
+
+        console.error("error on icon fetch: ", e);
+        throw e;
+    }
 };

@@ -60,10 +60,10 @@ export async function initDatabase() {
 import createWorker from "@main/workerDB?nodeWorker";
 import type { SteamGames } from "@main/model/entity/SteamGames";
 /**
- * Uses SteamSpy API as anchor for all files syncronizing them each time user enters the app.
+ * Uses Envy API as anchor for all files syncronizing them each time user enters the app.
  */
 async function syncSteamGames() {
-	const steamGames: SteamGames[] = Object.values((await ((await fetch("https://steamspy.com/api.php?request=all")).json())));
+	const steamGames: SteamGames[] = await (await fetch("http://137.131.41.195:8080/games")).json();
 
     // Set worker to save games on db 
 	const worker = createWorker({});
