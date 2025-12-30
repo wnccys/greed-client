@@ -6,7 +6,7 @@ export function GameCard({ gameName, gameImage, gameId }) {
 		<Link to={`../selected-game/${gameId}/${gameName}`} className="mt-8 w-fit">
 			<Card
 				className="border shadow-lg hover:drop-shadow-2xl shadow-black rounded-none max-w-[17.5vw]
-				cursor-pointer transition-all hover:-translate-y-1 hover:scale-105 duration-300 h-fit bg-black
+				cursor-pointer transition-all hover:-translate-y-1 hover:scale-105 duration-150 h-fit bg-black
 				relative overflow-hidden"
 			>
 				<CardContent className="p-0">
