@@ -9,6 +9,7 @@
 	"compilerOptions": {
 		"composite": true,
 		"jsx": "react-jsx",
+		"esModuleInterop": true,
 		"baseUrl": ".",
 		"paths": {
 			"@renderer/*": ["src/renderer/src/*"]

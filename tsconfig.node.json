@@ -7,6 +7,7 @@
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 		"strictPropertyInitialization": false,
+		"esModuleInterop": true,
 		"baseUrl": ".",
 		"paths": {
 			"@main/*": ["src/main/*"],
