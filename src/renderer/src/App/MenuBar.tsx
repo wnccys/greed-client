@@ -15,8 +15,8 @@ export function MenuBar() {
 			{downloadProgress > 0 && location.pathname !== "/downloads" && (
 				<Link
 					to="../downloads"
-					className="self-center h-[2rem] bg-zinc-950 
-			hover:bg-zinc-800 fixed flex w-full z-10 justify-center 
+					className="self-center h-[2rem] bg-zinc-950
+			hover:bg-zinc-800 fixed flex w-full z-10 justify-center
 			bottom-0 hover:duration-300 transition-all selectable"
 				>
 					<div className="self-center flex w-[30%] ms-[12rem]">
