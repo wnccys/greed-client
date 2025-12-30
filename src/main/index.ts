@@ -32,9 +32,9 @@ const createWindow = async () => {
 	});
 	mainWindow.maximize();
 
-	/* 
-		If on production mode, use # path system file specifier 
-		(required as electron works in a file-based manner on build) 
+	/*
+		If on production mode, use # path system file specifier
+		(required as electron works in a file-based manner on build)
 	*/
 	const urlToLoad = app.isPackaged
 		? `${format({
