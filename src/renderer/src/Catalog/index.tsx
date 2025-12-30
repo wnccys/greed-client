@@ -28,7 +28,7 @@ export function Catalog() {
 	}, [search, setCatalogGames]);
 
 	return (
-		<div className="bg-[#171717]">
+		<div className="bg-[#171717] mx-5">
 			<div className="flex justify-between mt-10 me-10">
 				<div className="ms-10 flex self-center">
 					<h1 className="text-2xl font-bold">Catalog</h1>
@@ -106,7 +106,7 @@ function CardSection({
 		<div className="h-full">
 			<div
 				id="games-section"
-				className="grid grid-cols-4 justify-between gap-4"
+				className="grid grid-cols-4 justify-between justify-items-center gap-0"
 			>
 				{games.map((_, key) => {
 					if (!images.pending[key]) {

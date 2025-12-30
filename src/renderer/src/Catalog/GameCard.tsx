@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export function GameCard({ gameName, gameImage, gameId }) {
 	return (
-		<Link to={`../selected-game/${gameId}/${gameName}`} className="mt-8">
+		<Link to={`../selected-game/${gameId}/${gameName}`} className="mt-8 m-0 p-0 w-fit">
 			<Card
 				className="border shadow-lg hover:drop-shadow-2xl shadow-black rounded-none max-w-[17.5vw]
 				cursor-pointer transition-all hover:-translate-y-1 hover:scale-105 duration-300 h-fit bg-black
@@ -13,7 +13,7 @@ export function GameCard({ gameName, gameImage, gameId }) {
 					<img src={gameImage} alt="game-cover" className="rounded-none z-10" />
 					<div
 						className={`text-white absolute -translate-y-[62%] hover:-translate-y-[100%]
-						bg-zinc-950/40 transition-all duration-300 w-full z-20`}
+                        bg-zinc-950/40 transition-all duration-100 w-full z-20`}
 					>
 						<p className="p-2">{gameName}</p>
 						<p className="text-xs p-3 pt-0 ps-2">{"<GameData>"}</p>
