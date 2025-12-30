@@ -19,7 +19,7 @@ export function Catalog() {
 				setCatalogGames(games);
 			});
 
-			return;	
+			return;
 		};
 
 		window.api.getGamesByName(search).then((games) => {
@@ -49,22 +49,21 @@ export function Catalog() {
 				</div>
 			</div>
 
-			<div className="ms-8 mt-[2rem] me-10 bg-[#171717] mb-16">
+			<div className="mt-[2rem] bg-[#171717]">
 					<>
 						{ !search && index === 0 && <FeaturedCarousel /> }
 						<CardSection
 							games={games}
 							images={images}
 						/>
-						<div className="relative w-full mt-6">
-							<div className="fixed z-20 top-full -translate-y-10 -translate-x-[2rem] bg-zinc-900 h-10 flex w-[81.7vw] 
-							justify-between border-zinc-800 border-2 border-primary-foreground items-center ps-5 pe-5">
+						<div className="sticky bottom-0 z-20 w-full mt-6">
+							<div className="flex justify-between w-full bg-zinc-900 h-10 border-zinc-800 border-2 border-primary-foreground items-center border-x-0">
 									<Button
 										onClick={() => {
 											setIndex((index) => index - 1);
 										}}
 										{...(games[0]?.appid < 30 && { disabled: true })}
-										className="bg-transparent duration-300 transition-all hover:bg-zinc-900"
+										className="bg-transparent duration-300 transition-all hover:bg-zinc-950"
 									>
 										Previous Page
 									</Button>
@@ -72,7 +71,7 @@ export function Catalog() {
 										onClick={() => {
 											setIndex((oldIndex) => oldIndex + 1);
 										}}
-										className="bg-transparent duration-300 transition-all"
+										className="bg-transparent duration-300 transition-all hover:bg-zinc-950"
 									>
 										Next Page
 									</Button>
@@ -80,8 +79,8 @@ export function Catalog() {
 						</div>
 					</>
 			</div>
-		</div> 
-		)
+		</div>
+    )
 }
 
 function FeaturedCarousel() {
@@ -125,7 +124,7 @@ function CardSection({
 					return <Skeleton
 						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 						key={key}
-						className="w-[16rem] mt-8 h-32 rounded-lg shadow-lg 
+						className="w-[16rem] mt-8 h-32 rounded-lg shadow-lg
 						shadow-black bg-zinc-800"
 					/>
 				})}
