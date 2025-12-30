@@ -8,7 +8,9 @@
 	"overrides": {
 		"typeorm": {
 			"better-sqlite3": "^11.2.1"
-		}
+		},
+		"webrtc-polyfill": "^1.1.10",
+		"node-datachannel": "0.31.0"
 	},
 	"scripts": {
 		"typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
