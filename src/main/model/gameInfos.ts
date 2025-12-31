@@ -28,10 +28,22 @@ export const getDBGamesByName = async (name: string) => {
  * Get 20 games from SteamGames model starting as index.
  * Primarily used for catalog pagination;
  */
-export const getGamesRange = async (index: number) => {
-	return GreedDataSource.getRepository(SteamGames)
-		.createQueryBuilder()
-		.skip(index * 20)
-		.take(20)
-		.getMany();
+export type Direction = 'BACKWARD' | 'FORWARD';
+
+export const getGamesRange = async (lastId: number, direction: Direction) => {
+    const query = GreedDataSource.getRepository(SteamGames)
+		.createQueryBuilder("game")
+		.take(20);
+
+    if (direction === 'BACKWARD') {
+        query.where("game.appid < :lastId", { lastId })
+            .orderBy("game.appid", "DESC");
+    } else {
+        query.where("game.appid > :lastId", { lastId })
+            .orderBy("game.appid", "ASC");
+    }
+
+    const games = await query.getMany();
+
+    return direction === 'BACKWARD' ? games.reverse() : games;
 };

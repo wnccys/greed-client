@@ -1,5 +1,5 @@
 import type { Downloads } from "@main/model/entity/Downloads";
-import { getDBGameInfos, getDBGamesByName, getGamesRange } from "@main/model/gameInfos";
+import { type Direction, getDBGameInfos, getDBGamesByName, getGamesRange } from "@main/model/gameInfos";
 import type { IpcMainInvokeEvent } from "electron";
 
 export async function handleGetCurrentGameInfo(
@@ -13,6 +13,6 @@ export async function handleGetGamesByName(_event: IpcMainInvokeEvent, name: str
 	return await getDBGamesByName(name);
 }
 
-export async function handleGetGamesRange(_event: IpcMainInvokeEvent, index: number) {
-	return await getGamesRange(index);
+export async function handleGetGamesRange(_event: IpcMainInvokeEvent, index: number, direction: Direction) {
+	return await getGamesRange(index, direction);
 }

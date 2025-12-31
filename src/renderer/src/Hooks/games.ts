@@ -1,25 +1,24 @@
 import { useQueries } from "@tanstack/react-query";
 import { type Dispatch, type SetStateAction, useEffect, useMemo, useState } from "react";
 
-/** 
+/**
  * Get available games from Database index-based.
 */
-export function useCatalogGames(): [Game[], Dispatch<SetStateAction<Game[]>>, number, Dispatch<SetStateAction<number>>] {
-	const [index, setIndex] = useState<number>(0);
+export function useCatalogGames(index: number, direction: Direction): [Game[], Dispatch<SetStateAction<Game[]>>] {
 	const [catalogGames, setCatalogGames] = useState<Game[]>([]);
 
 	useEffect(() => {
-		window.api.getGamesRange(index).then((games) => {
+		window.api.getGamesRange(index, direction).then((games) => {
 			setCatalogGames(games);
 		});
-	}, [index]);
+	}, [index, direction]);
 
-	return [catalogGames, setCatalogGames, index, setIndex];
+	return [catalogGames, setCatalogGames];
 }
 
 /**
  * Extract id from games
- * 
+ *
  * @param Array Database games
  * @returns Object representing image data and it's respective pending status.
  */
@@ -44,7 +43,7 @@ export function useGamesImages(games: Game[]) {
 
 /**
  * Request image blob from steam public API.
- * 
+ *
  * @returns Promise which resolves when data is correctly read as data URL
  */
 async function getImages(gameId: number): Promise<string> {

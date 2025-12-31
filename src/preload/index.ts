@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
+import type { Direction } from "@main/model/gameInfos";
 
 /**
  * This is a basic test exposure bridge between main and renderer,
@@ -27,7 +28,7 @@ const api = {
 	startGameDownload: (uris: string[]) =>
 		ipcRenderer.invoke("startGameDownload", uris),
 	getGamesByName: (name: string) => ipcRenderer.invoke("getGamesByName", name),
-	getGamesRange: (index: number) => ipcRenderer.invoke("getGamesRange", index),
+	getGamesRange: (index: number, direction: Direction) => ipcRenderer.invoke("getGamesRange", index, direction),
 	addSourceToDB: (sourceLink: string) =>
 		ipcRenderer.invoke("addSourceToDB", sourceLink),
 	getSelectedGameInfo: (gameId: number) =>

@@ -41,6 +41,8 @@ declare global {
 		name: string;
 	}
 
+    type Direction = 'BACKWARD' | 'FORWARD';
+
 	interface Api {
 		sendTorrentPath: (path: string) => Promise<string | undefined>;
 		handleFileSelect: () => string;
@@ -52,7 +54,7 @@ declare global {
 		addSourceToDB: (sourceLink: string) => null;
 		startGameDownload: (uris: string[]) => null;
 		getGamesByName: (name: string) => Promise<GlobalDownloads[]>;
-		getGamesRange: (index: number) => Promise<Game[]>;
+		getGamesRange: (index: number, direction: Direction) => Promise<Game[]>;
 		getSelectedGameInfo: (gameId: string) => Promise<Downloads[]>;
 		removeSourceFromDB: (sourceLink: string) => Promise<string[]>;
 		changeDefaultPath: () => Promise<string[]>;
