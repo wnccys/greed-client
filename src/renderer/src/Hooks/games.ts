@@ -4,14 +4,14 @@ import { type Dispatch, type SetStateAction, useEffect, useMemo, useState } from
 /**
  * Get available games from Database index-based.
 */
-export function useCatalogGames(index: number, direction: Direction): [Game[], Dispatch<SetStateAction<Game[]>>] {
+export function useCatalogGames(index: number, direction: Direction, term: string): [Game[], Dispatch<SetStateAction<Game[]>>] {
 	const [catalogGames, setCatalogGames] = useState<Game[]>([]);
 
 	useEffect(() => {
-		window.api.getGamesRange(index, direction).then((games) => {
+		window.api.getGamesRange(index, direction, term).then((games) => {
 			setCatalogGames(games);
 		});
-	}, [index, direction]);
+	}, [index, direction, term]);
 
 	return [catalogGames, setCatalogGames];
 }

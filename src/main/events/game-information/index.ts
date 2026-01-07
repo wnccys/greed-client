@@ -13,6 +13,6 @@ export async function handleGetGamesByName(_event: IpcMainInvokeEvent, name: str
 	return await getDBGamesByName(name);
 }
 
-export async function handleGetGamesRange(_event: IpcMainInvokeEvent, index: number, direction: Direction) {
-	return await getGamesRange(index, direction);
+export async function handleGetGamesRange(_event: IpcMainInvokeEvent, index: number, direction: Direction, term: string) {
+	return await getGamesRange(index, direction, term);
 }

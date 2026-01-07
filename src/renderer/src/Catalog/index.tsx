@@ -4,7 +4,7 @@ import { CustomCarousel } from "./CustomCarousel";
 import { GameCard } from "./GameCard";
 import { useCatalogGames, useGamesImages } from "@renderer/Hooks/games";
 import { Button } from "@renderer/ShadComponents/ui/button";
-import { useReducer } from "react";
+import { useEffect, useMemo, useReducer, useState } from "react";
 import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
 
 type PaginationAction<T = number> = { type: 'PREV_PAGE', payload: T } | { type: 'NEXT_PAGE', payload: T }
@@ -27,93 +27,100 @@ const handlePagination = (state: PaginationState, action: PaginationAction): Pag
     }
 }
 
+// Should keep an internal state :: <T> & :: bool (text / loadintg state)
+// When user types, should start and delay event (300 ms) (setTimeInterval)
+//  => if user re-types => return loading state
+//  => if complete => return [T] so be searched by preload event
+// Should return [text, loading state]
+// Should be consumed by (?)
+//
+function useDebounce<T>(text: T): [T, boolean] {
+    const [debouncedValue, setDebouncedValue] = useState(text);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setIsLoading(true);
+
+        const handler = setTimeout(() => {
+            setDebouncedValue(text)
+            setIsLoading(false)
+        }, 300);
+
+        return () => clearInterval(handler);
+    }, [text])
+
+    return [debouncedValue, isLoading];
+}
+
 export function Catalog() {
+    // -- SEARCH --
+    const [query, setQuery] = useState('');
+    const [debounce, _] = useDebounce(query);
+
+    // -- PAGINATION --
+    //
     // Starts with initial state idx = 0
     // click previous_btn => [disabled when 0] get last game id (current games[0].appid) and pass it with 'backward' parameter
     // click next_btn => [disabled when games is empty or len < 20] get latest game id (current games[-1].appid) and pass it with 'forward'
-
+    //
     const [pagination, dispatch] = useReducer(handlePagination, { cursor: 0, direction: 'FORWARD' });
-	const [games] = useCatalogGames(pagination.cursor, pagination.direction);
+
+    // -- GAMES DATA (Info, Images) --
+	const [games] = useCatalogGames(pagination.cursor, pagination.direction, debounce);
 	const images = useGamesImages(games);
 
-	// const [search, setSearch] = useState<string>("");
-
-	// useEffect(() => {
-	// 	if (!search) {
-	// 		window.api.getGamesRange(0).then((games) => {
-	// 			setCatalogGames(games);
-	// 		});
-
-	// 		return;
-	// 	};
-
-	// 	window.api.getGamesByName(search).then((games) => {
-	// 		setCatalogGames(games);
-	// 	});
-	// }, [search, setCatalogGames]);
+    useEffect(() => {
+        console.log("QUERY: ", query)
+    }, [query])
 
 	return (
 		<div className="bg-[#171717] mx-5">
 			<div className="flex justify-between mt-10 me-10">
 				<div className="ms-10 flex self-center">
-					<h1 className="text-2xl font-bold">Catalog</h1>
+					<h1 className="text-2xl font-bold">Explore</h1>
 				</div>{" "}
 				<div
 					className="rounded-md bg-zinc-800 flex p-2 ps-4 items-center"
-					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-						// setSearch(e.target.value);
-					}}
 				>
 					<img src={SearchIcon} alt="search-icon" className="size-4" />
 					<Input
 						className="max-w-[12vw] max-h-8 border-none focus:border-none focus:ring-0 focus:ring-offset-0 focus-visible:shadow-none transition-[max-width]
 						focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none focus:max-w-[14vw] ease-[cubic-bezier(0.4,0,0.2,1)] duration-200"
 						type="text"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
 						placeholder="Search Games"
 					/>
 				</div>
 			</div>
 
 			<div className="mt-[2rem] bg-[#171717]">
-					<>
-						{ pagination.cursor < 430 && <FeaturedCarousel /> }
-						<CardSection
-							games={games}
-							images={images}
-						/>
-						<div className="sticky bottom-0 z-20 w-full mt-6">
-							<div className="flex justify-between w-full bg-zinc-900 h-10 border-zinc-800 border-2 border-primary-foreground items-center border-x-0">
-									<Button
-										onClick={() => {
-                                            dispatch({ payload: games.at(0)?.appid || 0, type: 'PREV_PAGE' });
-                                        }}
+                <CardSection
+                    games={games}
+                    images={images}
+                />
+                <div className="sticky bottom-0 z-20 w-full mt-6">
+                    <div className="flex justify-between w-full bg-zinc-900 h-10 border-zinc-800 border-2 border-primary-foreground items-center border-x-0">
+                            <Button
+                                onClick={() => {
+                                    dispatch({ payload: games.at(0)?.appid || 0, type: 'PREV_PAGE' });
+                                }}
 
-										{...pagination.cursor < 30 && { disabled: true }}
-										className="bg-transparent duration-300 transition-all hover:bg-zinc-950"
-									>
-										Previous Page
-									</Button>
-									<Button
-										onClick={() => {
-                                            dispatch({ payload: games.at(-1)?.appid || 0, type: 'NEXT_PAGE' });
-										}}
-										className="bg-transparent duration-300 transition-all hover:bg-zinc-950"
-									>
-										Next Page
-									</Button>
-							</div>
-						</div>
-					</>
+                                {...pagination.cursor < 30 && { disabled: true }}
+                                className="bg-transparent duration-300 transition-all hover:bg-zinc-950"
+                            >
+                                Previous Page
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    dispatch({ payload: games.at(-1)?.appid || 0, type: 'NEXT_PAGE' });
+                                }}
+                                className="bg-transparent duration-300 transition-all hover:bg-zinc-950"
+                            >
+                                Next Page
+                            </Button>
+                    </div>
+                </div>
 			</div>
-		</div>
-    )
-}
-
-function FeaturedCarousel() {
-	return (
-		// Verifies if user is at first page on catalog
-        <div className="shadow-lg transition-colors shadow-black border border-white">
-            <CustomCarousel />
 		</div>
     )
 }
