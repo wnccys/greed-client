@@ -70,7 +70,9 @@ export function Catalog() {
 	const images = useGamesImages(games);
 
     useEffect(() => {
-        console.log("QUERY: ", query)
+        if (query === '') {
+            dispatch({ payload: 0, type: 'NEXT_PAGE'})
+        }
     }, [query])
 
 	return (
