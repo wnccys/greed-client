@@ -54,7 +54,7 @@ declare global {
 		addSourceToDB: (sourceLink: string) => null;
 		startGameDownload: (uris: string[]) => null;
 		getGamesByName: (name: string) => Promise<GlobalDownloads[]>;
-		getGamesRange: (index: number, direction: Direction) => Promise<Game[]>;
+		getGamesRange: (index: number, direction: Direction, term: string) => Promise<Game[]>;
 		getSelectedGameInfo: (gameId: string) => Promise<Downloads[]>;
 		removeSourceFromDB: (sourceLink: string) => Promise<string[]>;
 		changeDefaultPath: () => Promise<string[]>;
