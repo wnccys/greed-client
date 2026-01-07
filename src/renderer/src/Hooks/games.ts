@@ -49,7 +49,7 @@ export function useGamesImages(games: Game[]) {
  */
 async function getImages(gameId: number): Promise<string> {
 	const response = await fetch(
-		`https://cdn.akamai.steamstatic.com/steam/apps/${gameId}/header.jpg`,
+        `https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${gameId}/header.jpg`
 	);
 
 	const blobImage = await response.blob();
