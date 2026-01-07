@@ -1,19 +1,20 @@
 import { useQueries } from "@tanstack/react-query";
-import { type Dispatch, type SetStateAction, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 /**
  * Get available games from Database index-based.
 */
-export function useCatalogGames(index: number, direction: Direction, term: string): [Game[], Dispatch<SetStateAction<Game[]>>] {
+export function useCatalogGames(index: number, direction: Direction, term: string): Game[] {
 	const [catalogGames, setCatalogGames] = useState<Game[]>([]);
 
 	useEffect(() => {
+        console.log("GETTING NEW GAMES!!");
 		window.api.getGamesRange(index, direction, term).then((games) => {
 			setCatalogGames(games);
 		});
 	}, [index, direction, term]);
 
-	return [catalogGames, setCatalogGames];
+	return catalogGames;
 }
 
 /**

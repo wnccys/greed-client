@@ -44,13 +44,10 @@ export const getGamesRange = async (lastId: number, direction: Direction, term =
     }
 
     if (term !== '') {
-        query.where("game.name like :query", { query: `%${term}%` });
+        query.andWhere("game.name like :query", { query: `%${term}%` });
     };
-    console.log("TERM: ", term);
 
     const games = await query.getMany();
-    console.log("TERM: ", term);
-    console.log("GAmES: ", games);
 
     return direction === 'BACKWARD' ? games.reverse() : games;
 };

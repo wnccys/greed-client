@@ -29,7 +29,7 @@ const handlePagination = (state: PaginationState, action: PaginationAction): Pag
 
 // Should keep an internal state :: <T> & :: bool (text / loadintg state)
 // When user types, should start and delay event (300 ms) (setTimeInterval)
-//  => if user re-types => return loading state
+//  => if user re-types => return [T (not updated), loading state]
 //  => if complete => return [T] so be searched by preload event
 // Should return [text, loading state]
 // Should be consumed by (?)
@@ -66,12 +66,12 @@ export function Catalog() {
     const [pagination, dispatch] = useReducer(handlePagination, { cursor: 0, direction: 'FORWARD' });
 
     // -- GAMES DATA (Info, Images) --
-	const [games] = useCatalogGames(pagination.cursor, pagination.direction, debounce);
+	const games = useCatalogGames(pagination.cursor, pagination.direction, debounce);
 	const images = useGamesImages(games);
 
     useEffect(() => {
         if (query === '') {
-            dispatch({ payload: 0, type: 'NEXT_PAGE'})
+            dispatch({ payload: 0, type: 'NEXT_PAGE' })
         }
     }, [query])
 
@@ -104,16 +104,18 @@ export function Catalog() {
                     <div className="flex justify-between w-full bg-zinc-900 h-10 border-zinc-800 border-2 border-primary-foreground items-center border-x-0">
                             <Button
                                 onClick={() => {
+                                    console.log("CLICKEDD PREV")
                                     dispatch({ payload: games.at(0)?.appid || 0, type: 'PREV_PAGE' });
                                 }}
 
-                                {...pagination.cursor < 30 && { disabled: true }}
+                                // {...pagination.cursor < 30 && { disabled: true }}
                                 className="bg-transparent duration-300 transition-all hover:bg-zinc-950"
                             >
                                 Previous Page
                             </Button>
                             <Button
                                 onClick={() => {
+                                    console.log("CLICKEDD NEXXT")
                                     dispatch({ payload: games.at(-1)?.appid || 0, type: 'NEXT_PAGE' });
                                 }}
                                 className="bg-transparent duration-300 transition-all hover:bg-zinc-950"
