@@ -8,7 +8,6 @@ export function useCatalogGames(index: number, direction: Direction, term: strin
 	const [catalogGames, setCatalogGames] = useState<Game[]>([]);
 
 	useEffect(() => {
-        console.log("GETTING NEW GAMES!!");
 		window.api.getGamesRange(index, direction, term).then((games) => {
 			setCatalogGames(games);
 		});

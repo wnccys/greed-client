@@ -34,28 +34,24 @@ const handlePagination = (state: PaginationState, action: PaginationAction): Pag
 // Should return [text, loading state]
 // Should be consumed by (?)
 //
-function useDebounce<T>(text: T): [T, boolean] {
+function useDebounce<T>(text: T): T {
     const [debouncedValue, setDebouncedValue] = useState(text);
-    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        setIsLoading(true);
-
         const handler = setTimeout(() => {
             setDebouncedValue(text)
-            setIsLoading(false)
         }, 300);
 
         return () => clearInterval(handler);
     }, [text])
 
-    return [debouncedValue, isLoading];
+    return debouncedValue;
 }
 
 export function Catalog() {
     // -- SEARCH --
     const [query, setQuery] = useState('');
-    const [debounce, _] = useDebounce(query);
+    const debounce = useDebounce(query);
 
     // -- PAGINATION --
     //
@@ -79,7 +75,7 @@ export function Catalog() {
 		<div className="bg-[#171717] mx-5">
 			<div className="flex justify-between mt-10 me-10">
 				<div className="ms-10 flex self-center">
-					<h1 className="text-2xl font-bold">Explore</h1>
+					<h1 className="text-2xl font-bold">Catalog</h1>
 				</div>{" "}
 				<div
 					className="rounded-md bg-zinc-800 flex p-2 ps-4 items-center"
@@ -96,6 +92,7 @@ export function Catalog() {
 			</div>
 
 			<div className="mt-[2rem] bg-[#171717]">
+                { !query && (pagination.cursor < 420 || (pagination.cursor < 450 && pagination.direction === 'BACKWARD')) && <FeaturedCarousel /> }
                 <CardSection
                     games={games}
                     images={images}
@@ -104,20 +101,19 @@ export function Catalog() {
                     <div className="flex justify-between w-full bg-zinc-900 h-10 border-zinc-800 border-2 border-primary-foreground items-center border-x-0">
                             <Button
                                 onClick={() => {
-                                    console.log("CLICKEDD PREV")
                                     dispatch({ payload: games.at(0)?.appid || 0, type: 'PREV_PAGE' });
                                 }}
 
-                                // {...pagination.cursor < 30 && { disabled: true }}
+                                {...(pagination.cursor < 420 || (pagination.cursor < 450 && pagination.direction === 'BACKWARD')) && { disabled: true }}
                                 className="bg-transparent duration-300 transition-all hover:bg-zinc-950"
                             >
                                 Previous Page
                             </Button>
                             <Button
                                 onClick={() => {
-                                    console.log("CLICKEDD NEXXT")
                                     dispatch({ payload: games.at(-1)?.appid || 0, type: 'NEXT_PAGE' });
                                 }}
+                                {...games.length < 20 && { disabled: true }}
                                 className="bg-transparent duration-300 transition-all hover:bg-zinc-950"
                             >
                                 Next Page
@@ -128,6 +124,16 @@ export function Catalog() {
 		</div>
     )
 }
+
+function FeaturedCarousel() {
+	return (
+		// Verifies if user is at first page on catalog
+        <div className="shadow-lg transition-colors shadow-black border border-white">
+            <CustomCarousel />
+		</div>
+    )
+}
+
 
 function CardSection({
 	games,
