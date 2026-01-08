@@ -1,7 +1,14 @@
 import { Card, CardContent } from "@renderer/ShadComponents/ui/card";
 import { Link } from "react-router-dom";
 
-export function GameCard({ gameName, gameImage, gameId }) {
+interface GameCardProps {
+    gameName: string,
+    gameImage: string | undefined,
+    gameId: number,
+}
+
+export function GameCard({ gameName, gameImage, gameId }: GameCardProps) {
+    console.log("GAMEIAMGE: ", gameImage);
 	return (
 		<Link to={`../selected-game/${gameId}/${gameName}`} className="mt-8 w-fit">
 			<Card
@@ -10,7 +17,7 @@ export function GameCard({ gameName, gameImage, gameId }) {
 				relative overflow-hidden"
 			>
 				<CardContent className="p-0">
-					<img src={gameImage} alt="game-cover" className="rounded-none z-10" />
+					<img src={gameImage || "https://placehold.co/600x400"} alt="game-cover" className="rounded-none z-10" />
 					<div
 						className={`text-white absolute -translate-y-[62%] hover:-translate-y-[100%]
                         bg-zinc-950/40 transition-all duration-100 w-full z-20`}

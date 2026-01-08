@@ -32,7 +32,18 @@ export function useGamesImages(games: Game[]) {
 		})),
 		combine: (results) => {
 			return {
-				data: results.map((result) => result.data),
+				data: results.map((result) => {
+                    const imgData = result.data;
+
+                    if (
+                        typeof imgData === 'string' &&
+                        (imgData.startsWith('data:text/html') || imgData.includes('404 Not Found'))
+                    ) {
+                        return undefined; // Force it to null so the UI shows the placeholder
+                    }
+
+                    return imgData;
+                }),
 				pending: results.map((result) => result.isPending)
 			}
 		}

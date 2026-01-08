@@ -4,7 +4,7 @@ import { CustomCarousel } from "./CustomCarousel";
 import { GameCard } from "./GameCard";
 import { useCatalogGames, useGamesImages } from "@renderer/Hooks/games";
 import { Button } from "@renderer/ShadComponents/ui/button";
-import { useEffect, useMemo, useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { Skeleton } from "@renderer/ShadComponents/ui/skeleton";
 
 type PaginationAction<T = number> = { type: 'PREV_PAGE', payload: T } | { type: 'NEXT_PAGE', payload: T }
@@ -167,8 +167,7 @@ function CardSection({
 					return <Skeleton
 						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 						key={key}
-						className="w-[16rem] mt-8 h-32 rounded-lg shadow-lg
-						shadow-black bg-zinc-800"
+						className="w-[22rem] mt-8 h-40 shadow-lg shadow-black bg-zinc-800"
 					/>
 				})}
 			</div>
